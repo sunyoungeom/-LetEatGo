@@ -38,9 +38,9 @@ public class UserJoinServlet extends HttpServlet {
         }
         
         // 회원 객체 생성
-        User user = new User(id, email, password, 
-                             new Timestamp(System.currentTimeMillis()), 
-                             null, name, nickname, mbti, bloodtype, identifynumber, phoneNumber);
+//        User user = new User(id, email, password, 
+//                             new Timestamp(System.currentTimeMillis()), 
+//                             null, name, nickname, mbti, bloodtype, identifynumber, phoneNumber);
         
         // 여기서는 데이터베이스에 저장하지 않고, 간단히 결과를 출력합니다.
         /*

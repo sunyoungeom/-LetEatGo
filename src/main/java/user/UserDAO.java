@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import DB.JDBCProgram;
+import db.JDBCProgram;
 
 public class UserDAO {
 	private static DataSource dataSource = JDBCProgram.getInstance();
