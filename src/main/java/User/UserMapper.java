@@ -23,7 +23,7 @@ public interface UserMapper {
     
     // 유저 수정
     @Update("UPDATE users " +
-            "SET email = #{email}, password = #{password}, join_date = NOW(), last_login = #{lastLogin}, " +
+            "SET email = #{email}, password = #{password}, join_date = #{join_date}, last_login = #{lastLogin}, " +
             "name = #{name}, nickname = #{nickname}, mbti = #{mbti}, bloodtype = #{bloodtype}, " +
             "identifynumber = #{identifynumber}, phonnumber = #{phonnumber} " +
             "WHERE id = #{id}")
@@ -33,5 +33,11 @@ public interface UserMapper {
     @Update("UPDATE users " +
             "SET last_logout = NOW() " +
             "WHERE user_id = #{userId}")
-    void updateLogoutTime(@Param("userId") int userId);
+    void updateLogoutTime(int userId);
+    
+    // 로그인 시간
+    @Update("UPDATE users " +
+            "SET join_date = NOW() " +
+            "WHERE user_id = #{userId}")
+    void updateLoginTime(int userId);
 }

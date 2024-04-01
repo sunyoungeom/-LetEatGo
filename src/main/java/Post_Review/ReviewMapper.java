@@ -24,7 +24,7 @@ public interface ReviewMapper {
     
     // 리뷰 수정
     @Update("UPDATE reviews " +
-            "SET rating = #{rating}, review = #{review}, review_date = #{review_date} " +
+            "SET rating = #{rating}, review = #{review}, review_date = NOW() " +
             "WHERE review_id = #{reviewId}")
     void updateReview(Review review);
 }

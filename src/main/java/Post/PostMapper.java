@@ -20,11 +20,15 @@ public interface PostMapper {
     // 게시물 업데이트
     @Update("UPDATE posts " +
             "SET content = #{content}, " +
-            "resistdate = #{resistDate}, expiredate = #{expireDate}, status = #{status} " +
+            "resistdate = NOW(), expiredate = #{expireDate}, status = #{status} " +
             "WHERE post_id = #{postId}")
     void updatePost(Post post);
 
     // 게시물 삭제
     @Delete("DELETE FROM posts WHERE post_id = #{postId}")
     void deletePost(int postId);
+ 
+    // 페이지 출력
+    @Select("SELECT * FROM posts LIMIT #{startIdx}, #{pageSize}")
+    List<Post> getPostsByRange(@Param("startIdx") int startIdx, @Param("pageSize") int pageSize);
 }
