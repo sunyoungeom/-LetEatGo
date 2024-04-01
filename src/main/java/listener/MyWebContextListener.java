@@ -40,3 +40,4 @@ public class MyWebContextListener implements ServletContextListener {
 		return factory.openSession();
 	}
 }
+ 

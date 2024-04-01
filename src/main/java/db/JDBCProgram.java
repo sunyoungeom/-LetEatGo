@@ -8,7 +8,6 @@ public class JDBCProgram {
 	private static DataSource datasource = setupDataSource();
 
 	public static DataSource getInstance() {
-		System.out.println("...");
 		return datasource;
 	}
 	
@@ -22,3 +21,5 @@ public class JDBCProgram {
 		
 	}
 }
+
+

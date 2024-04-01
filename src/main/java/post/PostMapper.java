@@ -13,8 +13,8 @@ public interface PostMapper {
     Post getPostById(int postId);
 
     // 게시물 작성
-    @Insert("INSERT INTO posts (content, status) " +
-            "VALUES (#{content}, #{status})")
+    @Insert("INSERT INTO posts (content) " +
+            "VALUES (#{content})")
     void createPost(Post post);
 
     // 게시물 업데이트
