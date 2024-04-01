@@ -1,4 +1,4 @@
-package user2;
+package user;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import user2.User;
+import user.User;
 
 @WebServlet("/userJoin.do")
 public class UserJoinServlet extends HttpServlet {

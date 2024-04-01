@@ -1,4 +1,4 @@
-package user2;
+package user;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;

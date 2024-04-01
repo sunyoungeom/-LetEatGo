@@ -1,4 +1,4 @@
-package user2;
+package user;
 
 import java.sql.Date;
 import java.sql.Timestamp;
