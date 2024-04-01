@@ -6,10 +6,9 @@
 <meta charset="UTF-8">
 <title>채팅창 구현</title>
 <script>
-var webSocket = new WebSocket(
-		"<%=application.getInitParameter("CHAT_ADDR")%>
-	/ChatingServer");
-	var chatWindow, chatMessage, chatId;
+var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer");
+
+var chatWindow, chatMessage, chatId;
 
 	// 채팅창이 열리면 대화창, 메시지 입력창, 대화명 표시란으로 사용할 DOM 객체 저장
 	window.onload = function() {
@@ -56,7 +55,7 @@ var webSocket = new WebSocket(
 	};
 
 	// 메시지를 받았을 때 실행
-webSocket.onMessage = function(event) {
+webSocket.onmessage = function(event) {
 	var message = event.data.split(":"); // 대화명과 메시지 분리
 	var sender = message[0]; // 보낸 사람의 대화명
 	var content = message[1]; // 메시지 내용
@@ -68,7 +67,7 @@ webSocket.onMessage = function(event) {
 			}
 		}
 		else {
-			chatWindow.innerHTML += "<div>" + sender + " : " + content + "</div>"ss;
+			chatWindow.innerHTML += "<div>" + sender + " : " + content + "</div>";
 		}
 	}
 	chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -102,7 +101,7 @@ webSocket.onMessage = function(event) {
 </style>
 </head>
 <body>
-	<label id="라벨">대화명</label> : <input type="text" id="chatID" value="${ param.chatId }" readonly />
+	<label id="라벨">대화명</label> : <input type="text" id="chatId" value="${ param.chatId }" readonly />
 	<button id="closeBtn" onclick="disconnect();">채팅 종료</button>
 	<div id="chatWindow"></div>
 	<div>
