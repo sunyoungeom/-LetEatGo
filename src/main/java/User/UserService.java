@@ -14,10 +14,10 @@ public class UserService {
         userDAO.addUser(user);
     }
 
-//    // 모든 사용자 가져오기
-//    public List<User> getAllUsers() {
-//        return userDAO.getAllUsers();
-//    }
+    // 모든 사용자 가져오기
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
 
     // 사용자 삭제
     public void deleteUser(String id) {

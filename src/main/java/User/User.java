@@ -14,8 +14,8 @@ public class User {
     private String id;
     private String email;
     private String password;
-    private Timestamp join_date;
-    private Timestamp last_login;
+    private Date join_date;
+    private Date last_login;
     private String name;
     private String nickname;
     private String mbti;
