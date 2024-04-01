@@ -1,0 +1,37 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Search API Example</title>
+</head>
+<body>
+    <form action="">
+    <input type="text" id="Search">
+    <input type="submit">
+</form>
+    <div id="container"></div>
+</body>
+<script>
+    const container = document.getElementById("container");
+    const keyword = "맛집";
+
+    fetch(`http://localhost:8080/api/search?keyword=${keyword}`)
+    .then((resp) => {
+        if (!resp.ok) {
+            throw new Error("Failed to fetch");
+        }
+        return resp.json();
+    })
+    .then((data) => {
+        let p = document.createElement("p");
+        p.innerText = JSON.stringify(data);
+        container.appendChild(p);
+    })
+    .catch((error) => {
+        let p = document.createElement("p");
+        p.innerText = error.message;
+        container.appendChild(p);
+    });
+</script>
+</html>
