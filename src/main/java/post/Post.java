@@ -1,6 +1,5 @@
-package Post_Review;
-
-import java.sql.Date;
+package post;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +8,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Review {
-    private int reviewId;
+public class Post {
     private int postId;
     private int writeUserId;
     private int guestUserId;
-    private int rating;
-    private String review;
-    private Date reviewDate;
+    private String content;
+    private Date resistDate;
+    private Date expireDate;
+    private String status;
+ 
 }

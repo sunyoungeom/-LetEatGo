@@ -1,4 +1,4 @@
-package Post;
+package post;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

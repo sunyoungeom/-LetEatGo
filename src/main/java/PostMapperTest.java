@@ -10,8 +10,8 @@ import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
-import Post.Post;
-import Post.PostMapper;
+import post.Post;
+import post.PostMapper;
 
 public class PostMapperTest {
     public static void main(String[] args) {
