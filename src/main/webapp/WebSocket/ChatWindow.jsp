@@ -19,13 +19,29 @@ var chatWindow, chatMessage, chatId;
 
 	// 메시지 전송
 	function sendMessage() {
-		// 대화창에 표시
-		chatWindow.innerHTML += "<div class='myMsg'>" + chatMessage.value
-				+ "</div>"
-		webSocket.send(chatId + ':' + chatMessage.value); // 서버로 전송
-		chatMessage.value = ""; // 메시지 입력창 내용 지우기
-		chatWindow.scrollTop = chatWindow.scrollHeight; // 대화창 스크롤
+	    var messageContent = chatMessage.value; // 메시지 내용
+	    if (messageContent.match(/^\/[wㅈW]/)) { // 귓속말을 보내는 경우
+	        var whisperMessage = messageContent.split(" "); // 입력된 메시지를 공백을 기준으로 분리
+	        var receiver = whisperMessage[1]; // 귓속말을 받을 대상
+	        var whisperContent = whisperMessage.slice(2).join(" "); // 귓속말 내용
+	        // 대화창에 표시
+	        chatWindow.innerHTML += "<div class='whisper-sent'>나 [귓속말 -> " + receiver + "]: " + whisperContent + "</div>";
+	        // 서버로 메시지 전송
+	        webSocket.send(chatId + ':/w ' + receiver + ' ' + whisperContent);
+	    } else { // 귓속말을 보내지 않는 경우
+	        var senderName = "나"; // 보내는 사람 이름
+	        var messageHtml = "<div class='myMsg'><strong>" + senderName + ": </strong>" + messageContent + "</div>"; // 보내는 사람과 메시지 내용을 포함한 HTML 생성
+	        // 대화창에 표시
+	        chatWindow.innerHTML += messageHtml;
+	        // 서버로 메시지 전송
+	        webSocket.send(chatId + ':' + messageContent);
+	    }
+	    // 메시지 입력창 내용 지우기
+	    chatMessage.value = "";
+	    // 대화창 스크롤
+	    chatWindow.scrollTop = chatWindow.scrollHeight;
 	}
+
 
 	// 서버와의 연결 종료
 	function disconnect() {
@@ -56,22 +72,24 @@ var chatWindow, chatMessage, chatId;
 
 	// 메시지를 받았을 때 실행
 webSocket.onmessage = function(event) {
-	var message = event.data.split(":"); // 대화명과 메시지 분리
-	var sender = message[0]; // 보낸 사람의 대화명
-	var content = message[1]; // 메시지 내용
-	if (content != "") {
-		if (content.match("/")) { // 귓속말
-			if (content.match(("/" + chatId))) { // 나에게 보낸 메시지만 출력
-				var temp = content.replace(("/" + chatId), "[귓속말]: ");
-				chatWindow.innerHTML += "<div>" + sender + "" + temp + "</div>";
-			}
-		}
-		else {
-			chatWindow.innerHTML += "<div>" + sender + " : " + content + "</div>";
-		}
-	}
-	chatWindow.scrollTop = chatWindow.scrollHeight;
+    var message = event.data.split(":"); // 대화명과 메시지 분리
+    var sender = message[0]; // 보낸 사람의 대화명
+    var content = message[1]; // 메시지 내용
+    if (content != "") {
+        var isWhisper = content.match(/^\/[wㅈW]/); // 귓속말 패턴 확인
+        if (isWhisper) {
+            var whisperPattern = new RegExp("\/[wㅈW]" + chatId);
+            if (content.match(whisperPattern)) { // 귓속말을 받는 경우
+                var temp = content.replace(whisperPattern, "[귓속말]: ");
+                chatWindow.innerHTML += "<div class='whisper'>" + sender + "" + temp + "</div>";
+            } 
+        } else {
+            chatWindow.innerHTML += "<div>" + sender + " : " + content + "</div>";
+        }
+    }
+    chatWindow.scrollTop = chatWindow.scrollHeight;
 };
+
 </script>
 <style>
 #chatWindow{border:1px solid black;
@@ -97,6 +115,12 @@ webSocket.onmessage = function(event) {
 .myMsg{text-align:right;}
 #라벨 {
 	background-color: red;
+}
+.whisper {
+    color: green; /* 받은 귓속말의 색상 */
+}
+.whisper-sent {
+    color: blue; /* 보낸 귓속말의 색상 */
 }
 </style>
 </head>
