@@ -10,19 +10,20 @@ import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
-import Post.Post;
-import Post.PostMapper;
+import db.JDBCProgram;
+import post.Post;
+import post.PostMapper;
 
 public class PostMapperTest {
     public static void main(String[] args) {
         // 데이터베이스 연결 정보 설정
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://192.168.0.107:3306/board";
-        String username = "team1";
-        String password = "root";
+//        String driver = "com.mysql.cj.jdbc.Driver";
+//        String url = "jdbc:mysql://192.168.0.107:3306/board";
+//        String username = "team1";
+//        String password = "root";
 
         // 데이터 소스 생성
-        DataSource dataSource = new UnpooledDataSource(driver, url, username, password);
+        DataSource dataSource = JDBCProgram.getInstance();
 
         // 트랜잭션 팩토리 생성
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
@@ -43,6 +44,10 @@ public class PostMapperTest {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             // PostMapper 인터페이스의 구현체를 가져옴
             PostMapper postMapper = session.getMapper(PostMapper.class);
+            
+            //게시물 작성
+            postMapper.createPost(new Post(1, 0, 0, "테스트 내용 등록", null, null,	0));
+            
             
             // 전체 게시물 조회
             List<Post> allPosts = postMapper.getAllPosts();

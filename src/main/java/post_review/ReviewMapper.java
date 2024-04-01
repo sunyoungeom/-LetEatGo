@@ -1,4 +1,4 @@
-package Post_Review;
+package post_review;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package Post_Review;
+package post_review;
 
 import java.sql.Date;
 

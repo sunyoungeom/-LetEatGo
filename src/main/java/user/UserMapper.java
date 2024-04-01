@@ -1,4 +1,4 @@
-package User;
+package user;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
