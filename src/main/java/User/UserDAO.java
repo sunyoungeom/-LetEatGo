@@ -35,7 +35,7 @@ public class UserDAO {
             pstmt.setString(8, user.getMbti());
             pstmt.setString(9, user.getBloodtype());
             pstmt.setString(10, user.getIdentifynumber());
-            pstmt.setString(11, user.getPhonnumber());
+            pstmt.setString(11, user.getPhoneNumber());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

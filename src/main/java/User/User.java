@@ -21,7 +21,7 @@ public class User {
     private String mbti;
     private String bloodtype;
     private String identifynumber;
-    private String phonnumber;
+    private String phoneNumber;
 	
     
     
