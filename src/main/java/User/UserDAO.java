@@ -1,4 +1,4 @@
-package User;
+package user2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +12,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import DB.JDBCProgram;
+import user2.User;
 
 public class UserDAO {
 	private static DataSource dataSource = JDBCProgram.getInstance();

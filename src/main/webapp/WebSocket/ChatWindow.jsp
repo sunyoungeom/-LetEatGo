@@ -1,12 +1,136 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>채팅창 구현</title>
+<script>
+var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer");
+
+var chatWindow, chatMessage, chatId;
+
+	// 채팅창이 열리면 대화창, 메시지 입력창, 대화명 표시란으로 사용할 DOM 객체 저장
+	window.onload = function() {
+		chatWindow = document.getElementById("chatWindow");
+		chatMessage = document.getElementById("chatMessage");
+		chatId = document.getElementById('chatId').value;
+	}
+
+	// 메시지 전송
+	function sendMessage() {
+	    var messageContent = chatMessage.value; // 메시지 내용
+	    if (messageContent.match(/^\/[wㅈW]/)) { // 귓속말을 보내는 경우
+	        var whisperMessage = messageContent.split(" "); // 입력된 메시지를 공백을 기준으로 분리
+	        var receiver = whisperMessage[1]; // 귓속말을 받을 대상
+	        var whisperContent = whisperMessage.slice(2).join(" "); // 귓속말 내용
+	        // 대화창에 표시
+	        chatWindow.innerHTML += "<div class='whisper-sent'>나 [귓속말 -> " + receiver + "]: " + whisperContent + "</div>";
+	        // 서버로 메시지 전송
+	        webSocket.send(chatId + ':/w ' + receiver + ' ' + whisperContent);
+	    } else { // 귓속말을 보내지 않는 경우
+	        var senderName = "나"; // 보내는 사람 이름
+	        var messageHtml = "<div class='myMsg'><strong>" + senderName + ": </strong>" + messageContent + "</div>"; // 보내는 사람과 메시지 내용을 포함한 HTML 생성
+	        // 대화창에 표시
+	        chatWindow.innerHTML += messageHtml;
+	        // 서버로 메시지 전송
+	        webSocket.send(chatId + ':' + messageContent);
+	    }
+	    // 메시지 입력창 내용 지우기
+	    chatMessage.value = "";
+	    // 대화창 스크롤
+	    chatWindow.scrollTop = chatWindow.scrollHeight;
+	}
+
+
+	// 서버와의 연결 종료
+	function disconnect() {
+		webSocket.close();
+	}
+
+	// 엔터 키 입력 처리
+	function enterKey() {
+		if (window.event.keyCode == 13) { // 13은 'Enter' 키의 코드값
+			sendMessage();
+		}
+	}
+
+	// 웹소켓 서버에 연결됐을 때 실행
+	webSocket.onopen = function(event) {
+		chatWindow.innerHTML += "웹소켓 서버에 연결되었습니다.<br/>";
+	};
+
+	// 웹소켓이 닫혔을 때(서버와의 연결이 끊켰을 때) 실행
+	webSocket.onclose = function(event) {
+		chatWindow.innerHTML += "웹소켓 서버가 종료되었습니다.<br/>";
+	};
+
+	webSocket.onerror = function(event) {
+		alert(event.data);
+		chatWindow.innerHTML += "채팅 중 에러가 발생하였습니다.<br/>";
+	};
+
+	// 메시지를 받았을 때 실행
+webSocket.onmessage = function(event) {
+    var message = event.data.split(":"); // 대화명과 메시지 분리
+    var sender = message[0]; // 보낸 사람의 대화명
+    var content = message[1]; // 메시지 내용
+    if (content != "") {
+        var isWhisper = content.match(/^\/[wㅈW]/); // 귓속말 패턴 확인
+        if (isWhisper) {
+            var whisperPattern = new RegExp("\/[wㅈW]" + chatId);
+            if (content.match(whisperPattern)) { // 귓속말을 받는 경우
+                var temp = content.replace(whisperPattern, "[귓속말]: ");
+                chatWindow.innerHTML += "<div class='whisper'>" + sender + "" + temp + "</div>";
+            } 
+        } else {
+            chatWindow.innerHTML += "<div>" + sender + " : " + content + "</div>";
+        }
+    }
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+};
+
+</script>
+<style>
+#chatWindow{border:1px solid black;
+			width:270px;
+			height:310px;
+			overflow:scroll;
+			padding:5px;}
+#chatMessage{wid:236px;
+			 height:30px}
+#sendBtn{height:30px; 
+		 postion:relative; 
+		 top:2px; 
+		 left:-2px;}
+#closeBtn{margin-bottom: 30px; 
+		  position: relative;  
+		  top: 2px; 
+		  left: -2px;}
+#chatId{width: 160px; 
+		height: 25px; 
+		border: 1px;
+		solid #AAAAAA;
+		background-color: #EEEEEE;}
+.myMsg{text-align:right;}
+#라벨 {
+	background-color: red;
+}
+.whisper {
+    color: green; /* 받은 귓속말의 색상 */
+}
+.whisper-sent {
+    color: blue; /* 보낸 귓속말의 색상 */
+}
+</style>
 </head>
 <body>
-
+	<label id="라벨">대화명</label> : <input type="text" id="chatId" value="${ param.chatId }" readonly />
+	<button id="closeBtn" onclick="disconnect();">채팅 종료</button>
+	<div id="chatWindow"></div>
+	<div>
+		<input type="text" id="chatMessage" onkeyup="enterKey();">
+		<button id="sendBtn" onclick="sendMessage();">전송</button>
+	</div>
 </body>
 </html>

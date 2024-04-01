@@ -1,4 +1,4 @@
-package User;
+package user2;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -14,14 +14,14 @@ public class User {
     private String id;
     private String email;
     private String password;
-    private Timestamp join_date;
-    private Timestamp last_login;
+    private Date join_date;
+    private Date last_login;
     private String name;
     private String nickname;
     private String mbti;
     private String bloodtype;
-    private String identifynumber;
-    private String phoneNumber;
+    private int identifynumber;
+    private int phoneNumber;
 	
     
     
