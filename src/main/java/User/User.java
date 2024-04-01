@@ -20,8 +20,8 @@ public class User {
     private String nickname;
     private String mbti;
     private String bloodtype;
-    private String identifynumber;
-    private String phonnumber;
+    private int identifynumber;
+    private int phonnumber;
 	
     
     
