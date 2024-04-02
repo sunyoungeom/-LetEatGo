@@ -57,4 +57,8 @@ public interface UserMapper {
             "SET join_date = NOW() " +
             "WHERE user_id = #{userId}")
     void updateLoginTime(int userId);
+    
+ // 특정유저 주소값 찾기
+    @Select("SELECT address FROM users WHERE user_id=#{user_id}")
+    String getUserAddress(int id);
 }

@@ -5,6 +5,14 @@ import org.apache.ibatis.session.SqlSession;
 import listener.MyWebContextListener;
 
 public class UserService {
+	public String getUserAddress(int id){
+		try(SqlSession sqlSession = MyWebContextListener.getSqlSession()){
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			
+			return userMapper.getUserAddress(id);
+		}
+	}
+	
 	public User getIdById(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);

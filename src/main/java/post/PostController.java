@@ -24,20 +24,23 @@ public class PostController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // GET 요청을 처리합니다.
         String action = request.getParameter("action");
-        System.out.println("두겟 작동유무");
         if (action == null) {
             // action 파라미터가 없을 경우 기본적으로 모든 게시물을 조회합니다.
-            List<Post> posts = postService.getAllPosts();
+        	 int pageNumber = 1; // 기본 페이지 번호
+             int pageSize = 1; // 페이지당 게시물 수
+             if (request.getParameter("pageNumber") != null) {
+                 pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+             }
+             int startIdx = (pageNumber - 1) * pageSize; // 시작 인덱스 계산
+             List<Post> posts = postService.getPostsByRange(startIdx, pageSize);
             request.setAttribute("posts", posts);
             request.getRequestDispatcher("/WEB-INF/views/posts.jsp").forward(request, response);
-            System.out.println("작동유무");
         } else if (action.equals("detail")) {
             // action 파라미터가 "detail"일 경우 특정 게시물을 조회합니다.
             int postId = Integer.parseInt(request.getParameter("postId"));
             Post post = postService.getPostById(postId);
             request.setAttribute("post", post);
             request.getRequestDispatcher("/WEB-INF/views/post_detail.jsp").forward(request, response);
-            System.out.println("작동유무 파라미터 존재할떄");
         }
         // 다른 액션들에 대한 처리를 추가할 수 있습니다.
     }
