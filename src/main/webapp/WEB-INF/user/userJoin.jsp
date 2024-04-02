@@ -12,18 +12,19 @@
     <form id="userForm">
    
         ID: <input type="text" name="id"><br> 
-        비밀번호: <input type="password" name="password"><br> 
-        E-Mail: <input type="text" name="email"><br> 
-        이름: <input type="text" name="name"><br> 
-        닉네임: <input type="text" name="nickname"><br> 
-        주민등록번호: <input type="text" name="identifynumber"><br> 
-        전화번호: <input type="text" name="phonenumber"><br> 
-        주소: <input type="text" name="address"><br> 
-   		Join Date: <input type="date" name="join_date"><br> 
-    	Attendance: <input type="number" name="attendance"><br> 
-        MBTI: <input type="text" name="mbti"><br>
-        혈액형: <input type="text" name="bloodtype"><br> 
-        <input type="button" value="가입" onclick="submitForm()">
+		비밀번호: <input type="password" name="password"><br> 
+		E-Mail: <input type="text" name="email"><br> 
+		이름: <input type="text" name="name"><br> 
+		닉네임: <input type="text" name="nickname"><br> 
+		주민등록번호: <input type="text" name="identifynumber"><br> 
+		전화번호: <input type="text" name="phonenumber"><br> 
+		도로명주소: <input type="text" name="address"> <input type="button" onclick="goAddressHome()" value="주소찾기"><br> 
+		Join Date: <input type="date" name="join_date"><br> 
+		Attendance: <input type="number" name="attendance"><br> 
+		MBTI: <input type="text" name="mbti"><br>
+		혈액형: <input type="text" name="bloodtype"><br> 
+		<input type="button" value="가입" onclick="submitForm()">
+
     </form>
 
 </body>
@@ -71,6 +72,10 @@ function submitForm() {
         }
         return response.json();
     });
+}
+
+function goAddressHome() {
+	window.location.href = "Address/addressHome.jsp";
 }
 </script>
 </html>
