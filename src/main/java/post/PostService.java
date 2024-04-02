@@ -1,6 +1,8 @@
 package post;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -50,11 +52,30 @@ public class PostService {
 	}
 
 	// 페이지 번호와 페이지 크기를 모두 명시하면 해당 페이지의 게시물을 반환
-	/*
-	 * public List<Post> getPostsByRange(int startIdx, int pageSize) { try
-	 * (SqlSession sqlSession = MyWebContextListener.getSqlSession()) { PostMapper
-	 * postMapper = sqlSession.getMapper(PostMapper.class);
-	 * 
-	 * return postMapper.getPostsByRange(startIdx, pageSize); } }
-	 */
+
+	public static PostDTO getPostPage(int page, int pagePer) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
+			PostMapper mapper = sqlSession.getMapper(PostMapper.class);
+			int totalCount = mapper.countAll();
+			int totalPage = totalCount / pagePer;
+			totalPage += totalCount % pagePer == 0 ? 0 : 1;
+			
+			Map<String, Integer> params = new HashMap<>();
+			params.put("limit", 1);
+			params.put("offset", (page - 1) * pagePer);
+			
+			List<Post> all = mapper.getPage(1);
+			
+			PostDTO dto = PostDTO.builder()
+					.totalPages(totalPage)
+					.currentPage(page)
+					.itemsPerPage(pagePer)
+					.items(all)
+					.build();
+			
+			return dto;
+		}
+	}
+	
+	
 }

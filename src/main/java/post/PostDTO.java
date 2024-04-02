@@ -12,4 +12,13 @@ public class PostDTO {
 	private int itemsPerPage;
 	private int totalPages;
 	private List<Post> items;
+	
+	
+	@Override
+	public String toString() {
+		return "PostDTO [currentPage=" + currentPage + ", itemsPerPage=" + itemsPerPage + ", totalPages=" + totalPages
+				+ ", items=" + items + "]";
+	}
+	
+	
 }
