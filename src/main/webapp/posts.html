@@ -30,16 +30,16 @@
 			.then((resp)=> resp.json())
 			.then((data) => {
         	data.items.forEach((element) => {
-            let tr = document.createElement("tr");
-            let tdId = document.createElement("td");
-            let tdContent = document.createElement("td");
-            tdId.innerText = `${element.post_Id}`;
-            tdContent.innerText = `${element.content}`;
-            tr.appendChild(tdId);
-            tr.appendChild(tdContent);
-            postTable.appendChild(tr);
-		});
-			}); 
+	            let tr = document.createElement("tr");
+	            let tdId = document.createElement("td");
+	            let tdContent = document.createElement("td");
+	            tdId.innerText = `${element.post_Id}`;
+	            tdContent.innerText = `${element.content}`;
+	            tr.appendChild(tdId);
+	            tr.appendChild(tdContent);
+	            postTable.appendChild(tr);
+			});
+		}); 
 	
 </script>
 </html>

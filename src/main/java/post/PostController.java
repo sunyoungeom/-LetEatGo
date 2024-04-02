@@ -31,6 +31,7 @@ public class PostController extends HttpServlet {
             ObjectMapper mapper = new ObjectMapper();
             response.setContentType("application/json");
             mapper.writeValue(response.getWriter(), posts);
+//            request.getRequestDispatcher("/WEB-INF/views/posts.html").forward(request, response);
         } else if (action.equals("detail")) {
             // action 파라미터가 "detail"일 경우 특정 게시물을 조회합니다.
             int postId = Integer.parseInt(request.getParameter("postId"));
