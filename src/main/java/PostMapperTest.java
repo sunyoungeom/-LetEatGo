@@ -45,8 +45,8 @@ public class PostMapperTest {
             // PostMapper 인터페이스의 구현체를 가져옴
             PostMapper postMapper = session.getMapper(PostMapper.class);
             
-            //게시물 작성
-            postMapper.createPost(new Post(1, 0, 0, "테스트 내용 등록", null, null,	0));
+//            //게시물 작성
+//            postMapper.createPost(new Post(1, 0, 0, "테스트 내용 등록", null, null,	0));
             
             
             // 전체 게시물 조회
@@ -55,6 +55,10 @@ public class PostMapperTest {
             for (Post post : allPosts) {
                 System.out.println(post);
             }
+//            //삭제
+//            postMapper.deletePost(14);
+            // 커밋
+            session.commit();
             
         } catch (Exception e) {
             e.printStackTrace();
