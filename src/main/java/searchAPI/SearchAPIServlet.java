@@ -8,21 +8,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.SqlSession;
+
+import listener.MyWebContextListener;
+import user.UserMapper;
+import user.UserService;
+
 @WebServlet(name = "SearchAPIServlet", urlPatterns = "/api/search")
 public class SearchAPIServlet extends HttpServlet {
-	
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		 String keyword = req.getParameter("keyword");
-	        if (keyword != null && !keyword.isEmpty()) {
-	            String result = SearchAPI.searchBlog(keyword);
-	            resp.setContentType("application/json");
-	            resp.setCharacterEncoding("UTF-8");
-	            resp.getWriter().write(result);
-	        } else {
-	            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	            resp.getWriter().write("Keyword parameter is required");
-	        }
-	    }
-	}
+			UserService service = new UserService();
+			resp.getWriter().write(service.getUserAddress(2));
+		}
+}

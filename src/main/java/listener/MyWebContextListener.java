@@ -17,6 +17,7 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import db.JDBCProgram;
 import post.PostMapper;
+import user.UserMapper;
 
 
 public class MyWebContextListener implements ServletContextListener {
@@ -29,6 +30,7 @@ public class MyWebContextListener implements ServletContextListener {
 		Environment environment = new Environment("dev", jdbcTransactionFactory, dataSource);
 		Configuration configuration = new Configuration(environment);
 		configuration.addMapper(PostMapper.class);
+		configuration.addMapper(UserMapper.class);
 		factory = new SqlSessionFactoryBuilder().build(configuration);
 	}
 

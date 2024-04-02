@@ -15,14 +15,14 @@ public class User {
     private String email;
     private String password;
     private Date join_date;
-    private Date last_login;
+    private int attendance;
     private String name;
     private String nickname;
     private String mbti;
     private String bloodtype;
     private int identifynumber;
-    private int phonnumber;
-	
+    private int phonenumber;
+	private String address;
     
     
 }
