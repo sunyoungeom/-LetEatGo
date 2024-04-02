@@ -29,6 +29,18 @@ public interface PostMapper {
     @Delete("DELETE FROM posts WHERE post_id = #{post_Id}")
     void deletePost(int postId);
  
-    @Select("SELECT * FROM posts LIMIT #{limit} OFFSET #{offset}")
-	List<Post> getPage(Map<String, Integer> params);
+    
+
+    
+    // 페이징 처리를 위한 쿼리
+    @Select("SELECT * FROM posts LIMIT 1 OFFSET #{offset}")
+    List<Post> getPage(@Param("offset") int offset);
+    
+//    @Select("SELECT * FROM posts LIMIT #{limit} OFFSET #{offset}")
+//	List<Post> getPage(Map<String, Integer> params);
+
+    @Select("SELECT COUNT(*) FROM posts")
+    int countAll();
+    
 }
+    
