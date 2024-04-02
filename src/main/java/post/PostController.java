@@ -32,8 +32,8 @@ public class PostController extends HttpServlet {
                  pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
              }
              int startIdx = (pageNumber - 1) * pageSize; // 시작 인덱스 계산
-             List<Post> posts = postService.getPostsByRange(startIdx, pageSize);
-            request.setAttribute("posts", posts);
+           //  List<Post> posts = postService.getPostsByRange(startIdx, pageSize);
+         //   request.setAttribute("posts", posts);
             request.getRequestDispatcher("/WEB-INF/views/posts.jsp").forward(request, response);
         } else if (action.equals("detail")) {
             // action 파라미터가 "detail"일 경우 특정 게시물을 조회합니다.

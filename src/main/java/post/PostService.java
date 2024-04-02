@@ -50,11 +50,11 @@ public class PostService {
 	}
 
 	// 페이지 번호와 페이지 크기를 모두 명시하면 해당 페이지의 게시물을 반환
-	public List<Post> getPostsByRange(int startIdx, int pageSize) {
-		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
-
-			return postMapper.getPostsByRange(startIdx, pageSize);
-		}
-	}
+	/*
+	 * public List<Post> getPostsByRange(int startIdx, int pageSize) { try
+	 * (SqlSession sqlSession = MyWebContextListener.getSqlSession()) { PostMapper
+	 * postMapper = sqlSession.getMapper(PostMapper.class);
+	 * 
+	 * return postMapper.getPostsByRange(startIdx, pageSize); } }
+	 */
 }
