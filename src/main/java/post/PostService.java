@@ -52,6 +52,7 @@ public class PostService {
 	}
 
 	// 페이지 번호와 페이지 크기를 모두 명시하면 해당 페이지의 게시물을 반환
+
 	public static PostDTO getPostPage(int page, int pagePer) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
 			PostMapper mapper = sqlSession.getMapper(PostMapper.class);

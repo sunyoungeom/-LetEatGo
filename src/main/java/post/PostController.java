@@ -25,6 +25,15 @@ public class PostController extends HttpServlet {
         String action = request.getParameter("action");
         if (action == null) {
             // action 파라미터가 없을 경우 기본적으로 모든 게시물을 조회합니다.
+        	 int pageNumber = 1; // 기본 페이지 번호
+             int pageSize = 1; // 페이지당 게시물 수
+             if (request.getParameter("pageNumber") != null) {
+                 pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+             }
+             int startIdx = (pageNumber - 1) * pageSize; // 시작 인덱스 계산
+           //  List<Post> posts = postService.getPostsByRange(startIdx, pageSize);
+         //   request.setAttribute("posts", posts);
+            request.getRequestDispatcher("/WEB-INF/views/posts.jsp").forward(request, response);
             PostDTO posts = postService.getPostPage(1, 1);
 
             // JSON 형태로 변환하여 응답합니다.

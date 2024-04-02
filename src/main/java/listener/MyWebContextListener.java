@@ -21,18 +21,29 @@ import user.UserMapper;
 
 
 public class MyWebContextListener implements ServletContextListener {
-	private static DataSource dataSource = JDBCProgram.getInstance();
+	private static DataSource dataSource;
 	private static SqlSessionFactory factory;
 	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
+		initDataSource();
 		JdbcTransactionFactory jdbcTransactionFactory = new JdbcTransactionFactory();
 		Environment environment = new Environment("dev", jdbcTransactionFactory, dataSource);
 		Configuration configuration = new Configuration(environment);
-		configuration.addMapper(PostMapper.class);
 		configuration.addMapper(UserMapper.class);
+		configuration.addMapper(PostMapper.class);
 		factory = new SqlSessionFactoryBuilder().build(configuration);
 	}
+	
+	private void initDataSource() {
+		BasicDataSource ds = new BasicDataSource();
+		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
+		ds.setUsername("team1");
+		ds.setPassword("root");
+		dataSource = ds;
+	}
+	
 
 	public static Connection getConnection() throws SQLException {
 		return dataSource.getConnection();

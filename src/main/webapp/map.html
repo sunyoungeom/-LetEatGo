@@ -169,7 +169,7 @@
         <div class="option">
           <div>
             <form onsubmit="searchPlaces(); return false;">
-              키워드 : <input type="text" id="keyword" size="15" />
+              키워드 : <input type="text"  id="keyword" size="15" />
               <button type="submit">검색하기</button>
             </form>
           </div>
@@ -179,6 +179,9 @@
         <div id="pagination"></div>
       </div>
     </div>
+    <div id="searchResult" style="position: absolute; top: 0; right: 10px; width: 250px; background-color: #fff; padding: 10px;"></div>
+
+    </div>
 
     <script
       type="text/javascript"
@@ -186,19 +189,20 @@
     ></script>
     <script>
 
-      const keywordInput = document.getElementById("keyword");
-      const apiURL = "http://localhost:8080/api/search";
+        const keywordinput = document.getElementById("keyword");
+      const apiURL = "http://localhost:8080/api/keyword";
       
         fetch(apiURL) 
           .then((response) => response.text()) 
           .then((data) => {
-            keywordInput.value = data; 
+            keywordinput.value = data; 
+            searchPlaces();
           })
           .catch((error) => {
             console.error("주소를 가져오는 중 에러가 발생했습니다.", error);
           });
       
-      // 페이지 로드 시 실행되는 함수
+     
      
       // 마커를 담을 배열입니다
       var markers = [];
@@ -219,7 +223,6 @@
       var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
       // 키워드로 장소를 검색합니다
-      searchPlaces();
 
       // 키워드 검색을 요청하는 함수입니다
       function searchPlaces() {
@@ -286,6 +289,27 @@
 
             kakao.maps.event.addListener(marker, "mouseout", function () {
               infowindow.close();
+            });
+
+            kakao.maps.event.addListener(marker, "click", function(){
+                const resultTitle = document.getElementById("searchResult");
+                resultTitle.innerHTML = ""; // 기존 내용 비우기
+
+                // 클릭한 마커의 제목(title) 값을 가져옵니다.
+                const keyword = title + keywordinput.value;
+                
+                // 검색 API를 호출합니다.
+                fetch(`/api/search?keyword=${encodeURIComponent(keyword)}`)
+                .then((resp) => resp.text()) // 혹은 resp.json() 등 데이터 형식에 맞게 설정
+                .then((data) => {
+                    // 검색 결과를 p 요소에 추가합니다.
+                    let p = document.createElement("p");
+                    p.innerText = data ; // 혹은 JSON.stringify(data) 등 데이터를 적절히 가공하여 설정
+                    resultTitle.appendChild(p);
+                })
+                .catch((error) => {
+                    console.error("검색 API 호출 중 오류 발생:", error);
+                });
             });
 
             itemEl.onmouseover = function () {

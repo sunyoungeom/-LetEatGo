@@ -11,18 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private String id;
-    private String email;
-    private String password;
-    private Date join_date;
-    private int attendance;
-    private String name;
-    private String nickname;
-    private String mbti;
-    private String bloodtype;
-    private int identifynumber;
-    private int phonenumber;
+	private String id;
+	private String password;
+	private Date join_date;
+	private int attendance;
+	private String email;
+	private String name;
+	private String nickname;
 	private String address;
-    
-    
+	private String mbti;
+	private String bloodtype;
+	private String identifynumber;
+	private String phonenumber;
+
 }

@@ -6,57 +6,72 @@ import org.apache.ibatis.session.SqlSession;
 
 import listener.MyWebContextListener;
 
-public class UserService implements UserMapper {
-	
-	@Override
-	public String getUserAddress(int id){
-		try(SqlSession sqlSession = MyWebContextListener.getSqlSession()){
+import org.apache.ibatis.session.SqlSession;
+
+import listener.MyWebContextListener;
+
+public class UserService {
+
+	public User getIdById(String id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			
-			return userMapper.getUserAddress(id);
+			return userMapper.getIdById(id);
 		}
 	}
 
-	@Override
-	public void addUser(User user) {
-		// TODO Auto-generated method stub
-		
+	public User getEmailByEmail(String email) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getEmailByEmail(email);
+		}
 	}
 
-	@Override
-	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+	public User getNicknameByNickname(String nickname) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getNicknameByNickname(nickname);
+		}
 	}
 
-	@Override
-	public void deleteUser(String id) {
-		// TODO Auto-generated method stub
-		
+	public User getPhoneNumberByPhoneNumber(String phonenumber) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getPhoneNumberByPhoneNumber(phonenumber);
+		}
 	}
 
-	@Override
-	public int getUserId(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insert(User user) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+			User id = userMapper.getIdById(user.getId());
+			if (id != null) {
+				throw new UserAPIException("중복된 아이디", 409, null);
+			}
+			User email = userMapper.getEmailByEmail(user.getEmail());
+			if (email != null) {
+				throw new UserAPIException("중복된 이메일", 409, null);
+			}
+			User nickname = userMapper.getNicknameByNickname(user.getNickname());
+			if (nickname != null) {
+				throw new UserAPIException("중복된 닉네임", 409, null);
+			}
+			User phonenumber = userMapper.getPhoneNumberByPhoneNumber(user.getNickname());
+			if (phonenumber != null) {
+				throw new UserAPIException("중복된 번호", 409, null);
+			}
+
+			int result = userMapper.addUser(user);
+			sqlSession.commit();
+			return result;
+		}
 	}
 
-	@Override
-	public void updateUser(User user) {
-		// TODO Auto-generated method stub
-		
-	}
+	public String getUserAddress(int id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-	@Override
-	public void updateLogoutTime(int userId) {
-		// TODO Auto-generated method stub
-		
+			return userMapper.getUserAddress(id);
+		}
 	}
-
-	@Override
-	public void updateLoginTime(int userId) {
-		// TODO Auto-generated method stub
-		
-	};
-	
 }

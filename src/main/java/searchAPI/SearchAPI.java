@@ -1,77 +1,70 @@
 package searchAPI;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class SearchAPI {
-	 private static String clientId = "bs_xdtMBPhXb3djJxQVH"; // 애플리케이션 클라이언트 아이디
-	    private static String clientSecret = "s4t2l5aaMl"; // 애플리케이션 클라이언트 시크릿
+    private static final String REST_API_KEY = "6c29be1552a99226e602de2aa61bbbbc"; // 카카오 REST API 키
 
-	    public static String searchBlog(String keyword) {
-	        String text = null;
-	        try {
-	            text = URLEncoder.encode(keyword, "UTF-8");
-	        } catch (UnsupportedEncodingException e) {
-	            throw new RuntimeException("검색어 인코딩 실패", e);
-	        }
+    public static String searchBlog(String keyword) throws IOException {
+        keyword = URLEncoder.encode(keyword, "UTF-8");
 
-	        String apiURL = "https://openapi.naver.com/v1/search/local?query=" + text;
-	        Map<String, String> requestHeaders = new HashMap<>();
-	        requestHeaders.put("X-Naver-Client-Id", clientId);
-	        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-	        return get(apiURL, requestHeaders);
-	    }
+        String apiUrl = "https://dapi.kakao.com/v2/search/blog";
+        String queryString = String.format("query=%s", keyword);
+        String requestUrl = apiUrl + "?" + queryString;
 
-	    private static String get(String apiUrl, Map<String, String> requestHeaders) {
-	        HttpURLConnection con = connect(apiUrl);
-	        try {
-	            con.setRequestMethod("GET");
-	            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
-	                con.setRequestProperty(header.getKey(), header.getValue());
-	            }
+        URL url = new URL(requestUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Authorization", "KakaoAK " + REST_API_KEY);
 
-	            int responseCode = con.getResponseCode();
-	            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-	                return readBody(con.getInputStream());
-	            } else { // 오류 발생
-	                return readBody(con.getErrorStream());
-	            }
-	        } catch (IOException e) {
-	            throw new RuntimeException("API 요청과 응답 실패", e);
-	        } finally {
-	            con.disconnect();
-	        }
-	    }
+        int responseCode = conn.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
 
-	    private static HttpURLConnection connect(String apiUrl) {
-	        try {
-	            URL url = new URL(apiUrl);
-	            return (HttpURLConnection) url.openConnection();
-	        } catch (MalformedURLException e) {
-	            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
-	        } catch (IOException e) {
-	            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
-	        }
-	    }
+            // JSON 파싱
+            JSONObject jsonResponse = new JSONObject(response.toString());
+            JSONArray documents = jsonResponse.getJSONArray("documents");
 
-	    private static String readBody(InputStream body) {
-	        InputStreamReader streamReader = new InputStreamReader(body);
-	        try (BufferedReader lineReader = new BufferedReader(streamReader)) {
-	            StringBuilder responseBody = new StringBuilder();
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < documents.length(); i++) {
+                JSONObject document = documents.getJSONObject(i);
+                String title = document.getString("title");
+                String url1 = document.getString("url");
+                String contents = document.getString("contents");
 
-	            String line;
-	            while ((line = lineReader.readLine()) != null) {
-	                responseBody.append(line);
-	            }
+                // 각 항목을 20자로 제한
+                if (title.length() > 20) {
+                    title = title.substring(0, 20);
+                }
+                if (url1.length() > 20) {
+                    url1 = url1.substring(0, 20);
+                }
+                if (contents.length() > 40) {
+                    contents = contents.substring(0, 40);
+                }
 
-	            return responseBody.toString();
-	        } catch (IOException e) {
-	            throw new RuntimeException("API 응답을 읽는 데 실패했습니다.", e);
-	        }
-	    }
-	}
+                // 결과에 추가
+                result.append("Title: ").append(title).append(", ");
+                result.append("URL: ").append(url1).append(", ");
+                result.append("Contents: ").append(contents).append("\n");
+            }
+
+            return result.toString();
+        } else {
+            return "Failed to fetch data from Kakao API";
+        }
+    }
+}

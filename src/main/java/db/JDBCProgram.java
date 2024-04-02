@@ -1,5 +1,6 @@
 package db;
 
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -8,6 +9,7 @@ public class JDBCProgram {
 	private static DataSource datasource = setupDataSource();
 
 	public static DataSource getInstance() {
+		System.out.println("...");
 		return datasource;
 	}
 	
