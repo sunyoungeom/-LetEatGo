@@ -32,7 +32,6 @@ public class MyWebContextListener implements ServletContextListener {
 		Configuration configuration = new Configuration(environment);
 		configuration.addMapper(UserMapper.class);
 		configuration.addMapper(PostMapper.class);
-		configuration.addMapper(UserMapper.class);
 		factory = new SqlSessionFactoryBuilder().build(configuration);
 	}
 	
