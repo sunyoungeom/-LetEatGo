@@ -2,6 +2,7 @@ package post;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PostMapper {
     // 전체 조회
@@ -9,7 +10,7 @@ public interface PostMapper {
     List<Post> getAllPosts();
 	
 	// 특정 게시문 조회
-    @Select("SELECT * FROM posts WHERE post_id = #{postId}")
+    @Select("SELECT * FROM posts WHERE post_id = #{post_Id}")
     Post getPostById(int postId);
 
     // 게시물 작성
@@ -25,10 +26,9 @@ public interface PostMapper {
     void updatePost(Post post);
 
     // 게시물 삭제
-    @Delete("DELETE FROM posts WHERE post_id = #{postId}")
+    @Delete("DELETE FROM posts WHERE post_id = #{post_Id}")
     void deletePost(int postId);
  
-    // 페이지 출력
-    @Select("SELECT * FROM posts LIMIT #{startIdx}, #{pageSize}")
-    List<Post> getPostsByRange(@Param("startIdx") int startIdx, @Param("pageSize") int pageSize);
+    @Select("SELECT * FROM posts LIMIT #{limit} OFFSET #{offset}")
+	List<Post> getPage(Map<String, Integer> params);
 }

@@ -15,6 +15,18 @@
 	<listener>
 		<listener-class>listener.MyWebContextListener</listener-class>
 	</listener>
+	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>filter.EncodingFilter</filter-class>
+		<init-param>
+			<param-name>Encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<context-param>
 		<param-name>CHAT_ADDR</param-name>
 		<param-value>ws://192.168.0.103:8080/</param-value>

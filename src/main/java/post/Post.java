@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Post {
-    private int postId;
-    private int writeUserId;
-    private int guestUserId;
+    private int post_Id;
+    private int writeUser_Id;
+    private int guestUser_Id;
+    private String title;
     private String content;
     private Date resistDate;
     private Date expireDate;

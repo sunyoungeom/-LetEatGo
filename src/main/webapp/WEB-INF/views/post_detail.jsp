@@ -8,8 +8,8 @@
 </head>
 <body>
     <h1>게시물 상세 정보</h1>
-    <p><strong>제목:</strong> ${post.title}</p>
-    <p><strong>내용:</strong> ${post.content}</p>
-    <p><strong>작성자:</strong> ${post.author}</p>
+	    <p><strong>제목:</strong> ${post.title}</p>
+    	<p><strong>내용:</strong> ${post.content}</p>
+    	<p><strong>작성자:</strong> ${post.writeUser_Id}</p>
 </body>
 </html>
