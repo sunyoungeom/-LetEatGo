@@ -15,8 +15,10 @@
 	<listener>
 		<listener-class>listener.MyWebContextListener</listener-class>
 	</listener>
+	
 	<context-param>
 		<param-name>CHAT_ADDR</param-name>
 		<param-value>ws://192.168.0.103:8080/</param-value>
 	</context-param>
+	
 </web-app>

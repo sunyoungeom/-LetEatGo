@@ -12,17 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
     private String id;
-    private String email;
     private String password;
-    private Date join_date;
-    private Date last_login;
+    private String email;
     private String name;
     private String nickname;
+    private String identifynumber;
+    private String phonenumber;
+    private String address;
+    private Date join_date;
+    private int attendance;
     private String mbti;
     private String bloodtype;
-    private int identifynumber;
-    private int phoneNumber;
-	
-    
-    
 }
