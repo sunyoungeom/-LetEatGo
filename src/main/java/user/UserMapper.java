@@ -40,7 +40,11 @@ public interface UserMapper {
     User getUser(@Param("user_id") int user_id);
     
     @Select("SELECT * FROM users WHERE id = #{id}")
-    User getUserById(@Param("userId") String id);
+    User getUserById(@Param("id") String id);
+    
+    @Update("UPDATE users SET attendance = 1 WHERE id = #{id}")
+    void checkAttendance(String id);
+    
     
     // 유저 수정
     @Update("UPDATE users " +

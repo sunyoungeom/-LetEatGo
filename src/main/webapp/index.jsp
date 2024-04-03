@@ -7,9 +7,12 @@
 <title>메인</title>
 </head>
 <body>
+${ user }
  <h2>회원관리</h2>
     <ul>
        <li><a href="user?action=register">회원가입</a></li>
+       <li><a href="/join/begin">회원가입(찐)</a></li>
+       <li><a href="/login">로그인</a></li>
         <li><a href="user?action=update">회원 정보 수정</a></li>
         <li><a href="user?action=delete">회원 탈퇴</a></li>
     </ul>
