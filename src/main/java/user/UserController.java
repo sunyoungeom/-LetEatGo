@@ -1,6 +1,7 @@
 package user;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -36,27 +37,48 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        
+     // 중복 확인 요청 처리
+        if ("checkDuplicate".equals(action)) {
+            String field = request.getParameter("field");
+            String value = request.getParameter("value");
+            User isDuplicate = null;
+            
+            // 필드와 값에 따라 중복 검사를 수행하는 로직을 추가하세요.
+            // 예를 들어, 아이디 중복 검사라면:
+            if ("id".equals(field)) {
+                isDuplicate = service.getIdById(value);
+            }
+            
+            // 결과를 JSON 형태로 클라이언트에 전달
+            Map<String, Object> result = new HashMap<>();
+            result.put("result", isDuplicate);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            System.out.println(result.toString());
+            objectMapper.writeValue(response.getWriter(), result);
+        }
 
         if (action != null) {
             try {
+            	 // 전송된 데이터 확인
                 String body = ServletUtil.readBody(request);
+                System.out.println("전송된 데이터: " + body);
+
+                // 데이터를 User 객체로 변환
                 User user = objectMapper.readValue(body, User.class);
 
                 // 유효성 검사
                 Map<String, String> errors = validator.validate(user);
                 if (!errors.isEmpty()) {
-                	 request.setAttribute("errors", errors);
-                	    request.getRequestDispatcher("user?action=register").forward(request, response);
-                	    return;
-//                    response.setContentType("application/json");
-//                    response.setCharacterEncoding("UTF-8");
-//                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
-//
-//                    String errorsJson = objectMapper.writeValueAsString(errors);
-//                    response.getWriter().write(errorsJson);
-//                   System.out.println("유효성검사 내부");
-//                  System.out.println(errors);
-//                    return;
+                    // 클라이언트로 오류 메시지 전송
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
+
+                    objectMapper.writeValue(response.getWriter(), errors);
+                    System.out.println("유효성 오류: " + errors);
+                    return;
                 }
 
                 // 유효성 검사를 통과한 경우 회원가입 처리
@@ -66,17 +88,9 @@ public class UserController extends HttpServlet {
                     response.getWriter().println("회원가입이 완료되었습니다.");
                 }
             } catch (IOException e) {
-            	
+                // 예외 처리
+                e.printStackTrace();
             }
-//            } catch (UserAPIException e) {
-//                // 클라이언트로 오류 메시지를 전달
-//                response.setContentType("application/json");
-//                response.setCharacterEncoding("UTF-8");
-//                response.setStatus(e.getCode());
-//
-//                // 오류 메시지를 JSON 형식으로 전송
-//                objectMapper.writeValue(response.getWriter(), e.getErrors());
-            
         } else if ("update".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/user/userUpdate.jsp").forward(request, response);
         } else if ("delete".equals(action)) {
