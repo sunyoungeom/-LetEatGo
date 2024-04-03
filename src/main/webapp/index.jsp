@@ -13,6 +13,9 @@
         <li><a href="user?action=update">회원 정보 수정</a></li>
         <li><a href="user?action=delete">회원 탈퇴</a></li>
     </ul>
-
+	<hr>
+	<h2><a href="map?action=map">주변 음식점 찾기</a></h2>
+	
+	
 </body>
 </html>
