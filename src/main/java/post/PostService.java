@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import listener.MyWebContextListener;
+import user.User;
 
 public class PostService {
 	// 전체 게시물 조회 메서드
@@ -28,10 +29,10 @@ public class PostService {
 	}
 
 	// 게시물 작성 메서드
-	public void createPost(Post post) {
+	public void createPost(Post post, User user) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
-			postMapper.createPost(post);
+			postMapper.createPost(post, user);
 		}
 	}
 
@@ -60,9 +61,9 @@ public class PostService {
 			int totalPage = totalCount / pagePer;
 			totalPage += totalCount % pagePer == 0 ? 0 : 1;
 			
-			Map<String, Integer> params = new HashMap<>();
-			params.put("limit", 1);
-			params.put("offset", (page - 1) * pagePer);
+//			Map<String, Integer> params = new HashMap<>();
+//			params.put("limit", 10);
+//			params.put("offset", (page - 1) * pagePer);
 			
 			List<Post> all = mapper.getPage(1);
 			
@@ -77,5 +78,15 @@ public class PostService {
 		}
 	}
 	
-	
+	// 게시글 만료 상태 변환?
+	public void statusTransition(int postId) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			Post post = postMapper.getPostById(postId);
+			post.setStatus(1);
+			postMapper.updatePost(post);
+			
+		}
+	}
 }

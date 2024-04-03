@@ -18,7 +18,14 @@ public class UserService {
 			return userMapper.getIdById(id);
 		}
 	}
-
+	
+	public User getUser(int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getUser(user_id);
+		}
+	}
+	
 	public User getEmailByEmail(String email) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -56,7 +63,7 @@ public class UserService {
 			if (nickname != null) {
 				throw new UserAPIException("중복된 닉네임", 409, null);
 			}
-			User phonenumber = userMapper.getPhoneNumberByPhoneNumber(user.getNickname());
+			User phonenumber = userMapper.getPhoneNumberByPhoneNumber(user.getPhonenumber());
 			if (phonenumber != null) {
 				throw new UserAPIException("중복된 번호", 409, null);
 			}

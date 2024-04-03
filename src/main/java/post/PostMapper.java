@@ -1,6 +1,8 @@
 package post;
 import org.apache.ibatis.annotations.*;
 
+import user.User;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,29 +13,26 @@ public interface PostMapper {
 	
 	// 특정 게시문 조회
     @Select("SELECT * FROM posts WHERE post_id = #{post_Id}")
-    Post getPostById(int postId);
+    Post getPostById(@Param("post_id") int postId);
 
     // 게시물 작성
-    @Insert("INSERT INTO posts (content) " +
-            "VALUES (#{content})")
-    void createPost(Post post);
+    @Insert("INSERT INTO posts (content, writeuser_id) " +
+            "VALUES (#{content}, #{writeuser_id})")
+    void createPost(@Param("content")Post post, @Param("writeuser_id")User user);
 
-    // 게시물 업데이트
+ // 게시물 업데이트
     @Update("UPDATE posts " +
-            "SET content = #{content}, " +
-            "resistdate = NOW(), expiredate = #{expireDate}, status = #{status} " +
-            "WHERE post_id = #{postId}")
-    void updatePost(Post post);
+            "SET content = #{post.content}, " +
+            "resistdate = NOW(), expiredate = #{post.expireDate}, status = #{post.status} " +
+            "WHERE post_id = #{post.postId}")
+    void updatePost(@Param("post") Post post);
 
     // 게시물 삭제
     @Delete("DELETE FROM posts WHERE post_id = #{post_Id}")
-    void deletePost(int postId);
- 
-    
-
+    void deletePost(@Param("post_Id") int postId);
     
     // 페이징 처리를 위한 쿼리
-    @Select("SELECT * FROM posts LIMIT 1 OFFSET #{offset}")
+    @Select("SELECT * FROM posts WHERE status = 0 LIMIT 10 OFFSET #{offset}")
     List<Post> getPage(@Param("offset") int offset);
     
 //    @Select("SELECT * FROM posts LIMIT #{limit} OFFSET #{offset}")
