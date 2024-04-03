@@ -5,16 +5,18 @@
 <title>게시물 목록</title>
 </head>
 <body>
+
 	<h1>게시물 목록</h1>
-	<table border="1" id="postTable">
-		<tr>
-			<th>ID</th>
-			<th>내용</th>
-		</tr>
-	</table>
+	<form action="user?action=delete" method="post">
+		<table border="1" id="postTable">
+			<tr>
+				<th>ID</th>
+				<th>내용</th>
+			</tr>
+		</table>
 
-	<div id="pagination"></div>
-
+		<div id="pagination"></div>
+	</form>
 </body>
 <script>
         const postTable = document.getElementById("postTable");

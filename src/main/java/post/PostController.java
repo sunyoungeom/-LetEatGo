@@ -32,7 +32,6 @@ public class PostController extends HttpServlet {
             mapper.writeValue(response.getWriter(), posts);
 
         } 
-   
     }
 
     @Override

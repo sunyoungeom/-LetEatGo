@@ -20,6 +20,7 @@ public class SearchAPIServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String requestURI = req.getRequestURI();
+		System.out.println(requestURI);
 		if (requestURI.endsWith("/api/keyword")) {
 			UserService service = new UserService();
 			resp.getWriter().write(service.getUserAddress(1));

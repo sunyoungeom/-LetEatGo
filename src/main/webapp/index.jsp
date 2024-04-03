@@ -13,6 +13,7 @@
         <li><a href="user?action=update">회원 정보 수정</a></li>
         <li><a href="user?action=delete">회원 탈퇴</a></li>
     </ul>
-
+	<br>
+	<ul><a href=""</ul>
 </body>
 </html>
