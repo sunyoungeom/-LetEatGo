@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebServlet(name="PostController", urlPatterns="/post")
+@WebServlet(name="PostController", urlPatterns="/post/list")
 public class PostController extends HttpServlet {
     private PostService postService;
 

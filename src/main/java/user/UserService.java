@@ -18,7 +18,14 @@ public class UserService {
 			return userMapper.getIdById(id);
 		}
 	}
-
+	
+	public User getUser(int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getUser(user_id);
+		}
+	}
+	
 	public User getEmailByEmail(String email) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);

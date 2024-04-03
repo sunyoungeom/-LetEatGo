@@ -21,13 +21,40 @@
             .then((resp)=> resp.json())
             .then((data) => {
             	console.log(data);    
-                // JSON 데이터를 사용하여 HTML을 동적으로 생성합니다.
-                let p = document.createElement("p");
-                p.innerText = `ID: ${data.post_Id}`;
+            
+            	
+            	// 첫 번째 객체의 'user' 필드에서 'id' 값 가져오기
+            	const userId = data[1].id;
+
+            	// 두 번째 객체의 'post' 필드에서 'content' 값 가져오기
+            	const postContent = data[0].content;
+
+            	// HTML에 가져온 값을 추가하기
+            	let userIdParagraph = document.createElement("p");
+            	userIdParagraph.innerText = `사용자 ID: ${userId}`;
+            	postDetail.appendChild(userIdParagraph);
+
+            	let postContentParagraph = document.createElement("p");
+            	postContentParagraph.innerText = `게시물 내용: ${postContent}`;
+            	postDetail.appendChild(postContentParagraph);
+
+            	
+            /* 	let p = document.createElement("p");
+                p.innerText = `ID: ${data.user.id}`;
                 postDetail.appendChild(p);
                 let p2 = document.createElement("p");
-                p2.innerText = `내용: ${data.content}`;
-                postDetail.appendChild(p2);
+                p2.innerText = `내용: ${data.post.content}`;
+                postDetail.appendChild(p2); */
+            	
+            	/* data.forEach((item) => {
+            		let p = document.createElement("p");
+	                p.innerText = `ID: ${item.id}`;
+	                postDetail.appendChild(p);
+	                let p2 = document.createElement("p");
+	                p2.innerText = `내용: ${item.content}`;
+	                postDetail.appendChild(p2);
+            	 }); */
+            	 
             });
     </script>
 </body>

@@ -35,6 +35,10 @@ public interface UserMapper {
     @Select("SELECT user_id FROM users WHERE id=#{id}")
     int getUserId(String id);
     
+    //pk값으로 유저 찾기
+    @Select("SELECT * FROM users WHERE user_id = #{user_id}")
+    User getUser(@Param("user_id") int user_id);
+    
     @Select("SELECT * FROM users WHERE id = #{id}")
     User getUserById(@Param("userId") String id);
     

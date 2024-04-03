@@ -2,6 +2,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -45,8 +46,8 @@ public class PostMapperTest {
             // PostMapper 인터페이스의 구현체를 가져옴
             PostMapper postMapper = session.getMapper(PostMapper.class);
             
-//            //게시물 작성
-//            postMapper.createPost(new Post(1, 0, 0, "테스트 내용 등록", null, null,	0));
+            //게시물 작성
+            postMapper.createPost(new Post(20, 0, 0, "테스트제목", "테스트 내용 등록123", null, null,0));
             
             
             // 전체 게시물 조회
