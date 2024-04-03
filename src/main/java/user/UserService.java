@@ -1,50 +1,49 @@
 package user;
 
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import listener.MyWebContextListener;
+
 import org.apache.ibatis.session.SqlSession;
 
 import listener.MyWebContextListener;
 
 public class UserService {
-	public String getUserAddress(int id){
-		try(SqlSession sqlSession = MyWebContextListener.getSqlSession()){
-			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			
-			return userMapper.getUserAddress(id);
-		}
-	}
-	
+
 	public User getIdById(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-		return userMapper.getIdById(id);
+			return userMapper.getIdById(id);
 		}
 	}
-	
+
 	public User getEmailByEmail(String email) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-		return userMapper.getEmailByEmail(email);
+			return userMapper.getEmailByEmail(email);
 		}
 	}
-	
+
 	public User getNicknameByNickname(String nickname) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-		return userMapper.getNicknameByNickname(nickname);
+			return userMapper.getNicknameByNickname(nickname);
 		}
 	}
-	
+
 	public User getPhoneNumberByPhoneNumber(String phonenumber) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-		return userMapper.getPhoneNumberByPhoneNumber(phonenumber);
+			return userMapper.getPhoneNumberByPhoneNumber(phonenumber);
 		}
 	}
 
 	public int insert(User user) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			
+
 			User id = userMapper.getIdById(user.getId());
 			if (id != null) {
 				throw new UserAPIException("중복된 아이디", 409, null);
@@ -61,11 +60,18 @@ public class UserService {
 			if (phonenumber != null) {
 				throw new UserAPIException("중복된 번호", 409, null);
 			}
-			
-			
+
 			int result = userMapper.addUser(user);
 			sqlSession.commit();
 			return result;
+		}
+	}
+
+	public String getUserAddress(int id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+			return userMapper.getUserAddress(id);
 		}
 	}
 }
