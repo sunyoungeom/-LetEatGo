@@ -24,9 +24,13 @@ public class EncodingFilter implements Filter {
 			throws IOException, ServletException {
 		// 요청을 처리하는 흐름의 전/후에 개입가능한 코드 조각을 작성할 수 있습니다.
 		HttpServletRequest req = (HttpServletRequest) request;
+		if (req.getRequestURI().endsWith(".html")) {
+			chain.doFilter(request, response);
+		} else {
 		req.setCharacterEncoding(encoding);
 		HttpServletResponse resp = (HttpServletResponse) response;
 		resp.setCharacterEncoding(encoding);
 		chain.doFilter(request, response);
+		}
 	}
 }

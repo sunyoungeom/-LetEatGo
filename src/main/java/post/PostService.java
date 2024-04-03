@@ -60,9 +60,9 @@ public class PostService {
 			int totalPage = totalCount / pagePer;
 			totalPage += totalCount % pagePer == 0 ? 0 : 1;
 			
-			Map<String, Integer> params = new HashMap<>();
-			params.put("limit", 1);
-			params.put("offset", (page - 1) * pagePer);
+//			Map<String, Integer> params = new HashMap<>();
+//			params.put("limit", 10);
+//			params.put("offset", (page - 1) * pagePer);
 			
 			List<Post> all = mapper.getPage(1);
 			

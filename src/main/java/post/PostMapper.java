@@ -33,7 +33,7 @@ public interface PostMapper {
 
     
     // 페이징 처리를 위한 쿼리
-    @Select("SELECT * FROM posts LIMIT 1 OFFSET #{offset}")
+    @Select("SELECT * FROM posts LIMIT 10 OFFSET #{offset}")
     List<Post> getPage(@Param("offset") int offset);
     
 //    @Select("SELECT * FROM posts LIMIT #{limit} OFFSET #{offset}")

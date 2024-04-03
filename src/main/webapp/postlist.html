@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 목록</title>
+</head>
+<body>
+    <h1>게시물 목록</h1>
+    <table border="1" id="postTable">
+        <tr>
+            <th>ID</th>
+            <th>내용</th>
+        </tr>
+    </table>
+
+    <div id="pagination"></div>
+
+    <script>
+        const postTable = document.getElementById("postTable");
+        const pagination = document.getElementById("pagination");
+        const apiURL = `http://localhost:8080/post`;
+
+        // Fetch API를 사용하여 게시물 데이터 가져오기
+        fetch(apiURL)
+            .then((resp) => resp.json())
+            .then((data) => {
+                data.items.forEach((element) => {
+                    let tr = document.createElement("tr");
+                    let tdId = document.createElement("td");
+                    let tdContent = document.createElement("td");
+                    tdId.innerText = `${element.post_Id}`;
+                    tdContent.innerText = `${element.content}`;
+                    
+                    // 클릭 이벤트 추가하여 상세 페이지로 이동
+                    tr.addEventListener("click", () => {
+                        window.location.href = `post_detail.html?postId=${element.post_Id}`;
+                    });
+                    
+                    tr.appendChild(tdId);
+                    tr.appendChild(tdContent);
+                    postTable.appendChild(tr);
+                });
+            });
+    </script>
+</body>
+</html>
