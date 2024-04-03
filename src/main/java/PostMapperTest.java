@@ -47,7 +47,7 @@ public class PostMapperTest {
             PostMapper postMapper = session.getMapper(PostMapper.class);
             
             //게시물 작성
-            postMapper.createPost(new Post(20, 0, 0, "테스트제목", "테스트 내용 등록123", null, null,0));
+//            postMapper.createPost(new Post(20, 0, 0, "테스트제목", "테스트 내용 등록123", null, null,0));
             
             
             // 전체 게시물 조회
