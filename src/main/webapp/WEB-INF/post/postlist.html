@@ -61,7 +61,7 @@ function loadPosts(page) {
 
 // 페이지네이션을 표시하는 함수
 function displayPagination(totalPages, currentPage) {
-    //pagination.innerHTML = ""; // 페이지네이션 초기화
+    pagination.innerHTML = ""; // 페이지네이션 초기화
     
     for (let i = 1; i <= totalPages; i++) {
         let pageLink = document.createElement("a");
