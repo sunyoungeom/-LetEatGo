@@ -75,7 +75,7 @@ function submitForm() {
     
     var json = JSON.stringify(jsonObject);
 
-    fetch('user?action=register', {
+    fetch('/join/begin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8'
@@ -92,6 +92,22 @@ function submitForm() {
         console.error('Error:', error);
         alert('오류: 회원가입 요청에 실패했습니다.');
     });
+       /*  window.location.href = '/userJoinResult.jsp'; */
+        window.location.href = '/join/end';
+    } else {
+    	 response.json().then(data => {
+             // 오류 메시지를 받아서 출력
+             var errorMessage = "";
+             for (var key in data) {
+                 errorMessage += data[key] + "\n";
+             }
+             alert(errorMessage);
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('오류: ' + error.message);
+        });
+    }
+})
 }
 
 function goPopup(){

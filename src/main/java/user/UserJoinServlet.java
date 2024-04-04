@@ -2,66 +2,93 @@ package user;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import user.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebServlet("/userJoin.do")
+import user.User;
+import util.ServletUtil;
+
+@WebServlet("/join/begin")
 public class UserJoinServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private UserService service = new UserService();
+    private UserValidator validator = new UserValidator();
+    private ObjectMapper objectMapper = new ObjectMapper();
+    
+    @Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	req.getRequestDispatcher("/WEB-INF/user/userJoin.jsp").forward(req, resp);
+	}
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
-        
-        // 폼에서 입력받은 데이터 추출
-        String id = req.getParameter("id");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String name = req.getParameter("name");
-        String nickname = req.getParameter("nickname");
-        String mbti = req.getParameter("mbti");
-        String bloodtype = req.getParameter("bloodtype");
-        String identifynumber = req.getParameter("identifynumber");
-        String phoneNumber = req.getParameter("phoneNumber");
-        
-        
-        if (id.isEmpty() || email.isEmpty() || password.isEmpty() || name.isEmpty() || nickname.isEmpty() || identifynumber.isEmpty() || phoneNumber.isEmpty()) {
-        	req.setAttribute("error", "모든 항목을 빠짐없이 입력해주시기 바랍니다.");
-        	HttpUtil.forward(req, resp, "userJoin.jsp");
-        	
-        	return;
-        }
-        
-        // 회원 객체 생성
-//        User user = new User(id, email, password, 
-//                             new Timestamp(System.currentTimeMillis()), 
-//                             null, name, nickname, mbti, bloodtype, identifynumber, phoneNumber);
-        
-        // 여기서는 데이터베이스에 저장하지 않고, 간단히 결과를 출력합니다.
-        /*
-         * 
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>회원가입 정보</h1>");
-        out.println("<p>ID: " + user.getId() + "</p>");
-        out.println("<p>Email: " + user.getEmail() + "</p>");
-        out.println("<p>이름: " + user.getName() + "</p>");
-        out.println("<p>닉네임: " + user.getNickname() + "</p>");
-        out.println("<p>MBTI: " + user.getMbti() + "</p>");
-        out.println("<p>혈액형: " + user.getBloodtype() + "</p>");
-        out.println("<p>주민등록번호: " + user.getIdentifynumber() + "</p>");
-        out.println("<p>전화번호: " + user.getPhoneNumber() + "</p>");
-        out.println("</body></html>");
-        
-         */
-        
-        
-        req.setAttribute("id", id);
-        HttpUtil.forward(req, resp, "userJoinResult.jsp");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String action = request.getParameter("action");
+//        
+//     // 중복 확인 요청 처리
+//        if ("checkDuplicate".equals(action)) {
+//            String field = request.getParameter("field");
+//            String value = request.getParameter("value");
+//            User isDuplicate = null;
+//            
+//            // 필드와 값에 따라 중복 검사를 수행하는 로직을 추가하세요.
+//            // 예를 들어, 아이디 중복 검사라면:
+//            if ("id".equals(field)) {
+//                isDuplicate = service.getIdById(value);
+//            }
+//            
+//            // 결과를 JSON 형태로 클라이언트에 전달
+//            Map<String, Object> result = new HashMap<>();
+//            result.put("result", isDuplicate);
+//            response.setContentType("application/json");
+//            response.setCharacterEncoding("UTF-8");
+//            System.out.println(result.toString());
+//            objectMapper.writeValue(response.getWriter(), result);
+//        }
+
+//        if (action != null) {
+            try {
+            	 // 전송된 데이터 확인
+                String body = ServletUtil.readBody(request);
+                System.out.println("전송된 데이터: " + body);
+
+                // 데이터를 User 객체로 변환
+                User user = objectMapper.readValue(body, User.class);
+
+                // 유효성 검사
+                Map<String, String> errors = validator.validate(user);
+                if (!errors.isEmpty()) {
+                    // 클라이언트로 오류 메시지 전송
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
+
+                    objectMapper.writeValue(response.getWriter(), errors);
+                    System.out.println("유효성 오류: " + errors);
+                    return;
+                }
+
+                // 유효성 검사를 통과한 경우 회원가입 처리
+                int result = service.insert(user);
+                if (result == 1) {
+                    response.setStatus(HttpServletResponse.SC_CREATED); // 201 Created
+                    response.getWriter().println("회원가입이 완료되었습니다.");
+                    String id = user.getId(); // 여기서 user는 회원가입이 완료된 사용자 객체라 가정합니다.
+                    request.getSession().setAttribute("id", id); // id를 세션에 설정
+                    request.getRequestDispatcher("/WEB-INF/user/userJoinResult.jsp").forward(request, response);
+                }
+            } catch (IOException e) {
+                // 예외 처리
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 Internal Server Error
+                response.getWriter().println("서버 오류가 발생했습니다.");
     }
+}
 }

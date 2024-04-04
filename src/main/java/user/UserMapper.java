@@ -35,8 +35,16 @@ public interface UserMapper {
     @Select("SELECT user_id FROM users WHERE id=#{id}")
     int getUserId(String id);
     
+    //pk값으로 유저 찾기
+    @Select("SELECT * FROM users WHERE user_id = #{user_id}")
+    User getUser(@Param("user_id") int user_id);
+    
     @Select("SELECT * FROM users WHERE id = #{id}")
-    User getUserById(@Param("userId") String id);
+    User getUserById(@Param("id") String id);
+    
+    @Update("UPDATE users SET attendance = 1 WHERE id = #{id}")
+    void checkAttendance(String id);
+    
     
     // 유저 수정
     @Update("UPDATE users " +

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시물 상세 페이지</title>
+</head>
+<body>
+	<h1>게시물 상세 페이지</h1>
+	<div id="postDetail"></div>
+	<input type="button" value="채팅방 참여" onclick="joinChatRoom(postId)">
+	<script>
+	//수정 필요
+	 const postDetail = document.getElementById("postDetail");
+     const urlParams = new URLSearchParams(window.location.search);
+     const postId = urlParams.get('postId'); // URL 파라미터에서 postId를 가져옵니다.
+     const apiURL = `http://localhost:8080/post/detail?postId=${postId}`;
+     
+     
+        console.log("스크립트 작동여부");
+        // 서블릿 엔드포인트를 호출하여 JSON 데이터를 가져옵니다.
+        
+        function joinChatRoom(postId) {
+        	const chatRoomUrl = `WebSocket/MultiChatMain.jsp?postId=${postId}`;
+        	window.location.href = chatRoomUrl;
+        }
+        
+        
+        fetch(apiURL)
+            .then((resp)=> resp.json())
+            .then((data) => {
+            	console.log(data);    
+            
+            	
+            	// 첫 번째 객체의 'user' 필드에서 'id' 값 가져오기
+            	const userId = data[1].id;
+
+            	// 두 번째 객체의 'post' 필드에서 'content' 값 가져오기
+            	const postContent = data[0].content;
+
+            	// HTML에 가져온 값을 추가하기
+            	let userIdParagraph = document.createElement("p");
+            	userIdParagraph.innerText = `사용자 ID: ${userId}`;
+            	postDetail.appendChild(userIdParagraph);
+
+            	let postContentParagraph = document.createElement("p");
+            	postContentParagraph.innerText = `게시물 내용: ${postContent}`;
+            	postDetail.appendChild(postContentParagraph);
+
+            	
+            /* 	let p = document.createElement("p");
+                p.innerText = `ID: ${data.user.id}`;
+                postDetail.appendChild(p);
+                let p2 = document.createElement("p");
+                p2.innerText = `내용: ${data.post.content}`;
+                postDetail.appendChild(p2); */
+            	
+            	/* data.forEach((item) => {
+            		let p = document.createElement("p");
+	                p.innerText = `ID: ${item.id}`;
+	                postDetail.appendChild(p);
+	                let p2 = document.createElement("p");
+	                p2.innerText = `내용: ${item.content}`;
+	                postDetail.appendChild(p2);
+            	 }); */
+            	 
+            });
+    </script>
+</body>
+</html>
