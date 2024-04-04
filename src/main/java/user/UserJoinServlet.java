@@ -30,20 +30,38 @@ public class UserJoinServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String action = request.getParameter("action");
-//        
+        String action = request.getParameter("action");
+        
 //     // 중복 확인 요청 처리
-//        if ("checkDuplicate".equals(action)) {
-//            String field = request.getParameter("field");
-//            String value = request.getParameter("value");
-//            User isDuplicate = null;
-//            
-//            // 필드와 값에 따라 중복 검사를 수행하는 로직을 추가하세요.
-//            // 예를 들어, 아이디 중복 검사라면:
-//            if ("id".equals(field)) {
-//                isDuplicate = service.getIdById(value);
-//            }
-//            
+        if ("checkDuplicate".equals(action)) {
+            String field = request.getParameter("field");
+            String value = request.getParameter("value");
+            User isDuplicate = null;
+            
+           switch(field) {
+           case "id":
+               isDuplicate = service.getIdById(value);
+               break;
+           case "email":
+               isDuplicate = service.getEmailByEmail(value);
+              System.out.println(value);
+               break;
+           case "nickname":
+               isDuplicate = service.getNicknameByNickname(value);
+               break;
+           case "phonenumber":
+               isDuplicate = service.getPhoneNumberByPhoneNumber(value);
+               break;
+           default:
+               break;
+       }
+       
+       if (isDuplicate != null) {
+           response.setContentType("application/json");
+           response.setCharacterEncoding("UTF-8");
+           response.getWriter().write("duplicate");
+       } 
+            
 //            // 결과를 JSON 형태로 클라이언트에 전달
 //            Map<String, Object> result = new HashMap<>();
 //            result.put("result", isDuplicate);
@@ -51,9 +69,8 @@ public class UserJoinServlet extends HttpServlet {
 //            response.setCharacterEncoding("UTF-8");
 //            System.out.println(result.toString());
 //            objectMapper.writeValue(response.getWriter(), result);
-//        }
+        } else {
 
-//        if (action != null) {
             try {
             	 // 전송된 데이터 확인
                 String body = ServletUtil.readBody(request);
@@ -82,6 +99,7 @@ public class UserJoinServlet extends HttpServlet {
                     response.getWriter().println("회원가입이 완료되었습니다.");
                     String id = user.getId(); // 여기서 user는 회원가입이 완료된 사용자 객체라 가정합니다.
                     request.getSession().setAttribute("id", id); // id를 세션에 설정
+                    // 유저가 있을때만 페이지 없으면 404?
                     request.getRequestDispatcher("/WEB-INF/user/userJoinResult.jsp").forward(request, response);
                 }
             } catch (IOException e) {
@@ -89,6 +107,7 @@ public class UserJoinServlet extends HttpServlet {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 Internal Server Error
                 response.getWriter().println("서버 오류가 발생했습니다.");
+            }
     }
 }
 }
