@@ -14,6 +14,7 @@
 		<ul>
 			<li><a href="/join/begin">회원가입(찐)</a></li>
 			<li><a href="/login">로그인</a></li>
+			
 		</ul>
 	</c:if>
 	<c:if test="${not empty user}">
@@ -22,6 +23,7 @@
 			<li><a href="user?action=update">회원 정보 수정</a></li>
 			<li><a href="user?action=delete">회원 탈퇴</a></li>
 			<li><a href="/logout">로그아웃</a></li>
+			<li><a href="/ChatingServer">ㅇㅇ</a></li>
 		</ul>
 	</c:if>
 	${ user }
