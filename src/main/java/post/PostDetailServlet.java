@@ -1,6 +1,5 @@
 package post;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,31 +15,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import user.User;
 import user.UserService;
 
-@WebServlet(name="PostDetailServlet", urlPatterns = "/post/detail")
+@WebServlet("/post/detail")
 public class PostDetailServlet extends HttpServlet {
-    private PostService postService;
-    private UserService userService;
+	private PostService postService = new PostService();
+	private UserService userService = new UserService();
 
-    @Override
-    public void init() throws ServletException {
-        // PostService 객체를 초기화합니다.
-        postService = new PostService();
-        userService = new UserService();
-    }
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// GET 요청을 처리합니다.
+		request.getRequestDispatcher("/WEB-INF/post/post_detail.html").forward(request, response);
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // GET 요청을 처리합니다.
-        int postId = Integer.parseInt(request.getParameter("postId"));
-        Post post = postService.getPostById(postId);
-        User user = userService.getUser(post.getWriteUser_Id());
-        List<Object> list = new ArrayList<Object>();
-        list.add(post);
-        list.add(user);
-        
-        // JSON 형태로 변환하여 응답합니다.
-        ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json");
-        mapper.writeValue(response.getWriter(), list);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int postId = Integer.parseInt(req.getParameter("post_Id"));
+		Post post = postService.getPostById(postId);
+		User user = userService.getUser(post.getWriteUser_Id());
+		List<Object> list = new ArrayList<Object>();
+		list.add(post);
+		list.add(user);
+
+		// JSON 형태로 변환하여 응답합니다.
+		ObjectMapper mapper = new ObjectMapper();
+		resp.setContentType("application/json");
+		mapper.writeValue(resp.getWriter(), list);
+	}
+	
 }
