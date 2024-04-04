@@ -23,7 +23,6 @@
 			<li><a href="user?action=update">회원 정보 수정</a></li>
 			<li><a href="user?action=delete">회원 탈퇴</a></li>
 			<li><a href="/logout">로그아웃</a></li>
-			<li><a href="/ChatingServer">ㅇㅇ</a></li>
 		</ul>
 	</c:if>
 	${ user }
@@ -34,8 +33,6 @@
 	</h2>
 	<hr>
 		<a href="/post/list">게시글 목록</a>
-
-
 	<br>
 </body>
 </html>
