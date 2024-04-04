@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +16,8 @@
 </style>
 </head>
 <body>
+<%@ include file="navigation.jsp" %>
+
 	<h3>회원가입 폼</h3>
 	<form id="userForm" method="post">
 		<!-- <input type="hidden" name="action" value="register">  -->

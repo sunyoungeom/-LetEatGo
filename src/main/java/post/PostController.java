@@ -16,7 +16,7 @@ public class PostController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	// GET 요청을 처리합니다.
-            request.getRequestDispatcher("/WEB-INF/post/postlist.html").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/post/postlist.jsp").forward(request, response);
     }
 
     @Override
