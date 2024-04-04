@@ -82,23 +82,16 @@ function submitForm() {
         },
         body: json
     })
-   .then(response => {
-    if (response.ok) {
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('서버 응답 오류');
+        }
         alert("회원가입이 완료되었습니다.");
-    } else {
-    	 response.json().then(data => {
-             // 오류 메시지를 받아서 출력
-             var errorMessage = "";
-             for (var key in data) {
-                 errorMessage += data[key] + "\n";
-             }
-             alert(errorMessage);
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('오류: ' + error.message);
-        });
-    }
-})
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('오류: 회원가입 요청에 실패했습니다.');
+    });
 }
 
 function goPopup(){

@@ -42,24 +42,25 @@ public class UserController extends HttpServlet {
         if ("checkDuplicate".equals(action)) {
             String field = request.getParameter("field");
             String value = request.getParameter("value");
-            User isDuplicate = null;
+            boolean isDuplicate = false;
             
             // 필드와 값에 따라 중복 검사를 수행하는 로직을 추가하세요.
             // 예를 들어, 아이디 중복 검사라면:
             if ("id".equals(field)) {
-                isDuplicate = service.getIdById(value);
+                isDuplicate = service.getIdById(value) != null;
             }
             
             // 결과를 JSON 형태로 클라이언트에 전달
-            Map<String, Object> result = new HashMap<>();
-            result.put("result", isDuplicate);
+//            Map<String, Object> result = new HashMap<>();
+//            result.put("result", isDuplicate);
+            Map<String, Object> result = Map.of("result", isDuplicate);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             System.out.println(result.toString());
             objectMapper.writeValue(response.getWriter(), result);
         }
 
-        if (action != null) {
+//        if (action != null) {
             try {
             	 // 전송된 데이터 확인
                 String body = ServletUtil.readBody(request);
@@ -75,7 +76,6 @@ public class UserController extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
-
                     objectMapper.writeValue(response.getWriter(), errors);
                     System.out.println("유효성 오류: " + errors);
                     return;
@@ -91,12 +91,12 @@ public class UserController extends HttpServlet {
                 // 예외 처리
                 e.printStackTrace();
             }
-        } else if ("update".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/user/userUpdate.jsp").forward(request, response);
-        } else if ("delete".equals(action)) {
-            request.getRequestDispatcher("/WEB-INF/user/userDelete.jsp").forward(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath());
-        }
+//        } else if ("update".equals(action)) {
+//            request.getRequestDispatcher("/WEB-INF/user/userUpdate.jsp").forward(request, response);
+//        } else if ("delete".equals(action)) {
+//            request.getRequestDispatcher("/WEB-INF/user/userDelete.jsp").forward(request, response);
+//        } else {
+//            response.sendRedirect(request.getContextPath());
+//        }
     }
 }
