@@ -30,6 +30,8 @@
 	<h2>
 		<a href="map?action=map">주변 음식점 찾기</a>
 	</h2>
+	<hr>
+		<a href="/post/list">게시글 목록</a>
 
 
 	<br>
