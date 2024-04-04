@@ -82,9 +82,16 @@ function submitForm() {
         },
         body: json
     })
-   .then(response => {
-    if (response.ok) {
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('서버 응답 오류');
+        }
         alert("회원가입이 완료되었습니다.");
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('오류: 회원가입 요청에 실패했습니다.');
+    });
        /*  window.location.href = '/userJoinResult.jsp'; */
         window.location.href = '/join/end';
     } else {
