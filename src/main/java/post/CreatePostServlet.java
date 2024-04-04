@@ -16,15 +16,31 @@ public class CreatePostServlet extends HttpServlet {
     	int writeuser_id = Integer.parseInt(request.getParameter("writeuser_id"));
         String title = request.getParameter("title");
     	String content = request.getParameter("content");
-    	String  expireDate = request.getParameter("expireDate");
-    	LocalDate resistdate = LocalDate.now();
+    	//Date expireDate = request.getParameter("expireDate");
+    	LocalDate resistDate = LocalDate.now();
     	
-        // 게시물 객체 생성
-        Post post = new Post();
-      //  post.setContent(Integer.parseInt(request.getParameter("writeuser_id")));
-        post.setContent(title);
-        post.setContent(expireDate);
-        post.setContent(content);
+    	String budget = request.getParameter("budget");
+    	String booze = request.getParameter("booze");
+    	String age = request.getParameter("age");
+    	String gender = request.getParameter("gender");
+    	String peopleLimit = request.getParameter("peopleLimit");
+    	
+    	// 게시물 객체 생성
+    	Post post = new Post();
+    	post.setWriteUser_Id(writeuser_id);
+    	post.setTitle(title);
+    	//post.setExpireDate(expireDate);
+    	post.setContent(content);
+    	
+        
+        PostTag postTag = new PostTag();
+        postTag.setBudget(budget);
+     //   postTag.setBooze(booze);
+        postTag.setAge(age);
+        postTag.setGender(gender);
+        postTag.setPeopleLimit(peopleLimit);
+        
+        
         
         // PostService 객체 생성
         PostService postService = new PostService();
