@@ -6,15 +6,15 @@
 <meta charset="UTF-8">
 <title>채팅창 구현</title>
 <script>
-	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?chatId=${ param.chatId }");
+	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?nickname=${ param.nickname }");
 	
-	var chatWindow, chatMessage, chatId;
+	var chatWindow, chatMessage, nickname;
 	
 	// 채팅창이 열리면 대화창, 메시지 입력창, 대화명 표시란으로 사용할 DOM 객체 저장
 	window.onload = function() {
 		chatWindow = document.getElementById("chatWindow");
 		chatMessage = document.getElementById("chatMessage");
-		chatId = document.getElementById('chatId').value;
+		nickname = document.getElementById('nickname').value;
 	}
 
 	// 메시지 전송
@@ -100,17 +100,18 @@
 
 </script>
 <style>
-#chatWindow{border:1px solid black;
-			width:270px;
+#chatWindow{border:none;
+			width:380px;
 			height:310px;
 			overflow:scroll;
 			padding:5px;}
 #chatMessage{wid:236px;
 			 height:30px}
-#sendBtn{height:30px; 
-		 postion:relative; 
-		 top:2px; 
-		 left:-2px;}
+#sendBtn {
+    height: 30px; 
+    position: relative; 
+    top: 2px; 
+    right: -10px;}
 #closeBtn{margin-bottom: 30px; 
 		  position: relative;  
 		  top: 2px; 
@@ -133,7 +134,7 @@
 </style>
 </head>
 <body>
-	<label id="라벨">대화명</label> : <input type="text" id="chatId" value="${ param.chatId }" readonly />
+	<label id="라벨">닉네임</label> : <input type="text" id="chatId" value="${ param.chatId }" readonly />
 	<button id="closeBtn" onclick="disconnect();">채팅 종료</button>
 	<div id="chatWindow"></div>
 	<div>

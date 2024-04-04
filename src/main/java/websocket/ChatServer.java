@@ -15,7 +15,7 @@ import javax.websocket.server.ServerEndpoint;
 
 
 
-@ServerEndpoint("/ChatingServer")
+@ServerEndpoint("/ChatingServer")	
 public class ChatServer {
 	private static Set<Session> clients 
 		= Collections.synchronizedSet(new HashSet<Session>());
@@ -75,4 +75,6 @@ public class ChatServer {
 		System.out.println("에러 발생");
 		e.printStackTrace();
 	}
+	
+	
 }
