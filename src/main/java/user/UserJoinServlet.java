@@ -31,12 +31,12 @@ public class UserJoinServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        
 //     // 중복 확인 요청 처리
         if ("checkDuplicate".equals(action)) {
             String field = request.getParameter("field");
             String value = request.getParameter("value");
             User isDuplicate = null;
+           System.out.println(field);
             
            switch(field) {
            case "id":
