@@ -28,7 +28,7 @@
 
 	<hr>
 	<h2>
-		<a href="map?action=map">주변 음식점 찾기</a>
+		<a href="/map">주변 음식점 찾기</a>
 	</h2>
 
 
