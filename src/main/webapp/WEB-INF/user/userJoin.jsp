@@ -75,7 +75,7 @@ function submitForm() {
     
     var json = JSON.stringify(jsonObject);
 
-    fetch('user?action=register', {
+    fetch('/join/begin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=UTF-8'
@@ -85,6 +85,8 @@ function submitForm() {
    .then(response => {
     if (response.ok) {
         alert("회원가입이 완료되었습니다.");
+       /*  window.location.href = '/userJoinResult.jsp'; */
+        window.location.href = '/join/end';
     } else {
     	 response.json().then(data => {
              // 오류 메시지를 받아서 출력
