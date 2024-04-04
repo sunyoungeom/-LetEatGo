@@ -81,4 +81,20 @@ public class UserService {
 			return userMapper.getUserAddress(id);
 		}
 	}
+
+	public User getUserById(String id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getUserById(id);
+		}
+	}
+	public void checkAttendance(String id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.checkAttendance(id);
+			 sqlSession.commit(); // 변경사항 커밋
+	    } catch (Exception e) {
+	        e.printStackTrace();
+		}
+	}
 }
