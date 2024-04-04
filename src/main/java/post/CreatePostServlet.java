@@ -5,18 +5,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 
-@WebServlet("/createPost")
+@WebServlet({"/createPost","/map/search/createpost"})
 public class CreatePostServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 클라이언트로부터 요청받은 게시물 내용 가져오기
-        String content = request.getParameter("content");
-        
+    	int writeuser_id = Integer.parseInt(request.getParameter("writeuser_id"));
+        String title = request.getParameter("title");
+    	String content = request.getParameter("content");
+    	String  expireDate = request.getParameter("expireDate");
+    	LocalDate resistdate = LocalDate.now();
+    	
         // 게시물 객체 생성
         Post post = new Post();
+      //  post.setContent(Integer.parseInt(request.getParameter("writeuser_id")));
+        post.setContent(title);
+        post.setContent(expireDate);
         post.setContent(content);
-
+        
         // PostService 객체 생성
         PostService postService = new PostService();
 
