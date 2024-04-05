@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,37 +13,37 @@
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="../Resources/css/styles.css" rel="stylesheet" />
 <style>
-    /* 페이지네이션의 색상을 회색으로 변경 */
-    .page-link {
-        color: #6c757d; /* 페이지 번호의 색상 */
-        border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
-    }
+/* 페이지네이션의 색상을 회색으로 변경 */
+.page-link {
+	color: #6c757d; /* 페이지 번호의 색상 */
+	border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
+}
 
-    .page-link:hover {
-        color: black; /* 페이지 번호의 호버 색상 */
-        text-decoration: none; /* 링크에 밑줄 제거 */
-        background-color: #e9ecef; /* 페이지 번호의 호버 배경색 */
-        border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
-    }
+.page-link:hover {
+	color: black; /* 페이지 번호의 호버 색상 */
+	text-decoration: none; /* 링크에 밑줄 제거 */
+	background-color: #e9ecef; /* 페이지 번호의 호버 배경색 */
+	border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
+}
 
-    .page-item.active .page-link {
-        z-index: 1;
-        color: black; /* 활성 페이지 번호의 색상 */
-        background-color: #6c757d; /* 활성 페이지 번호의 배경색 */
-        border-color: black; /* 활성 페이지 번호의 테두리 색상 */
-    }
+.page-item.active .page-link {
+	z-index: 1;
+	color: black; /* 활성 페이지 번호의 색상 */
+	background-color: #6c757d; /* 활성 페이지 번호의 배경색 */
+	border-color: black; /* 활성 페이지 번호의 테두리 색상 */
+}
 
-    .page-item.disabled .page-link {
-        color: #6c757d; /* 비활성 페이지 번호의 색상 */
-        pointer-events: none; /* 비활성 페이지 번호 클릭 방지 */
-        background-color: #f8f9fa; /* 비활성 페이지 번호의 배경색 */
-        border-color: #dee2e6; /* 비활성 페이지 번호의 테두리 색상 */
-    }
+.page-item.disabled .page-link {
+	color: #6c757d; /* 비활성 페이지 번호의 색상 */
+	pointer-events: none; /* 비활성 페이지 번호 클릭 방지 */
+	background-color: #f8f9fa; /* 비활성 페이지 번호의 배경색 */
+	border-color: #dee2e6; /* 비활성 페이지 번호의 테두리 색상 */
+}
 </style>
 </head>
 <body>
 <body>
-<%@ include file="../user/navigation.jsp" %>
+	<%@ include file="../user/navigation.jsp"%>
 
 	<main class="flex-shrink-0">
 		<div class="container">
@@ -96,7 +96,6 @@ const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
 let currentPage = 1; // 초기 페이지는 1로 설정
 const itemsPerPage = 2; // 페이지당 아이템 수
-const apiURL = `http://localhost:8080/post/list?page=${currentPage}&pagePer=${itemsPerPage}`;
 
 // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
 loadPosts(currentPage);
@@ -108,30 +107,38 @@ function loadPosts(page) {
     .then((resp) => resp.json())
     .then((data) => {
         // 게시물 테이블 초기화
-/*         postTable.innerHTML = "<tr><th scope=\"col\">ID</th><th scope=\"col\">내용</th></tr>";
- */      
+        postTable.innerHTML = `
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">내용</th>
+                    <th scope="col">작성일</th>
+                </tr>
+            </thead>
+        `;
+      
         // 게시물 테이블에 데이터 추가
         data.items.forEach((element) => {
-            let tr = document.createElement("tr");
+            let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");
             let tdContent = document.createElement("td");
             tdId.innerText = `${element.post_Id}`;
             tdContent.innerText = `${element.content}`;
             
             // 클릭 이벤트 추가하여 상세 페이지로 이동
-            tr.addEventListener("click", () => {
+            contenttr.addEventListener("click", () => {
                 window.location.href = `detail?post_Id=${element.post_Id}`;
             });
             
-            tr.appendChild(tdId);
-            tr.appendChild(tdContent);
-            postTable.appendChild(tr);
+            contenttr.appendChild(tdId);
+            contenttr.appendChild(tdContent);
+            postTable.appendChild(contenttr);
         });
         
         // 페이지네이션 표시
         displayPagination(data.totalPages, page);
     });
-}
+} 
 
 // 페이지네이션을 표시하는 함수
 function displayPagination(totalPages, currentPage) {
