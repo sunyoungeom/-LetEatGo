@@ -20,7 +20,7 @@
         // 서블릿 엔드포인트를 호출하여 JSON 데이터를 가져옵니다.
 	function chatWinOpen() {
 		var nickname = document.getElementById("nickname").value; // 사용자의 닉네임 가져오기
-		var post_id = document.getElementById("post_id").textContent; // 게시물 ID 가져오기
+		const post_Id = urlParams.get('post_Id'); // 게시물 ID 가져오기
         console.log(post_id);
         var url = "ChatWindow?nickname=" + nickname + "&post_id=" + post_id; // URL에 닉네임과 게시물 ID 추가
         window.open(url, "", "width=400, height=450"); // 채팅 창 열기
