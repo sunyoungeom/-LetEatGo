@@ -9,11 +9,13 @@
 <title>메인</title>
 </head>
 <body>
-	<h2>회원관리</h2>
-	<c:if test="${empty user}">
+<%@ include file="WEB-INF/user/navigation.jsp" %>
+
+<!-- 	<h2>회원관리</h2>
+ -->	<c:if test="${empty user}">
 		<ul>
-			<li><a href="/join/begin">회원가입(찐)</a></li>
-			<li><a href="/login">로그인</a></li>
+			<!-- <li><a href="/join/begin">회원가입(찐)</a></li>
+			<li><a href="/login">로그인</a></li> -->
 			
 		</ul>
 	</c:if>

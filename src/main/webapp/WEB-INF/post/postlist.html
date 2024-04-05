@@ -22,13 +22,24 @@ const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
 let currentPage = 1; // 초기 페이지는 1로 설정
 const itemsPerPage = 2; // 페이지당 아이템 수
-const apiURL = `http://localhost:8080/post/list?page=${currentPage}&pagePer=${itemsPerPage}`;
 
 // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
 loadPosts(currentPage);
 
 function loadPosts(page) {
-    fetch(`http://localhost:8080/post/list?page=${page}&pagePer=${itemsPerPage}`, {
+/* 	//var data = {'currentPage': '1'};
+    fetch('http://localhost:8080/post/list?page=' + [page] + '&pagePer=' + itemsPerPage
+    	,{
+        method: 'POST',
+        headers: {
+        	'Content-Type':'application/json'
+        },
+      //  body: JSON.stringify(data)
+    })
+    .then((resp) => resp.json())
+    .then((data) => { */
+    fetch(`http://localhost:8080/post/list?page=${page}&pagePer=${itemsPerPage}`
+    	,{
         method: 'POST'
     })
     .then((resp) => resp.json())
