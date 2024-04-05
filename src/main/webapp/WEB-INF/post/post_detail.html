@@ -7,7 +7,9 @@
 <body>
 	<h1>게시물 상세 페이지</h1>
 	<div id="postDetail"></div>
-	<input type="button" value="채팅방 참여" onclick="joinChatRoom(postId)">
+	<input type="hidden" id="nickname" value="nickname">
+	<input type="hidden" id="post_id" value="post_id">
+	<input type="button" value="채팅방 참여" onclick="chatWinOpen()">
 	<script>
 	//수정 필요
 	const postDetail = document.getElementById("postDetail");
@@ -16,10 +18,13 @@
 	const apiURL = `http://localhost:8080/post/detail?post_Id=${post_Id}`;
      //?post_Id=${post_Id}
         // 서블릿 엔드포인트를 호출하여 JSON 데이터를 가져옵니다.
-        function joinChatRoom(postId) {
-        	const chatRoomUrl = `WebSocket/MultiChatMain.jsp?postId=${postId}`;
-        	window.location.href = chatRoomUrl;
-        }
+	function chatWinOpen() {
+		var nickname = document.getElementById("nickname").value; // 사용자의 닉네임 가져오기
+		var post_id = document.getElementById("post_id").textContent; // 게시물 ID 가져오기
+        console.log(post_id);
+        var url = "ChatWindow?nickname=" + nickname + "&post_id=" + post_id; // URL에 닉네임과 게시물 ID 추가
+        window.open(url, "", "width=400, height=450"); // 채팅 창 열기
+	}
         
         
         fetch(apiURL,{
@@ -28,10 +33,10 @@
             .then((data) => {
             	// 첫 번째 객체의 'user' 필드에서 'id' 값 가져오기
             	const userId = data[1].id;
-
+				
             	// 두 번째 객체의 'post' 필드에서 'content' 값 가져오기
             	const postContent = data[0].content;
-
+				
             	// HTML에 가져온 값을 추가하기
             	let userIdParagraph = document.createElement("p");
             	userIdParagraph.innerText = `사용자 ID: ${userId}`;

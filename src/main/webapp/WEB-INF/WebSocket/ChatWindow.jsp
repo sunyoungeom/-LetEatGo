@@ -9,12 +9,15 @@
 	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?nickname=${ param.nickname }");
 	
 	var chatWindow, chatMessage, nickname;
+	var postId = "${ post_id }"; // JSP 페이지로부터 전달받은 post_id 값
+	
 	
 	// 채팅창이 열리면 대화창, 메시지 입력창, 대화명 표시란으로 사용할 DOM 객체 저장
 	window.onload = function() {
 		chatWindow = document.getElementById("chatWindow");
 		chatMessage = document.getElementById("chatMessage");
-		nickname = document.getElementById('nickname').value;
+		nickname = document.getElementById("nickname").value;
+		postId = document.getElementById("post_id").textContent; // post_id 값을 HTML의 <span> 요소에 설정
 	}
 
 	// 메시지 전송
@@ -28,14 +31,14 @@
 	        // 대화창에 표시
 	        chatWindow.innerHTML += "<div class='whisper-sent'>나 [귓속말 -> " + receiver + "]: " + whisperContent + "</div>";
 	        // 서버로 메시지 전송
-	        webSocket.send(chatId + ':' + "/w " + receiver + ' ' + whisperContent + ':' + receiver); // 귓속말 대상을 메시지에 포함
+	        webSocket.send(nickname + ':' + "/w " + receiver + ' ' + whisperContent + ':' + receiver); // 귓속말 대상을 메시지에 포함
 	    } else { // 귓속말을 보내지 않는 경우
 	        var senderName = "나"; // 보내는 사람 이름
 	        var messageHtml = "<div class='myMsg'><strong>" + senderName + ": </strong>" + messageContent + "</div>"; // 보내는 사람과 메시지 내용을 포함한 HTML 생성
 	        // 대화창에 표시
 	        chatWindow.innerHTML += messageHtml;
 	        // 서버로 메시지 전송
-	        webSocket.send(chatId + ':' + messageContent);
+	        webSocket.send(nickname + ':' + messageContent);
 	    }
 	    // 메시지 입력창 내용 지우기
 	    chatMessage.value = "";
@@ -86,7 +89,7 @@
 	        var whisperContent = whisperParts.slice(2).join(" "); // 귓속말 내용
 	
 	        // 귓속말 표시
-	        if (receiver === chatId) {
+	        if (receiver === nickname) {
 	            chatWindow.innerHTML += "<div class='whisper-received'>" + sender + " [귓속말]: " + whisperContent + "</div>";
 	        }
 	    } else {
@@ -116,11 +119,12 @@
 		  position: relative;  
 		  top: 2px; 
 		  left: -2px;}
-#chatId{width: 160px; 
+#nickname{width: 100px; 
 		height: 25px; 
-		border: 1px;
-		solid #AAAAAA;
-		background-color: #EEEEEE;}
+		border: 1px;}
+#post_id{width: 100px;
+		height: 25px;
+		border: 1px;}
 .myMsg{text-align:right;}
 #라벨 {
 	background-color: red;
@@ -132,9 +136,12 @@
     color: blue; /* 보낸 귓속말의 색상 */
 }
 </style>
+
 </head>
 <body>
-	<label id="라벨">닉네임</label> : <input type="text" id="chatId" value="${ param.chatId }" readonly />
+	<label id="라벨">닉네임</label> : <input type=	"text" id="nickname" value="${ user.nickname }" readonly />
+	<br>
+	<label id="게시판번호">게시판번호</label> :  <span id="post_id">${ post_id }</span>
 	<button id="closeBtn" onclick="disconnect();">채팅 종료</button>
 	<div id="chatWindow"></div>
 	<div>

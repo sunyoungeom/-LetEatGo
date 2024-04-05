@@ -7,10 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import user.User;
+
 @WebServlet("/ChatingServer")
 public class ChatingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 서블릿이 처리할 로직을 작성합니다.
+//        User user = null;
+//		request.setAttribute("user", user); // user는 사용자 객체
         request.getRequestDispatcher("/WEB-INF/WebSocket/MultiChatMain.jsp").forward(request, response);
     }
 }

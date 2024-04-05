@@ -82,7 +82,6 @@ public class PostService {
 			Post post = postMapper.getPostById(postId);
 			post.setStatus(1);
 			postMapper.updatePost(post);
-
 		}
 	}
 //

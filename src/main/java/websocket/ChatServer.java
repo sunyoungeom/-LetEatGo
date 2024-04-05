@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -13,19 +17,29 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import user.User;
+
 
 
 @ServerEndpoint("/ChatingServer")	
-public class ChatServer {
+public class ChatServer extends HttpServlet {
 	private static Set<Session> clients 
 		= Collections.synchronizedSet(new HashSet<Session>());
+	private User user;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        user = (User) request.getSession().getAttribute("user");
+        request.getRequestDispatcher("/WEB-INF/WebSocket/MultiChatMain.jsp").forward(request, response);
+    }
+	
 	
 	@OnOpen // 클라이언트 접속 시 실행
 	public void onOpen(Session session) {
-//		System.out.println(session.getRequestParameterMap());
 		clients.add(session); // 세션 추가
 		Map<String, Object> userProperties = session.getUserProperties();
-		userProperties.put("chatId", session.getRequestParameterMap().get("chatId"));
+		if (user != null) {
+			userProperties.put("nickname", user.getNickname());
+		}
 		System.out.println("웹소켓 연결:" + session.getId());
 	}
 	
@@ -38,13 +52,13 @@ public class ChatServer {
 	        String whisperContent = parts[2];
 	        synchronized (clients) {
 	            for (Session c : clients) {
-	                String chatId = (String) c.getUserProperties().get("chatId");
-	                System.out.println("수신된 chatId: " + chatId); // 클라이언트의 chatId 콘솔 출력
-	                if (chatId.equals(receiverId)) {
+	                String nickname = (String) c.getUserProperties().get(user.getNickname());
+	                System.out.println("수신된 nickname: " + nickname); // 클라이언트의 chatId 콘솔 출력
+	                if (nickname.equals(receiverId)) {
 	                    // 귓속말을 받을 대상에게 메시지 전송
-	                    c.getBasicRemote().sendText("[귓속말] " + session.getUserProperties().get("chatId") + ": " + whisperContent);
+	                    c.getBasicRemote().sendText("[귓속말] " + session.getUserProperties().get(user.getNickname()) + ": " + whisperContent);
 	                    // 메시지를 보낸 사람에게도 본인이 보낸 메시지로 전송
-	                    session.getBasicRemote().sendText("[귓속말] " + session.getUserProperties().get("chatId") + " -> " + receiverId + ": " + whisperContent);
+	                    session.getBasicRemote().sendText("[귓속말] " + session.getUserProperties().get(user.getNickname()) + " -> " + receiverId + ": " + whisperContent);
 	                    return; // 귓속말을 받을 대상을 찾았으면 더 이상 반복할 필요가 없으므로 종료
 	                }
 	            }
