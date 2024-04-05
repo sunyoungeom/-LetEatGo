@@ -14,6 +14,9 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import db.JDBCProgram;
 import post.Post;
 import post.PostMapper;
+import user.User;
+import user.UserMapper;
+import user.UserService;
 
 public class PostMapperTest {
     public static void main(String[] args) {
@@ -40,29 +43,35 @@ public class PostMapperTest {
 
         // SqlSessionFactory 생성
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
-
-        // SqlSession 생성
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            // PostMapper 인터페이스의 구현체를 가져옴
-            PostMapper postMapper = session.getMapper(PostMapper.class);
-            
-            //게시물 작성
-//            postMapper.createPost(new Post(20, 0, 0, "테스트제목", "테스트 내용 등록123", null, null,0));
-            
-            
-            // 전체 게시물 조회
-            List<Post> allPosts = postMapper.getAllPosts();
-            System.out.println("전체 게시물:");
-            for (Post post : allPosts) {
-                System.out.println(post);
-            }
-//            //삭제
-//            postMapper.deletePost(14);
-            // 커밋
-            session.commit();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
+        	PostMapper postMapper = session.getMapper(PostMapper.class);
+        	int id = postMapper.createPost(new Post(20, 0, 0, "테스트제목", "테스트 내용 등록123", null, null,0)
+        			, new User(1, "test1", "123", null, 0, null, null, null, null, null, null, null, null));
+        	
+        	System.out.println(id);
         }
+        // SqlSession 생성
+//        try (SqlSession session = sqlSessionFactory.openSession()) {
+//            // PostMapper 인터페이스의 구현체를 가져옴
+//            PostMapper postMapper = session.getMapper(PostMapper.class);
+//            
+//            //게시물 작성
+////            postMapper.createPost(new Post(20, 0, 0, "테스트제목", "테스트 내용 등록123", null, null,0));
+//            
+//            
+//            // 전체 게시물 조회
+//            List<Post> allPosts = postMapper.getAllPosts();
+//            System.out.println("전체 게시물:");
+//            for (Post post : allPosts) {
+//                System.out.println(post);
+//            }
+////            //삭제
+////            postMapper.deletePost(14);
+//            // 커밋
+//            session.commit();
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }

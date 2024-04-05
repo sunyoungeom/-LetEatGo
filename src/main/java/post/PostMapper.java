@@ -11,7 +11,7 @@ public interface PostMapper {
 	@Select("SELECT * FROM posts")
     List<Post> getAllPosts();
 	
-	// 특정 게시문 조회
+	// 특정 게시물 조회
     @Select("SELECT * FROM posts WHERE post_id = #{post_Id}")
     Post getPostById(@Param("post_Id") int postId);
     
@@ -20,9 +20,10 @@ public interface PostMapper {
     List<Post> getUserPostList(@Param("writeuser_id") int writeuser_id);
     
     // 게시물 작성
-    @Insert("INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate) " +
+    @Insert(value = "INSERT INTO posts (title,content, writeuser_Id,expiredate, resistdate) " +
             "VALUES (#{post.title}, #{post.content}, #{post.writeuser_id}, #{post.expiredate}, #{post.resistdate})")
-    void createPost(@Param("post")Post post, @Param("user")User user);
+    @SelectKey(keyProperty = "post_id", statement = { "SELECT LAST_INSERT_ID();" }, resultType = Integer.class, before = false)
+    int createPost(@Param("post")Post post, @Param("user")User user);
 
  // 게시물 업데이트
     @Update("UPDATE posts " +
@@ -42,5 +43,8 @@ public interface PostMapper {
     @Select("SELECT COUNT(*) FROM posts WHERE status = 0")
     int countAll();
     
+    @Insert("INSERT INTO post_tag (post_id,budget,booze,age,gender,peolpleLimit)" +
+    		"values (#{post_id},#{budget},#{booze},#{age},#{gender},#{peopleLimit})")
+    void createPostTag(@Param("post_Id") int postId,@Param("post_tag")PostTag PostTag);
 }
     

@@ -1,74 +1,118 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>게시물 작성</title>
-<style>
-  .dialog {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>게시물 작성</title>
+    <style>
+      .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>게시물 작성</h1>
+    <form id="postForm" action="/createPost" method="post">
+      <div id="container">
+        <label for="title">제목:</label><br />
+        <input id="title" name="title" /><br /><br />
 
-<h1>게시물 작성</h1>
+        <p>언제 먹을까요?</p>
+        <input type="date" id="expireDate" name="expireDate" /><br /><br />
 
-<div id="container" >
-  <label for="title">제목:</label><br>
-  <input id="title" name="title"><br><br>
+        <label for="content">내용:</label><br />
+        <textarea id="content" name="content" rows="4" cols="50"></textarea>
+        <br />
+        <br />
+        <input type="submit" value="등록" />
 
-  <p>언제 먹을까요?</p>
-  <input type="date" name="expireDate"><br><br>
-  
-  <label for="content">내용:</label><br>
-  <textarea id="content" name="content" rows="4" cols="50"></textarea>
-  <br>
-  <button id="btn">tag</button><br>
-  <br> <input type="submit" value="등록">
-</div>
+        <div id="tagResult"></div>
+        <button id="openTagDialog" type="button">tag</button><br />
+        <dialog id="dialogForm"></dialog>
+      </div>
+    </form>
 
-<dialog id="dialogForm"></dialog>
-<div id="tagResult"></div>
+    <script>
+      const dialogForm = document.getElementById("dialogForm");
+      const openTagDialogBtn = document.getElementById("openTagDialog");
+      const tagResult = document.getElementById("tagResult");
 
+      openTagDialogBtn.addEventListener("click", openTagDialog);
 
-<script>
-	const dialogForm = document.getElementById("dialogForm");
-	const btn = document.getElementById("btn");
-	btn.addEventListener("click", showDialog);
-
-	function showDialog(e){
-		dialogForm.showModal();
-	}
-
-	fetch("http://localhost:8080/tagform.html")
-      .then((resp) => resp.text())
-      .then((inner) => {
-		dialogForm.innerHTML = "";
-        dialogForm.innerHTML = inner;
-      })
-	  .then(() => {
-        fetch("http://localhost:8080/tagform.js")
+      function openTagDialog(e) {
+        fetch("http://localhost:8080/tagform.html")
           .then((resp) => resp.text())
           .then((inner) => {
-            let script = document.createElement("script");
-			script.textContent = "";
-            script.textContent = inner;
-            document.body.appendChild(script);
+            dialogForm.innerHTML = inner;
+            dialogForm.showModal();
+            
+            const closeTagDialogBtn = document.getElementById("closeTagDialog");
+            const confirmTagDialogBtn = document.getElementById("confirmTagDialog");
 
-			
+            closeTagDialogBtn.addEventListener("click", closeTagDialog);
+            confirmTagDialogBtn.addEventListener("click", confirmTagDialog);
           });
-      });
-	
+      }
 
-</script>
+      function closeTagDialog(e) {
+        e.preventDefault();
+        dialogForm.close();
+      }
 
-</body>
+      function confirmTagDialog(e) {
+        e.preventDefault();
+
+        let budget = "";
+        let booze = "";
+        let age = "";
+        let gender = "";
+        let peopleLimit = "";
+
+        // 인당 한도 금액 선택 여부 확인
+        const limitChecked = document.querySelector(
+          'input[name="budget"]:checked'
+        );
+        budget = limitChecked ? limitChecked.value : "선택안함";
+
+        // 음주 유무 선택 여부 확인
+        const drinkChecked = document.querySelector(
+          'input[name="booze"]:checked'
+        );
+        booze = drinkChecked ? drinkChecked.value : "선택안함";
+
+        // 나이 선택 여부 확인
+        const ageChecked = document.querySelector('input[name="age"]:checked');
+        age = ageChecked ? ageChecked.value : "선택안함";
+
+        // 성별 선택 여부 확인
+        const genderChecked = document.querySelector(
+          'input[name="gender"]:checked'
+        );
+        gender = genderChecked ? genderChecked.value : "선택안함";
+
+        // 인원수 선택 여부 확인
+        const peopleLimitChecked = document.querySelector(
+          'input[name="peopleLimit"]:checked'
+        );
+        peopleLimit = peopleLimitChecked
+          ? peopleLimitChecked.value
+          : "선택안함";
+
+        // 결과를 tagResult 영역에 출력합니다.
+        tagResult.innerHTML = `<p>인당 한도 금액: ${budget}</p>
+                           <p>음주 유무: ${booze}</p>
+                           <p>나이: ${age}</p>
+                           <p>성별: ${gender}</p>
+                           <p>인원수: ${peopleLimit}</p>`;
+        dialogForm.close();
+      }
+    </script>
+  </body>
 </html>
