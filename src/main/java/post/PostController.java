@@ -25,8 +25,14 @@ public class PostController extends HttpServlet {
 			throws ServletException, IOException {
 		// POST 요청을 처리합니다.
 		// 새로운 게시물 생성 등의 작업을 수행할 수 있습니다.
-		int page = Integer.parseInt(request.getParameter("page"));
-		int pagePer = Integer.parseInt(request.getParameter("pagePer"));
+//		int page = Integer.parseInt(request.getParameter("page"));
+//		int pagePer = Integer.parseInt(request.getParameter("pagePer"));
+		int page = request.getParameter("page") != null && !request.getParameter("page").isEmpty()
+				? Integer.parseInt(request.getParameter("page"))
+				: 1;
+		int pagePer = request.getParameter("pagePer") != null && !request.getParameter("pagePer").isEmpty()
+				? Integer.parseInt(request.getParameter("pagePer"))
+				: 1;
 		PostDTO posts = postService.getPostPage(page, pagePer);
 		// JSON 형태로 변환하여 응답합니다.
 		ObjectMapper mapper = new ObjectMapper();
