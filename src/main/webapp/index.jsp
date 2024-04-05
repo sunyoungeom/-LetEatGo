@@ -28,6 +28,7 @@
 </head>
 <body class="d-flex flex-column h-100 bg-light">
 	<%@ include file="WEB-INF/user/navigation.jsp"%>
+	
 
 	<main class="flex-shrink-0">
 		<!-- Projects Section-->
