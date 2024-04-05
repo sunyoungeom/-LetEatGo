@@ -23,7 +23,11 @@
 
 <div id="container" >
   <label for="title">제목:</label><br>
-  <input id="title" name="content"><br><br>
+  <input id="title" name="title"><br><br>
+
+  <p>언제 먹을까요?</p>
+  <input type="date" name="expireDate"><br><br>
+  
   <label for="content">내용:</label><br>
   <textarea id="content" name="content" rows="4" cols="50"></textarea>
   <br>
@@ -32,13 +36,12 @@
 </div>
 
 <dialog id="dialogForm"></dialog>
-<div id="tagresult"></div>
+<div id="tagResult"></div>
 
 
 <script>
 	const dialogForm = document.getElementById("dialogForm");
 	const btn = document.getElementById("btn");
-	const tagresult = document.getElementById("tagresult");
 	btn.addEventListener("click", showDialog);
 
 	function showDialog(e){
@@ -48,19 +51,22 @@
 	fetch("http://localhost:8080/tagform.html")
       .then((resp) => resp.text())
       .then((inner) => {
+		dialogForm.innerHTML = "";
         dialogForm.innerHTML = inner;
       })
+	  .then(() => {
+        fetch("http://localhost:8080/tagform.js")
+          .then((resp) => resp.text())
+          .then((inner) => {
+            let script = document.createElement("script");
+			script.textContent = "";
+            script.textContent = inner;
+            document.body.appendChild(script);
 
-	const tagform = document.getElementById("tagfrom");
-	tagform.addEventListener("submit", process);
-
-	function process(e) {
-    e.preventDefault();
-		tagresult.innerText ="";
-		
-
-	}
-
+			
+          });
+      });
+	
 
 </script>
 
