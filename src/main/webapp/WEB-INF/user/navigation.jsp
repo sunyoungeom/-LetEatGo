@@ -40,15 +40,15 @@
                     User user = (User) session.getAttribute("user"); // 세션 파라미터 "user" 가져오기
                     if (user != null) { // 세션 파라미터 "user"가 존재하는 경우
                 %>
-                    <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">음식메뉴</a></li>
-                    <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">사람메뉴</a></li>
-                    <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">후기</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/menu" style="font-size: 1.1rem;">음식메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/person" style="font-size: 1.1rem;">사람메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/post/list" style="font-size: 1.1rem;">후기</a></li>
                     <li class="nav-item"><a class="nav-link me-3" href="/logout" style="font-size: 1.1rem;">로그아웃</a></li>
                     <li class="nav-item"><a class="btn btn-dark btn-lg rounded-pill" href="/myinfo" style="font-size: 1.1rem;">내정보</a></li>
                 <% } else { // 세션 파라미터 "user"가 존재하지 않는 경우 %>
-                    <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">음식메뉴</a></li>
-                    <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">사람메뉴</a></li>
-                    <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">후기</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/menu" style="font-size: 1.1rem;">음식메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/person" style="font-size: 1.1rem;">사람메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/post/list" style="font-size: 1.1rem;">후기</a></li>
                     <li class="nav-item"><a class="nav-link me-3" href="/login" style="font-size: 1.1rem;">로그인</a></li>
                     <li class="nav-item"><a class="btn btn-dark btn-lg rounded-pill" href="/join/begin" style="font-size: 1.1rem;">회원가입</a></li>
                 <% } %>
