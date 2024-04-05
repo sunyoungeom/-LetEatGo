@@ -13,37 +13,36 @@
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="../Resources/css/styles.css" rel="stylesheet" />
 <style>
-    /* 페이지네이션의 색상을 회색으로 변경 */
-    .page-link {
-        color: #6c757d; /* 페이지 번호의 색상 */
-        border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
-    }
+/* 페이지네이션의 색상을 회색으로 변경 */
+.page-link {
+	color: #6c757d; /* 페이지 번호의 색상 */
+	border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
+}
 
-    .page-link:hover {
-        color: black; /* 페이지 번호의 호버 색상 */
-        text-decoration: none; /* 링크에 밑줄 제거 */
-        background-color: #e9ecef; /* 페이지 번호의 호버 배경색 */
-        border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
-    }
+.page-link:hover {
+	color: black; /* 페이지 번호의 호버 색상 */
+	text-decoration: none; /* 링크에 밑줄 제거 */
+	background-color: #e9ecef; /* 페이지 번호의 호버 배경색 */
+	border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
+}
 
-    .page-item.active .page-link {
-        z-index: 1;
-        color: black; /* 활성 페이지 번호의 색상 */
-        background-color: #6c757d; /* 활성 페이지 번호의 배경색 */
-        border-color: black; /* 활성 페이지 번호의 테두리 색상 */
-    }
+.page-item.active .page-link {
+	z-index: 1;
+	color: black; /* 활성 페이지 번호의 색상 */
+	background-color: #6c757d; /* 활성 페이지 번호의 배경색 */
+	border-color: black; /* 활성 페이지 번호의 테두리 색상 */
+}
 
-    .page-item.disabled .page-link {
-        color: #6c757d; /* 비활성 페이지 번호의 색상 */
-        pointer-events: none; /* 비활성 페이지 번호 클릭 방지 */
-        background-color: #f8f9fa; /* 비활성 페이지 번호의 배경색 */
-        border-color: #dee2e6; /* 비활성 페이지 번호의 테두리 색상 */
-    }
+.page-item.disabled .page-link {
+	color: #6c757d; /* 비활성 페이지 번호의 색상 */
+	pointer-events: none; /* 비활성 페이지 번호 클릭 방지 */
+	background-color: #f8f9fa; /* 비활성 페이지 번호의 배경색 */
+	border-color: #dee2e6; /* 비활성 페이지 번호의 테두리 색상 */
+}
 </style>
 </head>
 <body>
-<body>
-<%@ include file="../user/navigation.jsp" %>
+	<%@ include file="../user/navigation.jsp"%>
 
 	<main class="flex-shrink-0">
 		<div class="container">
@@ -90,7 +89,6 @@
 		</div>
 	</main>
 </body>
-</body>
 <script>
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
@@ -108,8 +106,8 @@ function loadPosts(page) {
     .then((resp) => resp.json())
     .then((data) => {
         // 게시물 테이블 초기화
-/*         postTable.innerHTML = "<tr><th scope=\"col\">ID</th><th scope=\"col\">내용</th></tr>";
- */      
+        postTable.innerHTML = "<tr><th>ID</th><th>내용</th></tr>";
+       
         // 게시물 테이블에 데이터 추가
         data.items.forEach((element) => {
             let tr = document.createElement("tr");

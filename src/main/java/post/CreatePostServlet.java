@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
-@WebServlet({"/createPost","/map/search/createpost"})
+@WebServlet({"/createPost"
+//	,"/map/search/createpost"
+	})
 public class CreatePostServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
