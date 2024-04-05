@@ -39,6 +39,14 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE user_id = #{user_id}")
     User getUser(@Param("user_id") int user_id);
     
+    // 혈액형값으로 유저 찾기
+    @Select("SELECT * FROM users WHERE bloodtype = #{bloodtype}")
+    User getBloodUser(@Param("bloodtype") String bloodtype);
+    
+    // MBTI값으로 유저 찾기
+    @Select("SELECT * FROM users WHERE mbti = #{mbti}")
+    User getMBTIUser(@Param("mbti") String mbti);
+    
     @Select("SELECT * FROM users WHERE id = #{id}")
     User getUserById(@Param("id") String id);
     

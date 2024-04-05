@@ -10,6 +10,8 @@ import listener.MyWebContextListener;
 import user.User;
 
 public class PostService {
+	
+	
 	// 전체 게시물 조회 메서드
 	public List<Post> getAllPosts() {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -85,12 +87,12 @@ public class PostService {
 
 		}
 	}
-//
-//	public int countAll() {
-//		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-//			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
-//
-//			return postMapper.countAll(); 
-//		}
-//	}
+
+	// 특정 유저가 작성한 게시글
+	public List<Post> getUserPostList(int writeuser_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+			return postMapper.getUserPostList(writeuser_id);
+		}
+	}
 }

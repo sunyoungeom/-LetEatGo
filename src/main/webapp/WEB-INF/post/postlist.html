@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시물 목록</title>
+</head>
+<body>
+
+	<h1>게시물 목록</h1>
+	<table border="1" id="postTable">
+		<tr>
+			<th>ID</th>
+			<th>내용</th>
+		</tr>
+	</table>
+
+
+	<div id="pagination"></div>
+</body>
+<script>
+const postTable = document.getElementById("postTable");
+const pagination = document.getElementById("pagination");
+let currentPage = 1; // 초기 페이지는 1로 설정
+const itemsPerPage = 2; // 페이지당 아이템 수
+
+// 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
+loadPosts(currentPage);
+
+function loadPosts(page) {
+/* 	//var data = {'currentPage': '1'};
+    fetch('http://localhost:8080/post/list?page=' + [page] + '&pagePer=' + itemsPerPage
+    	,{
+        method: 'POST',
+        headers: {
+        	'Content-Type':'application/json'
+        },
+      //  body: JSON.stringify(data)
+    })
+    .then((resp) => resp.json())
+    .then((data) => { */
+    fetch(`http://localhost:8080/post/list?page=${page}&pagePer=${itemsPerPage}`
+    	,{
+        method: 'POST'
+    })
+    .then((resp) => resp.json())
+    .then((data) => {
+        // 게시물 테이블 초기화
+        postTable.innerHTML = "<tr><th>ID</th><th>내용</th></tr>";
+        
+        // 게시물 테이블에 데이터 추가
+        data.items.forEach((element) => {
+            let tr = document.createElement("tr");
+            let tdId = document.createElement("td");
+            let tdContent = document.createElement("td");
+            tdId.innerText = `${element.post_Id}`;
+            tdContent.innerText = `${element.content}`;
+            
+            // 클릭 이벤트 추가하여 상세 페이지로 이동
+            tr.addEventListener("click", () => {
+                window.location.href = `detail?post_Id=${element.post_Id}`;
+            });
+            
+            tr.appendChild(tdId);
+            tr.appendChild(tdContent);
+            postTable.appendChild(tr);
+        });
+        
+        // 페이지네이션 표시
+        displayPagination(data.totalPages, page);
+    });
+}
+
+// 페이지네이션을 표시하는 함수
+function displayPagination(totalPages, currentPage) {
+    pagination.innerHTML = ""; // 페이지네이션 초기화
+    
+    for (let i = 1; i <= totalPages; i++) {
+        let pageLink = document.createElement("a");
+       	pageLink.href = "#"; // 클릭 이벤트를 처리하기 위한 임시 링크 설정
+        pageLink.innerText = i;
+
+        // 현재 페이지는 활성 상태로 표시
+        if (i === currentPage) {
+            pageLink.classList.add("active");
+        }
+
+        // 페이지 번호 클릭 이벤트 설정
+        pageLink.addEventListener("click", () => {
+            loadPosts(i); // 해당 페이지의 데이터 로드
+        });
+
+        pagination.appendChild(pageLink);
+    }
+}
+    </script>
+</html>
