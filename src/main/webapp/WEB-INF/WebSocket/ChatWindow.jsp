@@ -1,3 +1,11 @@
+<%@page import="user.UserService"%>
+<%@page import="user.User"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="db.JDBCProgram"%>
+<%@page import="javax.sql.DataSource"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,8 +25,6 @@
 		chatWindow = document.getElementById("chatWindow");
 		chatMessage = document.getElementById("chatMessage");
 		nickname = document.getElementById("nickname").value;
-		
-		postId = document.getElementById("post_Id").textContent; // post_id 값을 HTML의 <span> 요소에 설정
 	}
 
 	// 메시지 전송
@@ -30,12 +36,12 @@
 	        var receiver = whisperMessage[1]; // 귓속말을 받을 대상
 	        var whisperContent = whisperMessage.slice(2).join(" "); // 귓속말 내용
 	        // 대화창에 표시
-	        chatWindow.innerHTML += "<div class='whisper-sent'>나 [귓속말 -> " + receiver + "]: " + whisperContent + "</div>";
+	        chatWindow.innerHTML += "<div class='whisper-sent'>나 [귓속말 -> " + receiver + "]: " + whisperContent + " <span class='time'>" + getCurrentTime() + "</span></div>";
 	        // 서버로 메시지 전송
 	        webSocket.send(nickname + ':' + "/w " + receiver + ' ' + whisperContent + ':' + receiver); // 귓속말 대상을 메시지에 포함
 	    } else { // 귓속말을 보내지 않는 경우
 	        var senderName = "나"; // 보내는 사람 이름
-	        var messageHtml = "<div class='myMsg'><strong>" + senderName + ": </strong>" + messageContent + "</div>"; // 보내는 사람과 메시지 내용을 포함한 HTML 생성
+	        var messageHtml = "<div class='myMsg'><strong>" + senderName + ": </strong>" + messageContent +"<span class='time'>"+ getCurrentTime() + "</span></div>"; // 보내는 사람과 메시지 내용을 포함한 HTML 생성
 	        // 대화창에 표시
 	        chatWindow.innerHTML += messageHtml;
 	        // 서버로 메시지 전송
@@ -45,6 +51,13 @@
 	    chatMessage.value = "";
 	    // 대화창 스크롤
 	    chatWindow.scrollTop = chatWindow.scrollHeight;
+	}
+	
+	function getCurrentTime() {
+		var now = new Date();
+		var hours = now.getHours();
+		var minutes = now.getMinutes();
+		return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
 	}
 
 	// 서버와의 연결 종료
@@ -91,11 +104,11 @@
 	
 	        // 귓속말 표시
 	        if (receiver === nickname) {
-	            chatWindow.innerHTML += "<div class='whisper-received'>" + sender + " [귓속말]: " + whisperContent + "</div>";
+	            chatWindow.innerHTML += "<div class='whisper-received'>" + sender + " [귓속말]: " + whisperContent + " <span class='time'>" + getCurrentTime() + "</span></div>";
 	        }
 	    } else {
 	        // 일반 메시지 표시
-	        chatWindow.innerHTML += "<div class='otherMsg'><strong>" + sender + ": </strong>" + content + "</div>";
+	        chatWindow.innerHTML += "<div class='otherMsg'><strong>" + sender + ": </strong>" + content + " <span class='time'>" + getCurrentTime() + "</span></div>";
 	    }
 	    // 대화창 스크롤
 	    chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -136,6 +149,10 @@
 .whisper-sent {
     color: blue; /* 보낸 귓속말의 색상 */
 }
+.time {
+	color: #888; /* 작은 회색 글씨 색상 */
+	font-size: 12px; /* 작은 글씨 크기 */
+}
 </style>
 
 </head>
@@ -149,5 +166,6 @@
 		<input type="text" id="chatMessage" onkeyup="enterKey();">
 		<button id="sendBtn" onclick="sendMessage();">전송</button>
 	</div>
+	
 </body>
 </html>
