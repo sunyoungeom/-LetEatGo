@@ -9,7 +9,7 @@
 	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?nickname=${ param.nickname }");
 	
 	var chatWindow, chatMessage, nickname;
-	var postId = "${ post_id }"; // JSP 페이지로부터 전달받은 post_id 값
+	var postId = "${ post_Id }"; // JSP 페이지로부터 전달받은 post_id 값
 	
 	
 	// 채팅창이 열리면 대화창, 메시지 입력창, 대화명 표시란으로 사용할 DOM 객체 저장
@@ -17,7 +17,8 @@
 		chatWindow = document.getElementById("chatWindow");
 		chatMessage = document.getElementById("chatMessage");
 		nickname = document.getElementById("nickname").value;
-		postId = document.getElementById("post_id").textContent; // post_id 값을 HTML의 <span> 요소에 설정
+		
+		postId = document.getElementById("post_Id").textContent; // post_id 값을 HTML의 <span> 요소에 설정
 	}
 
 	// 메시지 전송
@@ -141,7 +142,7 @@
 <body>
 	<label id="라벨">닉네임</label> : <input type=	"text" id="nickname" value="${ user.nickname }" readonly />
 	<br>
-	<label id="게시판번호">게시판번호</label> :  <span id="post_id">${ post_id }</span>
+	<label id="게시판번호">게시판번호</label> :  <span id="post_id">${ post_Id }</span>
 	<button id="closeBtn" onclick="disconnect();">채팅 종료</button>
 	<div id="chatWindow"></div>
 	<div>
