@@ -16,9 +16,9 @@ public interface PostMapper {
     Post getPostById(@Param("post_Id") int postId);
 
     // 게시물 작성
-    @Insert("INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate,) " +
-            "VALUES (#{title}, #{content}, #{writeuser_id}, #{expiredate}, #{resistdate})")
-    void createPost(@Param("content")Post post, @Param("writeuser_id")User user);
+    @Insert("INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate) " +
+            "VALUES (#{post.title}, #{post.content}, #{post.writeuser_id}, #{post.expiredate}, #{post.resistdate})")
+    void createPost(@Param("post")Post post, @Param("user")User user);
 
  // 게시물 업데이트
     @Update("UPDATE posts " +

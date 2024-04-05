@@ -13,14 +13,15 @@ public class CreatePostServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 클라이언트로부터 요청받은 게시물 내용 가져오기
-    	int writeuser_id = Integer.parseInt(request.getParameter("writeuser_id"));
+    	int writeuser_id = Integer.parseInt(request.getParameter(""));
         String title = request.getParameter("title");
     	String content = request.getParameter("content");
-    	//Date expireDate = request.getParameter("expireDate");
+    	long timestamp = Long.parseLong(request.getParameter("expireDate"));
+    	Date expireDate = new Date(timestamp);
     	LocalDate resistDate = LocalDate.now();
     	
     	String budget = request.getParameter("budget");
-    	String booze = request.getParameter("booze");
+    	int booze = Integer.parseInt(request.getParameter("booze"));
     	String age = request.getParameter("age");
     	String gender = request.getParameter("gender");
     	String peopleLimit = request.getParameter("peopleLimit");
@@ -29,18 +30,16 @@ public class CreatePostServlet extends HttpServlet {
     	Post post = new Post();
     	post.setWriteUser_Id(writeuser_id);
     	post.setTitle(title);
-    	//post.setExpireDate(expireDate);
+    	post.setExpireDate(expireDate);
     	post.setContent(content);
     	
         
         PostTag postTag = new PostTag();
         postTag.setBudget(budget);
-     //   postTag.setBooze(booze);
+        postTag.setBooze(booze);
         postTag.setAge(age);
         postTag.setGender(gender);
         postTag.setPeopleLimit(peopleLimit);
-        
-        
         
         // PostService 객체 생성
         PostService postService = new PostService();
