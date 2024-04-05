@@ -7,6 +7,7 @@
 <title>아이디 찾기 결과</title>
 </head>
 <body>
+	<%@ include file="navigation.jsp" %>
 	<h3>아이디 찾기 결과</h3>
 	<%
 	String result = (String) request.getAttribute("result");
@@ -22,6 +23,5 @@
 	<%
 	}
 	%>
-	<%@ include file="home.jsp" %>
 </body>
 </html>

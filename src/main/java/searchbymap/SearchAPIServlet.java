@@ -18,7 +18,7 @@ import searchbymap.SearchAPI.SearchResult;
 import user.UserMapper;
 import user.UserService;
 
-@WebServlet(name = "SearchAPIServlet", urlPatterns = { "/map/keyword","/map/search" })
+@WebServlet(name = "SearchAPIServlet", urlPatterns = { "/map/keyword","/map/search","/map/search/createpost","/map/search/createpost/dialog" })
 public class SearchAPIServlet extends HttpServlet {
 
 	@Override
@@ -41,9 +41,29 @@ public class SearchAPIServlet extends HttpServlet {
 
 				// JSON 형식으로 응답
 				mapper.writeValue(resp.getWriter(), list);
-			} else {
+			} else if(requestURI.endsWith("/map/search/createpost")){
+				req.getRequestDispatcher("/WEB-INF/post/createpost.html").forward(req, resp);
+			}else {
+			
 				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
 		
 	}
+//	@Override
+//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		String requestURI = req.getRequestURI();
+//	    if (requestURI.endsWith("/map/search/createpost/dialog")) {
+//	        // 다이얼로그를 열기 위한 HTML 코드를 생성합니다.
+//	        String dialogContent = "<div id='dialog' class='dialog'>"
+//	                              + "<p>다이얼로그 내용</p>"
+//	                              + "<button id='close'>닫기</button>"
+//	                              + "</div>";
+//
+//	        // 생성한 HTML 코드를 클라이언트로 전송합니다.
+//	        resp.setContentType("text/html");
+//	        resp.getWriter().write(dialogContent);
+//	    } else {
+//	        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//	    }
+//	}
 }

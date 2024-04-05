@@ -23,6 +23,7 @@ public class PostDetailServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		// GET 요청을 처리합니다.
 		request.getRequestDispatcher("/WEB-INF/post/post_detail.html").forward(request, response);
 	}

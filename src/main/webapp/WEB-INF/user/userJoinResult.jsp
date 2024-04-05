@@ -7,7 +7,7 @@
 <title>가입완료</title>
 </head>
 <body>
+<%@ include file="navigation.jsp" %>
 <h3> ${ id } 님 가입이 완료되었습니다! </h3>
-<%@ include file="home.jsp" %>
 </body>
 </html>

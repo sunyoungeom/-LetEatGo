@@ -14,11 +14,15 @@ public interface PostMapper {
 	// 특정 게시문 조회
     @Select("SELECT * FROM posts WHERE post_id = #{post_Id}")
     Post getPostById(@Param("post_Id") int postId);
-
+    
+    // 특정 유저가 작성한 게시물 조회
+    @Select("SELECT * FROM posts WHERE writeuser_id = #{writeuser_id}")
+    List<Post> getUserPostList(@Param("writeuser_id") int writeuser_id);
+    
     // 게시물 작성
-    @Insert("INSERT INTO posts (content, writeuser_id) " +
-            "VALUES (#{content}, #{writeuser_id})")
-    void createPost(@Param("content")Post post, @Param("writeuser_id")User user);
+    @Insert("INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate) " +
+            "VALUES (#{post.title}, #{post.content}, #{post.writeuser_id}, #{post.expiredate}, #{post.resistdate})")
+    void createPost(@Param("post")Post post, @Param("user")User user);
 
  // 게시물 업데이트
     @Update("UPDATE posts " +
