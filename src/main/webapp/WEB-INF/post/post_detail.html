@@ -7,8 +7,6 @@
 <body>
 	<h1>게시물 상세 페이지</h1>
 	<div id="postDetail"></div>
-	<input type="hidden" id="nickname" value="nickname">
-	<input type="hidden" id="post_id" value="post_id">
 	<input type="button" value="채팅방 참여" onclick="chatWinOpen()">
 	<script>
 	//수정 필요
@@ -16,6 +14,7 @@
 	var urlParams = new URLSearchParams(window.location.search);
 	var post_Id = urlParams.get('post_Id'); // URL 파라미터에서 post_Id를 가져옵니다.
 	var user_Id = document.getElementById("userId");
+	var user_NickName = urlParam.get('usernickname');
 	console.log(post_Id);
 	console.log(user_Id);
 	const apiURL = `http://localhost:8080/post/detail?post_Id=${post_Id}`;
@@ -26,15 +25,14 @@
     
     function chatWinOpen() {
         const nickname = document.getElementById("nickname").value; // 사용자의 닉네임 가져오기
+        console.log(nickname);
         if (!chatWindow || chatWindow.closed) {
             const url = "ChatWindow?nickname=" + nickname + "&post_Id=" + post_Id; // URL에 닉네임과 게시물 ID 추가
-            chatWindow = window.open(url, "", "width=400, height=450"); // 채팅 창 열기
+            chatWindow = window.open(url, "", "width=400, height=550"); // 채팅 창 열기
         } else {
             chatWindow.focus();
         }	
     }
-
-        
         
         fetch(apiURL,{
             method: 'POST' })
@@ -42,13 +40,13 @@
             .then((data) => {
             	// 첫 번째 객체의 'user' 필드에서 'id' 값 가져오기
             	const userId = data[1].id;
-				
+				console.log(userId);
             	// 두 번째 객체의 'post' 필드에서 'content' 값 가져오기
             	const postContent = data[0].content;
 				
             	// HTML에 가져온 값을 추가하기
             	let userIdParagraph = document.createElement("p");
-            	userIdParagraph.innerText = `사용자 ID: ${userId}`;
+            	userIdParagraph.innerText = `작성자 ID: ${userId}`;
             	postDetail.appendChild(userIdParagraph);
 
             	let postContentParagraph = document.createElement("p");

@@ -4,7 +4,6 @@
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="db.JDBCProgram"%>
 <%@page import="javax.sql.DataSource"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -14,10 +13,11 @@
 <meta charset="UTF-8">
 <title>채팅창 구현</title>
 <script>
-	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?nickname=${ user.nickname }");
+	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?nickname=${ user.nickname }
+									&postId=${ post_Id });
 	
-	var chatWindow, chatMessage, nickname;
 	var postId = "${ post_Id }"; // JSP 페이지로부터 전달받은 post_id 값
+	var chatWindow, chatMessage, nickname;
 	
 	
 	// 채팅창이 열리면 대화창, 메시지 입력창, 대화명 표시란으로 사용할 DOM 객체 저장
