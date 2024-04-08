@@ -20,54 +20,56 @@ import searchbymap.SearchAPI.SearchResult;
 import user.User;
 import user.UserMapper;
 import user.UserService;
+import util.ServletUtil;
 
-@WebServlet(name = "SearchAPIServlet", urlPatterns = { "/map/keyword","/map/search","/map/search/createpost","/map/search/createpost/dialog" })
+@WebServlet(name = "SearchAPIServlet", urlPatterns = { "/map/keyword", "/map/search", "/map/search/createpost",
+      "/map/search/createpost/dialog" })
 public class SearchAPIServlet extends HttpServlet {
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	
-			String requestURI = req.getRequestURI();
-			System.out.println(requestURI);
-			if (requestURI.endsWith("/map/keyword")) {
-				// '/map/keyword' 요청에 대한 처리
-				UserService service = new UserService();
-				resp.getWriter().write(service.getUserAddress(1));
-			} else if (requestURI.endsWith("/map/search")) {
-				// '/map/search' 요청에 대한 처리
-				String keyword = req.getParameter("keyword");
-				List<SearchResult> list = SearchAPI.searchBlogAsJson(keyword);
+   @Override
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      String requestURI = req.getRequestURI();
+    
+         if (requestURI.endsWith("/map/keyword")) {
 
-				// 검색 결과를 JSON 형식으로 변환
-				ObjectMapper mapper = new ObjectMapper();
-				resp.setContentType("application/json");
+            Object attribute = req.getSession().getAttribute("user");
+            User user = (User) attribute;
+            int user_id = user.getUser_id();
+            UserService service = new UserService();
+            String userAddress = service.getUserAddress(user_id);
+            userAddress = userAddress.replaceAll("\\([^\\(]*\\)", "").trim();
+            resp.getWriter().write(userAddress);
 
-				// JSON 형식으로 응답
-				mapper.writeValue(resp.getWriter(), list);
-			} else if(requestURI.endsWith("/map/search/createpost")){
-				req.getRequestDispatcher("/WEB-INF/post/createpost.html").forward(req, resp);
-				
-			}else {
-			
-				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			}
-		
-	}
-//	@Override
-//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		String requestURI = req.getRequestURI();
-//	    if (requestURI.endsWith("/map/search/createpost/dialog")) {
-//	        // 다이얼로그를 열기 위한 HTML 코드를 생성합니다.
-//	        String dialogContent = "<div id='dialog' class='dialog'>"
-//	                              + "<p>다이얼로그 내용</p>"
-//	                              + "<button id='close'>닫기</button>"
-//	                              + "</div>";
+         } else if (requestURI.endsWith("/map/search")) {
+            // '/map/search' 요청에 대한 처리
+            String keyword = req.getParameter("keyword");
+            List<SearchResult> list = SearchAPI.searchBlogAsJson(keyword);
+
+            ServletUtil.sendJsonBody(list, resp);
+
+         } else if (requestURI.endsWith("/map/search/createpost")) {
+            req.getRequestDispatcher("/WEB-INF/post/createpost.html").forward(req, resp);
+
+         } else {
+
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+         }
+      } 
+   }
+//   @Override
+//   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//      String requestURI = req.getRequestURI();
+//       if (requestURI.endsWith("/map/search/createpost/dialog")) {
+//           // 다이얼로그를 열기 위한 HTML 코드를 생성합니다.
+//           String dialogContent = "<div id='dialog' class='dialog'>"
+//                                 + "<p>다이얼로그 내용</p>"
+//                                 + "<button id='close'>닫기</button>"
+//                                 + "</div>";
 //
-//	        // 생성한 HTML 코드를 클라이언트로 전송합니다.
-//	        resp.setContentType("text/html");
-//	        resp.getWriter().write(dialogContent);
-//	    } else {
-//	        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//	    }
-//	}
-}
+//           // 생성한 HTML 코드를 클라이언트로 전송합니다.
+//           resp.setContentType("text/html");
+//           resp.getWriter().write(dialogContent);
+//       } else {
+//           resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//       }
+//   }

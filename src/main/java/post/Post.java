@@ -19,5 +19,6 @@ public class Post {
     private Date resistDate;
     private String expireDate;
     private int status;
+    private String place;
  
 }
