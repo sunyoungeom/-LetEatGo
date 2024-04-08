@@ -34,6 +34,7 @@ public class PostController extends HttpServlet {
 				? Integer.parseInt(request.getParameter("pagePer"))
 				: 1;
 		PostDTO posts = postService.getPostPage(page, pagePer);
+		
 		// JSON 형태로 변환하여 응답합니다.
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println(mapper);
