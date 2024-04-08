@@ -24,9 +24,10 @@ public interface PostMapper {
             "VALUES (#{post.title}, #{post.content}, #{post.writeuser_id}, #{post.expiredate}, #{post.resistdate})")
     void createPost(@Param("post")Post post, @Param("user")User user);
 
- // 게시물 업데이트
+    
+    // 게시물 업데이트
     @Update("UPDATE posts " +
-            "SET content = #{post.content}, " +
+            "SET content = #{post.content}, " + " title = #{post.title}," +
             "resistdate = NOW(), expiredate = #{post.expireDate}, status = #{post.status} " +
             "WHERE post_id = #{post.postId}")
     void updatePost(@Param("post") Post post);

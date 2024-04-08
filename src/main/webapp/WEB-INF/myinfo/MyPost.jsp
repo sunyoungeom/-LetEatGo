@@ -138,6 +138,141 @@
 		</section>
 		<!-- Bootstrap core JS-->
 		<!-- <script src="js/scripts.js"></script><! -->
+		
+		
+		
+		
 	</main>
 </body>
+<script>
+const postTable = document.getElementById("postTable");
+const pagination = document.getElementById("pagination");
+let currentPage = 1; // 초기 페이지는 1로 설정
+const itemsPerPage = 1; // 페이지당 아이템 수
+const tbody = postTable.querySelector("tbody");
+console.log()
+// 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
+loadPosts(currentPage);
+
+function loadPosts(page) {
+    fetch(`http://localhost:8080/post/mypage?page=${page}&pagePer=${itemsPerPage}`, {
+        method: 'POST'
+    })
+    .then((resp) => resp.json())
+    .then((data) => {
+        // 게시물 테이블의 내용을 초기화
+        tbody.innerHTML = "";
+        
+        // 새로운 데이터로 게시물 테이블 채우기
+        data.items.forEach((element) => {
+            let contenttr = document.createElement("tr");
+            let tdId = document.createElement("td");
+            let tdContent = document.createElement("td");
+            let tdresistdate = document.createElement("td");
+            tdId.innerText = `${element.post_Id}`;
+            tdContent.innerText = `${element.content}`;
+            tdresistdate.innerText = `${element.resistdate}`;
+            
+      	   // 각 셀에 스코프 및 스타일 지정
+            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
+            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
+            tdContent.setAttribute("scope", "col");
+            tdContent.style.width = "80%"; // 내용 셀의 너비를 설정합니다.
+            tdresistdate.setAttribute("scope", "col");
+            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
+            
+            tdId.style.textAlign = "center";
+            
+            // 클릭 이벤트 추가하여 상세 페이지로 이동
+            contenttr.addEventListener("click", () => {
+                window.location.href = `detail?post_Id=${element.post_Id}`;
+            });
+            
+            contenttr.appendChild(tdId);
+            contenttr.appendChild(tdContent);
+            contenttr.appendChild(tdresistdate);
+            tbody.appendChild(contenttr);
+        });
+        
+        // 페이지네이션 표시
+        displayPagination(data.totalPages, page);
+    });
+}
+
+// 페이지네이션을 표시하는 함수
+function displayPagination(totalPages, currentPage) {
+	pagination.innerHTML = ""; // 페이지네이션 초기화
+ // 이전 페이지 버튼 추가
+    let previous = document.createElement("li");
+    previous.classList.add("page-item");
+
+    let previousLink = document.createElement("a");
+    previousLink.classList.add("page-link");
+    previousLink.href = "#";
+    previousLink.setAttribute("aria-label", "Previous");
+
+    let previousspan = document.createElement("span");
+    previousspan.setAttribute("aria-hidden", "true");
+    previousspan.innerHTML = "&laquo;"; // 이전 아이콘
+
+    previousLink.appendChild(previousspan);
+    previous.appendChild(previousLink);
+    pagination.appendChild(previous);
+	
+    let pagelist;
+    let pageLink;
+    for (let i = 1; i <= totalPages; i++) {
+        pagelist = document.createElement("li");
+        pagelist.classList.add("page-item");
+        pageLink = document.createElement("a");
+        pageLink.classList.add("page-link");
+       	pageLink.href = "#"; // 클릭 이벤트를 처리하기 위한 임시 링크 설정
+        pageLink.innerText = i;
+       
+        // 페이지 번호 클릭 이벤트 설정
+    	pageLink.addEventListener("click", () => {
+            loadPosts(i); // 해당 페이지의 데이터 로드
+        	    
+        });
+       	
+        pagelist.appendChild(pageLink);
+	
+        pagination.appendChild(pagelist);
+    }
+ // 다음 페이지 버튼 추가
+    let next = document.createElement("li");
+    next.classList.add("page-item");
+
+    let nextLink = document.createElement("a");
+    nextLink.classList.add("page-link");
+    nextLink.href = "#";
+    nextLink.setAttribute("aria-label", "Next");
+
+    let nextSpan = document.createElement("span");
+    nextSpan.setAttribute("aria-hidden", "true");
+    nextSpan.innerHTML = "&raquo;"; // 다음 아이콘
+
+    nextLink.appendChild(nextSpan);
+    next.appendChild(nextLink);
+    pagination.appendChild(next);
+    
+ 
+ // 이전 페이지 버튼 클릭 이벤트 설정
+    previousLink.addEventListener("click", () => {
+        if (currentPage > 1) {
+            loadPosts(currentPage - 1); // 이전 페이지의 데이터 로드
+        }
+    });
+
+    // 다음 페이지 버튼 클릭 이벤트 설정
+    nextLink.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+            loadPosts(currentPage + 1); // 다음 페이지의 데이터 로드
+        }
+    });
+
+
+}
+		
+</script>
 </html>

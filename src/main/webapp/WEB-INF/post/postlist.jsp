@@ -55,7 +55,7 @@
 					<table class="table table-hover table-bordered" id="postTable">
 						<thead class="table-light">
 							<tr>
-								<th scope="col">#</th>
+								<th scope="col" style="text-align: center;">#</th>
 								<th scope="col">내용</th>
 								<th scope="col">작성일</th>
 							</tr>
@@ -117,6 +117,16 @@ function loadPosts(page) {
             tdId.innerText = `${element.post_Id}`;
             tdContent.innerText = `${element.content}`;
             tdresistdate.innerText = `${element.resistdate}`;
+            
+      	   // 각 셀에 스코프 및 스타일 지정
+            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
+            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
+            tdContent.setAttribute("scope", "col");
+            tdContent.style.width = "80%"; // 내용 셀의 너비를 설정합니다.
+            tdresistdate.setAttribute("scope", "col");
+            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
+            
+            tdId.style.textAlign = "center";
             
             // 클릭 이벤트 추가하여 상세 페이지로 이동
             contenttr.addEventListener("click", () => {
