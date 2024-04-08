@@ -25,7 +25,7 @@ public class CreatePostServlet extends HttpServlet {
 		// 클라이언트로부터 요청받은 게시물 내용 가져오기
 		Object attribute = request.getSession().getAttribute("user");
 		User user = (User) attribute;
-		int writeuser_id = user.getUser_id();
+		int writeUser_id = user.getUser_id();
 
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
@@ -40,16 +40,18 @@ public class CreatePostServlet extends HttpServlet {
 		Date resistDate = java.sql.Date.valueOf(resistLocalDate);
 		// 게시물 객체 생성
 		Post post = new Post();
-		post.setWriteUser_Id(writeuser_id);
+		post.setWriteUser_Id(writeUser_id);
 		post.setTitle(title);
 		post.setContent(content);
 		post.setResistDate(resistDate);
 		post.setExpireDate(expireDate);
-
+		
 		// PostService 객체 생성
 		PostService postService = new PostService();
+		
 		int postid = postService.createPost(post, user);
-
+		
+		System.out.println(postid);
 		PostTag postTag = new PostTag();
 		postTag.setPost_Id(postid);
 		postTag.setBudget(budget);
@@ -57,7 +59,7 @@ public class CreatePostServlet extends HttpServlet {
 		postTag.setAge(age);
 		postTag.setGender(gender);
 		postTag.setPeopleLimit(peopleLimit);
-
+		
 		postService.createPostTag(postid, postTag);
 		// 게시물 등록 메서드 호출
 		// TODO: 세션값??에서 로그인되어 있는 유저 가져오기?

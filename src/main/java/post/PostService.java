@@ -30,11 +30,22 @@ public class PostService {
 	}
 
 	// 게시물 작성 메서드
+
 	public int createPost(Post post, User user) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+			postMapper.createPost(post, user);
 
-			return postMapper.createPost(post, user);
+			sqlSession.commit();
+			
+			
+			int lastInsertId = postMapper.lastInsertId();
+			
+			return lastInsertId;
+			
+		} catch (Exception e) {
+			System.out.println("커밋 실패");
+			return 0;
 		}
 	}
 
@@ -100,6 +111,8 @@ public class PostService {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 			postMapper.createPostTag(postId, postTag);
+			
+			sqlSession.commit();
 		}
 	}
 
