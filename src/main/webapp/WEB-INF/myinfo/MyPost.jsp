@@ -155,7 +155,7 @@ const tbody = postTable.querySelector("tbody");
 loadPosts(currentPage);
 
 function loadPosts(page) {
-    fetch(`http://localhost:8080/post/mypage?page=${page}&pagePer=${itemsPerPage}`)
+    fetch(`http://localhost:8080/mypage?page=${page}&pagePer=${itemsPerPage}`)
     .then((resp) => resp.json())
     .then((data) => {
         // 게시물 테이블의 내용을 초기화
@@ -191,8 +191,8 @@ function loadPosts(page) {
     editButton.style.marginRight = "5px";
     editButton.addEventListener("click", () => {
         // 수정 기능 구현
-		fetch(`http://localhost:8080/post/mypage?postId=${element.post_Id}`, {
-            method: 'POST'
+		fetch(`http://localhost:8080/updatePost?postId=${element.post_Id}`, {
+            method: 'PUT'
         })        
         
         
@@ -205,7 +205,7 @@ function loadPosts(page) {
     deleteButton.innerText = "삭제";
     deleteButton.addEventListener("click", () => {
         // 삭제 기능 구현
-        fetch(`http://localhost:8080/post/mypage?postId=${element.post_Id}`, {
+        fetch(`http://localhost:8080/deletePost?postId=${element.post_Id}`, {
             method: 'DELETE'
         })
         .then((response) => {
