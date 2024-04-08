@@ -1,6 +1,8 @@
 package post;
 import java.util.Date;
 
+import com.google.protobuf.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,7 @@ public class Post {
     private String title;
     private String content;
     private Date resistDate;
-    private Date expireDate;
+    private String expireDate;
     private int status;
  
 }

@@ -10,8 +10,7 @@ import listener.MyWebContextListener;
 import user.User;
 
 public class PostService {
-	
-	
+
 	// 전체 게시물 조회 메서드
 	public List<Post> getAllPosts() {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -31,10 +30,22 @@ public class PostService {
 	}
 
 	// 게시물 작성 메서드
-	public void createPost(Post post, User user) {
+
+	public int createPost(Post post, User user) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 			postMapper.createPost(post, user);
+
+			sqlSession.commit();
+			
+			
+			int lastInsertId = postMapper.lastInsertId();
+			
+			return lastInsertId;
+			
+		} catch (Exception e) {
+			System.out.println("커밋 실패");
+			return 0;
 		}
 	}
 
@@ -51,6 +62,7 @@ public class PostService {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 			postMapper.deletePost(postId);
+			sqlSession.commit();
 		}
 	}
 
@@ -84,7 +96,6 @@ public class PostService {
 			Post post = postMapper.getPostById(postId);
 			post.setStatus(1);
 			postMapper.updatePost(post);
-
 		}
 	}
 
@@ -95,4 +106,14 @@ public class PostService {
 			return postMapper.getUserPostList(writeuser_id);
 		}
 	}
+
+	public void createPostTag(int postId, PostTag postTag) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+			postMapper.createPostTag(postId, postTag);
+			
+			sqlSession.commit();
+		}
+	}
+
 }

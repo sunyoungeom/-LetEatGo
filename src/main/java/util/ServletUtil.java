@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -35,10 +36,12 @@ public class ServletUtil {
 		return sb.toString();
 	}
 	
-	public static void sendJsonBody(String json, HttpServletResponse resp) throws IOException {
-		resp.setContentType("application/json; charset=utf-8");
-		PrintWriter writer = resp.getWriter();
-		writer.println(json);
-		writer.flush();
+	public static void sendJsonBody(Object obj, HttpServletResponse resp) throws IOException {
+	    resp.setContentType("application/json; charset=utf-8");
+	    ObjectMapper mapper = new ObjectMapper();
+	    PrintWriter writer = resp.getWriter();
+	    mapper.writeValue(writer, obj);
+	    writer.flush();
 	}
+
 }

@@ -42,5 +42,4 @@ public class PostDetailServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		mapper.writeValue(resp.getWriter(), list);
 	}
-	
 }

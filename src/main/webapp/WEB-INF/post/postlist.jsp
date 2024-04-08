@@ -42,7 +42,6 @@
 </style>
 </head>
 <body>
-<body>
 	<%@ include file="../user/navigation.jsp"%>
 
 	<main class="flex-shrink-0">
@@ -55,7 +54,7 @@
 					<table class="table table-hover table-bordered" id="postTable">
 						<thead class="table-light">
 							<tr>
-								<th scope="col">#</th>
+								<th scope="col" style="text-align: center;">#</th>
 								<th scope="col">내용</th>
 								<th scope="col">작성일</th>
 							</tr>
@@ -88,12 +87,11 @@
 		</div>
 	</main>
 </body>
-</body>
 <script>
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
 let currentPage = 1; // 초기 페이지는 1로 설정
-const itemsPerPage = 1; // 페이지당 아이템 수
+const itemsPerPage = 10; // 페이지당 아이템 수
 const tbody = postTable.querySelector("tbody");
 
 // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
@@ -107,8 +105,6 @@ function loadPosts(page) {
     .then((data) => {
         // 게시물 테이블의 내용을 초기화
         tbody.innerHTML = "";
-        
-        // 새로운 데이터로 게시물 테이블 채우기
         data.items.forEach((element) => {
             let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");
@@ -117,6 +113,16 @@ function loadPosts(page) {
             tdId.innerText = `${element.post_Id}`;
             tdContent.innerText = `${element.content}`;
             tdresistdate.innerText = `${element.resistdate}`;
+            
+      	   // 각 셀에 스코프 및 스타일 지정
+            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
+            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
+            tdContent.setAttribute("scope", "col");
+            tdContent.style.width = "80%"; // 내용 셀의 너비를 설정합니다.
+            tdresistdate.setAttribute("scope", "col");
+            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
+            
+            tdId.style.textAlign = "center";
             
             // 클릭 이벤트 추가하여 상세 페이지로 이동
             contenttr.addEventListener("click", () => {
