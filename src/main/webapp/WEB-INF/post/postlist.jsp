@@ -105,8 +105,6 @@ function loadPosts(page) {
     .then((data) => {
         // 게시물 테이블의 내용을 초기화
         tbody.innerHTML = "";
-       
-        // 게시물 테이블에 데이터 추가
         data.items.forEach((element) => {
             let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");
