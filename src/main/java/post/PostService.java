@@ -51,6 +51,7 @@ public class PostService {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 			postMapper.deletePost(postId);
+			sqlSession.commit();
 		}
 	}
 

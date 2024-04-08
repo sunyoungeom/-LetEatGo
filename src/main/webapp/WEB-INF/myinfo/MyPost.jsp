@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ page isELIgnored="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,12 +81,12 @@
 									</div>
 								</div>
 							</div>
-							
-						<div class="col-md-12">
+
+							<!-- <div class="col-md-12">
 							<div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
 								<div class="row justify-content-center">
 									<div class="col-12">
-										<h3>내가쓴댓글</h3>
+									 	<h3>내가쓴댓글</h3>
 										<table class="table table-hover table-bordered" id="postTable">
 											<thead class="table-light">
 												<tr>
@@ -105,7 +105,7 @@
 													</td>
 												</tr>
 											</tbody>
-										</table>
+										</table> 
 										<nav aria-label="Page navigation example">
 											<ul class="pagination justify-content-center">
 												<li class="page-item"><a class="page-link" href="#"
@@ -124,80 +124,120 @@
 								</div>
 							</div>
 						</div>
-						
-						
+						 -->
+
 						</div>
-						
-						
-						
-						
-						
-						
+
+
+
+
+
+
 					</div>
 				</div>
 		</section>
 		<!-- Bootstrap core JS-->
 		<!-- <script src="js/scripts.js"></script><! -->
-		
-		
-		
-		
+
+
+
+
 	</main>
 </body>
-<script>
+<script type="text/javascript">
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
 let currentPage = 1; // 초기 페이지는 1로 설정
 const itemsPerPage = 1; // 페이지당 아이템 수
 const tbody = postTable.querySelector("tbody");
-console.log()
+
 // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
 loadPosts(currentPage);
 
 function loadPosts(page) {
-    fetch(`http://localhost:8080/post/mypage?page=${page}&pagePer=${itemsPerPage}`, {
-        method: 'POST'
-    })
+    fetch(`http://localhost:8080/post/mypage?page=${page}&pagePer=${itemsPerPage}`)
     .then((resp) => resp.json())
     .then((data) => {
         // 게시물 테이블의 내용을 초기화
-        tbody.innerHTML = "";
+        postTable.innerHTML = "";
         
         // 새로운 데이터로 게시물 테이블 채우기
-        data.items.forEach((element) => {
-            let contenttr = document.createElement("tr");
-            let tdId = document.createElement("td");
-            let tdContent = document.createElement("td");
-            let tdresistdate = document.createElement("td");
-            tdId.innerText = `${element.post_Id}`;
-            tdContent.innerText = `${element.content}`;
-            tdresistdate.innerText = `${element.resistdate}`;
-            
-      	   // 각 셀에 스코프 및 스타일 지정
-            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
-            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
-            tdContent.setAttribute("scope", "col");
-            tdContent.style.width = "80%"; // 내용 셀의 너비를 설정합니다.
-            tdresistdate.setAttribute("scope", "col");
-            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
-            
-            tdId.style.textAlign = "center";
-            
-            // 클릭 이벤트 추가하여 상세 페이지로 이동
-            contenttr.addEventListener("click", () => {
-                window.location.href = `detail?post_Id=${element.post_Id}`;
-            });
-            
-            contenttr.appendChild(tdId);
-            contenttr.appendChild(tdContent);
-            contenttr.appendChild(tdresistdate);
-            tbody.appendChild(contenttr);
-        });
+       data.items.forEach((element) => {
+    let contenttr = document.createElement("tr");
+    let tdId = document.createElement("td");
+    let tdContent = document.createElement("td");
+    let tdresistdate = document.createElement("td");
+    let tdButtons = document.createElement("td"); // 수정 및 삭제 버튼을 담을 셀
+
+    tdId.innerText = `${element.post_Id}`;
+    tdContent.innerText = `${element.content}`;
+    tdresistdate.innerText = `${element.resistdate}`;
+    
+   // 각 셀에 스코프 및 스타일 지정
+    tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
+    tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
+    tdContent.setAttribute("scope", "col");
+    tdContent.style.width = "70%"; // 내용 셀의 너비를 설정합니다.
+    tdresistdate.setAttribute("scope", "col");
+    tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
+    tdButtons.setAttribute("scope", "col");
+    tdButtons.style.width = "10%"; // 버튼 셀의 너비를 설정합니다.
+
+    tdId.style.textAlign = "center";
+    
+    // 수정 버튼
+    let editButton = document.createElement("button");
+    editButton.innerText = "수정";
+    editButton.style.marginRight = "5px";
+    editButton.addEventListener("click", () => {
+        // 수정 기능 구현
+		fetch(`http://localhost:8080/post/mypage?postId=${element.post_Id}`, {
+            method: 'POST'
+        })        
         
-        // 페이지네이션 표시
-        displayPagination(data.totalPages, page);
+        
+        
+        console.log("수정 버튼이 클릭되었습니다.");
     });
+
+    // 삭제 버튼
+    let deleteButton = document.createElement("button");
+    deleteButton.innerText = "삭제";
+    deleteButton.addEventListener("click", () => {
+        // 삭제 기능 구현
+        fetch(`http://localhost:8080/post/mypage?postId=${element.post_Id}`, {
+            method: 'DELETE'
+        })
+        .then((response) => {
+            if (response.ok) {
+                console.log("삭제완료");
+                // 성공적으로 삭제되었을 때 화면에서 해당 게시물 제거
+                contenttr.remove();
+            } else {
+                console.error("삭제 실패:", response.status);
+            }
+        });
+
+    });
+
+    // 수정 및 삭제 버튼을 셀에 추가
+    tdButtons.appendChild(editButton);
+    tdButtons.appendChild(deleteButton);
+
+    // 셀을 행에 추가
+    contenttr.appendChild(tdId);
+    contenttr.appendChild(tdContent);
+    contenttr.appendChild(tdresistdate);
+    contenttr.appendChild(tdButtons);
+
+    // 행을 테이블에 추가
+    postTable.appendChild(contenttr);
+});
+        displayPagination(data.totalPages, page);
+
+});
 }
+
 
 // 페이지네이션을 표시하는 함수
 function displayPagination(totalPages, currentPage) {
@@ -273,6 +313,5 @@ function displayPagination(totalPages, currentPage) {
 
 
 }
-		
-</script>
+    </script>
 </html>
