@@ -42,7 +42,6 @@
 </style>
 </head>
 <body>
-<body>
 	<%@ include file="../user/navigation.jsp"%>
 
 	<main class="flex-shrink-0">
@@ -88,7 +87,6 @@
 		</div>
 	</main>
 </body>
-</body>
 <script>
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
@@ -109,6 +107,19 @@ function loadPosts(page) {
         tbody.innerHTML = "";
         
         // 새로운 데이터로 게시물 테이블 채우기
+        // 게시물 테이블 초기화
+        postTable.innerHTML = `
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">내용</th>
+                    <th scope="col">작성일</th>
+                </tr>
+            </thead>
+        `;
+      
+       
+        // 게시물 테이블에 데이터 추가
         data.items.forEach((element) => {
             let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");

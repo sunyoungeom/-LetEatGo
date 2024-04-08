@@ -46,4 +46,5 @@ public class MyPagePost extends HttpServlet {
 	    response.setStatus(HttpServletResponse.SC_OK);
 	    response.getWriter().write("게시물이 성공적으로 삭제되었습니다.");
 	}
+	
 }

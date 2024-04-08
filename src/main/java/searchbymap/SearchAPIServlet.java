@@ -14,7 +14,10 @@ import org.apache.ibatis.session.SqlSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import listener.MyWebContextListener;
+import post.Post;
+import post.PostService;
 import searchbymap.SearchAPI.SearchResult;
+import user.User;
 import user.UserMapper;
 import user.UserService;
 
@@ -43,6 +46,7 @@ public class SearchAPIServlet extends HttpServlet {
 				mapper.writeValue(resp.getWriter(), list);
 			} else if(requestURI.endsWith("/map/search/createpost")){
 				req.getRequestDispatcher("/WEB-INF/post/createpost.html").forward(req, resp);
+				
 			}else {
 			
 				resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
