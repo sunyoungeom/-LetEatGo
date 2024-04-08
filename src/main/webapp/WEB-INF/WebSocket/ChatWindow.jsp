@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <title>채팅창 구현</title>
 <script>
-	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?nickname=${ param.nickname }");
+	var webSocket = new WebSocket("<%=application.getInitParameter("CHAT_ADDR")%>/ChatingServer?nickname=${ user.nickname }");
 	
 	var chatWindow, chatMessage, nickname;
 	var postId = "${ post_Id }"; // JSP 페이지로부터 전달받은 post_id 값
@@ -30,13 +30,17 @@
 	// 메시지 전송
 	function sendMessage() {
 	    var messageContent = chatMessage.value; // 메시지 내용
-	    if () {
+   		if (!postId) {
+   			alert("게시물을 선택하세요.");
+   			return;
+   		}
+	    
 	    // 귓속말을 보내는 경우
 	    if (messageContent.startsWith('/w') || messageContent.startsWith('/ㅈ') || messageContent.startsWith('/W')) {
 	        var whisperMessage = messageContent.split(" "); // 입력된 메시지를 공백을 기준으로 분리
 	        var receiver = whisperMessage[1]; // 귓속말을 받을 대상
 	        var whisperContent = whisperMessage.slice(2).join(" "); // 귓속말 내용
-	        // 대화창에 표시
+	        // 대화창에 표시( 나: ???)
 	        chatWindow.innerHTML += "<div class='whisper-sent'>나 [귓속말 -> " + receiver + "]: " + whisperContent + " <span class='time'>" + getCurrentTime() + "</span></div>";
 	        // 서버로 메시지 전송
 	        webSocket.send(nickname + ':' + "/w " + receiver + ' ' + whisperContent + ':' + receiver); // 귓속말 대상을 메시지에 포함
@@ -52,7 +56,7 @@
 	    chatMessage.value = "";
 	    // 대화창 스크롤
 	    chatWindow.scrollTop = chatWindow.scrollHeight;
-	    }
+	//    }
 	}
 	
 	function getCurrentTime() {
