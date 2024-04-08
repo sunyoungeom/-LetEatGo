@@ -28,7 +28,8 @@
     <div class="container px-5">
         <a class="navbar-brand" href="/index.jsp">
             <span class="fw-bolder text-dark" style="font-size: 1.5rem;">
-                <img src="../Resources/main_icon.png" class="" style="width: 2rem;" alt="로고">&nbsp;&nbsp;LetEatGo
+                <img src="../Resources/main_icon.png" class="" style="width: 2rem;" alt="로고">
+                <span style="position: relative; top: 3px;"> &nbsp;&nbsp;LetEatGo</span>
             </span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
