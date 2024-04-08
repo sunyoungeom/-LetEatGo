@@ -30,6 +30,7 @@
 	// 메시지 전송
 	function sendMessage() {
 	    var messageContent = chatMessage.value; // 메시지 내용
+	    if () {
 	    // 귓속말을 보내는 경우
 	    if (messageContent.startsWith('/w') || messageContent.startsWith('/ㅈ') || messageContent.startsWith('/W')) {
 	        var whisperMessage = messageContent.split(" "); // 입력된 메시지를 공백을 기준으로 분리
@@ -51,6 +52,7 @@
 	    chatMessage.value = "";
 	    // 대화창 스크롤
 	    chatWindow.scrollTop = chatWindow.scrollHeight;
+	    }
 	}
 	
 	function getCurrentTime() {
@@ -117,38 +119,61 @@
 
 </script>
 <style>
-#chatWindow{border:none;
-			width:380px;
-			height:310px;
-			overflow:scroll;
-			padding:5px;}
-#chatMessage{wid:236px;
-			 height:30px}
+#chatWindow {
+	border: none;
+	width: 380px;
+	height: 310px;
+	overflow: scroll;
+	padding: 5px;
+}
+
+#chatMessage {
+	wid: 236px;
+	height: 30px
+}
+
 #sendBtn {
-    height: 30px; 
-    position: relative; 
-    top: 2px; 
-    right: -10px;}
-#closeBtn{margin-bottom: 30px; 
-		  position: relative;  
-		  top: 2px; 
-		  left: -2px;}
-#nickname{width: 100px; 
-		height: 25px; 
-		border: 1px;}
-#post_id{width: 100px;
-		height: 25px;
-		border: 1px;}
-.myMsg{text-align:right;}
+	height: 30px;
+	position: relative;
+	top: 2px;
+	right: -10px;
+}
+
+#closeBtn {
+	margin-bottom: 30px;
+	position: relative;
+	top: 2px;
+	left: -2px;
+}
+
+#nickname {
+	width: 100px;
+	height: 25px;
+	border: 1px;
+}
+
+#post_id {
+	width: 100px;
+	height: 25px;
+	border: 1px;
+}
+
+.myMsg {
+	text-align: right;
+}
+
 #라벨 {
 	background-color: red;
 }
+
 .whisper-received {
-    color: green; /* 받은 귓속말의 색상 */
+	color: green; /* 받은 귓속말의 색상 */
 }
+
 .whisper-sent {
-    color: blue; /* 보낸 귓속말의 색상 */
+	color: blue; /* 보낸 귓속말의 색상 */
 }
+
 .time {
 	color: #888; /* 작은 회색 글씨 색상 */
 	font-size: 12px; /* 작은 글씨 크기 */
@@ -157,15 +182,17 @@
 
 </head>
 <body>
-	<label id="라벨">닉네임</label> : <input type=	"text" id="nickname" value="${ user.nickname }" readonly />
+	<label id="라벨">닉네임</label> :
+	<input type="text" id="nickname" value="${ user.nickname }" readonly />
 	<br>
-	<label id="게시판번호">게시판번호</label> :  <span id="post_id">${ post_Id }</span>
+	<label id="게시판번호">게시판번호</label> :
+	<span id="post_id">${ post_Id }</span>
 	<button id="closeBtn" onclick="disconnect();">채팅 종료</button>
 	<div id="chatWindow"></div>
 	<div>
 		<input type="text" id="chatMessage" onkeyup="enterKey();">
 		<button id="sendBtn" onclick="sendMessage();">전송</button>
 	</div>
-	
+
 </body>
 </html>

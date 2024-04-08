@@ -1,5 +1,8 @@
+<%@page import="user.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,15 +36,27 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
-                <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">음식메뉴</a></li>
-                <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">사람메뉴</a></li>
-                <li class="nav-item"><a class="nav-link me-3" href="#" style="font-size: 1.1rem;">후기</a></li>
-                <li class="nav-item"><a class="nav-link me-3" href="/login" style="font-size: 1.1rem;">로그인</a></li>
-                <li class="nav-item"><a class="btn btn-dark btn-lg rounded-pill" href="/join/begin" style="font-size: 1.1rem;">회원가입</a></li>
+                <% 
+                    User user = (User) session.getAttribute("user"); // 세션 파라미터 "user" 가져오기
+                    if (user != null) { // 세션 파라미터 "user"가 존재하는 경우
+                %>
+                    <li class="nav-item"><a class="nav-link me-3" href="/menu" style="font-size: 1.1rem;">음식메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/person" style="font-size: 1.1rem;">사람메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/post/list" style="font-size: 1.1rem;">후기</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/logout" style="font-size: 1.1rem;">로그아웃</a></li>
+                    <li class="nav-item"><a class="btn btn-dark btn-lg rounded-pill" href="/myInfo?detail=profile" style="font-size: 1.1rem;">내정보</a></li>
+                <% } else { // 세션 파라미터 "user"가 존재하지 않는 경우 %>
+                    <li class="nav-item"><a class="nav-link me-3" href="/menu" style="font-size: 1.1rem;">음식메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/person" style="font-size: 1.1rem;">사람메뉴</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/post/list" style="font-size: 1.1rem;">후기</a></li>
+                    <li class="nav-item"><a class="nav-link me-3" href="/login" style="font-size: 1.1rem;">로그인</a></li>
+                    <li class="nav-item"><a class="btn btn-dark btn-lg rounded-pill" href="/join/begin" style="font-size: 1.1rem;">회원가입</a></li>
+                <% } %>
             </ul>
         </div>
     </div>
 </nav>
+
 <script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -1,7 +1,6 @@
 package user;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,14 +14,19 @@ public class LogoutServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 현재 세션을 가져옴
         HttpSession session = request.getSession(false);
         
-        // 세션이 존재하면 세션을 무효화하고 인덱스 페이지로 이동
+        // 세션이 존재하면 알림창을 띄우고 인덱스 페이지로 이동
         if (session != null) {
-            session.invalidate(); // 세션 무효화
+            session.invalidate();
+            
+            String message = "로그아웃 되었습니다.";
+            String script = "<script>alert('" + message + "');window.location.href='" + request.getContextPath() + "/index.jsp';</script>";
+            response.setContentType("text/html;charset=UTF-8");
+            response.getWriter().print(script);
+        } else {
+            // 세션이 존재하지 않으면 인덱스 페이지로 이동
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
         }
-
-        response.sendRedirect(request.getContextPath() + "/index.jsp"); // 인덱스 페이지로 이동
     }
 }
