@@ -92,9 +92,15 @@ public class UserService {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			userMapper.checkAttendance(id);
-			 sqlSession.commit(); // 변경사항 커밋
+			sqlSession.commit(); // 변경사항 커밋
 	    } catch (Exception e) {
 	        e.printStackTrace();
 		}
+	}
+	public int getUserId(String id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getUserId(id);
+	    } 
 	}
 }
