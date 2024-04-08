@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Timestamp;
 
 import user.User;
+import util.ServletUtil;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import static util.ServletUtil.*;
 
-@WebServlet(urlPatterns = {"/createPost", "/deletePost", "/updatePost", "/mypage"
+@WebServlet(urlPatterns = {"/createPost", "/post", "/post/mypage"
 	})
 public class CRUDPostServlet extends HttpServlet {
 	PostService postService = new PostService();
@@ -103,10 +104,15 @@ public class CRUDPostServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int getPost = Integer.parseInt(req.getParameter("postId"));
-		Post post = postService.getPostById(getPost);
-		req.getRequestDispatcher("WEB-INF/post/createpost.html");
-	
+		String body = ServletUtil.readBody(req);
+		System.out.println(body);
+//		int getPost = Integer.parseInt(req.getParameter("postId"));
+//		Post post = postService.getPostById(getPost);
+//		req.setAttribute("post", post);
+		resp.setStatus(HttpServletResponse.SC_OK);
+		resp.getWriter().write("게시물이 성공적으로 삭제되었습니다.");
+//		req.getRequestDispatcher("WEB-INF/post/editpost.jsp").forward(req, resp);
+		
 	}
 	
 	

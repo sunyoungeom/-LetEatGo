@@ -91,7 +91,7 @@
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
 let currentPage = 1; // 초기 페이지는 1로 설정
-const itemsPerPage = 1; // 페이지당 아이템 수
+const itemsPerPage = 10; // 페이지당 아이템 수
 const tbody = postTable.querySelector("tbody");
 
 // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
@@ -105,19 +105,6 @@ function loadPosts(page) {
     .then((data) => {
         // 게시물 테이블의 내용을 초기화
         tbody.innerHTML = "";
-        
-        // 새로운 데이터로 게시물 테이블 채우기
-        // 게시물 테이블 초기화
-        postTable.innerHTML = `
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">내용</th>
-                    <th scope="col">작성일</th>
-                </tr>
-            </thead>
-        `;
-      
        
         // 게시물 테이블에 데이터 추가
         data.items.forEach((element) => {

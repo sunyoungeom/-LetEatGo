@@ -148,14 +148,14 @@
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
 let currentPage = 1; // 초기 페이지는 1로 설정
-const itemsPerPage = 1; // 페이지당 아이템 수
+const itemsPerPage = 10; // 페이지당 아이템 수
 const tbody = postTable.querySelector("tbody");
 
 // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
 loadPosts(currentPage);
 
 function loadPosts(page) {
-    fetch(`http://localhost:8080/mypage?page=${page}&pagePer=${itemsPerPage}`)
+    fetch(`http://localhost:8080/post/mypage?page=${page}&pagePer=${itemsPerPage}`)
     .then((resp) => resp.json())
     .then((data) => {
         // 게시물 테이블의 내용을 초기화
@@ -183,29 +183,41 @@ function loadPosts(page) {
     tdButtons.setAttribute("scope", "col");
     tdButtons.style.width = "10%"; // 버튼 셀의 너비를 설정합니다.
 
-    tdId.style.textAlign = "center";
     
+    tdId.style.textAlign = "center";
     // 수정 버튼
     let editButton = document.createElement("button");
     editButton.innerText = "수정";
     editButton.style.marginRight = "5px";
     editButton.addEventListener("click", () => {
+    	console.log(element.post_Id);
         // 수정 기능 구현
-		fetch(`http://localhost:8080/updatePost?postId=${element.post_Id}`, {
-            method: 'PUT'
-        })        
-        
-        
-        
-        console.log("수정 버튼이 클릭되었습니다.");
-    });
+    	  fetch(`http://localhost:8080/post`, {
+    	        method: 'PUT'
+    	        , body: `postId=${element.post_Id}`
+    	    })
+    	    .then(response => {
+    	        // 요청이 성공한 경우
+    	        if (response.ok) {
+    	            console.log("게시물이 성공적으로 수정되었습니다.");
+    	            // 성공 메시지를 사용자에게 표시하거나 다른 동작을 수행할 수 있습니다.
+    	        } else {
+    	            console.error('수정에 실패했습니다.');
+    	            // 실패 메시지를 사용자에게 표시하거나 다른 동작을 수행할 수 있습니다.
+    	        }
+    	    })
+    	    .catch(error => {
+    	        console.error('요청 중 오류가 발생했습니다.', error);
+    	        // 오류 메시지를 사용자에게 표시하거나 다른 동작을 수행할 수 있습니다.
+    	    });
+    	});
 
     // 삭제 버튼
     let deleteButton = document.createElement("button");
     deleteButton.innerText = "삭제";
     deleteButton.addEventListener("click", () => {
         // 삭제 기능 구현
-        fetch(`http://localhost:8080/deletePost?postId=${element.post_Id}`, {
+        fetch(`http://localhost:8080/post?postId=${element.post_Id}`, {
             method: 'DELETE'
         })
         .then((response) => {
