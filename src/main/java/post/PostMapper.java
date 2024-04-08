@@ -21,7 +21,7 @@ public interface PostMapper {
     
     // 게시물 작성
     @Insert(value = "INSERT INTO posts (title,content, writeuser_Id,expiredate, resistdate) " +
-            "VALUES (#{post.title}, #{post.content}, #{post.writeuser_id}, #{post.expiredate}, #{post.resistdate})")
+            "VALUES (#{post.title}, #{post.content}, #{post.writeuser_Id}, #{post.expiredate}, #{post.resistdate})")
     @SelectKey(keyProperty = "post_id", statement = { "SELECT LAST_INSERT_ID();" }, resultType = Integer.class, before = false)
     int createPost(@Param("post")Post post, @Param("user")User user);
 

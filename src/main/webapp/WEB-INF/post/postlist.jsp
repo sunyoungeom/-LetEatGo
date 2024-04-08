@@ -42,7 +42,6 @@
 </style>
 </head>
 <body>
-<body>
 	<%@ include file="../user/navigation.jsp"%>
 
 	<main class="flex-shrink-0">
@@ -90,7 +89,6 @@
 		</div>
 	</main>
 </body>
-</body>
 <script>
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
@@ -107,6 +105,7 @@ function loadPosts(page) {
     .then((resp) => resp.json())
     .then((data) => {
         // 게시물 테이블 초기화
+<<<<<<< HEAD
         postTable.innerHTML = `
             <thead class="table-light">
                 <tr>
@@ -117,6 +116,10 @@ function loadPosts(page) {
             </thead>
         `;
       
+=======
+        postTable.innerHTML = "<tr><th>ID</th><th>내용</th></tr>";
+       
+>>>>>>> branch 'sun2' of https://github.com/dongso03/-Final_Project.git
         // 게시물 테이블에 데이터 추가
         data.items.forEach((element) => {
             let contenttr = document.createElement("tr");

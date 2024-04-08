@@ -16,7 +16,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
-@WebServlet({"/createPost"})
+@WebServlet({"/createPost"
+//	,"/map/search/createpost"
+	})
 public class CreatePostServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
