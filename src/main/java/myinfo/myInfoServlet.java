@@ -1,10 +1,14 @@
-package user;
+package myinfo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import user.UserService;
+import util.ServletUtil;
+
 import java.io.IOException;
 
 @WebServlet("/myInfo")
@@ -32,4 +36,15 @@ public class myInfoServlet extends HttpServlet {
 	        	resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing action parameter");
 	        }
 	    }
+
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String body = ServletUtil.readBody(req);
+		System.out.println(body);
+		
+		UserService userService = new UserService();
+		
+	}
+	
+	
 	}
