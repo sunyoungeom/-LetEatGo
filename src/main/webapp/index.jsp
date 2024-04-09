@@ -109,9 +109,6 @@
 
 	<c:if test="${not empty user}">
 		<h3>${user.name}님환영합니다!</h3>
-		<ul>
-			<li><a href="/ChatingServer">ㅇㅇ</a></li>
-		</ul>
 	</c:if>
 	${ user }
 

@@ -10,74 +10,77 @@
 <link href="../Resources/css/styles.css" rel="stylesheet" />
 </head>
 <body>
-	<h1>게시물 상세 페이지</h1>
-	<div id="postDetail"></div>
-	<input type="hidden" id="nickname" value="nickname">
-	<input type="hidden" id="post_id" value="post_id">
-	<input type="button" value="채팅방 참여" onclick="chatWinOpen()">
-	<script>
-	//수정 필요
-	const postDetail = document.getElementById("postDetail");
-	var urlParams = new URLSearchParams(window.location.search);
-	var post_Id = urlParams.get('post_Id'); // URL 파라미터에서 post_Id를 가져옵니다.
-	var user_Id = document.getElementById("userId");
-	console.log(post_Id);
-	console.log(user_Id);
-	const apiURL = `http://localhost:8080/post/detail?post_Id=${post_Id}`;
-     //?post_Id=${post_Id}
-        // 서블릿 엔드포인트를 호출하여 JSON 데이터를 가져옵니다.
-        
-    let chatWindow = null;
+    <h1>게시물 상세 페이지</h1>
+    <div id="postDetail"></div>
+    <input type="button" id="chatButton" value="채팅방 참여" onclick="chatWinOpen()">
+    <script>
+    //수정 필요
+    const postDetail = document.getElementById("postDetail");
+    var urlParams = new URLSearchParams(window.location.search);
+    var post_Id = urlParams.get('post_Id'); // URL 파라미터에서 post_Id를 가져옵니다.
+    console.log(post_Id);
     
-    function chatWinOpen() {
-        const nickname = document.getElementById("nickname").value; // 사용자의 닉네임 가져오기
-        if (!chatWindow || chatWindow.closed) {
-            const url = "ChatWindow?nickname=" + nickname + "&post_Id=" + post_Id; // URL에 닉네임과 게시물 ID 추가
-            chatWindow = window.open(url, "", "width=400, height=450"); // 채팅 창 열기
-        } else {
-            chatWindow.focus();
-        }	
+    // 페이지가 로드될 때 실행되는 함수
+    document.addEventListener("DOMContentLoaded", function() {
+        // 쿠키에서 닉네임 가져오기
+        const nickname = getCookieValue("nickname");
+        console.log(nickname);
+
+        // 닉네임이 존재하는 경우 채팅 버튼의 텍스트를 설정
+        if (nickname) {
+            document.getElementById("chatButton").value = `채팅방 참여 (${nickname})`;
+        }
+    });
+
+    // 쿠키에서 특정 이름의 값 가져오는 함수
+    function getCookieValue(name) {
+        const cookies = document.cookie.split("; ");
+        for (let cookie of cookies) {
+            const [cookieName, cookieValue] = cookie.split("=");
+            if (cookieName === name) {
+                return cookieValue;
+            }
+        }
+        return null;
     }
 
-        
-        
-        fetch(apiURL,{
-            method: 'POST' })
-            .then((resp)=> resp.json())
-            .then((data) => {
-            	// 첫 번째 객체의 'user' 필드에서 'id' 값 가져오기
-            	const userId = data[1].id;
-				
-            	// 두 번째 객체의 'post' 필드에서 'content' 값 가져오기
-            	const postContent = data[0].content;
-				
-            	// HTML에 가져온 값을 추가하기
-            	let userIdParagraph = document.createElement("p");
-            	userIdParagraph.innerText = `사용자 ID: ${userId}`;
-            	postDetail.appendChild(userIdParagraph);
+    let chatWindow = null;
 
-            	let postContentParagraph = document.createElement("p");
-            	postContentParagraph.innerText = `게시물 내용: ${postContent}`;
-            	postDetail.appendChild(postContentParagraph);
+    function chatWinOpen() {
+        const nickname = getCookieValue("nickname"); // 쿠키에서 닉네임 가져오기
+        console.log(nickname)
+        if (!chatWindow || chatWindow.closed) {
+        	fetch ({
+        		method: 'POST'
+        	})
+        	.then((resp) => resp.json())
+        	.then((data) => {
+        		
+        	})
+            const url = "ChatWindow?nickname=" + nickname + "&post_Id=" + post_Id; // URL에 닉네임과 게시물 ID 추가
+            chatWindow = window.open(url, "", "width=400, height=550"); // 채팅 창 열기
+        } else {
+            chatWindow.focus();
+            chatMessage.focus();
+        }   
+    }
 
-            	
-            /* 	let p = document.createElement("p");
-                p.innerText = `ID: ${data.user.id}`;
-                postDetail.appendChild(p);
-                let p2 = document.createElement("p");
-                p2.innerText = `내용: ${data.post.content}`;
-                postDetail.appendChild(p2); */
-            	
-            	/* data.forEach((item) => {
-            		let p = document.createElement("p");
-	                p.innerText = `ID: ${item.id}`;
-	                postDetail.appendChild(p);
-	                let p2 = document.createElement("p");
-	                p2.innerText = `내용: ${item.content}`;
-	                postDetail.appendChild(p2);
-            	 }); */
-            	 
-            });
+    const apiURL = `http://localhost:8080/post/detail?post_Id=${post_Id}`;
+    fetch(apiURL, {
+        method: 'POST'
+    })
+    .then((resp) => resp.json())
+    .then((data) => {
+        const userId = data[1].id;
+        const postContent = data[0].content;
+        let userIdParagraph = document.createElement("p");
+        userIdParagraph.innerText = `작성자 ID: ${userId}`;
+        postDetail.appendChild(userIdParagraph);
+
+        let postContentParagraph = document.createElement("p");
+        postContentParagraph.innerText = `게시물 내용: ${postContent}`;
+        postDetail.appendChild(postContentParagraph);
+    });
     </script>
 </body>
 </html>

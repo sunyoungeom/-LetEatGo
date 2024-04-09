@@ -1,204 +1,246 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page isELIgnored="true"%>
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>키워드로 장소검색하고 목록으로 표출하기</title>
-    <style>
-      .map_wrap,
-      .map_wrap * {
-        margin: 0;
-        padding: 0;
-        font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
-        font-size: 12px;
-      }
-      .map_wrap a,
-      .map_wrap a:hover,
-      .map_wrap a:active {
-        color: #000;
-        text-decoration: none;
-      }
-      .map_wrap {
-        position: relative;
-        width: 100%;
-        height: 1000px;
-      }
-      #menu_wrap {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 250px;
-        margin: 10px 0 30px 10px;
-        padding: 5px;
-        overflow-y: auto;
-        background: rgba(255, 255, 255, 0.7);
-        z-index: 1;
-        font-size: 12px;
-        border-radius: 10px;
-      }
-      .bg_white {
-        background: #fff;
-      }
-      #menu_wrap hr {
-        display: block;
-        height: 1px;
-        border: 0;
-        border-top: 2px solid #5f5f5f;
-        margin: 3px 0;
-      }
-      #menu_wrap .option {
-        text-align: center;
-      }
-      #menu_wrap .option p {
-        margin: 10px 0;
-      }
-      #menu_wrap .option button {
-        margin-left: 5px;
-      }
-      #placesList li {
-        list-style: none;
-      }
-      #placesList .item {
-        position: relative;
-        border-bottom: 1px solid #888;
-        overflow: hidden;
-        cursor: pointer;
-        min-height: 65px;
-      }
-      #placesList .item span {
-        display: block;
-        margin-top: 4px;
-      }
-      #placesList .item h5,
-      #placesList .item .info {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      #placesList .item .info {
-        padding: 10px 0 10px 55px;
-      }
-      #placesList .info .gray {
-        color: #8a8a8a;
-      }
-      #placesList .info .jibun {
-        padding-left: 26px;
-        background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
-          no-repeat;
-      }
-      #placesList .info .tel {
-        color: #009900;
-      }
-      #placesList .item .markerbg {
-        float: left;
-        position: absolute;
-        width: 36px;
-        height: 37px;
-        margin: 10px 0 0 10px;
-        background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
-          no-repeat;
-      }
-      #placesList .item .marker_1 {
-        background-position: 0 -10px;
-      }
-      #placesList .item .marker_2 {
-        background-position: 0 -56px;
-      }
-      #placesList .item .marker_3 {
-        background-position: 0 -102px;
-      }
-      #placesList .item .marker_4 {
-        background-position: 0 -148px;
-      }
-      #placesList .item .marker_5 {
-        background-position: 0 -194px;
-      }
-      #placesList .item .marker_6 {
-        background-position: 0 -240px;
-      }
-      #placesList .item .marker_7 {
-        background-position: 0 -286px;
-      }
-      #placesList .item .marker_8 {
-        background-position: 0 -332px;
-      }
-      #placesList .item .marker_9 {
-        background-position: 0 -378px;
-      }
-      #placesList .item .marker_10 {
-        background-position: 0 -423px;
-      }
-      #placesList .item .marker_11 {
-        background-position: 0 -470px;
-      }
-      #placesList .item .marker_12 {
-        background-position: 0 -516px;
-      }
-      #placesList .item .marker_13 {
-        background-position: 0 -562px;
-      }
-      #placesList .item .marker_14 {
-        background-position: 0 -608px;
-      }
-      #placesList .item .marker_15 {
-        background-position: 0 -654px;
-      }
-      #pagination {
-        margin: 10px auto;
-        text-align: center;
-      }
-      #pagination a {
-        display: inline-block;
-        margin-right: 10px;
-      }
-      #pagination .on {
-        font-weight: bold;
-        cursor: default;
-        color: #777;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="map_wrap">
-      <div
-        id="map"
-        style="width: 70%; height: 50%; position: relative; overflow: hidden"
-      ></div>
+<head>
+<meta charset="utf-8" />
+<title>키워드로 장소검색하고 목록으로 표출하기</title>
+<style>
+.map_wrap, .map_wrap * {
+	margin: 0;
+	padding: 0;
+	font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+	font-size: 12px;
+}
 
-      <div id="menu_wrap" class="bg_white" style="width: 20%; height: 45%">
-        <div class="option">
-          <div>
-            <form onsubmit="searchPlaces(); return false;">
-              키워드 : <input type="text" id="keyword" size="15" />
-              <button type="submit">검색하기</button>
-            </form>
-          </div>
-        </div>
-        <hr />
-        <ul id="placesList"></ul>
-        <div id="pagination"></div>
-      </div>
-      <div
-        id="searchResult"
-        style="
-          position: absolute;
-          top: 0;
-          right: 10px;
-          width: 15%;
-          height: 70%;
-          background-color: #fff;
-          padding: 10px;
-        "
-      ></div>
-      <div id="createpost"></div>
-    </div>
-   
+.map_wrap a, .map_wrap a:hover, .map_wrap a:active {
+	color: #000;
+	text-decoration: none;
+}
 
-    <script
-      type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"
-    ></script>
-    <script>
+.map_wrap {
+	position: relative;
+	width: 100%;
+	height: 500px;
+	display: flex;
+}
+
+#menu_wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 250px;
+	margin: 10px 0 30px 10px;
+	padding: 5px;
+	overflow-y: auto;
+	background: rgba(255, 255, 255, 0.7);
+	z-index: 1;
+	font-size: 12px;
+	border-radius: 10px;
+}
+
+.bg_white {
+	background: #fff;
+}
+
+#menu_wrap hr {
+	display: block;
+	height: 1px;
+	border: 0;
+	border-top: 2px solid #5f5f5f;
+	margin: 3px 0;
+}
+
+#menu_wrap .option {
+	text-align: center;
+}
+
+#menu_wrap .option p {
+	margin: 10px 0;
+}
+
+#menu_wrap .option button {
+	margin-left: 5px;
+}
+
+#placesList li {
+	list-style: none;
+}
+
+#placesList .item {
+	position: relative;
+	border-bottom: 1px solid #888;
+	overflow: hidden;
+	cursor: pointer;
+	min-height: 65px;
+}
+
+#placesList .item span {
+	display: block;
+	margin-top: 4px;
+}
+
+#placesList .item h5, #placesList .item .info {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+#placesList .item .info {
+	padding: 10px 0 10px 55px;
+}
+
+#placesList .info .gray {
+	color: #8a8a8a;
+}
+
+#placesList .info .jibun {
+	padding-left: 26px;
+	background:
+		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
+		no-repeat;
+}
+
+#placesList .info .tel {
+	color: #009900;
+}
+
+#placesList .item .markerbg {
+	float: left;
+	position: absolute;
+	width: 36px;
+	height: 37px;
+	margin: 10px 0 0 10px;
+	background:
+		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
+		no-repeat;
+}
+
+#placesList .item .marker_1 {
+	background-position: 0 -10px;
+}
+
+#placesList .item .marker_2 {
+	background-position: 0 -56px;
+}
+
+#placesList .item .marker_3 {
+	background-position: 0 -102px;
+}
+
+#placesList .item .marker_4 {
+	background-position: 0 -148px;
+}
+
+#placesList .item .marker_5 {
+	background-position: 0 -194px;
+}
+
+#placesList .item .marker_6 {
+	background-position: 0 -240px;
+}
+
+#placesList .item .marker_7 {
+	background-position: 0 -286px;
+}
+
+#placesList .item .marker_8 {
+	background-position: 0 -332px;
+}
+
+#placesList .item .marker_9 {
+	background-position: 0 -378px;
+}
+
+#placesList .item .marker_10 {
+	background-position: 0 -423px;
+}
+
+#placesList .item .marker_11 {
+	background-position: 0 -470px;
+}
+
+#placesList .item .marker_12 {
+	background-position: 0 -516px;
+}
+
+#placesList .item .marker_13 {
+	background-position: 0 -562px;
+}
+
+#placesList .item .marker_14 {
+	background-position: 0 -608px;
+}
+
+#placesList .item .marker_15 {
+	background-position: 0 -654px;
+}
+
+#pagination {
+	margin: 10px auto;
+	text-align: center;
+}
+
+#pagination a {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+#pagination .on {
+	font-weight: bold;
+	cursor: default;
+	color: #777;
+}
+
+#ing {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  #ing > div {
+    width: calc(50% - 10px); /* 가로 방향으로 나란히 배치되므로 50% 너비로 설정 */
+    margin: 5px; /* 각 요소 사이의 간격을 조절합니다 */
+    flex: 0 0 auto; /* 요소의 너비를 자동으로 설정하고, 크기를 변경하지 않습니다 */
+  }
+</style>
+</head>
+<body>
+	<%@ include file="../user/navigation.jsp"%>
+	<div class="map_wrap">
+		<div id="map"
+			style="width: 70%; height: 100%; position: relative; overflow: hidden; float: left;"></div>
+
+
+		<div id="menu_wrap" class="bg_white" style="width: 20%; height: 90%">
+			<div class="option">
+				<div>
+					<form onsubmit="searchPlaces(); return false;">
+						키워드 : <input type="text" id="keyword" size="15" />
+						<button type="submit">검색하기</button>
+					</form>
+				</div>
+			</div>
+			<hr />
+			<ul id="placesList"></ul>
+			<div id="pagination"></div>
+		</div>
+		<div id="searchResult"
+			style="width: 30%; height: 100%; background-color: #fff; padding: 10px; position: relative; float: left; margin-left: 10px;"></div>
+		<br> <br> <br>
+	</div>
+	<div id="createpost" style="display: flex;"></div>
+	<br>
+	<div id="bu"></div>
+	<br>
+	<div id="ing" style="position: relative;"></div>
+	<div id="end"></div>
+
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"></script>
+	<script>
       // 사용자 주소기반으로 첫지도 위치 특정
       const keywordinput = document.getElementById("keyword");
       const apiURL = "http://localhost:8080/map/keyword";
@@ -308,10 +350,14 @@
             kakao.maps.event.addListener(marker, "mouseout", function () {
               infowindow.close();
             });
+            // 클릭 이벤트 리스너 설정
             kakao.maps.event.addListener(marker, "click", function () {
               const resultTitle = document.getElementById("searchResult");
+              const ing = document.getElementById("ing");
+              const end = document.getElementById("end");
               resultTitle.innerHTML = ""; // 기존 내용 비우기
-
+              ing.innerHTML ="";
+              end.innerHTML= "";
               const clickedMarker = this;
               // 클릭한 마커의 인덱스를 찾습니다.
               const markerIndex = markers.indexOf(clickedMarker);
@@ -320,50 +366,83 @@
 
               // 클릭한 마커의 제목(title) 값을 가져옵니다.
               const keyword = title + clickedPlace.address_name;
-              
-              const createpost = document.getElementById("createpost");
-              createpost.innerHTML = "";
-              let a = document.createElement("a");
-                  a.href = "/map/search/createpost";
-                  a.innerText = title + "에서 모임 만들기";
-                  createpost.appendChild(a);
-              
-              
-                  // 검색 API를 호출합니다.
-              fetch(`/map/search?keyword=${encodeURIComponent(keyword)}`)
+              //document.title = title;
+              // 검색 API를 호출하여 결과를 처리합니다.
+              fetch(`/map/search?keyword=${encodeURIComponent(keyword)}&title=${title}`)
                 .then((resp) => resp.json()) // JSON 형식으로 변환
                 .then((data) => {
+                  const createpost = document.getElementById("createpost");
+                  createpost.innerHTML = "";
+                  let a = document.createElement("a");
+                  a.href = "/map/search/createpost";
+                  a.innerText = title + "에서 모임 만들기";
+                  a.style.fontSize = "1.5em"; // 크기 조정
+                  createpost.appendChild(a);
+
+                  const bu = document.getElementById("bu")
+                  let h3 = document.createElement("h3");
+                  bu.innerHTML = "";
+                  h3.innerText= "진행중인 모임들"
+                  bu.appendChild(h3)
+
+                  console.log(data); 
                   // 검색 결과를 출력합니다.
-                  data.forEach((element) => {
+                  data.blog.forEach((element) => {
                     // 결과를 보여줄 요소들을 생성합니다.
-                    let h3 = document.createElement("h3");
+                    let h2 = document.createElement("h2");
                     let p = document.createElement("p");
                     let p2 = document.createElement("p");
+                    let hr = document.createElement("hr");
 
                     // 결과의 제목, 블로그 URL, 내용을 설정합니다.
-                    h3.innerText = decodeHtmlCharCodes(`${element.title}`);
+                    h2.innerText = decodeHtmlCharCodes(`${element.title}`);
                     p.innerText = `${element.blogurl}`;
                     p2.innerText =
                       decodeHtmlCharCodes(`${element.contents}`) + "...";
 
                     // 요소들을 결과 타이틀에 추가합니다.
-                    resultTitle.appendChild(h3);
+                    resultTitle.appendChild(h2);
                     resultTitle.appendChild(p);
                     resultTitle.appendChild(p2);
+                    resultTitle.appendChild(hr);
                   });
-               
-                
+
+                  data.ing.forEach((element) =>{
+                    let p = document.createElement("p");
+                    let p2 = document.createElement("p");
+                    let hr = document.createElement("hr")
+                    p.innerText = element.title 
+                    p2.innerText = element.content
+                    ing.appendChild(p);
+                    ing.appendChild(p2)
+                    ing.appendChild(hr)
+                  })
+
+                  data.end.forEach((element) =>{
+                    let p = document.createElement("p");
+                    let p2 = document.createElement("p");
+                    let hr = document.createElement("hr")
+                    p.innerText = element.title;
+                    p2.innerText = element.content
+                    end.appendChild(p);
+                    end.appendChild(p2)
+                    end.appendChild(hr)
+                  })
+
+                  // 클릭한 마커 아래에 링크를 추가합니다.
+                 
+
+
                 })
                 .catch((error) => {
                   console.error("검색 API 호출 중 오류 발생:", error);
                 });
-               
             });
 
             itemEl.onmouseover = function () {
               displayInfowindow(marker, title);
             };
- 
+
             itemEl.onmouseout = function () {
               infowindow.close();
             };
@@ -493,5 +572,5 @@
         }
       }
     </script>
-  </body>
+</body>
 </html>

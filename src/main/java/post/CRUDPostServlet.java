@@ -51,7 +51,9 @@ public class CRUDPostServlet extends HttpServlet {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String expireDate = request.getParameter("expireDate");
-	
+		String place = request.getParameter("placeMap");
+		
+		
 		String budget = request.getParameter("budget");
 		String booze = request.getParameter("booze");
 		String age = request.getParameter("age");
@@ -66,6 +68,13 @@ public class CRUDPostServlet extends HttpServlet {
 		post.setContent(content);
 		post.setResistDate(resistDate);
 		post.setExpireDate(expireDate);
+		post.setPlace(place);
+		
+		System.out.println(post.getWriteUser_Id());
+		System.out.println(post.getTitle());
+		System.out.println(post.getContent());
+		System.out.println(post.getExpireDate());
+		System.out.println(post.getPlace());
 		
 		
 		int postid = postService.createPost(post, user);

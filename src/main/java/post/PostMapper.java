@@ -1,6 +1,7 @@
 package post;
 import org.apache.ibatis.annotations.*;
 
+import post_review.Review;
 import user.User;
 
 import java.util.List;
@@ -20,11 +21,12 @@ public interface PostMapper {
     List<Post> getUserPostList(@Param("writeuser_id") int writeuser_id);
     
     // 게시물 작성
-    @Insert(value = "INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate) " +
-            "VALUES (#{post.title}, #{post.content}, #{post.writeUser_Id}, #{post.expireDate}, now())")
+    @Insert(value = "INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate,place) " +
+            "VALUES (#{post.title}, #{post.content}, #{post.writeUser_Id}, #{post.expireDate}, now(), #{post.place})")
     @SelectKey(keyProperty = "post_id", statement =  "SELECT LAST_INSERT_ID();" , resultType = Integer.class, before = false)
     int createPost(@Param("post")Post post, @Param("user")User user);
 
+    
     @Select("SELECT LAST_INSERT_ID()")
     int lastInsertId();
     
@@ -48,5 +50,11 @@ public interface PostMapper {
     @Insert("INSERT INTO post_tag (post_id,budget,booze,age,gender,peopleLimit)" +
     		"values (#{postid},#{post_tag.budget},#{post_tag.booze},#{post_tag.age},#{post_tag.gender},#{post_tag.peopleLimit})")
     void createPostTag(@Param("postid") int postid,@Param("post_tag")PostTag post_tag);
+   
+    
+    @Select("select * from posts where place = #{place}")
+    List<Post> getPostByPlace(String place);
+    
+    
 }
     
