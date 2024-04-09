@@ -88,10 +88,10 @@ public class UserService {
 			return userMapper.getUserById(id);
 		}
 	}
-	public void checkAttendance(String id) {
+	public void deleteUser(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			userMapper.checkAttendance(id);
+			userMapper.deleteUser(id);
 			sqlSession.commit(); // 변경사항 커밋
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -102,5 +102,15 @@ public class UserService {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			return userMapper.getUserId(id);
 	    } 
+	}
+	
+	public void checkAttendance(String id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.checkAttendance(id);
+			sqlSession.commit(); // 변경사항 커밋
+	    } catch (Exception e) {
+	        e.printStackTrace();
+		}
 	}
 }
