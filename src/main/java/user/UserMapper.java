@@ -53,6 +53,9 @@ public interface UserMapper {
     @Update("UPDATE users SET attendance = 1 WHERE id = #{id}")
     void checkAttendance(String id);
     
+    // 	닉네임으로 유저아이디 찾기 (일웅필요함)
+    @Select("SELECT user_id FROM users WHERE nickname = #{nickname}")
+    int getUserIdByNickName(String nickname);
     
     // 유저 수정
     @Update("UPDATE users " +
