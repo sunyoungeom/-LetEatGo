@@ -16,6 +16,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import post.PostMapper;
+import post_review.ReviewMapper;
 import user.UserMapper;
 import websocket.ChatMapper;
 
@@ -33,6 +34,7 @@ public class MyWebContextListener implements ServletContextListener {
 		configuration.addMapper(UserMapper.class);
 		configuration.addMapper(PostMapper.class);
 		configuration.addMapper(ChatMapper.class);
+		configuration.addMapper(ReviewMapper.class);
 		factory = new SqlSessionFactoryBuilder().build(configuration);
 	}
 	

@@ -20,7 +20,6 @@ public class AuthenticationFilter implements Filter {
 
 		if (isLoggedIn || request.getRequestURI().equals(loginUrl)) {
 			// 로그인이 되어 있거나 로그인 페이지로의 요청이면 요청을 계속 진행
-			System.out.println("로그인필터테스트");
 			chain.doFilter(request, response);
 		} else {
 			// 로그인이 되어 있지 않으면 로그인 페이지로 리다이렉트
