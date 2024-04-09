@@ -1,6 +1,7 @@
 package post;
 import org.apache.ibatis.annotations.*;
 
+import post_review.Review;
 import user.User;
 
 import java.util.List;
@@ -49,5 +50,11 @@ public interface PostMapper {
     @Insert("INSERT INTO post_tag (post_id,budget,booze,age,gender,peopleLimit)" +
     		"values (#{postid},#{post_tag.budget},#{post_tag.booze},#{post_tag.age},#{post_tag.gender},#{post_tag.peopleLimit})")
     void createPostTag(@Param("postid") int postid,@Param("post_tag")PostTag post_tag);
+   
+    
+    @Select("select * from posts where place = #{place}")
+    List<Post> getPostByPlace(String place);
+    
+    
 }
     

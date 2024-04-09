@@ -17,6 +17,7 @@ public class MapServlet extends HttpServlet {
       System.out.println(requestURI);
       
       req.getRequestDispatcher("/WEB-INF/map/map.jsp").forward(req, resp);
+      
    }
 
 }

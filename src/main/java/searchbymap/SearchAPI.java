@@ -23,7 +23,7 @@ public class SearchAPI {
         keyword = URLEncoder.encode(keyword, "UTF-8");
 
         String apiUrl = "https://dapi.kakao.com/v2/search/blog";
-        String queryString = String.format("query=%s&size=4", keyword);
+        String queryString = String.format("query=%s&size=6", keyword);
         String requestUrl = apiUrl + "?" + queryString;
 
         URL url = new URL(requestUrl);

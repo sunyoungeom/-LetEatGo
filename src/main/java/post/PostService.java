@@ -37,12 +37,11 @@ public class PostService {
 			postMapper.createPost(post, user);
 
 			sqlSession.commit();
-			
-			
+
 			int lastInsertId = postMapper.lastInsertId();
-			
+
 			return lastInsertId;
-			
+
 		} catch (Exception e) {
 			System.out.println("커밋 실패");
 			return 0;
@@ -111,8 +110,16 @@ public class PostService {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 			postMapper.createPostTag(postId, postTag);
-			
+
 			sqlSession.commit();
+		}
+	}
+
+	public List<Post> getPostsByPlace(String place) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+			
+			return postMapper.getPostByPlace(place);
 		}
 	}
 
