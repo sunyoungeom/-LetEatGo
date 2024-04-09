@@ -15,11 +15,13 @@ public interface ChatMapper {
             "VALUES (#{postId}, #{senderId}, #{content}, #{sentAt})")
     void insertMessage(Message message);
 
-
     @Delete("DELETE FROM messages WHERE message_id = #{messageId}")
     void deleteMessage(int messageId);
     
     @Select("SELECT * FROM messages WHERE conversation_id = #{postId}")
     List<Message> getMessagesByPostId(@Param("postId") Post postId);
+    
+    @Insert("INSERT INTO conversations ()")
+    void enterChat();
 
 }

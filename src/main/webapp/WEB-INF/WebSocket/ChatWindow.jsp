@@ -32,8 +32,8 @@ function sendMessage() {
         alert("게시물을 선택하세요.");
         return;
     }
-    if (messageContent = null) {
-		    	
+    if (!messageContent) { // 메시지가 비어있는 경우 전송하지 않음
+        return;
     }
     
 
@@ -43,7 +43,6 @@ function sendMessage() {
         sender: nickname,
         content: messageContent,
         sendTime: new Date().toISOString().slice(0,10) + ' ' + getCurrentTime() + ':00'
-        
     };
 
     // 서버로 JSON 데이터 전송
