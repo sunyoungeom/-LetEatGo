@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page isELIgnored="true" %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -159,6 +164,7 @@
     </style>
   </head>
   <body>
+  <%@ include file="../user/navigation.jsp"%>
     <div class="map_wrap">
       <div
         id="map"
@@ -199,8 +205,8 @@
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"
     ></script>
     <script>
-      // 사용자 주소기반으로 첫지도 위치 특정
-      const keywordinput = document.getElementById("keyword");
+        // 사용자 주소기반으로 첫지도 위치 특정
+        const keywordinput = document.getElementById("keyword");
       const apiURL = "http://localhost:8080/map/keyword";
 
       fetch(apiURL)
@@ -336,9 +342,10 @@
                   // 검색 결과를 출력합니다.
                   data.forEach((element) => {
                     // 결과를 보여줄 요소들을 생성합니다.
-                    let h3 = document.createElement("h3");
+                    let h3 = document.createElement("h2");
                     let p = document.createElement("p");
                     let p2 = document.createElement("p");
+                    let hr = document.createElement("hr");
 
                     // 결과의 제목, 블로그 URL, 내용을 설정합니다.
                     h3.innerText = decodeHtmlCharCodes(`${element.title}`);
@@ -350,6 +357,7 @@
                     resultTitle.appendChild(h3);
                     resultTitle.appendChild(p);
                     resultTitle.appendChild(p2);
+                    resultTitle.appendChild(hr)
                   });
                
                 

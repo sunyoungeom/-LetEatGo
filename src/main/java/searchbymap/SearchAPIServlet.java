@@ -1,6 +1,7 @@
 package searchbymap;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -46,9 +47,10 @@ public class SearchAPIServlet extends HttpServlet {
             List<SearchResult> list = SearchAPI.searchBlogAsJson(keyword);
 
             ServletUtil.sendJsonBody(list, resp);
+            
 
          } else if (requestURI.endsWith("/map/search/createpost")) {
-            req.getRequestDispatcher("/WEB-INF/post/createpost.html").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/post/createpost.jsp").forward(req, resp);
 
          } else {
 

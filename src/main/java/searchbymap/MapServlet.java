@@ -16,7 +16,7 @@ public class MapServlet extends HttpServlet {
       String requestURI = req.getRequestURI();
       System.out.println(requestURI);
       
-      req.getRequestDispatcher("/WEB-INF/map/map.html").forward(req, resp);
+      req.getRequestDispatcher("/WEB-INF/map/map.jsp").forward(req, resp);
    }
 
 }
