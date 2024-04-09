@@ -50,4 +50,21 @@ public class ReviewService {
             sqlSession.commit();
         }
     }
+    
+    // 특정 게시물에 대한 리뷰 목록 조회 메서드
+    public List<Review> getReviewsByPostId(int postId) {
+        try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+            ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
+            return reviewMapper.getReviewsByPostId(postId);
+        }
+    }
+    
+    // 특정 유저가 작성한 리뷰 목록 조회 메서드
+    public List<Review> getReviewsByUserId(int userId) {
+        try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+            ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
+            return reviewMapper.getReviewsByUserId(userId);
+        }
+    }
+
 }

@@ -2,7 +2,9 @@ package post;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,44 +21,66 @@ import user.User;
 import user.UserService;
 import util.ServletUtil;
 
-@WebServlet(urlPatterns = {"/post/detail", "/post/addReview"})
+@WebServlet(urlPatterns = { "/post/detail", "/post/addReview", "/post/getUserId", "/post/deleteReview/*" })
 public class PostDetailServlet extends HttpServlet {
 	private PostService postService = new PostService();
 	private UserService userService = new UserService();
-	private ReviewService reviewService =new ReviewService();
+	private ReviewService reviewService = new ReviewService();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		// GET 요청을 처리합니다.
 		request.getRequestDispatcher("/WEB-INF/post/post_detail.jsp").forward(request, response);
 	}
 
 	@Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestURI = req.getRequestURI();
-        if (requestURI.endsWith("/post/detail")) {
-            // 게시물 상세 정보 요청 처리
-        	int postId = Integer.parseInt(req.getParameter("post_Id"));
-            Post post = postService.getPostById(postId);
-            User user = userService.getUser(post.getWriteUser_Id());
-            List<Object> list = new ArrayList<Object>();
-            list.add(post);
-            list.add(user);
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String requestURI = req.getRequestURI();
+		if (requestURI.endsWith("/post/detail")) {
+			// 게시물 상세 정보 요청 처리
+			int postId = Integer.parseInt(req.getParameter("post_Id"));
+			Post post = postService.getPostById(postId);
+			User user = userService.getUser(post.getWriteUser_Id());
 
-            // JSON 형태로 변환하여 응답합니다.
-            ObjectMapper mapper = new ObjectMapper();
-            resp.setContentType("application/json");
-            mapper.writeValue(resp.getWriter(), list);
-        } else if (requestURI.endsWith("/post/addReview")) {
-            // 리뷰 추가 요청 처리
-            // 나머지 리뷰 관련 로직을 작성하세요.
-        	String requestBody = ServletUtil.readBody(req);
-        	ObjectMapper mapper = new ObjectMapper();
-        	Review review = mapper.readValue(requestBody, Review.class);
-        	reviewService.addReview(review);
-            resp.setStatus(HttpServletResponse.SC_OK); // 성공적으로 처리되었다는 응답 코드를 반환합니다.
-        }
-    }
+			// 해당 게시물의 리뷰 목록도 함께 가져옵니다.
+			List<Review> reviews = reviewService.getReviewsByPostId(postId);
+			// 게시물과 리뷰 목록을 함께 담아 JSON 형태로 응답합니다.
+			Map<String, Object> responseMap = new HashMap<>();
+			responseMap.put("post", post);
+			responseMap.put("user", user);
+			responseMap.put("reviews", reviews);
+
+			// JSON 형태로 변환하여 응답합니다.
+			ObjectMapper mapper = new ObjectMapper();
+			resp.setContentType("application/json");
+			mapper.writeValue(resp.getWriter(), responseMap);
+		} else if (requestURI.endsWith("/post/addReview")) {
+			// 리뷰 추가 요청 처리
+			String requestBody = ServletUtil.readBody(req);
+			ObjectMapper mapper = new ObjectMapper();
+			Review review = mapper.readValue(requestBody, Review.class);
+			reviewService.addReview(review);
+			
+		} 
+		else if (requestURI.endsWith("/post/getUserId")) {
+			User user = (User) req.getSession().getAttribute("user");
+			resp.setContentType("application/json");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(resp.getWriter(), user);
+		}
+	}
+
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+	    String[] pathParts = pathInfo.split("/");
+	    String reviewId = pathParts[1];
+		
+	    System.out.println(reviewId);
+	    reviewService.deleteReview(Integer.parseInt(reviewId));
+	    resp.setStatus(HttpServletResponse.SC_OK);
+	}
+	
 }
