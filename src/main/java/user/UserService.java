@@ -113,4 +113,11 @@ public class UserService {
 	        e.printStackTrace();
 		}
 	}
+	
+	public int getUserIdByNickName(String nickname) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getUserIdByNickName(nickname);
+	    } 
+	}
 }

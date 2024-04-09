@@ -11,7 +11,7 @@ public interface PostMapper {
 	@Select("SELECT * FROM posts")
     List<Post> getAllPosts();
 	
-	// 특정 게시문 조회
+	// 특정 게시물 조회
     @Select("SELECT * FROM posts WHERE post_id = #{post_Id}")
     Post getPostById(@Param("post_Id") int postId);
     
@@ -20,13 +20,17 @@ public interface PostMapper {
     List<Post> getUserPostList(@Param("writeuser_id") int writeuser_id);
     
     // 게시물 작성
-    @Insert("INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate) " +
-            "VALUES (#{post.title}, #{post.content}, #{post.writeuser_id}, #{post.expiredate}, #{post.resistdate})")
-    void createPost(@Param("post")Post post, @Param("user")User user);
+    @Insert(value = "INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate,place) " +
+            "VALUES (#{post.title}, #{post.content}, #{post.writeUser_Id}, #{post.expireDate}, #{post.resistDate}, #{post.place})")
+    @SelectKey(keyProperty = "post_id", statement =  "SELECT LAST_INSERT_ID();" , resultType = Integer.class, before = false)
+    int createPost(@Param("post")Post post, @Param("user")User user);
 
- // 게시물 업데이트
+    
+    @Select("SELECT LAST_INSERT_ID()")
+    int lastInsertId();
+    
     @Update("UPDATE posts " +
-            "SET content = #{post.content}, " +
+            "SET content = #{post.content}, " + " title = #{post.title}," +
             "resistdate = NOW(), expiredate = #{post.expireDate}, status = #{post.status} " +
             "WHERE post_id = #{post.postId}")
     void updatePost(@Param("post") Post post);
@@ -42,5 +46,8 @@ public interface PostMapper {
     @Select("SELECT COUNT(*) FROM posts WHERE status = 0")
     int countAll();
     
+    @Insert("INSERT INTO post_tag (post_id,budget,booze,age,gender,peopleLimit)" +
+    		"values (#{postid},#{post_tag.budget},#{post_tag.booze},#{post_tag.age},#{post_tag.gender},#{post_tag.peopleLimit})")
+    void createPostTag(@Param("postid") int postid,@Param("post_tag")PostTag post_tag);
 }
     

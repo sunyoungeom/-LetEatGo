@@ -16,6 +16,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import post.PostMapper;
+import post_review.ReviewMapper;
 import user.UserMapper;
 import websocket.ChatMapper;
 
@@ -33,12 +34,16 @@ public class MyWebContextListener implements ServletContextListener {
 		configuration.addMapper(UserMapper.class);
 		configuration.addMapper(PostMapper.class);
 		configuration.addMapper(ChatMapper.class);
+		configuration.addMapper(ReviewMapper.class);
 		factory = new SqlSessionFactoryBuilder().build(configuration);
 	}
 	
 	private void initDataSource() {
 		BasicDataSource ds = new BasicDataSource();
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//		ds.setUrl("jdbc:mysql://localhost:3306/board");
+//		ds.setUsername("root");
+//		ds.setPassword("root");
 		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
 		ds.setUsername("team1");
 		ds.setPassword("root");

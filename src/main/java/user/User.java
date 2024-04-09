@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
+	private int user_id;
 	private String id;
 	private String password;
 	private Date join_date;
