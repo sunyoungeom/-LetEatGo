@@ -31,6 +31,7 @@ public class ChatServer {
 
     @OnMessage
     public void onMessage(String message, Session session, @PathParam("post_Id") Integer postId) throws IOException {
+    	System.out.println("jjnijnbihui");
         System.out.println("메시지 전송: " + session.getId() + ": " + message); // 받은 메시지 콘솔 출력
         String[] parts = message.split(" ", 3);
         if (parts.length >= 3 && (parts[0].equals("/w") || parts[0].equals("/ㅈ") || parts[0].equals("/W"))) {

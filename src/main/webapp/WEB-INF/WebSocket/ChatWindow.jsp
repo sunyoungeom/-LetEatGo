@@ -25,7 +25,7 @@ window.onload = function() {
     nickname = document.getElementById("nickname").value;
 }
 
-// 메시지 전송
+//메시지 전송
 function sendMessage() {
     var messageContent = chatMessage.value; // 메시지 내용
     if (!postId) {
@@ -39,7 +39,7 @@ function sendMessage() {
 
     // JSON 데이터 생성
     var jsonData = { 
-    	conversation: postId,
+        conversation: postId,
         sender: nickname,
         content: messageContent,
         sendTime: new Date().toISOString().slice(0,10) + ' ' + getCurrentTime() + ':00'
@@ -57,11 +57,12 @@ function sendMessage() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json();
+        return response.json(); // 서버로부터 JSON 형식의 응답을 받음
     })
     .then(data => {
         // 서버에서 처리한 결과에 대한 로직 추가
         console.log(data);
+        // 예시: 서버로부터 받은 응답이 성공적으로 처리되었을 때 실행할 로직 추가
     })
     .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
@@ -78,6 +79,7 @@ function sendMessage() {
     // 대화창 스크롤
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
+
 
 // 엔터 키 입력 처리
 function enterKey() {
