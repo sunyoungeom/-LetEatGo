@@ -20,8 +20,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import static util.ServletUtil.*;
 
-@WebServlet(urlPatterns = {"/createPost", "/post", "/post/mypage"
-	})
+@WebServlet(urlPatterns = {"/createPost", "/post", "/post/mypage" })
 public class CRUDPostServlet extends HttpServlet {
 	PostService postService = new PostService();
 	@Override

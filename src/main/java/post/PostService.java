@@ -118,8 +118,16 @@ public class PostService {
 	public List<Post> getPostsByPlace(String place) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			return postMapper.getPostsByPlace(place);
+		}
+	}
+
+	public List<Post> getPlaceById(int id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 			
-			return postMapper.getPostByPlace(place);
+			return postMapper.getPlaceById(id);
 		}
 	}
 
