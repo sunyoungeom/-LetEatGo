@@ -27,16 +27,19 @@ public class UserLeaveController extends HttpServlet {
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String body = ServletUtil.readBody(request);
+		System.out.println(body);
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode jsonNode = mapper.readTree(body);
 
+		String inputId = jsonNode.get("id").asText();
 		String inputPassword = jsonNode.get("password").asText();
 
+		
 		HttpSession session = request.getSession(false);
 		if (session != null && session.getAttribute("user") != null) {
 			User user = (User) session.getAttribute("user");
 			// 입력된 비밀번호와 사용자의 비밀번호를 비교하여 일치하면 회원을 삭제하고 세션을 무효화
-			if (user.getPassword().equals(inputPassword)) {
+			if (user.getId().equals(inputId) && user.getPassword().equals(inputPassword)) {
 				System.out.println("일치");
 				UserService userService = new UserService();
 				userService.deleteUser(user.getId());
