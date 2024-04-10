@@ -28,21 +28,25 @@ public class ChatwindowServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String body = ServletUtil.readBody(request);
-    	ObjectMapper mapper = new ObjectMapper();
-    	JsonNode jsonNode = mapper.readTree(body);
-    	int postId = jsonNode.get("conversation").asInt();
-    	String sender = jsonNode.get("sender").asText();
-    	String content = jsonNode.get("content").asText();
-    	String sendTime = jsonNode.get("sendTime").asText();
-    	UserService userService = new UserService();
-    	int userId = userService.getUserIdByNickName(sender);
-    	
-    	Message message = new Message(postId, userId, content, sendTime);
-    	ChatService chatService = new ChatService();
-    	chatService.insertMessage(message);
-//        int postId = Integer.parseInt(request.getParameter("post_Id")); // POST 요청에서 post_id 파라미터를 정수로 변환하여 받아옴
-//        request.setAttribute("post_Id", postId); // post_id 값을 request의 attribute로 설정하여 JSP 페이지로 전달
+//        String body = ServletUtil.readBody(request);
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode jsonNode = mapper.readTree(body);
+//        int postId = jsonNode.get("post_Id").asInt(); // postId 가져오기
+//        String sender = jsonNode.get("sender").asText();
+//        String content = jsonNode.get("content").asText();
+//        String sendTime = jsonNode.get("sendTime").asText();
+//        UserService userService = new UserService();
+//        int userId = userService.getUserIdByNickName(sender);
+//
+//        Message message = new Message(postId, userId, content, sendTime);
+//        ChatService chatService = new ChatService();
+//        chatService.insertMessage(message);
+//        response.setContentType("application/json");
+//        response.setCharacterEncoding("UTF-8");
+//        response.getWriter().write("{\"success\": true}");
+//        response.getWriter().write("{\"success\": true}");
+//        int postId2 = Integer.parseInt(request.getParameter("post_Id")); // POST 요청에서 post_id 파라미터를 정수로 변환하여 받아옴
+//        request.setAttribute("post_Id", postId2); // post_id 값을 request의 attribute로 설정하여 JSP 페이지로 전달
 //        request.getRequestDispatcher("/WEB-INF/WebSocket/ChatWindow.jsp").forward(request, response);
     }
 }
