@@ -32,7 +32,9 @@ public class PostDetailServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		// GET 요청을 처리합니다.
+		
 		request.getRequestDispatcher("/WEB-INF/post/post_detail.jsp").forward(request, response);
+		
 	}
 
 	@Override
@@ -42,6 +44,9 @@ public class PostDetailServlet extends HttpServlet {
 			// 게시물 상세 정보 요청 처리
 			int postId = Integer.parseInt(req.getParameter("post_Id"));
 			Post post = postService.getPostById(postId);
+			
+			postService.increasePostViews(postId);
+			
 			User user = userService.getUser(post.getWriteUser_Id());
 
 			// 해당 게시물의 리뷰 목록도 함께 가져옵니다.

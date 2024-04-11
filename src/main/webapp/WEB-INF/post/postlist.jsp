@@ -56,8 +56,9 @@
 						<thead class="table-light">
 							<tr>
 								<th scope="col" style="text-align: center;">#</th>
-								<th scope="col">내용</th>
+								<th scope="col">제목</th>
 								<th scope="col">작성일</th>
+								<th scope="col">조회수</th>
 							</tr>
 						</thead>
 						<tbody class="table-group-divider">
@@ -111,33 +112,41 @@ function loadPosts(page) {
             let tdId = document.createElement("td");
             let tdContent = document.createElement("td");
             let tdresistdate = document.createElement("td");
+            let tdview = document.createElement("td");
+            
             tdId.innerText = `${element.post_Id}`;
-            tdContent.innerText = `${element.content}`;
+            tdContent.innerText = `${element.title}`;
             tdresistdate.innerText = `${element.resistdate}`;
+            tdview.innerText = `${element.view}`;
             
       	   // 각 셀에 스코프 및 스타일 지정
             tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
             tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
             tdContent.setAttribute("scope", "col");
-            tdContent.style.width = "80%"; // 내용 셀의 너비를 설정합니다.
+            tdContent.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
             tdresistdate.setAttribute("scope", "col");
             tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
+            tdview.setAttribute("scope", "col");
+            tdview.style.width = "7%"
             
             tdId.style.textAlign = "center";
+            tdview.style.textAlign = "center";
             
             // 클릭 이벤트 추가하여 상세 페이지로 이동
-            contenttr.addEventListener("click", () => {
+            tdContent.addEventListener("click", () => {
                 window.location.href = `detail?post_Id=${element.post_Id}`;
             });
             
             contenttr.appendChild(tdId);
             contenttr.appendChild(tdContent);
             contenttr.appendChild(tdresistdate);
+            contenttr.appendChild(tdview);
             tbody.appendChild(contenttr);
         });
         
         // 페이지네이션 표시
         displayPagination(data.totalPages, page);
+        
     });
 }
 
@@ -236,5 +245,16 @@ function createPaginationItem(label, innerHTML) {
     
     return listItem;
 }
+
+window.addEventListener('pageshow', function(event) {
+    var historyTraversal = event.persisted || 
+                           (typeof window.performance != 'undefined' && 
+                                window.performance.navigation.type === 2);
+    if (historyTraversal) {
+        // 페이지가 캐시에서 불러와질 때 새로고침하도록 작업을 수행합니다.
+        window.location.reload();
+    }
+});
+
     </script>
 </html>

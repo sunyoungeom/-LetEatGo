@@ -221,13 +221,14 @@
 <body>
 	<%@ include file="../user/navigation.jsp"%>
 	<h1>게시물 작성</h1>
-	<form id="postForm" action="/createPost" method="post">
+	<form id="postForm" action="/post/editsave" method="post">
 		<div id="container">
 			<label for="title">제목:</label><br /> <input id="title" name="title" /><br />
 			<br />
 
 			<p>언제 먹을까요?</p>
 			<input type="date" id="expireDate" name="expireDate" /><br />
+			
 			<br />
 
 			<form id="mapForm">
@@ -266,6 +267,7 @@
 			<button id="openTagDialog" type="button">tag</button>
 			<br />
 			<dialog id="dialogForm"></dialog>
+			<input type="hidden" id=postId name="postId"/>
 			<br />
 			<br /> <input type="submit" value="등록" />
 		</div>
@@ -288,48 +290,74 @@
       const place = document.getElementById("place");
       const submitButton = document.querySelector('input[type="submit"]');
       
+
+      
  	  // 현재 URL의 쿼리 스트링을 가져옵니다.
       const queryString = window.location.search;
       // URLSearchParams 객체를 사용하여 쿼리 스트링을 파싱합니다.
       const urlParams = new URLSearchParams(queryString);
       // postId 파라미터 값을 가져옵니다.
       const postId = urlParams.get('postId');
-
+      
       fetch(`http://localhost:8080/post/editpost?postId=${postId}`, {
-          method: 'PUT' 
-      })
-      .then((resp) => resp.json())
-      .then((data) => {
-                console.log(data);
+    	    method: 'PUT' 
+    	})
+    	.then((resp) => resp.json())
+    	.then((data) => {
+    	    // 서버에서 받은 JSON 데이터 중에서 필요한 정보를 추출합니다.
+    	    const post = data[0]; // 첫 번째 게시물 정보를 가져옵니다.
+    	    const posttag= data[1];
 
-                
-                
-                
-            })
-      .catch(error => {
-          // 네트워크 오류 등 예외 발생 시 처리합니다.
-          console.error('요청 중 오류가 발생했습니다:', error);
-      });
+    	    // 가져온 게시물 정보를 사용하여 DOM 요소를 업데이트합니다.
+    	    const titleInput = document.getElementById("title");
+    	    const contentElement = document.getElementById("content");
+    	    const expireDateInput = document.getElementById("expireDate"); 
+    	    const postIdInput = document.getElementById("postId"); 
+    	    
+    	    titleInput.value = post.title; // 서버에서 받은 게시물의 제목을 입력 필드에 설정합니다
+    	    contentElement.innerText = post.content;
+    	    postIdInput.value = post.post_Id; 
+    	    
+    	    
+    	    
+    	    
+    	    if (post.expireDate) {
+    	        expireDateInput.value = post.expireDate;
+    	    }
+    	    
+    	    openTagDialog(posttag);
+    	    
+    	    alert('장소를 지정해주세요.');
+			
+    	    
+    	})
+    	.catch(error => {
+    	    // 네트워크 오류 등 예외 발생 시 처리합니다.
+    	    console.error('요청 중 오류가 발생했습니다:', error);
+    	});
+      	
+   	    
+      
+      
+     
       
       // 제출 버튼 클릭 이벤트를 추가합니다.
-      submitButton.addEventListener("click", function (event) {
-        // 필드의 값을 가져옵니다.
-        const title = document.getElementById("title").value.trim();
-        const expireDate = document.getElementById("expireDate").value.trim();
-        const content = document.getElementById("content").value.trim();
+     // 제출 버튼 클릭 이벤트를 추가합니다.
+	submitButton.addEventListener("click", function (event) {
+    // 필드의 값을 가져옵니다.
+    const title = document.getElementById("title").value.trim();
+    const expireDate = document.getElementById("expireDate").value.trim();
+    const content = document.getElementById("content").value.trim();
+    const placeMapValue = document.getElementById("placeMap").value.trim();
+  
+    // 필드의 내용이 null인지 확인합니다.
+    if (title === "" || expireDate === "" || content === "" || placeMapValue === "") {
+        // 필드의 내용이 null이면 등록 동작을 막습니다.
+        event.preventDefault();
+        alert("제목, 만료일, 장소 및 내용을 입력하세요.");
+    } 
+});
 
-        // 필드의 내용이 null인지 확인합니다.
-        if (
-          title === "" ||
-          expireDate === "" ||
-          content === "" ||
-          placeMap === ""
-        ) {
-          // 필드의 내용이 null이면 등록 동작을 막습니다.
-          event.preventDefault();
-          alert("제목, 만료일 ,장소 및 내용을 입력하세요.");
-        }
-      });
 
       openPlaceMap.addEventListener("click", openMapDialog);
 
@@ -369,7 +397,7 @@
         // 키워드로 장소를 검색합니다
 
         // 키워드 검색을 요청하는 함수입니다
-        function searchPlaces(e) {
+        function searchPlaces() {
           var keyword = document.getElementById("keyword").value + "음식점";
 
           if (!keyword.replace(/^\s+|\s+$/g, "")) {
@@ -587,13 +615,16 @@
         }
       }
 
+      
+      
       openTagDialogBtn.addEventListener("click", openTagDialog);
 
-      function openTagDialog(e) {
+      function openTagDialog(postTag) {
         fetch("http://localhost:8080/tagform.html")
           .then((resp) => resp.text())
           .then((inner) => {
             dialogForm.innerHTML = inner;
+            confirmTagDialogg(postTag);
             dialogForm.showModal();
 
             const closeTagDialogBtn = document.getElementById("closeTagDialog");
@@ -616,53 +647,85 @@
         dialogForm.close();
       }
 
+      function confirmTagDialogg(postTag) {
+    	    // 인당 한도 금액 선택 여부 확인
+    	    const limitChecked = document.querySelector('input[name="budget"][value="' + postTag.budget + '"]');
+    	    if (limitChecked) limitChecked.checked = true;
+
+    	    // 음주 유무 선택 여부 확인
+    	    const drinkChecked = document.querySelector('input[name="booze"][value="' + postTag.booze + '"]');
+    	    if (drinkChecked) drinkChecked.checked = true;
+
+    	    // 나이 선택 여부 확인
+    	    const ageChecked = document.querySelector('input[name="age"][value="' + postTag.age + '"]');
+    	    if (ageChecked) ageChecked.checked = true;
+
+    	    // 성별 선택 여부 확인
+    	    const genderChecked = document.querySelector('input[name="gender"][value="' + postTag.gender + '"]');
+    	    if (genderChecked) genderChecked.checked = true;
+
+    	    // 인원수 선택 여부 확인
+    	    const peopleLimitChecked = document.querySelector('input[name="peopleLimit"][value="' + postTag.peopleLimit + '"]');
+    	    if (peopleLimitChecked) peopleLimitChecked.checked = true;
+
+    	    // 결과를 tagResult 영역에 출력합니다.
+    //	    tagResult.innerHTML = `<p>인당 한도 금액: ${postTag.budget}</p>
+    	//                           <p>음주 유무: ${postTag.booze}</p>
+    	  //                         <p>나이: ${postTag.age}</p>
+    	    //                       <p>성별: ${postTag.gender}</p>
+    	      //                     <p>인원수: ${postTag.peopleLimit}</p>`;
+
+    	    // 다이얼로그를 닫습니다.
+    	   // dialogForm.close();
+    	}
       function confirmTagDialog(e) {
-        e.preventDefault();
+    	  e.preventDefault();
 
-        let budget = "";
-        let booze = "";
-        let age = "";
-        let gender = "";
-        let peopleLimit = "";
+          let budget = "";
+          let booze = "";
+          let age = "";
+          let gender = "";
+          let peopleLimit = "";
 
-        // 인당 한도 금액 선택 여부 확인
-        const limitChecked = document.querySelector(
-          'input[name="budget"]:checked'
-        );
-        budget = limitChecked ? limitChecked.value : "선택안함";
+          // 인당 한도 금액 선택 여부 확인
+          const limitChecked = document.querySelector(
+            'input[name="budget"]:checked'
+          );
+          budget = limitChecked ? limitChecked.value : "선택안함";
 
-        // 음주 유무 선택 여부 확인
-        const drinkChecked = document.querySelector(
-          'input[name="booze"]:checked'
-        );
-        booze = drinkChecked ? drinkChecked.value : "선택안함";
+          // 음주 유무 선택 여부 확인
+          const drinkChecked = document.querySelector(
+            'input[name="booze"]:checked'
+          );
+          booze = drinkChecked ? drinkChecked.value : "선택안함";
 
-        // 나이 선택 여부 확인
-        const ageChecked = document.querySelector('input[name="age"]:checked');
-        age = ageChecked ? ageChecked.value : "선택안함";
+          // 나이 선택 여부 확인
+          const ageChecked = document.querySelector('input[name="age"]:checked');
+          age = ageChecked ? ageChecked.value : "선택안함";
 
-        // 성별 선택 여부 확인
-        const genderChecked = document.querySelector(
-          'input[name="gender"]:checked'
-        );
-        gender = genderChecked ? genderChecked.value : "선택안함";
+          // 성별 선택 여부 확인
+          const genderChecked = document.querySelector(
+            'input[name="gender"]:checked'
+          );
+          gender = genderChecked ? genderChecked.value : "선택안함";
 
-        // 인원수 선택 여부 확인
-        const peopleLimitChecked = document.querySelector(
-          'input[name="peopleLimit"]:checked'
-        );
-        peopleLimit = peopleLimitChecked
-          ? peopleLimitChecked.value
-          : "선택안함";
+          // 인원수 선택 여부 확인
+          const peopleLimitChecked = document.querySelector(
+            'input[name="peopleLimit"]:checked'
+          );
+          peopleLimit = peopleLimitChecked
+            ? peopleLimitChecked.value
+            : "선택안함";
 
-        // 결과를 tagResult 영역에 출력합니다.
-        tagResult.innerHTML = `<p>인당 한도 금액: ${budget}</p>
-                           <p>음주 유무: ${booze}</p>
-                           <p>나이: ${age}</p>
-                           <p>성별: ${gender}</p>
-                           <p>인원수: ${peopleLimit}</p>`;
-        dialogForm.close();
-      }
+          // 결과를 tagResult 영역에 출력합니다.
+          tagResult.innerHTML = `<p>인당 한도 금액: ${budget}</p>
+                             <p>음주 유무: ${booze}</p>
+                             <p>나이: ${age}</p>
+                             <p>성별: ${gender}</p>
+                             <p>인원수: ${peopleLimit}</p>`;
+          dialogForm.close();
+        }
+
     </script>
 
 </html>

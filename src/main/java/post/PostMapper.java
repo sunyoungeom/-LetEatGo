@@ -12,6 +12,10 @@ public interface PostMapper {
 	@Select("SELECT * FROM posts")
     List<Post> getAllPosts();
 	
+	// 조회수 증가
+	@Update("UPDATE posts SET view = view + 1 WHERE post_id = #{postId}")
+	void increasePostViews(@Param("postId") int postId);
+	
 	// 특정 게시물 조회
     @Select("SELECT * FROM posts WHERE post_id = #{post_Id}")
     Post getPostById(@Param("post_Id") int postId);
@@ -19,6 +23,7 @@ public interface PostMapper {
     // 특정 유저가 작성한 게시물 조회
     @Select("SELECT * FROM posts WHERE writeuser_id = #{writeuser_id}")
     List<Post> getUserPostList(@Param("writeuser_id") int writeuser_id);
+    
     
     // 게시물 작성
     @Insert(value = "INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate,place) " +
@@ -30,10 +35,11 @@ public interface PostMapper {
     @Select("SELECT LAST_INSERT_ID()")
     int lastInsertId();
     
+    //게시글 수정
     @Update("UPDATE posts " +
             "SET content = #{post.content}, " + " title = #{post.title}," +
             "resistdate = NOW(), expiredate = #{post.expireDate}, status = #{post.status} " +
-            "WHERE post_id = #{post.postId}")
+            "WHERE post_id = #{post.post_Id}")
     void updatePost(@Param("post") Post post);
 
     // 게시물 삭제
@@ -57,7 +63,12 @@ public interface PostMapper {
     @Insert("INSERT INTO post_tag (post_id,budget,booze,age,gender,peopleLimit)" +
     		"values (#{postid},#{post_tag.budget},#{post_tag.booze},#{post_tag.age},#{post_tag.gender},#{post_tag.peopleLimit})")
     void createPostTag(@Param("postid") int postid,@Param("post_tag")PostTag post_tag);
-   
+
+    // posttag 수정
+    @Update("UPDATE post_tag SET budget = #{postTag.budget}, booze = #{postTag.booze}, age = #{postTag.age}, gender = #{postTag.gender}, peopleLimit = #{postTag.peopleLimit} WHERE post_id = #{postId}")
+    void updatePostTag( @Param("postTag") PostTag postTag, @Param("postId") int postId);
+
+    
     @Select("Select * FROM post_tag WHERE post_id = #{post_id}")
     PostTag getPostTag(@Param("post_id") int post_id);
     

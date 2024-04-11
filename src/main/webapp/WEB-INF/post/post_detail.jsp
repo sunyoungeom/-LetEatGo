@@ -153,7 +153,8 @@ input[type="button"]:hover {
     let postContentParagraph = document.createElement("p");
     postContentParagraph.innerText = `게시물 내용: ${postContent}`;
     postDetail.appendChild(postContentParagraph);
-	
+    
+    
     if(isCurrentUserId) {
 	 	// 게시물 수정 버튼 생성
 	    let editButton = document.createElement("button");
