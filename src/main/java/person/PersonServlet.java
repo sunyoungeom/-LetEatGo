@@ -32,5 +32,6 @@ public class PersonServlet extends HttpServlet {
 
 		// GET 요청을 처리합니다.
 		request.getRequestDispatcher("/WEB-INF/person/person.jsp").forward(request, response);
+		
 	}
 }

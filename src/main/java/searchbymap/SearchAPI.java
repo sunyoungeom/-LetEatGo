@@ -50,7 +50,7 @@ public class SearchAPI {
                 String title = removeHtmlTags(document.getString("title"));
                 String blogurl = removeHtmlTags(document.getString("url"));
                 String contents = removeHtmlTags(document.getString("contents"));
-
+                String thumbnail= removeHtmlTags(document.getString("thumbnail"));
                 // 각 항목을 20자로 제한
                 if (title.length() > 40) {
                     title = title.substring(0, 40);
@@ -62,7 +62,7 @@ public class SearchAPI {
                     contents = contents.substring(0, 100);
                 }
 
-                SearchResult searchResult = new SearchResult(title, blogurl, contents);
+                SearchResult searchResult = new SearchResult(title, blogurl, contents, thumbnail);
                 resultList.add(searchResult);
             }
             return resultList;
@@ -82,5 +82,6 @@ public class SearchAPI {
         private String title;
         private String blogurl;
         private String contents;
+        private String thumbnail;
     }
 }

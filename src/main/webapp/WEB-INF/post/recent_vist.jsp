@@ -17,6 +17,7 @@
                     recentPostList.innerHTML = "";
                     let h2 = document.createElement("h2");
                     h2.innerText = "최근간 음식점 10곳"
+                   // data.
                     let a  =document.createElement("a");
                     a.href = "";
                     a.innerText = data.placeByIdList;

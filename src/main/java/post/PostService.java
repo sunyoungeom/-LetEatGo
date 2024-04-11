@@ -123,11 +123,11 @@ public class PostService {
 		}
 	}
 
-	public List<Post> getPlaceById(int id) {
+	public List<Post> getPlaceById(int user_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 			
-			return postMapper.getPlaceById(id);
+			return postMapper.getPlaceById(user_id);
 		}
 	}
 
