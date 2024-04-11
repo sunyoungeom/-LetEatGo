@@ -1,5 +1,7 @@
 package websocket;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.SqlSession;
 import listener.MyWebContextListener;
 import post.Post;
@@ -41,6 +43,35 @@ public class ChatService {
             // 예외 처리
         }
     }
+
+	public void insertPrivateMessage(PrivateMessage priMessage) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+    		ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
+    		chatMapper.insertPrivateMessage(priMessage);
+    		sqlSession.commit();
+		} catch (Exception e) {
+            e.printStackTrace();
+            // 예외 처리
+        }
+	}
+	
+	public void insertChatroom(Conversations conversations) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+    		ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
+    		chatMapper.insertChatroom(conversations);
+    		sqlSession.commit();
+		} catch (Exception e) {
+            e.printStackTrace();
+            // 예외 처리
+        }
+	}
+	
+	public Conversations getGIdByGId(int Gid) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
+			return chatMapper.getGIdByGId(Gid);
+		}
+	}
 
 //    public void deleteMessage(int postId) { // 채팅방목록 삭제
 //        try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {

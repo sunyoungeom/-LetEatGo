@@ -36,11 +36,21 @@ function sendMessage() {
         return;
     }
     
+ 	var isWhisper = messageContent.startsWith("/w") || messageContent.startsWith("/ㅈ") || messageContent.startsWith("/W");
+    
     // JSON 데이터 생성
     var jsonData = { 
         sender: nickname,
         content: messageContent
     };
+    
+    // 귓속말인 경우 추가 필드 설정
+    if (isWhisper) {
+        jsonData.isWhisper = true; // 귓속말 여부
+        // 귓속말 대상 추출
+        var whisperParts = messageContent.split(" ");
+        jsonData.receiver = whisperParts[1]; // 귓속말 대상
+    }
 
     // 서버로 JSON 데이터 전송
     webSocket.send(JSON.stringify(jsonData));
@@ -105,6 +115,11 @@ webSocket.onmessage = function(event) {
     chatWindow.scrollTop = chatWindow.scrollHeight;
 };
 
+function disconnect() {
+    // 웹소켓 연결 종료
+    webSocket.close();
+    window.close();
+}
 
 
 // 현재 시간을 가져오는 함수
