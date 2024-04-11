@@ -42,7 +42,7 @@ public class ChatService {
         }
     }
 
-//    public void deleteMessage(int postId) { // 대화기록 삭제
+//    public void deleteMessage(int postId) { // 채팅방목록 삭제
 //        try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 //            ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
 //            chatMapper.deleteMessage(postId);

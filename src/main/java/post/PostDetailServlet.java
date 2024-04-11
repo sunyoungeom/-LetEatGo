@@ -21,7 +21,7 @@ import user.User;
 import user.UserService;
 import util.ServletUtil;
 
-@WebServlet(urlPatterns = { "/post/detail", "/post/addReview", "/post/getUserId", "/post/deleteReview/*" })
+@WebServlet(urlPatterns = { "/post/detail", "/post/addReview", "/post/getUserId", "/post/deleteReview/*", "/post/updateReview/*" })
 public class PostDetailServlet extends HttpServlet {
 	private PostService postService = new PostService();
 	private UserService userService = new UserService();
@@ -78,9 +78,26 @@ public class PostDetailServlet extends HttpServlet {
 	    String[] pathParts = pathInfo.split("/");
 	    String reviewId = pathParts[1];
 		
-	    System.out.println(reviewId);
 	    reviewService.deleteReview(Integer.parseInt(reviewId));
 	    resp.setStatus(HttpServletResponse.SC_OK);
 	}
+
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+	    String[] pathParts = pathInfo.split("/");
+	    String reviewId = pathParts[1];
+	    
+	    String requestBody = ServletUtil.readBody(req);
+	    
+	 // JSON 데이터를 Review 객체로 변환
+	    ObjectMapper mapper = new ObjectMapper();
+	    Review review = mapper.readValue(requestBody, Review.class);
+	    System.out.println(review);
+	    reviewService.updateReview(review);
+	    
+	}
+	
+	
 	
 }

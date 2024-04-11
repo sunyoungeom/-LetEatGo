@@ -11,6 +11,8 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="../Resources/css/styles.css" rel="stylesheet" />
+
+
 <style>
 /* 게시물 상세 페이지 전체를 감싸는 컨테이너의 스타일 */
 body {
@@ -69,19 +71,53 @@ input[type="button"] {
 input[type="button"]:hover {
 	background-color: #218838; /* 버튼 호버 시 배경색 변경 */
 }
+/* 별 모양을 만드는 CSS */
+.star-rating {
+    font-size: 0;
+    display: flex;
+    flex-direction: row-reverse; /* 별을 오른쪽에서 왼쪽으로 배치 */
+    justify-content: flex-end
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.star-rating label:before {
+    content: '☆'; /* 선택되지 않은 별의 모양을 변경 */
+    display: inline-block;
+}
+
+.star-rating input:checked ~ label:before {
+    content: '★';
+    color: gold; /* 채워진 별의 색상을 변경할 수 있습니다. */
+}
 </style>
 </head>
 <body>
+<%@ include file="../user/navigation.jsp"%>
 	<h1>게시물 상세 페이지</h1>
 	<div id="postDetail"></div>
 	<div id="reviewForm">
 		<h2>리뷰 작성</h2>
+		<!-- <i class="bi bi-star"></i>
+		<i class="bi bi-star-fill"></i>
+		<i class="bi bi-star-fill"></i>
+		<i class="bi bi-star-fill"></i>
+		<i class="bi bi-star-fill"></i> -->
 		<form id="reviewFormSubmit">
-			<div class="mb-3">
-				<label for="rating" class="form-label">평점</label> <input
-					type="number" class="form-control" id="rating" name="rating"
-					min="1" max="5" required>
-			</div>
+			 <div class="star-rating">
+            <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
+            <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
+            <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
+            <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
+            <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+        </div>
 			<div class="mb-3">
 				<label for="review" class="form-label">리뷰 내용</label>
 				<!-- 수정: 리뷰 내용을 입력 받는 입력 필드를 textarea로 변경 -->
@@ -108,7 +144,8 @@ input[type="button"]:hover {
     .then(async (data) => {
     const userId = data.user.id;
     const postContent = data.post.content;
-
+    const isCurrentUserId = await isCurrentUser(data.user.user_id);
+    
     let userIdParagraph = document.createElement("p");
     userIdParagraph.innerText = `사용자 ID: ${userId}`;
     postDetail.appendChild(userIdParagraph);
@@ -116,20 +153,57 @@ input[type="button"]:hover {
     let postContentParagraph = document.createElement("p");
     postContentParagraph.innerText = `게시물 내용: ${postContent}`;
     postDetail.appendChild(postContentParagraph);
-
+	
+    if(isCurrentUserId) {
+	 	// 게시물 수정 버튼 생성
+	    let editButton = document.createElement("button");
+	    editButton.innerText = "게시물 수정";
+	    editButton.addEventListener("click", () => {
+	        // 수정 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+	    });
+	    postDetail.appendChild(editButton);
+	
+	    // 게시물 삭제 버튼 생성
+	    let deleteButton = document.createElement("button");
+	    deleteButton.innerText = "게시물 삭제";
+	    deleteButton.addEventListener("click", () => {
+	        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+	    });
+	    postDetail.appendChild(deleteButton);
+    }
+    
     // 리뷰 목록을 받아와서 처리하는 부분 추가
     const reviews = data.reviews;
     for (const review of reviews) {
         const isCurrentUserReview = await isCurrentUser(review.writeUserId); // 프로미스를 기다림
 
         let reviewItem = document.createElement("div");
+     // 별 평점 입력 필드 생성
+        let starRating = document.createElement("div");
+        starRating.classList.add("star-rating");
+        for (let i = 5; i >= 1; i--) {
+            let input = document.createElement("input");
+            input.type = "radio";
+            input.id = `star${i}-${review.reviewId}`; // 별의 id 값에 reviewId를 추가하여 고유성 보장
+            input.name = `star${review.reviewId}`; // 같은 리뷰의 별들은 같은 이름을 가져야 함
+            input.value = i;
+            input.disabled = true; // 수정 불가능하도록 설정
+            if (review.rating === i) {
+                input.checked = true; // 기존 평점에 따라 체크 처리
+            }
+            let label = document.createElement("label");
+            label.htmlFor = `star${i}-${review.reviewId}`; // input의 id와 연결
+            starRating.appendChild(input);
+            starRating.appendChild(label);
+        }
+        reviewItem.appendChild(starRating);
 
-        let ratingParagraph = document.createElement("p");
-        ratingParagraph.innerText = `평점: ${review.rating}`;
-        reviewItem.appendChild(ratingParagraph);
+        // 개행 추가
+        reviewItem.appendChild(document.createElement("br"));
 
+        // 리뷰 내용 입력 필드 생성
         let reviewTextArea = document.createElement("textarea");
-        reviewTextArea.value = `리뷰 내용: ${review.review}`;
+        reviewTextArea.value = review.review;
         reviewTextArea.disabled = true; // 수정 불가능하도록 설정
         reviewTextArea.rows = 2; // 텍스트 필드를 좀 더 길게 출력
         reviewTextArea.cols = 50; // 텍스트 필드를 가로로 더 길게 출력
@@ -139,22 +213,61 @@ input[type="button"]:hover {
             let editButton = document.createElement("button");
             editButton.innerText = "수정";
             editButton.classList.add("edit-btn");
-            editButton.dataset.reviewId = review.id;
+            editButton.dataset.reviewId = review.reviewId;
             editButton.addEventListener("click", () => {
                 // 수정 기능 구현
-                reviewTextArea.disabled = false; // 수정 가능하도록 설정
-                reviewTextArea.focus(); // 수정 필드에 포커스 설정
+                reviewTextArea.disabled = false; // 리뷰 내용 수정 가능하도록 설정
+                reviewTextArea.focus(); // 리뷰 내용 입력 필드에 포커스 설정
+                
+                // 평점 수정 가능하도록 설정
+                for (let input of starRating.querySelectorAll("input")) {
+                    input.disabled = false;
+                }
             });
             reviewItem.appendChild(editButton);
 
             let saveButton = document.createElement("button");
             saveButton.innerText = "저장";
             saveButton.classList.add("save-btn");
-            saveButton.dataset.reviewId = review.id;
+            saveButton.dataset.reviewId = review.reviewId;
             saveButton.addEventListener("click", () => {
                 // 저장 기능 구현
-                reviewTextArea.disabled = true; // 수정 불가능하도록 설정
-                // 여기에 수정된 리뷰 내용을 서버로 전송하는 코드를 추가할 수 있습니다.
+                reviewTextArea.disabled = true; // 리뷰 내용 수정 불가능하도록 설정
+                
+                // 별 평점도 수정 불가능하도록 설정
+                for (let input of starRating.querySelectorAll("input")) {
+                    input.disabled = true;
+                }
+                
+             // 수정된 리뷰 내용과 평점, 리뷰 ID를 가져옴
+                const modifiedReview = reviewTextArea.value;
+                const modifiedRating = starRating.querySelector("input:checked").value;
+                const reviewId = saveButton.dataset.reviewId;
+
+             // 서버에 수정된 리뷰 내용과 평점을 전송하는 코드
+                fetch(`http://localhost:8080/post/updateReview/${reviewId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                    	reviewId: reviewId,
+                        review: modifiedReview,
+                        rating: modifiedRating
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('리뷰가 성공적으로 수정되었습니다.');
+                    } else {
+                        console.error('리뷰 수정 중 오류 발생:', response.status);
+                        alert('리뷰 수정 중 오류가 발생했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('리뷰 수정 중 오류 발생:', error);
+                    alert('리뷰 수정 중 오류가 발생했습니다.');
+                });
             });
             reviewItem.appendChild(saveButton);
         
@@ -165,7 +278,6 @@ input[type="button"]:hover {
             deleteButton.dataset.reviewId = review.reviewId;
             deleteButton.addEventListener("click", (event) => {
                 const reviewId = event.target.dataset.reviewId; // 클릭된 버튼의 데이터 속성인 data-reviewId 가져오기
-                console.log(reviewId);
 
                 // 서버에 삭제 요청을 보내는 코드
                 fetch(`http://localhost:8080/post/deleteReview/${reviewId}`, {
@@ -198,9 +310,9 @@ input[type="button"]:hover {
     });
 
     // 현재 로그인한 사용자의 ID와 리뷰의 작성자 ID를 비교하여 일치 여부를 반환하는 함수
-    async function isCurrentUser(reviewUserId) {
+    async function isCurrentUser(UserId) {
         const currentUserID = await getUserId();
-        return currentUserID === reviewUserId;
+        return currentUserID === UserId;
     }
 
 
@@ -213,7 +325,8 @@ input[type="button"]:hover {
     reviewFormSubmit.addEventListener("submit", function(event) {
         event.preventDefault();
         
-        const rating = document.getElementById("rating").value;
+        const ratingInput = document.querySelector('input[name="rating"]:checked');
+        const rating = ratingInput ? ratingInput.value : null;
         const review = document.getElementById("review").value;
         const postId = document.getElementById("post_Id").value;
         
@@ -266,20 +379,12 @@ function getUserId() {
     })
 } 
 
-var urlParams = new URLSearchParams(window.location.search);
-var post_Id = urlParams.get('post_Id'); // URL 파라미터에서 post_Id를 가져옵니다.
-console.log(post_Id);
 
 // 페이지가 로드될 때 실행되는 함수
 document.addEventListener("DOMContentLoaded", function() {
     // 쿠키에서 닉네임 가져오기
     const nickname = getCookieValue("nickname");
     console.log(nickname);
-
-    // 닉네임이 존재하는 경우 채팅 버튼의 텍스트를 설정
-    if (nickname) {
-        document.getElementById("chatButton").value = `채팅방 참여 (${nickname})`;
-    }
 });
 
 // 쿠키에서 특정 이름의 값 가져오는 함수
@@ -295,18 +400,28 @@ function getCookieValue(name) {
 }
 
 let chatWindow = null;
+var urlParams = new URLSearchParams(window.location.search);
+var post_Id = urlParams.get('post_Id'); // URL 파라미터에서 post_Id를 가져옵니다.
+console.log(post_Id);
 
 function chatWinOpen() {
     const nickname = getCookieValue("nickname"); // 쿠키에서 닉네임 가져오기
     console.log(nickname)
     if (!chatWindow || chatWindow.closed) {
+    	fetch ({
+    		method: 'POST'
+    	})
+    	.then((resp) => resp.json())
+    	.then((data) => {
+    		
+    	})
         const url = "ChatWindow?nickname=" + nickname + "&post_Id=" + post_Id; // URL에 닉네임과 게시물 ID 추가
         chatWindow = window.open(url, "", "width=400, height=550"); // 채팅 창 열기
     } else {
         chatWindow.focus();
+        chatMessage.focus();
     }   
 }
-    
 </script>
 </body>
 </html>

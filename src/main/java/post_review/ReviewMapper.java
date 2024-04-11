@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ReviewMapper {
 	// 리뷰 작성
-	@Insert("INSERT INTO post_reviews (post_id, writeuser_id, rating, review) " +
-	        "VALUES (#{postId}, #{writeUserId}, #{rating}, #{review})")
+	@Insert("INSERT INTO post_reviews (post_id, writeuser_id, rating, review, review_date) " +
+	        "VALUES (#{postId}, #{writeUserId}, #{rating}, #{review}, NOW())")
 	void addReview(Review review);
     
     // 리뷰 전체 조회

@@ -25,7 +25,7 @@ window.onload = function() {
     nickname = document.getElementById("nickname").value;
 }
 
-//메시지 전송
+// 메시지 전송
 function sendMessage() {
     var messageContent = chatMessage.value; // 메시지 내용
     if (!postId) {
@@ -36,50 +36,18 @@ function sendMessage() {
         return;
     }
     
-
     // JSON 데이터 생성
     var jsonData = { 
-        conversation: postId,
         sender: nickname,
-        content: messageContent,
-        sendTime: new Date().toISOString().slice(0,10) + ' ' + getCurrentTime() + ':00'
+        content: messageContent
     };
 
     // 서버로 JSON 데이터 전송
-    fetch('/post/ChatWindow', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jsonData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json(); // 서버로부터 JSON 형식의 응답을 받음
-    })
-    .then(data => {
-        // 서버에서 처리한 결과에 대한 로직 추가
-        console.log(data);
-        // 예시: 서버로부터 받은 응답이 성공적으로 처리되었을 때 실행할 로직 추가
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-    });
-
-    // 채팅창에 메시지 표시
-    var senderName = "나"; // 보내는 사람 이름
-    var messageHtml = "<div class='myMsg'><strong>" + senderName + ": </strong>" + messageContent +"<span class='time'>"+ getCurrentTime() + "</span></div>";
-    chatWindow.innerHTML += messageHtml;
+    webSocket.send(JSON.stringify(jsonData));
 
     // 메시지 입력창 내용 지우기
     chatMessage.value = "";
-
-    // 대화창 스크롤
-    chatWindow.scrollTop = chatWindow.scrollHeight;
 }
-
 
 // 엔터 키 입력 처리
 function enterKey() {
@@ -103,13 +71,10 @@ webSocket.onerror = function(event) {
     chatWindow.innerHTML += "채팅 중 에러가 발생하였습니다.<br/>";
 };
 
-// 메시지를 받았을 때 실행
-// 웹 소켓으로부터 메시지를 받았을 때 호출되는 함수
 webSocket.onmessage = function(event) {
-    var message = event.data; // 이벤트에서 메시지 추출
-    var messageParts = message.split(':'); // 메시지를 콜론(:)을 기준으로 분리
-    var sender = messageParts[0]; // 메시지를 보낸 사용자
-    var content = messageParts[1]; // 메시지 내용
+    var message = JSON.parse(event.data); // JSON 형식으로 메시지 파싱
+    var sender = message.sender; // 메시지를 보낸 사용자
+    var content = message.content; //
 
     // 귓속말 여부 확인
     var isWhisper = content.startsWith("/w") || content.startsWith("/ㅈ") || content.startsWith("/W");
@@ -121,14 +86,26 @@ webSocket.onmessage = function(event) {
         // 귓속말 표시
         if (receiver === nickname) {
             chatWindow.innerHTML += "<div class='whisper-received'>" + sender + " [귓속말]: " + whisperContent + " <span class='time'>" + getCurrentTime() + "</span></div>";
+        } else if (sender === nickname) {
+            chatWindow.innerHTML += "<div class='whisper-sent'>" + sender + " [귓속말] to " + receiver + ": " + whisperContent + " <span class='time'>" + getCurrentTime() + "</span></div>";
         }
     } else {
         // 일반 메시지 표시
-        chatWindow.innerHTML += "<div class='otherMsg'><strong>" + sender + ": </strong>" + content + " <span class='time'>" + getCurrentTime() + "</span></div>";
+        var messageHtml = "";
+        if (sender === nickname) {
+            // 보낸 사람의 채팅은 오른쪽에 표시
+            messageHtml = "<div class='myMsg'><strong>" + sender + ": </strong>" + content + "<span class='time'>" + getCurrentTime() + "</span></div>";
+        } else {
+            // 받는 사람의 채팅은 왼쪽에 표시
+            messageHtml = "<div class='otherMsg'><strong>" + sender + ": </strong>" + content + "<span class='time'>" + getCurrentTime() + "</span></div>";
+        }
+        chatWindow.innerHTML += messageHtml;
     }
     // 대화창 스크롤
     chatWindow.scrollTop = chatWindow.scrollHeight;
 };
+
+
 
 // 현재 시간을 가져오는 함수
 function getCurrentTime() {
