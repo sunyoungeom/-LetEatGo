@@ -1,8 +1,11 @@
 package post_review;
 import org.apache.ibatis.annotations.*;
 
+import post.Post;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ReviewMapper {
 	// 리뷰 작성
@@ -46,4 +49,11 @@ public interface ReviewMapper {
     })
     @Select("SELECT * FROM post_reviews WHERE post_id=#{postId}")
     List<Review> getReviewsByPostId(int postId);
+    
+    // 페이징 처리를 위한 쿼리
+    @Select("SELECT * FROM post_reviews LIMIT #{limit} OFFSET #{offset}")
+	List<Review> getPage(Map<String, Integer> params);
+
+    @Select("SELECT COUNT(*) FROM post_reviews")
+    int countAll();
 }

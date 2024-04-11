@@ -160,6 +160,7 @@ input[type="button"]:hover {
 	    editButton.innerText = "게시물 수정";
 	    editButton.addEventListener("click", () => {
 	        // 수정 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+	        
 	    });
 	    postDetail.appendChild(editButton);
 	
@@ -168,6 +169,17 @@ input[type="button"]:hover {
 	    deleteButton.innerText = "게시물 삭제";
 	    deleteButton.addEventListener("click", () => {
 	        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+	        fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
+	        	method: 'DELETE'
+	        })
+	        .then(response => {
+                if (response.ok) {
+                    console.log('게시글 성공적으로 삭제되었습니다.');
+                } else {
+                    console.error('게시글 삭제 중 오류 발생:', response.status);
+                    alert('게시글 삭제 중 오류가 발생했습니다.');
+                }
+            })
 	    });
 	    postDetail.appendChild(deleteButton);
     }
