@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Timestamp;
@@ -20,26 +21,26 @@ import java.time.LocalDate;
 import java.util.Date;
 import static util.ServletUtil.*;
 
-@WebServlet(urlPatterns = {"/createPost", "/post", "/post/mypage"
+@WebServlet(urlPatterns = {"/createPost", "/post/deletePost"
 	})
 public class CRUDPostServlet extends HttpServlet {
 	PostService postService = new PostService();
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// GET 요청을 처리합니다.
-//		int page = Integer.parseInt(request.getParameter("page"));
-//		int pagePer = Integer.parseInt(request.getParameter("pagePer"));
-		int page = request.getParameter("page") != null && !request.getParameter("page").isEmpty()
-				? Integer.parseInt(request.getParameter("page"))
-				: 1;
-		int pagePer = request.getParameter("pagePer") != null && !request.getParameter("pagePer").isEmpty()
-				? Integer.parseInt(request.getParameter("pagePer"))
-				: 1;
-		PostDTO posts = postService.getPostPage(page, pagePer);
-		
-		// JSON 형태로 변환하여 응답합니다.
-		sendJsonBody(posts, response);
+//		// GET 요청을 처리합니다.
+////		int page = Integer.parseInt(request.getParameter("page"));
+////		int pagePer = Integer.parseInt(request.getParameter("pagePer"));
+//		int page = request.getParameter("page") != null && !request.getParameter("page").isEmpty()
+//				? Integer.parseInt(request.getParameter("page"))
+//				: 1;
+//		int pagePer = request.getParameter("pagePer") != null && !request.getParameter("pagePer").isEmpty()
+//				? Integer.parseInt(request.getParameter("pagePer"))
+//				: 1;
+//		PostDTO posts = postService.getPostPage(page, pagePer);
+//		
+//		// JSON 형태로 변환하여 응답합니다.
+//		sendJsonBody(posts, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -113,15 +114,18 @@ public class CRUDPostServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String body = ServletUtil.readBody(req);
-		System.out.println(body);
-//		int getPost = Integer.parseInt(req.getParameter("postId"));
-//		Post post = postService.getPostById(getPost);
-//		req.setAttribute("post", post);
-		resp.setStatus(HttpServletResponse.SC_OK);
-		resp.getWriter().write("게시물이 성공적으로 삭제되었습니다.");
-//		req.getRequestDispatcher("WEB-INF/post/editpost.jsp").forward(req, resp);
-		
+	    // 게시물 ID를 가져옵니다.
+	    int postId = Integer.parseInt(req.getParameter("postId"));
+	    
+	    // 게시물을 데이터베이스에서 가져옵니다.
+	    Post post = postService.getPostById(postId);
+	    
+	    // 세션에 게시물을 저장합니다.
+	    HttpSession session = req.getSession();
+	    session.setAttribute("post", post);
+	    
+	    // 페이지 이동을 수행합니다.
+	    resp.sendRedirect("/WEB-INF/post/editpost.jsp"); // 적절한 경로를 지정해야 합니다.
 	}
 	
 	
