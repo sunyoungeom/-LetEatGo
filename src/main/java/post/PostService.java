@@ -87,6 +87,27 @@ public class PostService {
 		}
 	}
 
+	public static PostDTO getMyPostPage(int page, int pagePer, int writeuser_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
+			PostMapper mapper = sqlSession.getMapper(PostMapper.class);
+			int totalCount = mapper.myCountAll(writeuser_id);
+			int totalPage = totalCount / pagePer;
+			totalPage += totalCount % pagePer == 0 ? 0 : 1;
+			
+			Map<String, Integer> params = new HashMap<>();
+			params.put("limit", pagePer);
+			params.put("offset", pagePer * (page - 1));
+			
+			List<Post> all = mapper.getMyPage(params, writeuser_id);
+			
+			PostDTO dto = PostDTO.builder().totalPages(totalPage).currentPage(page).itemsPerPage(pagePer).items(all)
+					.build();
+			
+			return dto;
+		}
+	}
+	
+
 	// 게시글 만료 상태 변환?
 	public void statusTransition(int postId) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -130,5 +151,12 @@ public class PostService {
 			return postMapper.getPlaceById(id);
 		}
 	}
-
+	
+	public PostTag getPostTag(int post_id) { 
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+			
+			return postMapper.getPostTag(post_id);
+		}
+	}
 }

@@ -18,29 +18,21 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import static util.ServletUtil.*;
 
-@WebServlet(urlPatterns = {"/createPost", "/post/deletePost"
+@WebServlet(urlPatterns = {"/createPost", "/post/deletePost", "/post/updatePost", "/post/editpost"
 	})
 public class CRUDPostServlet extends HttpServlet {
 	PostService postService = new PostService();
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		// GET 요청을 처리합니다.
-////		int page = Integer.parseInt(request.getParameter("page"));
-////		int pagePer = Integer.parseInt(request.getParameter("pagePer"));
-//		int page = request.getParameter("page") != null && !request.getParameter("page").isEmpty()
-//				? Integer.parseInt(request.getParameter("page"))
-//				: 1;
-//		int pagePer = request.getParameter("pagePer") != null && !request.getParameter("pagePer").isEmpty()
-//				? Integer.parseInt(request.getParameter("pagePer"))
-//				: 1;
-//		PostDTO posts = postService.getPostPage(page, pagePer);
-//		
-//		// JSON 형태로 변환하여 응답합니다.
-//		sendJsonBody(posts, response);
+		   // 게시물 ID를 가져옵니다.
+		request.getRequestDispatcher("/WEB-INF/post/editpost.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -114,18 +106,18 @@ public class CRUDPostServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    // 게시물 ID를 가져옵니다.
-	    int postId = Integer.parseInt(req.getParameter("postId"));
-	    
-	    // 게시물을 데이터베이스에서 가져옵니다.
-	    Post post = postService.getPostById(postId);
-	    
-	    // 세션에 게시물을 저장합니다.
-	    HttpSession session = req.getSession();
-	    session.setAttribute("post", post);
-	    
-	    // 페이지 이동을 수행합니다.
-	    resp.sendRedirect("/WEB-INF/post/editpost.jsp"); // 적절한 경로를 지정해야 합니다.
+		   int postId = Integer.parseInt(req.getParameter("postId"));
+		    
+		   List<Object> list = new ArrayList<Object>();
+		    // 게시물을 데이터베이스에서 가져옵니다.
+		    Post post = postService.getPostById(postId);
+		    PostTag posttag = postService.getPostTag(postId);
+		    
+		    list.add(post);
+		    list.add(posttag);
+		    
+		    ServletUtil.sendJsonBody(list, resp);
+		    
 	}
 	
 	

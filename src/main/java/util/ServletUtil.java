@@ -43,5 +43,4 @@ public class ServletUtil {
 	    mapper.writeValue(writer, obj);
 	    writer.flush();
 	}
-
 }

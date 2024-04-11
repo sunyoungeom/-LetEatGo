@@ -153,8 +153,14 @@
                 let tdResistDate = document.createElement("td");
                 let tdActions = document.createElement("td"); // 수정 및 삭제 버튼을 포함할 셀
                 
-                tdTitle.innerText = `${element.title}`;
+                tdTitle.innerText = `${element.review}`;
                 tdResistDate.innerText = `${element.resistdate}`;
+                
+                // 클릭 이벤트 추가하여 상세 페이지로 이동
+                contenttr.addEventListener("click", () => {
+                    window.location.href = `/post/detail?post_Id=${element.postId}`;
+                });
+                
                 
                 // 수정 버튼 생성
                 let editButton = document.createElement("button");

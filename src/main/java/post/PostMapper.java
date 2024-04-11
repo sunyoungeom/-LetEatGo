@@ -42,15 +42,24 @@ public interface PostMapper {
     
     // 페이징 처리를 위한 쿼리
     @Select("SELECT * FROM posts WHERE status = 0 LIMIT #{limit} OFFSET #{offset}")
-	List<Post> getPage(Map<String, Integer> params);
+    List<Post> getPage(Map<String, Integer> params);
 
     @Select("SELECT COUNT(*) FROM posts WHERE status = 0")
     int countAll();
+    
+    //개인 페이지 페이징 처리 위한 쿼리
+    @Select("SELECT * FROM posts WHERE status = 0 AND writeuser_id = #{writeuser_id} LIMIT #{params.limit} OFFSET #{params.offset}")
+    List<Post> getMyPage(@Param("params") Map<String, Integer> params, @Param("writeuser_id") int writeuser_id);
+    
+    @Select("SELECT COUNT(*) FROM posts WHERE status = 0 AND writeuser_id = #{writeuser_id}")
+    int myCountAll(int writeuser_id);
     
     @Insert("INSERT INTO post_tag (post_id,budget,booze,age,gender,peopleLimit)" +
     		"values (#{postid},#{post_tag.budget},#{post_tag.booze},#{post_tag.age},#{post_tag.gender},#{post_tag.peopleLimit})")
     void createPostTag(@Param("postid") int postid,@Param("post_tag")PostTag post_tag);
    
+    @Select("Select * FROM post_tag WHERE post_id = #{post_id}")
+    PostTag getPostTag(@Param("post_id") int post_id);
     
     @Select("select * from posts where place = #{place}")
     List<Post> getPostsByPlace(String place);
