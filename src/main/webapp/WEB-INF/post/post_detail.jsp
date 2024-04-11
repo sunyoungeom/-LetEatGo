@@ -160,6 +160,7 @@ input[type="button"]:hover {
 	    editButton.innerText = "게시물 수정";
 	    editButton.addEventListener("click", () => {
 	        // 수정 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+	        
 	    });
 	    postDetail.appendChild(editButton);
 	
@@ -168,6 +169,17 @@ input[type="button"]:hover {
 	    deleteButton.innerText = "게시물 삭제";
 	    deleteButton.addEventListener("click", () => {
 	        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+	        fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
+	        	method: 'DELETE'
+	        })
+	        .then(response => {
+                if (response.ok) {
+                    console.log('게시글 성공적으로 삭제되었습니다.');
+                } else {
+                    console.error('게시글 삭제 중 오류 발생:', response.status);
+                    alert('게시글 삭제 중 오류가 발생했습니다.');
+                }
+            })
 	    });
 	    postDetail.appendChild(deleteButton);
     }
@@ -379,6 +391,49 @@ function getUserId() {
     })
 } 
 
+
+// 페이지가 로드될 때 실행되는 함수
+document.addEventListener("DOMContentLoaded", function() {
+    // 쿠키에서 닉네임 가져오기
+    const nickname = getCookieValue("nickname");
+    console.log(nickname);
+});
+
+// 쿠키에서 특정 이름의 값 가져오는 함수
+function getCookieValue(name) {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split("=");
+        if (cookieName === name) {
+            return cookieValue;
+        }
+    }
+    return null;
+}
+
+let chatWindow = null;
+var urlParams = new URLSearchParams(window.location.search);
+var post_Id = urlParams.get('post_Id'); // URL 파라미터에서 post_Id를 가져옵니다.
+console.log(post_Id);
+
+function chatWinOpen() {
+    const nickname = getCookieValue("nickname"); // 쿠키에서 닉네임 가져오기
+    console.log(nickname)
+    if (!chatWindow || chatWindow.closed) {
+    	fetch ({
+    		method: 'POST'
+    	})
+    	.then((resp) => resp.json())
+    	.then((data) => {
+    		
+    	})
+        const url = "ChatWindow?nickname=" + nickname + "&post_Id=" + post_Id; // URL에 닉네임과 게시물 ID 추가
+        chatWindow = window.open(url, "", "width=400, height=550"); // 채팅 창 열기
+    } else {
+        chatWindow.focus();
+        chatMessage.focus();
+    }   
+}
 </script>
 </body>
 </html>

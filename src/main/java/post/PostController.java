@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebServlet("/post/list")
+import post_review.ReviewDTO;
+import post_review.ReviewService;
+import util.ServletUtil;
+
+@WebServlet(urlPatterns = { "/post/list", "/review/list" })
 public class PostController extends HttpServlet {
 	private PostService postService = new PostService();
 
@@ -27,19 +31,22 @@ public class PostController extends HttpServlet {
 		// 새로운 게시물 생성 등의 작업을 수행할 수 있습니다.
 //		int page = Integer.parseInt(request.getParameter("page"));
 //		int pagePer = Integer.parseInt(request.getParameter("pagePer"));
+		String requestURI = request.getRequestURI();
 		int page = request.getParameter("page") != null && !request.getParameter("page").isEmpty()
 				? Integer.parseInt(request.getParameter("page"))
 				: 1;
 		int pagePer = request.getParameter("pagePer") != null && !request.getParameter("pagePer").isEmpty()
 				? Integer.parseInt(request.getParameter("pagePer"))
 				: 1;
-		PostDTO posts = postService.getPostPage(page, pagePer);
-		
-		// JSON 형태로 변환하여 응답합니다.
-		ObjectMapper mapper = new ObjectMapper();
-		System.out.println(mapper);
-		response.setContentType("application/json");
-		mapper.writeValue(response.getWriter(), posts);
 
+
+		// JSON 형태로 변환하여 응답합니다.
+		if (requestURI.equals("/review/list")) {
+			ReviewDTO reviews = ReviewService.getReviewPage(page, pagePer);
+			ServletUtil.sendJsonBody(reviews, response);
+		} else if (requestURI.equals("/post/list")) {
+			PostDTO posts = postService.getPostPage(page, pagePer);
+			ServletUtil.sendJsonBody(posts, response);
+		}
 	}
 }

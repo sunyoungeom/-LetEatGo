@@ -26,6 +26,7 @@ public class RecentVistServlet extends HttpServlet {
 		PostService postService = new PostService();
 		List<Post> placeByIdList = postService.getPlaceById(writeUser_id);
 		ServletUtil.sendJsonBody(placeByIdList, resp);
+		
 	}
 
 }
