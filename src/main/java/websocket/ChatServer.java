@@ -18,6 +18,9 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import listener.MyWebContextListener;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import user.UserService;
@@ -75,7 +78,7 @@ public class ChatServer {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = getConnection(); // 데이터베이스 연결
+            conn = MyWebContextListener.getConnection(); // 데이터베이스 연결
             String query = "INSERT INTO messages (conversation_id, sender_id, content, sent_at) VALUES (?, ?, ?, ?)";
             stmt = conn.prepareStatement(query);
             stmt.setInt(1, postId);
@@ -114,11 +117,11 @@ public class ChatServer {
     }
 
     // 데이터베이스 연결을 설정하는 메서드
-    private Connection getConnection() throws SQLException {
-        // 데이터베이스 연결 정보 설정 (이 부분은 실제 환경에 맞게 설정되어야 합니다)
-        String url = "jdbc:mysql://localhost:3306/my_db";
-        String username = "root";
-        String password = "root";
-        return DriverManager.getConnection(url, username, password);
-    }
+//    private Connection getConnection() throws SQLException {
+//        // 데이터베이스 연결 정보 설정 (이 부분은 실제 환경에 맞게 설정되어야 합니다)
+//        String url = "jdbc:mysql://192.168.0.107:3306/board";
+//        String username = "team1";
+//        String password = "root";
+//        return DriverManager.getConnection(url, username, password);
+//    }
 }

@@ -150,7 +150,7 @@
     loadPosts(currentPage);
 
     function loadPosts(page) {
-        fetch(`http://localhost:8080/post/list?page=${page}&pagePer=${itemsPerPage}`, {
+        fetch(`http://localhost:8080/post/mypostlist?page=${page}&pagePer=${itemsPerPage}`, {
             method: 'POST'
         })
         .then((resp) => resp.json())

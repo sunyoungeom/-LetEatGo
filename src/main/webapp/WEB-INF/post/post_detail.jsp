@@ -153,14 +153,14 @@ input[type="button"]:hover {
     let postContentParagraph = document.createElement("p");
     postContentParagraph.innerText = `게시물 내용: ${postContent}`;
     postDetail.appendChild(postContentParagraph);
-	
+    
+    
     if(isCurrentUserId) {
 	 	// 게시물 수정 버튼 생성
 	    let editButton = document.createElement("button");
 	    editButton.innerText = "게시물 수정";
 	    editButton.addEventListener("click", () => {
-	        // 수정 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
-	        
+	    	window.location.href = `editpost?postId=${postId}`;
 	    });
 	    postDetail.appendChild(editButton);
 	
@@ -174,7 +174,8 @@ input[type="button"]:hover {
 	        })
 	        .then(response => {
                 if (response.ok) {
-                    console.log('게시글 성공적으로 삭제되었습니다.');
+                	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
+                	 window.location.href = `mypostlist`;
                 } else {
                     console.error('게시글 삭제 중 오류 발생:', response.status);
                     alert('게시글 삭제 중 오류가 발생했습니다.');
@@ -327,11 +328,6 @@ input[type="button"]:hover {
         return currentUserID === UserId;
     }
 
-
-    
-    
-    
-    
     
     
     reviewFormSubmit.addEventListener("submit", function(event) {
