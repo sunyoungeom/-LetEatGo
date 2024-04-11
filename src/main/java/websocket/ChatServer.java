@@ -1,11 +1,14 @@
 package websocket;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -13,16 +16,19 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Timestamp;
+import java.util.Date;
+import user.UserService;
 
-import user.User;
-
-@ServerEndpoint("/ChatingServer/{post_Id}/{nickname}") // 포스트 ID와 닉네임을 엔드포인트에 포함시킵니다.
+@ServerEndpoint("/ChatingServer/{post_Id}/{nickname}")
 public class ChatServer {
     private static final Map<Integer, List<Session>> clientsByPostId = new HashMap<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("post_Id") Integer postId, @PathParam("nickname") String nickname) { 
-        // WebSocket 연결 시 사용자 정보를 세션 속성에 저장합니다.
         session.getUserProperties().put("nickname", nickname);
         List<Session> clients = clientsByPostId.computeIfAbsent(postId, k -> new ArrayList<>());
         clients.add(session);
@@ -30,34 +36,23 @@ public class ChatServer {
     }
 
     @OnMessage
-    public void onMessage(String message, Session session, @PathParam("post_Id") Integer postId) throws IOException {
-        System.out.println("메시지 전송: " + session.getId() + ": " + message); // 받은 메시지 콘솔 출력
-        String[] parts = message.split(" ", 3);
-        if (parts.length >= 3 && (parts[0].equals("/w") || parts[0].equals("/ㅈ") || parts[0].equals("/W"))) {
-            String receiverId = parts[1];
-            String whisperContent = parts[2];
-            List<Session> clients = clientsByPostId.get(postId);
-            if (clients != null) {
-                for (Session client : clients) {
-                    String nickname = (String) client.getUserProperties().get("nickname");
-                    if (nickname.equals(receiverId)) {
-                        client.getBasicRemote().sendText("[귓속말] " + session.getUserProperties().get("nickname") + ": " + whisperContent);
-                        session.getBasicRemote().sendText("[귓속말] " + session.getUserProperties().get("nickname") + " -> " + receiverId + ": " + whisperContent);
-                        return;
-                    }
-                }
-                session.getBasicRemote().sendText("귓속말 대상을 찾지 못했습니다: " + receiverId);
-            }
-        } else {
-            List<Session> clients = clientsByPostId.get(postId);
-            if (clients != null) {
-                for (Session client : clients) {
-                    if (!client.equals(session)) {
-                        client.getBasicRemote().sendText(message);
-                    }
-                }
-            }
-        }
+    public void onMessage(String message, Session session, @PathParam("post_Id") Integer postId) throws Exception {
+        System.out.println("메시지 전송: " + session.getId() + ": " + message);
+
+        JsonNode jsonMessage = objectMapper.readTree(message);
+        String senderNickname = (String) session.getUserProperties().get("nickname");
+        UserService userService = new UserService();
+        int userId = userService.getUserIdByNickName(senderNickname);
+        String content = jsonMessage.get("content").asText();
+
+        // 현재 시간 구하기
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        // 데이터베이스에 채팅 메시지 저장
+        saveChatMessage(userId, content, postId, timestamp);
+
+        // 모든 클라이언트에게 메시지 전송
+        broadcastMessage(senderNickname, content, timestamp, postId);
     }
 
     @OnClose
@@ -73,5 +68,57 @@ public class ChatServer {
     public void onError(Throwable e) {
         System.out.println("에러 발생");
         e.printStackTrace();
+    }
+
+    // 채팅 메시지를 데이터베이스에 저장하는 메서드
+    private void saveChatMessage(int userId, String content, Integer postId, Timestamp timestamp) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = getConnection(); // 데이터베이스 연결
+            String query = "INSERT INTO messages (conversation_id, sender_id, content, sent_at) VALUES (?, ?, ?, ?)";
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, postId);
+            stmt.setInt(2, userId);
+            stmt.setString(3, content);
+            stmt.setTimestamp(4, timestamp);
+            stmt.executeUpdate();
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    // 모든 클라이언트에게 채팅 메시지를 전송하는 메서드
+    private void broadcastMessage(String senderNickname, String content, Timestamp timestamp, Integer postId) throws IOException {
+        // clientsByPostId에서 해당 게시판의 클라이언트 리스트를 가져옵니다.
+        List<Session> clients = clientsByPostId.get(postId);
+        if (clients != null) {
+            // 메시지를 JSON 형식으로 생성
+            JsonNode messageJson = objectMapper.createObjectNode()
+                    .put("messageType", "normal")
+                    .put("sender", senderNickname)
+                    .put("content", content)
+                    .put("timestamp", timestamp.toString()); // 시간을 문자열로 변환하여 전송
+            String jsonMessage = objectMapper.writeValueAsString(messageJson);
+
+            // 모든 클라이언트에게 메시지를 전송합니다.
+            for (Session client : clients) {
+                client.getBasicRemote().sendText(jsonMessage);
+            }
+        }
+    }
+
+    // 데이터베이스 연결을 설정하는 메서드
+    private Connection getConnection() throws SQLException {
+        // 데이터베이스 연결 정보 설정 (이 부분은 실제 환경에 맞게 설정되어야 합니다)
+        String url = "jdbc:mysql://localhost:3306/my_db";
+        String username = "root";
+        String password = "root";
+        return DriverManager.getConnection(url, username, password);
     }
 }

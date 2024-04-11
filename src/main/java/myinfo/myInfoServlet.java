@@ -30,6 +30,8 @@ public class myInfoServlet extends HttpServlet {
 	            } else if (detail.equals("post")) {
 	            	req.getRequestDispatcher("/WEB-INF/myinfo/MyPost.jsp").forward(req, resp);
 
+	            } else if (detail.equals("comment")) {
+	            	req.getRequestDispatcher("/WEB-INF/myinfo/Mycomment.jsp").forward(req, resp);
 	            }
 	            
 	            else {
