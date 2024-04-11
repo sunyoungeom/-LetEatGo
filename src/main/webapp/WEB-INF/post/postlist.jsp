@@ -39,6 +39,7 @@
 	background-color: #f8f9fa; /* 비활성 페이지 번호의 배경색 */
 	border-color: #dee2e6; /* 비활성 페이지 번호의 테두리 색상 */
 }
+
 </style>
 </head>
 <body>
@@ -61,11 +62,11 @@
 						</thead>
 						<tbody class="table-group-divider">
 							<!-- 데이터는 JavaScript로 채웁니다 -->
-							<tr>
+							<!-- <tr>
 								<th scope="row">1</th>
 								<td>Mark</td>
 								<td>Otto</td>
-							</tr>
+							</tr> -->
 						</tbody>
 					</table>
 
@@ -91,7 +92,7 @@
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
 let currentPage = 1; // 초기 페이지는 1로 설정
-const itemsPerPage = 10; // 페이지당 아이템 수
+const itemsPerPage = 15; // 페이지당 아이템 수
 const tbody = postTable.querySelector("tbody");
 
 // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
@@ -142,77 +143,98 @@ function loadPosts(page) {
 
 // 페이지네이션을 표시하는 함수
 function displayPagination(totalPages, currentPage) {
-	pagination.innerHTML = ""; // 페이지네이션 초기화
- // 이전 페이지 버튼 추가
-    let previous = document.createElement("li");
-    previous.classList.add("page-item");
-
-    let previousLink = document.createElement("a");
-    previousLink.classList.add("page-link");
-    previousLink.href = "#";
-    previousLink.setAttribute("aria-label", "Previous");
-
-    let previousspan = document.createElement("span");
-    previousspan.setAttribute("aria-hidden", "true");
-    previousspan.innerHTML = "&laquo;"; // 이전 아이콘
-
-    previousLink.appendChild(previousspan);
-    previous.appendChild(previousLink);
+    let pagination = document.getElementById("pagination"); // 페이지네이션 요소
+    pagination.innerHTML = ""; // 페이지네이션 초기화
+    
+    // 첫 페이지로 이동하는 버튼 추가
+    let firstPage = createPaginationItem("First", "&lt;&lt;");
+    pagination.appendChild(firstPage);
+    
+    // 이전 페이지 버튼 추가
+    let previous = createPaginationItem("Previous", "&laquo;");
     pagination.appendChild(previous);
-	
-    let pagelist;
-    let pageLink;
-    for (let i = 1; i <= totalPages; i++) {
-        pagelist = document.createElement("li");
-        pagelist.classList.add("page-item");
-        pageLink = document.createElement("a");
-        pageLink.classList.add("page-link");
-       	pageLink.href = "#"; // 클릭 이벤트를 처리하기 위한 임시 링크 설정
-        pageLink.innerText = i;
-       
-        // 페이지 번호 클릭 이벤트 설정
-    	pageLink.addEventListener("click", () => {
-            loadPosts(i); // 해당 페이지의 데이터 로드
-        	    
-        });
-       	
-        pagelist.appendChild(pageLink);
-	
+    
+    // 페이지 번호 버튼 추가
+    let startPage = Math.max(1, currentPage - 2); // 현재 페이지 기준으로 최소 1페이지부터 시작
+    let endPage = Math.min(totalPages, startPage + 4); // 최대 5페이지까지 표시
+    for (let i = startPage; i <= endPage; i++) {
+        let pagelist = createPaginationItem(i);
         pagination.appendChild(pagelist);
     }
- // 다음 페이지 버튼 추가
-    let next = document.createElement("li");
-    next.classList.add("page-item");
-
-    let nextLink = document.createElement("a");
-    nextLink.classList.add("page-link");
-    nextLink.href = "#";
-    nextLink.setAttribute("aria-label", "Next");
-
-    let nextSpan = document.createElement("span");
-    nextSpan.setAttribute("aria-hidden", "true");
-    nextSpan.innerHTML = "&raquo;"; // 다음 아이콘
-
-    nextLink.appendChild(nextSpan);
-    next.appendChild(nextLink);
+    
+    // 다음 페이지 버튼 추가
+    let next = createPaginationItem("Next", "&raquo;");
     pagination.appendChild(next);
     
- 
- // 이전 페이지 버튼 클릭 이벤트 설정
-    previousLink.addEventListener("click", () => {
+    // 마지막 페이지로 이동하는 버튼 추가
+    let lastPage = createPaginationItem("Last", "&gt;&gt;");
+    pagination.appendChild(lastPage);
+    
+    // 현재 페이지 버튼 활성화
+    let activePageButton = pagination.querySelector(`[data-page="${currentPage}"]`);
+    if (activePageButton) {
+        activePageButton.classList.add("active");
+    }
+    
+    // 첫 페이지 버튼 클릭 이벤트 설정
+    firstPage.addEventListener("click", () => {
+        loadPosts(1); // 첫 페이지의 데이터 로드
+    });
+
+    // 이전 페이지 버튼 클릭 이벤트 설정
+    previous.addEventListener("click", () => {
         if (currentPage > 1) {
             loadPosts(currentPage - 1); // 이전 페이지의 데이터 로드
         }
     });
 
     // 다음 페이지 버튼 클릭 이벤트 설정
-    nextLink.addEventListener("click", () => {
+    next.addEventListener("click", () => {
         if (currentPage < totalPages) {
             loadPosts(currentPage + 1); // 다음 페이지의 데이터 로드
         }
     });
+    
+    // 마지막 페이지 버튼 클릭 이벤트 설정
+    lastPage.addEventListener("click", () => {
+        loadPosts(totalPages); // 마지막 페이지의 데이터 로드
+    });
+}
 
 
+// 페이지네이션 아이템을 생성하는 함수
+function createPaginationItem(label, innerHTML) {
+    let listItem = document.createElement("li");
+    listItem.classList.add("page-item");
+    
+    let link = document.createElement("a");
+    link.classList.add("page-link");
+    link.href = "#"; // 기본적으로 페이지 번호는 현재 페이지로 이동하는 주소를 가집니다.
+    link.innerText = label;
+    link.setAttribute("data-page", label); // 페이지 번호를 버튼에 데이터 속성으로 추가합니다.
+    
+    if (label === "Previous" || label === "Next" || label === "First" || label === "Last") {
+        link.setAttribute("aria-label", label);
+        link.innerHTML = innerHTML || label;
+    } else {
+        link.addEventListener("click", () => {
+            if (label === "First" || label === "Last") {
+                return; // "First"나 "Last" 버튼 클릭 시 페이지 요청을 보내지 않습니다.
+            }
+            loadPosts(label); // 해당 페이지의 데이터 로드
+            
+            // 활성화된 버튼 표시
+            let pageButtons = document.querySelectorAll(".page-link");
+            pageButtons.forEach(button => {
+                button.classList.remove("active");
+            });
+            link.classList.add("active");
+        });
+    }
+    
+    listItem.appendChild(link);
+    
+    return listItem;
 }
     </script>
 </html>

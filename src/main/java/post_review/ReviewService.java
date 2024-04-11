@@ -3,8 +3,13 @@ package post_review;
 import org.apache.ibatis.session.SqlSession;
 
 import listener.MyWebContextListener;
+import post.Post;
+import post.PostDTO;
+import post.PostMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReviewService {
 
@@ -67,4 +72,23 @@ public class ReviewService {
         }
     }
 
+    public static ReviewDTO getReviewPage(int page, int pagePer) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
+			ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+			int totalCount = mapper.countAll();
+			int totalPage = totalCount / pagePer;
+			totalPage += totalCount % pagePer == 0 ? 0 : 1;
+
+			Map<String, Integer> params = new HashMap<>();
+			params.put("limit", pagePer);
+			params.put("offset", pagePer * (page - 1));
+
+			List<Review> all = mapper.getPage(params);
+
+			ReviewDTO dto = ReviewDTO.builder().totalPages(totalPage).currentPage(page).itemsPerPage(pagePer).items(all)
+					.build();
+
+			return dto;
+		}
+	}
 }
