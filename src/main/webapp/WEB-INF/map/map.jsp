@@ -421,12 +421,16 @@
                   data.end.forEach((element) =>{
                     let p = document.createElement("p");
                     let p2 = document.createElement("p");
+                    let a = document.createElement("a");
                     let hr = document.createElement("hr")
                     p.innerText = element.title;
                     p2.innerText = element.content
-                    end.appendChild(p);
-                    end.appendChild(p2)
-                    end.appendChild(hr)
+                    a.href= "";
+                    a.appendChild(p);
+                    a.appendChild(p2);
+
+                    ing.appendChild(a); // a 태그를 ing에 추가
+                    ing.appendChild(hr);
                   })
 
                   // 클릭한 마커 아래에 링크를 추가합니다.
