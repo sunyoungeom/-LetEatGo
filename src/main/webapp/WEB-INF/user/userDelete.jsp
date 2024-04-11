@@ -63,8 +63,8 @@ to {
 <body>
 	<h2>회원 탈퇴</h2>
 	<form id="deleteForm">
-		<label for="userId">사용자 ID:</label> <input type="text" id="userId"
-			name="userId" required><br>
+		<label for="id">사용자 ID:</label> <input type="text" id="id"
+			name="id" required><br>
 		<br> <label for="password">비밀번호:</label> <input type="password"
 			id="password" name="password" required><br>
 		<br> <input type="submit" id="deleteButton" value="탈퇴">
@@ -106,6 +106,7 @@ to {
 
         // 확인 버튼 클릭 시 탈퇴 처리
         document.getElementById("confirmButton").onclick = function() {
+            var id = document.getElementById('id').value;
             var password = document.getElementById('password').value;
 
             fetch('/leave', {
@@ -113,7 +114,7 @@ to {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ password: password })
+                body: JSON.stringify({ id: id, password: password })
             })
             .then(function(response) {
                 if (response.ok) {

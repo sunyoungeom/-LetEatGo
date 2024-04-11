@@ -5,11 +5,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import user.User;
 import user.UserService;
 import util.ServletUtil;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/myInfo")
 public class myInfoServlet extends HttpServlet {
@@ -41,12 +47,56 @@ public class myInfoServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String body = ServletUtil.readBody(req);
-		System.out.println(body);
-		
-		UserService userService = new UserService();
-		
+	    String body = ServletUtil.readBody(req);
+	    System.out.println(body);
+	    ObjectMapper mapper = new ObjectMapper();
+	    JsonNode jsonNode = mapper.readTree(body);
+
+	    String field = jsonNode.get("field").asText();
+	    String value = jsonNode.get("value").asText();
+	    
+	    if (value.equals("null")) {
+	    	value = null;
+	    }
+
+	    HttpSession session = req.getSession();
+	    User user = (User) session.getAttribute("user");
+
+	    UserService userService = new UserService();
+	    int userId = userService.getUserId(user.getId());
+
+	    // 필드 값에 따라 적절한 서비스 함수 호출
+	    if ("nickname".equals(field)) {
+	        userService.updateNickname(user.getId(), value);
+	        user.setNickname(value);
+	    } else if ("phonenumber".equals(field)) {
+	        userService.updatePhonenumber(user.getId(), value);
+	        user.setPhonenumber(value);
+	    } else if ("email".equals(field)) {
+	        userService.updateEmail(user.getId(), value);
+	        user.setEmail(value);
+	    } else if ("address".equals(field)) {
+	        userService.updateAddress(user.getId(), value);
+	        user.setAddress(value);
+	    } else if ("bloodtype".equals(field)) {
+	        userService.updateBloodtype(user.getId(), value);
+	        user.setBloodtype(value);
+	    } else if ("mbti".equals(field)) {
+	        userService.updateMBTI(user.getId(), value);
+	        user.setMbti(value);
+	    }
+
+	    // 수정된 User 객체를 다시 세션에 저장
+	    session.setAttribute("user", user);
+
+	    // 클라이언트 측으로 완료 메시지를 JSON 형식으로 전달
+	    resp.setContentType("application/json");
+	    resp.setCharacterEncoding("UTF-8");
+	    PrintWriter out = resp.getWriter();
+	    out.print("{\"message\": \"Field updated successfully\"}");
+	    out.flush();
 	}
+
 	
 	
 	}
