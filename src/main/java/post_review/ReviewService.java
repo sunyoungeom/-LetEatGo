@@ -1,5 +1,6 @@
 package post_review;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 
 import listener.MyWebContextListener;
@@ -91,4 +92,24 @@ public class ReviewService {
 			return dto;
 		}
 	}
+
+    public static ReviewDTO getMyReviewPage(int page, int pagePer, int  writeuser_id) {
+    	try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
+    		ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+    		int totalCount = mapper.myCountAll(writeuser_id);
+    		int totalPage = totalCount / pagePer;
+    		totalPage += totalCount % pagePer == 0 ? 0 : 1;
+    		
+    		Map<String, Integer> params = new HashMap<>();
+    		params.put("limit", pagePer);
+    		params.put("offset", pagePer * (page - 1));
+    		
+    		List<Review> all = mapper.getMyPage(params,writeuser_id);
+    		
+    		ReviewDTO dto = ReviewDTO.builder().totalPages(totalPage).currentPage(page).itemsPerPage(pagePer).items(all)
+    				.build();
+    		
+    		return dto;
+    	}
+    }
 }
