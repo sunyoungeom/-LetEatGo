@@ -24,14 +24,19 @@ import java.util.List;
 
 import static util.ServletUtil.*;
 
-@WebServlet(urlPatterns = { "/createPost", "/post/deletePost", "/post/updatePost", "/post/editpost", "/post/editsave" })
+@WebServlet(urlPatterns = { "/createPost","/post/createPost", "/post/deletePost", "/post/updatePost", "/post/editpost", "/post/editsave" })
 public class CRUDPostServlet extends HttpServlet {
 	PostService postService = new PostService();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/post/editpost.jsp").forward(request, response);
+		String requestURI = request.getRequestURI();
+		if(requestURI.endsWith("/post/createPost")) {
+			request.getRequestDispatcher("/WEB-INF/post/createpost.jsp").forward(request, response);
+		} else if (requestURI.endsWith("/post/editpost")) {
+			request.getRequestDispatcher("/WEB-INF/post/editpost.jsp").forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -40,7 +45,7 @@ public class CRUDPostServlet extends HttpServlet {
 		Object attribute = request.getSession().getAttribute("user");
 		User user = (User) attribute;
 		int writeUser_id = user.getUser_id();
-		
+
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String expireDate = request.getParameter("expireDate");
@@ -75,7 +80,7 @@ public class CRUDPostServlet extends HttpServlet {
 
 		} else if (requestURI.endsWith("/post/editsave")) {
 			int postid = Integer.parseInt(request.getParameter("postId"));
-			
+
 			PostTag postTag = new PostTag();
 			postTag.setPost_Id(postid);
 			postTag.setBudget(budget);
@@ -83,13 +88,11 @@ public class CRUDPostServlet extends HttpServlet {
 			postTag.setAge(age);
 			postTag.setGender(gender);
 			postTag.setPeopleLimit(peopleLimit);
-			
+
 			postService.updatePost(post);
 			postService.updatePostTag(postTag, postid);
-			
+
 		}
-
-
 
 		// 게시물 등록 메서드 호출
 		// TODO: 세션값??에서 로그인되어 있는 유저 가져오기?

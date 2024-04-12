@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -20,8 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import listener.MyWebContextListener;
+import post.Post;
+import post.PostService;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import user.UserService;
 
@@ -29,31 +34,47 @@ import user.UserService;
 public class ChatServer {
     private static final Map<Integer, List<Session>> clientsByPostId = new HashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private ChatService chatService = new ChatService();
+	private PostService postService = new PostService();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("post_Id") Integer postId, @PathParam("nickname") String nickname) { 
+    public void onOpen(Session session, @PathParam("post_Id") int postId, @PathParam("nickname") String nickname) { 
         session.getUserProperties().put("nickname", nickname);
         List<Session> clients = clientsByPostId.computeIfAbsent(postId, k -> new ArrayList<>());
         clients.add(session);
-        System.out.println("웹소켓 연결: " + session.getId() + " (유저 닉네임: " + nickname + ")");
+        Post post = postService.getPostById(postId);
+        int writeuser_id = post.getWriteUser_Id();
+        UserService userS = new UserService();
+        int guestuser_id = userS.getUserIdByNickName(nickname); 
+        Conversations conversations = new Conversations(postId, writeuser_id, guestuser_id);
+        Conversations isCon = chatService.getGIdByGId(guestuser_id, postId);
+        System.out.println(isCon);
+        if (isCon == null) {
+        	chatService.insertChatroom(conversations);
+        }
     }
 
     @OnMessage
-    public void onMessage(String message, Session session, @PathParam("post_Id") Integer postId) throws Exception {
+    public void onMessage(String message, Session session, @PathParam("post_Id") int postId) throws Exception {
         System.out.println("메시지 전송: " + session.getId() + ": " + message);
 
         JsonNode jsonMessage = objectMapper.readTree(message);
+        System.out.println(jsonMessage+"jhjijikjik");
         String senderNickname = (String) session.getUserProperties().get("nickname");
         UserService userService = new UserService();
         int userId = userService.getUserIdByNickName(senderNickname);
         String content = jsonMessage.get("content").asText();
-
+        
+        JsonNode isWhisperNode = jsonMessage.get("isWhisper");
+        if (isWhisperNode != null && isWhisperNode.isBoolean() && isWhisperNode.asBoolean()) {
+            System.out.println("귓속말 테스트");
+        }
         // 현재 시간 구하기
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         // 데이터베이스에 채팅 메시지 저장
-        saveChatMessage(userId, content, postId, timestamp);
-
+        saveChatMessage(userId, content, postId, timestamp, isWhisperNode);
+        
         // 모든 클라이언트에게 메시지 전송
         broadcastMessage(senderNickname, content, timestamp, postId);
     }
@@ -66,35 +87,28 @@ public class ChatServer {
         }
         System.out.println("웹소켓 종료: " + session.getId());
     }
-
+    
     @OnError
     public void onError(Throwable e) {
         System.out.println("에러 발생");
         e.printStackTrace();
     }
 
-    // 채팅 메시지를 데이터베이스에 저장하는 메서드
-    private void saveChatMessage(int userId, String content, Integer postId, Timestamp timestamp) throws SQLException {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = MyWebContextListener.getConnection(); // 데이터베이스 연결
-            String query = "INSERT INTO messages (conversation_id, sender_id, content, sent_at) VALUES (?, ?, ?, ?)";
-            stmt = conn.prepareStatement(query);
-            stmt.setInt(1, postId);
-            stmt.setInt(2, userId);
-            stmt.setString(3, content);
-            stmt.setTimestamp(4, timestamp);
-            stmt.executeUpdate();
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
+    // 모든 채팅 메시지를 데이터베이스에 저장하는 메서드
+    private void saveChatMessage(int userId, String content, int postId, Timestamp timestamp, JsonNode isWhisperNode) throws SQLException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timestampString = dateFormat.format(timestamp);
+
+        if (isWhisperNode != null && isWhisperNode.isBoolean() && isWhisperNode.asBoolean()) {
+            PrivateMessage priMessage = new PrivateMessage(userId, postId, content, timestampString);
+            chatService.insertPrivateMessage(priMessage);
         }
+        Message message = new Message(postId, userId, content, timestampString);
+            
+        chatService.insertMessage(message);
     }
+
+    
 
     // 모든 클라이언트에게 채팅 메시지를 전송하는 메서드
     private void broadcastMessage(String senderNickname, String content, Timestamp timestamp, Integer postId) throws IOException {
@@ -115,13 +129,4 @@ public class ChatServer {
             }
         }
     }
-
-    // 데이터베이스 연결을 설정하는 메서드
-//    private Connection getConnection() throws SQLException {
-//        // 데이터베이스 연결 정보 설정 (이 부분은 실제 환경에 맞게 설정되어야 합니다)
-//        String url = "jdbc:mysql://192.168.0.107:3306/board";
-//        String username = "team1";
-//        String password = "root";
-//        return DriverManager.getConnection(url, username, password);
-//    }
 }

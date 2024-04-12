@@ -24,14 +24,19 @@ import user.User;
 import user.UserService;
 import util.ServletUtil;
 
-@WebServlet("/person")
+@WebServlet(urlPatterns = { "/person", "/person/detail"})
 public class PersonServlet extends HttpServlet {
 	private UserService userService = new UserService();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		req.getRequestDispatcher("/WEB-INF/person/person.jsp").forward(req, resp);
-		
+		// GET 요청을 처리합니다.
+		String requestURI = req.getRequestURI();
+		if(requestURI.equals("/person")) {
+			req.getRequestDispatcher("/WEB-INF/person/person.jsp").forward(req, resp);
+		} else if(requestURI.equals("/person/detail")) {
+			req.getRequestDispatcher("/WEB-INF/person/persondetail.jsp").forward(req, resp);
+		}
 	}
 }

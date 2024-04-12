@@ -10,10 +10,8 @@ import user.User;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Message {
-    private int postId;
-    private int senderId;
-    private String content;
-    private String sentAt;
-    
+public class Conversations {
+	private int post_id;
+	private int writeuser_id;
+	private int guestuser_id;
 }

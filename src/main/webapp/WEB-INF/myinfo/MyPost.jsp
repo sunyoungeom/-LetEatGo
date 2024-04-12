@@ -150,6 +150,7 @@
     loadPosts(currentPage);
 
     function loadPosts(page) {
+    	
         fetch(`http://localhost:8080/post/mypostlist?page=${page}&pagePer=${itemsPerPage}`, {
             method: 'POST'
         })
@@ -157,6 +158,7 @@
         .then((data) => {
             tbody.innerHTML = ""; // 기존 게시물 내용 초기화
             
+	    	 const maxTitleLength = 12; // 예시로 20자로 설정
             
             data.items.forEach((element) => {
                 let contenttr = document.createElement("tr");
@@ -164,7 +166,7 @@
                 let tdResistDate = document.createElement("td");
                 let tdActions = document.createElement("td"); // 수정 및 삭제 버튼을 포함할 셀
                 
-                tdTitle.innerText = `${element.title}`;
+                tdTitle.innerText = element.title.length > maxTitleLength ? element.title.substring(0, maxTitleLength) + '...' : element.title;
                 tdResistDate.innerText = `${element.resistdate}`;
                 
                 // 클릭 이벤트 추가하여 상세 페이지로 이동
@@ -204,8 +206,8 @@
         });
     }
 
-    // 페이지네이션을 표시하는 함수
     function displayPagination(totalPages, currentPage) {
+        let pagination = document.getElementById("pagination"); // 페이지네이션 요소
         pagination.innerHTML = ""; // 페이지네이션 초기화
         
         // 첫 페이지로 이동하는 버튼 추가
@@ -217,8 +219,26 @@
         pagination.appendChild(previous);
         
         // 페이지 번호 버튼 추가
-        let startPage = Math.max(1, currentPage - 2); // 현재 페이지 기준으로 최소 1페이지부터 시작
-        let endPage = Math.min(totalPages, startPage + 4); // 최대 5페이지까지 표시
+        let startPage;
+        let endPage;
+        
+        // 페이지 번호가 5개 이하인 경우
+        if (totalPages <= 5) {
+            startPage = 1;
+            endPage = totalPages;
+        } else { // 페이지 번호가 5개를 초과하는 경우
+            if (currentPage <= 3) { // 현재 페이지가 3 이하인 경우
+                startPage = 1;
+                endPage = 5;
+            } else if (currentPage >= totalPages - 2) { // 현재 페이지가 마지막에서 2페이지 이하인 경우
+                startPage = totalPages - 4;
+                endPage = totalPages;
+            } else { // 현재 페이지가 중간인 경우
+                startPage = currentPage - 2;
+                endPage = currentPage + 2;
+            }
+        }
+        
         for (let i = startPage; i <= endPage; i++) {
             let pagelist = createPaginationItem(i);
             pagination.appendChild(pagelist);
@@ -262,6 +282,7 @@
             loadPosts(totalPages); // 마지막 페이지의 데이터 로드
         });
     }
+
 
     // 페이지네이션 아이템을 생성하는 함수
     function createPaginationItem(label, innerHTML) {
