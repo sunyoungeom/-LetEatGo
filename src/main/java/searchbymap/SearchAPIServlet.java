@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import listener.MyWebContextListener;
 import post.Post;
 import post.PostService;
-import searchbymap.SearchAPI.SearchResult;
 import user.User;
 import user.UserMapper;
 import user.UserService;
