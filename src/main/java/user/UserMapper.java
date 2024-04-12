@@ -94,4 +94,8 @@ public interface UserMapper {
 
 	@Update("UPDATE users SET bloodtype = #{bloodtype} WHERE id = #{id}")
 	void updateBloodtype(String id, String bloodtype);
+	
+	@Select("SELECT * FROM users where user_id != #{user_id}")
+	List<User> getAllUsersExceptMe(int user_id);
+
 }
