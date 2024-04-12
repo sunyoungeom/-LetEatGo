@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page isELIgnored="true" %>
+<%@ page isELIgnored="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,27 +63,16 @@
 						</thead>
 						<tbody class="table-group-divider">
 							<!-- 데이터는 JavaScript로 채웁니다 -->
-							<!-- <tr>
-								<th scope="row">1</th>
-								<td>Mark</td>
-								<td>Otto</td>
-							</tr> -->
 						</tbody>
 					</table>
-
-					<nav aria-label="Page navigation example">
-						<ul class="pagination justify-content-center" id="pagination">
-							<li class="page-item"><a class="page-link" href="#"
-								aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-							</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#"
-								aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-							</a></li>
-						</ul>
-					</nav>
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-center" id="pagination">
+							</ul>
+					    	<!-- &nbsp;&nbsp;&nbsp; -->
+							<form action="/post/createPost">
+					        	<button type="submit" name="submit" class="btn btn-primary">게시글 작성</button>
+					    	</form>
+						</nav>
 				</div>
 			</div>
 		</div>
@@ -107,23 +96,26 @@ function loadPosts(page) {
     .then((data) => {
         // 게시물 테이블의 내용을 초기화
         tbody.innerHTML = "";
+        const maxTitleLength = 20; // 예시로 20자로 설정
+        
+        
         data.items.forEach((element) => {
             let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");
-            let tdContent = document.createElement("td");
+            let tdtitle = document.createElement("td");
             let tdresistdate = document.createElement("td");
             let tdview = document.createElement("td");
             
             tdId.innerText = `${element.post_Id}`;
-            tdContent.innerText = `${element.title}`;
+            tdtitle.innerText = element.title.length > maxTitleLength ? element.title.substring(0, maxTitleLength) + '...' : element.title;
             tdresistdate.innerText = `${element.resistdate}`;
             tdview.innerText = `${element.view}`;
             
       	   // 각 셀에 스코프 및 스타일 지정
             tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
             tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
-            tdContent.setAttribute("scope", "col");
-            tdContent.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
+            tdtitle.setAttribute("scope", "col");
+            tdtitle.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
             tdresistdate.setAttribute("scope", "col");
             tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
             tdview.setAttribute("scope", "col");
@@ -133,16 +125,17 @@ function loadPosts(page) {
             tdview.style.textAlign = "center";
             
             // 클릭 이벤트 추가하여 상세 페이지로 이동
-            tdContent.addEventListener("click", () => {
+            tdtitle.addEventListener("click", () => {
                 window.location.href = `detail?post_Id=${element.post_Id}`;
             });
             
             contenttr.appendChild(tdId);
-            contenttr.appendChild(tdContent);
+            contenttr.appendChild(tdtitle);
             contenttr.appendChild(tdresistdate);
             contenttr.appendChild(tdview);
             tbody.appendChild(contenttr);
         });
+        
         
         // 페이지네이션 표시
         displayPagination(data.totalPages, page);
@@ -150,7 +143,6 @@ function loadPosts(page) {
     });
 }
 
-// 페이지네이션을 표시하는 함수
 function displayPagination(totalPages, currentPage) {
     let pagination = document.getElementById("pagination"); // 페이지네이션 요소
     pagination.innerHTML = ""; // 페이지네이션 초기화
@@ -164,8 +156,29 @@ function displayPagination(totalPages, currentPage) {
     pagination.appendChild(previous);
     
     // 페이지 번호 버튼 추가
-    let startPage = Math.max(1, currentPage - 2); // 현재 페이지 기준으로 최소 1페이지부터 시작
-    let endPage = Math.min(totalPages, startPage + 4); // 최대 5페이지까지 표시
+    let startPage;
+    let endPage;
+    
+    
+    
+    
+    // 페이지 번호가 5개 이하인 경우
+    if (totalPages <= 5) {
+        startPage = 1;
+        endPage = totalPages;
+    } else { // 페이지 번호가 5개를 초과하는 경우
+        if (currentPage <= 3) { // 현재 페이지가 3 이하인 경우
+            startPage = 1;
+            endPage = 5;
+        } else if (currentPage >= totalPages - 2) { // 현재 페이지가 마지막에서 2페이지 이하인 경우
+            startPage = totalPages - 4;
+            endPage = totalPages;
+        } else { // 현재 페이지가 중간인 경우
+            startPage = currentPage - 2;
+            endPage = currentPage + 2;
+        }
+    }
+    
     for (let i = startPage; i <= endPage; i++) {
         let pagelist = createPaginationItem(i);
         pagination.appendChild(pagelist);
@@ -184,6 +197,28 @@ function displayPagination(totalPages, currentPage) {
     if (activePageButton) {
         activePageButton.classList.add("active");
     }
+    
+/*  // 새로운 버튼 요소를 생성합니다.
+    let createPostButton = document.createElement("button");
+    createPostButton.setAttribute("type", "submit");
+    createPostButton.setAttribute("name", "submit");
+    createPostButton.classList.add("btn", "btn-primary");
+    createPostButton.textContent = "게시글 작성";
+
+    // 버튼 클릭 이벤트를 추가합니다.
+    createPostButton.addEventListener("click", function(event) {
+        // 폼을 제출합니다.
+        event.preventDefault(); // 폼 제출의 기본 동작을 막습니다.
+        loadPosts(); // 게시글 작성 버튼을 클릭할 때 필요한 동작을 여기에 추가합니다.
+    });
+
+    // 새로운 버튼을 추가할 위치를 찾습니다.
+    let paginationContainer = document.getElementById("pagination").parentNode; // 페이지네이션 컨테이너의 부모 요소를 찾습니다.
+
+    // 새로운 버튼을 페이지네이션 컨테이너에 추가합니다.
+    pagination.appendChild(createPostButton);
+ */
+    
     
     // 첫 페이지 버튼 클릭 이벤트 설정
     firstPage.addEventListener("click", () => {
@@ -209,7 +244,6 @@ function displayPagination(totalPages, currentPage) {
         loadPosts(totalPages); // 마지막 페이지의 데이터 로드
     });
 }
-
 
 // 페이지네이션 아이템을 생성하는 함수
 function createPaginationItem(label, innerHTML) {
