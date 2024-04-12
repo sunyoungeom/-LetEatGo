@@ -18,14 +18,14 @@ public class UserService {
 			return userMapper.getIdById(id);
 		}
 	}
-	
+
 	public User getUser(int user_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			return userMapper.getUser(user_id);
 		}
 	}
-	
+
 	public User getEmailByEmail(String email) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -88,97 +88,106 @@ public class UserService {
 			return userMapper.getUserById(id);
 		}
 	}
+
 	public void deleteUser(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			userMapper.deleteUser(id);
 			sqlSession.commit(); // 변경사항 커밋
-	    } catch (Exception e) {
-	        e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
+
 	public int getUserId(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			return userMapper.getUserId(id);
-	    } 
+		}
 	}
-	
+
 	public void checkAttendance(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			userMapper.checkAttendance(id);
 			sqlSession.commit(); // 변경사항 커밋
-	    } catch (Exception e) {
-	        e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	public int getUserIdByNickName(String nickname) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			return userMapper.getUserIdByNickName(nickname);
-	    } 
+		}
 	}
 
 	public void updateNickname(String id, String nickname) {
-		  try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        userMapper.updateNickname(id, nickname);
-	        sqlSession.commit(); // 변경사항 커밋
-		    } catch (Exception e) {
-		        e.printStackTrace();
-			}
-	  }
-	
-	public void updatePhonenumber(String id, String phonenumber) {
-		  try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        userMapper.updatePhonenumber(id, phonenumber);
-	        sqlSession.commit(); // 변경사항 커밋
-		    } catch (Exception e) {
-		        e.printStackTrace();
-			}
-	  }
-	
-	public void updateEmail(String id, String email) {
-		  try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        userMapper.updateEmail(id, email);
-	        sqlSession.commit(); // 변경사항 커밋
-		    } catch (Exception e) {
-		        e.printStackTrace();
-			}
-	  }
-	
-	public void updateAddress(String id, String address) {
-		  try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        userMapper.updateAddress(id, address);
-	        sqlSession.commit(); // 변경사항 커밋
-		    } catch (Exception e) {
-		        e.printStackTrace();
-			}
-	  }
-	
-	public void updateMBTI(String id, String mbti) {
-		  try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        userMapper.updateMBTI(id, mbti);
-	        sqlSession.commit(); // 변경사항 커밋
-		    } catch (Exception e) {
-		        e.printStackTrace();
-			}
-	  }
-	
-	public void updateBloodtype(String id, String bloodtype) {
-		  try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        userMapper.updateBloodtype(id, bloodtype);
-	        sqlSession.commit(); // 변경사항 커밋
-		    } catch (Exception e) {
-		        e.printStackTrace();
-			}
-	  }
-	
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updateNickname(id, nickname);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
+	public void updatePhonenumber(String id, String phonenumber) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updatePhonenumber(id, phonenumber);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateEmail(String id, String email) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updateEmail(id, email);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateAddress(String id, String address) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updateAddress(id, address);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateMBTI(String id, String mbti) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updateMBTI(id, mbti);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateBloodtype(String id, String bloodtype) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updateBloodtype(id, bloodtype);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<User> getAllUsersExceptMe(int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getAllUsersExceptMe(user_id);
+		}
+	}
+
+}
