@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page isELIgnored="true" %>
 <!DOCTYPE html>
@@ -7,50 +7,108 @@
 <head>
 <meta charset="UTF-8">
 <title>사람 상세</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
-	rel="stylesheet" />
-<!-- Core theme CSS (includes Bootstrap)-->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
 <link href="../Resources/css/styles.css" rel="stylesheet" />
 <style>
-/* 페이지네이션의 색상을 회색으로 변경 */
-.page-link {
-	color: #6c757d; /* 페이지 번호의 색상 */
-	border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
+.container {
+	display: flex;
+	justify-content: space-between;
+	border: 2px solid gray;
+	padding: 20px;
+	border-radius: 10px;
+	margin: 0px 5%;
 }
 
-.page-link:hover {
-	color: black; /* 페이지 번호의 호버 색상 */
-	text-decoration: none; /* 링크에 밑줄 제거 */
-	background-color: #e9ecef; /* 페이지 번호의 호버 배경색 */
-	border-color: #dee2e6; /* 페이지 번호의 테두리 색상 */
+.image-container {
+	width: 30%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 50px;
 }
 
-.page-item.active .page-link {
-	z-index: 1;
-	color: black; /* 활성 페이지 번호의 색상 */
-	background-color: #6c757d; /* 활성 페이지 번호의 배경색 */
-	border-color: black; /* 활성 페이지 번호의 테두리 색상 */
+.image {
+	width: 250px;
+	height: 250px;
+	background-color: red;
+	border-radius: 50%;
 }
 
-.page-item.disabled .page-link {
-	color: #6c757d; /* 비활성 페이지 번호의 색상 */
-	pointer-events: none; /* 비활성 페이지 번호 클릭 방지 */
-	background-color: #f8f9fa; /* 비활성 페이지 번호의 배경색 */
-	border-color: #dee2e6; /* 비활성 페이지 번호의 테두리 색상 */
+.info-container {
+	width: 60%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 50px;
 }
+
+.info {
+	border: 2px solid gray;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.review {
+	border: 2px solid gray;
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 20px;
+}
+
+.actions-container {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+}
+
+.action {
+	width: 30%;
+	border: 2px solid gray;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+}
+
 </style>
 </head>
 <body>
-	<%@ include file="../user/navigation.jsp"%>
-	<div style="border: 2px solid gray; padding: 10px; border-radius: 10px; margin-right:300px; margin-left:300px; margin-bottom: 20px;">
-			<span>
-			
-			</span>
-			
-			
-	</div>
-	
-	
+    <%@ include file="../user/navigation.jsp"%>
+    <div>
+	    <br>
+	    <div class="container">
+	        <div class="image-container">
+	            <div class="image"></div>
+	        </div>
+	        <div class="info-container">
+	            <div class="info" style="width:100%; height:50%">
+	            </div>
+	            <div class="info"></div>
+	        </div>
+	    </div>
+	    
+	    <div style="border: 2px solid gray; margin: 20px 16%; padding: 10px;">
+	        <div style="border: 2px solid gray; padding: 3px;width: 130px">
+	            <button>진행중</button>
+	            <button>완료</button>
+	        </div>
+	        <br>
+	        <div style="border: 2px solid gray;">
+	            <div>목록 1 테이블? 리스트? 선택 피료</div>
+	            <div>목록 2</div>
+	        </div>
+	    </div>
+	    
+	    <h3 style="margin-left: 16%;">한줄 후기</h3>
+	    
+	    <div class="review" style="margin: 0px 16%; padding: 10px;">
+	        사장님이 맛있고 음식이 친절해요
+	    </div>
+	    
+	    <div class="actions-container" style="margin: 20px 16%;">
+	        <div class="action">친구추가</div>
+	        <div class="action">대화신청</div>
+	        <div class="action">블랙리스트등록</div>
+	    </div>
+	</div>    
 </body>
 </html>
