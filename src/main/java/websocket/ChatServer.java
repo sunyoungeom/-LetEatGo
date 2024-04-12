@@ -45,9 +45,10 @@ public class ChatServer {
         Post post = postService.getPostById(postId);
         int writeuser_id = post.getWriteUser_Id();
         UserService userS = new UserService();
-        int guestuser_id = userS.getUserIdByNickName(nickname); // > 이게 문제다;
+        int guestuser_id = userS.getUserIdByNickName(nickname); 
         Conversations conversations = new Conversations(postId, writeuser_id, guestuser_id);
-        Conversations isCon = chatService.getGIdByGId(guestuser_id);
+        Conversations isCon = chatService.getGIdByGId(guestuser_id, postId);
+        System.out.println(isCon);
         if (isCon == null) {
         	chatService.insertChatroom(conversations);
         }
@@ -86,7 +87,7 @@ public class ChatServer {
         }
         System.out.println("웹소켓 종료: " + session.getId());
     }
-
+    
     @OnError
     public void onError(Throwable e) {
         System.out.println("에러 발생");
@@ -128,17 +129,4 @@ public class ChatServer {
             }
         }
     }
-    
-    private void saveChatroomIn(Integer postId, int userId ) {
-    	 List<Session> clients = clientsByPostId.get(postId);
-    }
-
-    // 데이터베이스 연결을 설정하는 메서드
-//    private Connection getConnection() throws SQLException {
-//        // 데이터베이스 연결 정보 설정 (이 부분은 실제 환경에 맞게 설정되어야 합니다)
-//        String url = "jdbc:mysql://192.168.0.107:3306/board";
-//        String username = "team1";
-//        String password = "root";
-//        return DriverManager.getConnection(url, username, password);
-//    }
 }

@@ -129,6 +129,35 @@ function getCurrentTime() {
     var minutes = now.getMinutes();
     return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
 }
+
+function exitChatroom() {
+    // 게시물 번호와 사용자 아이디를 가져와서 DELETE 요청을 보냅니다.
+    var postId = "${post_Id}";
+    console.log(postId);
+    
+    // DELETE 요청을 보내는 fetch 함수를 사용합니다.
+    fetch('/post/ChatWindow/' + postId, { // postId를 경로 파라미터로 포함하여 전송
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        	// postId를 body에 포함하지 않음
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to exit chatroom');
+        }
+        window.close();
+        window.location.href
+    })
+    .catch(error => {
+        console.error('Error exiting chatroom:', error);
+    });
+}
+
+
 </script>
 <style>
 #chatWindow {
@@ -190,6 +219,12 @@ function getCurrentTime() {
     color: #888; /* 작은 회색 글씨 색상 */
     font-size: 12px; /* 작은 글씨 크기 */
 }
+#exitBtn {
+    margin-top: 100px; /* 위쪽 여백 */
+    float: right; /* 오른쪽 정렬 */
+    clear: both; /* 다음 요소와 겹치지 않게 함 */
+    display: block; /* 블록 요소로 설정하여 줄바꿈을 만듦 */
+}
 </style>
 </head>
 <body>
@@ -203,6 +238,8 @@ function getCurrentTime() {
     <div>
         <input type="text" id="chatMessage" onkeyup="enterKey();">
         <button id="sendBtn" onclick="sendMessage();">전송</button>
+        
+        <button id="exitBtn" onclick="exitChatroom();">채팅방 나가기</button>
     </div>
 </body>
 </html>

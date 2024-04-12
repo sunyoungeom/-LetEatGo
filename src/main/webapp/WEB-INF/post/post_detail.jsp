@@ -420,7 +420,7 @@ function chatWinOpen() {
     const nickname = getCookieValue("nickname"); // 쿠키에서 닉네임 가져오기
     console.log(nickname)
     if (!chatWindow || chatWindow.closed) {
-        const url = "ChatWindow?nickname=" + nickname + "&post_Id=" + post_Id; // URL에 닉네임과 게시물 ID 추가
+        const url = "ChatWindow?&post_Id=" + post_Id; // URL에 게시물 ID 추가
         chatWindow = window.open(url, "", "width=400, height=550"); // 채팅 창 열기
     } else {
         chatWindow.focus();
