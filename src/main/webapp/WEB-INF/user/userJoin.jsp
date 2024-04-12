@@ -169,7 +169,7 @@
 											style="padding: 2px;">
 											<input class="form-control ps-5" style="height: 50px;"
 												id="address" name="address" type="text" placeholder="주소"
-												data-sb-validations="required" disabled>
+												data-sb-validations="required" readonly>
 											<div class="invalid-feedback"
 												data-sb-feedback="name:required">A name is required.</div>
 											<i class="fa-solid fa-location-dot position-absolute"
@@ -526,9 +526,9 @@ function submitForm() {
     var jsonObject = {};
     
     var email = document.getElementById('email').value;
-    var emailDomain = document.getElementById('emailDomain').value;
+    var emailDomain = document.getElementById('emailDomain').value || '';
     var fullEmail = email + emailDomain;
-
+    console.log("Email Domain: ", emailDomain); 
     formData.forEach(function(value, key) {
         jsonObject[key] = value;
     });
