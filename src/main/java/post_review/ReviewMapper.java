@@ -35,9 +35,7 @@ public interface ReviewMapper {
     @Select("SELECT * FROM post_reviews WHERE writeuser_id=#{userId}")
     List<Review> getReviewsByUserId(int userId);
     
-//    // 특정 게시물에 대한 리뷰 목록 조회
-//    @Select("SELECT * FROM post_reviews WHERE post_id=#{postId}")
-//    List<Review> getReviewsByPostId(int postId);
+    // 특정 게시물에 대한 리뷰 목록 조회
     @Results({
         @Result(property = "reviewId", column = "review_id"),
         @Result(property = "postId", column = "post_id"),
@@ -56,4 +54,20 @@ public interface ReviewMapper {
 
     @Select("SELECT COUNT(*) FROM post_reviews")
     int countAll();
+    
+    // 개인 페이징 처리를 위한 쿼리
+    @Results({
+        @Result(property = "reviewId", column = "review_id"),
+        @Result(property = "postId", column = "post_id"),
+        @Result(property = "writeUserId", column = "writeuser_id"),
+        @Result(property = "guestUserId", column = "guestuser_id"),
+        @Result(property = "rating", column = "rating"),
+        @Result(property = "review", column = "review"),
+        @Result(property = "reviewDate", column = "review_date")
+    })
+    @Select("SELECT * FROM post_reviews WHERE writeuser_id = #{writeuser_id} LIMIT #{params.limit} OFFSET #{params.offset}")
+	List<Review> getMyPage(@Param("params")Map<String, Integer> params, @Param("writeuser_id") int writeuser_id);
+
+    @Select("SELECT COUNT(*) FROM post_reviews WHERE writeuser_id = #{writeuser_id}")
+    int myCountAll( @Param("writeuser_id") int writeuser_id);
 }

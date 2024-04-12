@@ -20,5 +20,6 @@ public class Post {
     private String expireDate;
     private int status;
     private String place;
+    private int view;
  
 }

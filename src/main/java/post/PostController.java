@@ -1,6 +1,9 @@
 package post;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import post_review.Review;
 import post_review.ReviewDTO;
 import post_review.ReviewService;
+import user.User;
 import util.ServletUtil;
 
-@WebServlet(urlPatterns = { "/post/list", "/review/list" })
+@WebServlet(urlPatterns = { "/post/list", "/review/list", "/post/mypostlist"})
 public class PostController extends HttpServlet {
 	private PostService postService = new PostService();
 
@@ -21,7 +26,12 @@ public class PostController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// GET 요청을 처리합니다.
-		request.getRequestDispatcher("/WEB-INF/post/postlist.jsp").forward(request, response);
+		String requestURI = request.getRequestURI();
+		if(requestURI.equals("/post/list")) {
+			request.getRequestDispatcher("/WEB-INF/post/postlist.jsp").forward(request, response);
+		} else if(requestURI.equals("/post/mypostlist")) {
+			request.getRequestDispatcher("/WEB-INF/myinfo/MyPost.jsp").forward(request, response);
+		}
 	}
 
 	@Override
@@ -39,13 +49,18 @@ public class PostController extends HttpServlet {
 				? Integer.parseInt(request.getParameter("pagePer"))
 				: 1;
 
+		User user = (User) request.getSession().getAttribute("user");
 
 		// JSON 형태로 변환하여 응답합니다.
-		if (requestURI.equals("/review/list")) {
-			ReviewDTO reviews = ReviewService.getReviewPage(page, pagePer);
-			ServletUtil.sendJsonBody(reviews, response);
-		} else if (requestURI.equals("/post/list")) {
+		if (requestURI.equals("/post/list")) {
 			PostDTO posts = postService.getPostPage(page, pagePer);
+			ServletUtil.sendJsonBody(posts, response);
+		} else if (requestURI.equals("/review/list")) {
+			ReviewDTO reviews = ReviewService.getMyReviewPage(page, pagePer, user.getUser_id());
+			System.out.println(reviews.getItems().toString());
+			ServletUtil.sendJsonBody(reviews, response);
+		} else if (requestURI.equals("/post/mypostlist")) {
+			PostDTO posts = postService.getMyPostPage(page, pagePer, user.getUser_id());
 			ServletUtil.sendJsonBody(posts, response);
 		}
 	}

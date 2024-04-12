@@ -101,8 +101,14 @@ input[type="button"]:hover {
 </head>
 <body>
 <%@ include file="../user/navigation.jsp"%>
-	<h1>게시물 상세 페이지</h1>
-	<div id="postDetail"></div>
+	<div id="postDetail" style="border: 2px solid gray; padding: 10px; border-radius: 10px; margin-right:100px; margin-left:100px;">
+		<h1 id="title" style="margin: 15px"></h1>
+		<p id="nickname" style="margin: 15px; margin-bottom: 0px"></p>
+		<p id="resistdate" style="margin: 15px; margin-top: 0px"></p>
+		<hr>
+		<p id="content" style="margin: 15px; margin-top: 35px; margin-bottom: 35px"></p>
+	</div>
+	
 	<div id="reviewForm">
 		<h2>리뷰 작성</h2>
 		<!-- <i class="bi bi-star"></i>
@@ -127,6 +133,7 @@ input[type="button"]:hover {
 			<button type="submit" class="btn btn-primary">리뷰 등록</button>
 		</form>
 	</div>
+	
 	<input type="hidden" id="post_Id"
 		value="<%=request.getParameter("post_Id")%>">
 	<input type="button" value="채팅방 참여" onclick="chatWinOpen()">
@@ -134,33 +141,35 @@ input[type="button"]:hover {
     const postDetail = document.getElementById("postDetail");
     const reviewForm = document.getElementById("reviewForm");
     const reviewFormSubmit = document.getElementById("reviewFormSubmit");
+    const title = document.getElementById("title");
+    const nickname = document.getElementById("nickname");
+    const resistdate = document.getElementById("resistdate");
+    const content = document.getElementById("content");
     const postId = document.getElementById("post_Id").value;
-    const apiURL = `http://localhost:8080/post/detail?post_Id=${postId}`;
     
-    fetch(apiURL, {
+    fetch(`http://localhost:8080/post/detail?post_Id=${postId}`, {
         method: 'POST',
     })
     .then(response => response.json())
     .then(async (data) => {
     const userId = data.user.id;
+    const posttitle = data.post.title
+    const postresistdate = data.post.resistDate
     const postContent = data.post.content;
     const isCurrentUserId = await isCurrentUser(data.user.user_id);
     
-    let userIdParagraph = document.createElement("p");
-    userIdParagraph.innerText = `사용자 ID: ${userId}`;
-    postDetail.appendChild(userIdParagraph);
-
-    let postContentParagraph = document.createElement("p");
-    postContentParagraph.innerText = `게시물 내용: ${postContent}`;
-    postDetail.appendChild(postContentParagraph);
-	
+    title.innerText = `${posttitle}`;
+    nickname.innerText = `${userId}`;
+    resistdate.innerText = `${postresistdate}`;
+    content.innerText = `게시물 내용: ${postContent}`;
+    
+    
     if(isCurrentUserId) {
 	 	// 게시물 수정 버튼 생성
 	    let editButton = document.createElement("button");
 	    editButton.innerText = "게시물 수정";
 	    editButton.addEventListener("click", () => {
-	        // 수정 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
-	        
+	    	window.location.href = `editpost?postId=${postId}`;
 	    });
 	    postDetail.appendChild(editButton);
 	
@@ -174,7 +183,8 @@ input[type="button"]:hover {
 	        })
 	        .then(response => {
                 if (response.ok) {
-                    console.log('게시글 성공적으로 삭제되었습니다.');
+                	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
+                	 window.location.href = `mypostlist`;
                 } else {
                     console.error('게시글 삭제 중 오류 발생:', response.status);
                     alert('게시글 삭제 중 오류가 발생했습니다.');
@@ -313,7 +323,7 @@ input[type="button"]:hover {
             reviewItem.appendChild(deleteButton);
         }
 
-        postDetail.appendChild(reviewItem);
+        reviewForm.appendChild(reviewItem);
     }
 })
     .catch(error => {
@@ -327,11 +337,6 @@ input[type="button"]:hover {
         return currentUserID === UserId;
     }
 
-
-    
-    
-    
-    
     
     
     reviewFormSubmit.addEventListener("submit", function(event) {
@@ -420,18 +425,10 @@ function chatWinOpen() {
     const nickname = getCookieValue("nickname"); // 쿠키에서 닉네임 가져오기
     console.log(nickname)
     if (!chatWindow || chatWindow.closed) {
-    	fetch ({
-    		method: 'POST'
-    	})
-    	.then((resp) => resp.json())
-    	.then((data) => {
-    		
-    	})
-        const url = "ChatWindow?nickname=" + nickname + "&post_Id=" + post_Id; // URL에 닉네임과 게시물 ID 추가
+        const url = "ChatWindow?&post_Id=" + post_Id; // URL에 게시물 ID 추가
         chatWindow = window.open(url, "", "width=400, height=550"); // 채팅 창 열기
     } else {
         chatWindow.focus();
-        chatMessage.focus();
     }   
 }
 </script>
