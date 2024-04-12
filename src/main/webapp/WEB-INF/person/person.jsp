@@ -139,8 +139,10 @@
             </div>
         </div>
     </div>
-    <!-- Bootstrap JS -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Bootstrap JS -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+>>>>>>> branch 'dongsu2' of https://github.com/dongso03/-Final_Project.git
 </body>
 </html>
