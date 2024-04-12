@@ -9,6 +9,9 @@
 </head>
 <body>
 	<%@ include file="../user/navigation.jsp"%>
+    <div id="recentPostList"></div>
+</body>
+    <Script>
 
 		<main class="flex-shrink-0">
 			<div class="container">
