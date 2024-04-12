@@ -25,6 +25,19 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="./Resources/css/styles.css" rel="stylesheet" />
+<style>
+.box {
+	display: inline-block;
+	width: 450px;
+	height: 420px;
+	border: 2px solid gray;
+	padding: 10px;
+	border-radius: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+</style>
 </head>
 <body class="d-flex flex-column h-100 bg-light">
 	<%@ include file="/WEB-INF/user/navigation.jsp"%>
@@ -40,14 +53,44 @@
 				</button>
 			</form>
 		</div>
-	
 	</main>
 
-	<h2>
-		<a href="/map">주변 음식점 찾기</a>
-		<a href="/recent"> 최근 간 음식점 </a>
-	</h2>
+	<br>
 
+	<div>
+		<div class="container d-flex justify-content-between">
+			<div class="box"></div>
+
+			<div>
+				<div class="border p-3 mb-2"
+					style="width: 600px; height: 100px; margin-right: auto; margin-top: 50px">
+					<a href="/map">주변 음식점 찾기</a>
+				</div>
+				<br> <br>
+				<div class="border p-3 mb-2"
+					style="width: 600px; height: 100px; margin-right: auto;">
+					<a href="/recent"> 최근 간 음식점 </a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br>
+	<div style="margin: 0 20%">
+		<table class="table table-hover table-bordered" id="postTable">
+			<thead class="table-light">
+				<tr>
+					<th scope="col" style="text-align: center;">#</th>
+					<th scope="col">제목</th>
+					<th scope="col">작성일</th>
+					<th scope="col">조회수</th>
+				</tr>
+			</thead>
+			<tbody class="table-group-divider">
+				<!-- 데이터는 JavaScript로 채웁니다 -->
+			</tbody>
+		</table>
+	</div>
 
 
 
@@ -83,4 +126,56 @@
 	<!-- Core theme JS-->
 	<script src="js/scripts.js"></script>
 </body>
+<script>
+		const postTable = document.getElementById("postTable");
+		const tbody = postTable.querySelector("tbody");
+          fetch("http://localhost:8080/recent", {
+              method: 'POST'
+          })
+          .then((resp) => resp.json())
+          .then((data) => {
+              // 게시물 테이블의 내용을 초기화
+              tbody.innerHTML = "";
+              const maxTitleLength = 20; // 예시로 20자로 설정
+              data.forEach((element) => {
+                  let contenttr = document.createElement("tr");
+                  let tdId = document.createElement("td");
+                  let tdTitle = document.createElement("td");
+                  let tdresistdate = document.createElement("td");
+                  let tdview = document.createElement("td");
+                  
+                  tdId.innerText = `${element.post_Id}`;
+                  tdTitle.innerText = element.title.length > maxTitleLength ? element.title.substring(0, maxTitleLength) + '...' : element.title;
+                  tdresistdate.innerText = `${element.resistdate}`;
+                  tdview.innerText = `${element.view}`;
+                  
+            	   // 각 셀에 스코프 및 스타일 지정
+                  tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
+                  tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
+                  tdTitle.setAttribute("scope", "col");
+                  tdTitle.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
+                  tdresistdate.setAttribute("scope", "col");
+                  tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
+                  tdview.setAttribute("scope", "col");
+                  tdview.style.width = "7%"
+                  
+                  tdId.style.textAlign = "center";
+                  tdview.style.textAlign = "center";
+                  
+                  // 클릭 이벤트 추가하여 상세 페이지로 이동
+                  tdTitle.addEventListener("click", () => {
+                      window.location.href = `/post/detail?post_Id=${element.post_Id}`;
+                  });
+                  
+                  contenttr.appendChild(tdId);
+                  contenttr.appendChild(tdTitle);
+                  contenttr.appendChild(tdresistdate);
+                  contenttr.appendChild(tdview);
+                  tbody.appendChild(contenttr);
+              });
+              
+          });
+    </script>
+
+
 </html>

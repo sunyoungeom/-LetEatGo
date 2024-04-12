@@ -75,7 +75,7 @@
 <body>
     <%@ include file="../user/navigation.jsp"%>
     <br>
-    <div class="total">
+    <div class="total" style="margin: 0 20%">
         <div class="container d-flex justify-content-between">
             <div class="box">
                 <div class="rectangle"></div>
@@ -97,8 +97,8 @@
         </div>
 
         <br>
-        <div class="container" style="margin-right: 6%;">
-            <div class="border p-3 mb-2" style="border-radius: 10px; width: 85%;">
+        <div class="container" style="margin: 0 8%;">
+            <div class="border p-3 mb-2" style="border-radius: 10px; width: 90%;">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex align-items-center">
                         <button class="btn btn-primary me-3">셔플</button>
