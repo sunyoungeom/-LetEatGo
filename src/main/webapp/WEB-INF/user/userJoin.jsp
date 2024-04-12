@@ -20,25 +20,56 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="./Resources/css/styles.css" rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
 <style>
 .readonly-input {
 	background-color: #f2f2f2;
 	weight: 400px;
 	height: 20px;
 }
+
+.form-group .fa {
+	pointer-events: none; /* 아이콘에서 포인터 이벤트(클릭 등) 비활성화 */
+}
+
+.message-success {
+	color: green;
+}
+
+.message-error {
+	color: red;
+}
+
+.form-group {
+	display: flex;
+	align-items: center; /* 세로 중앙 정렬 */
+	position: relative;
+	padding: 2px;
+}
+
+.form-group input {
+	flex-grow: 1; /* 입력 필드가 남은 공간을 모두 차지하도록 설정 */
+	height: 50px; /* 입력 필드 높이 조정 */
+}
+
+.form-group i {
+	position: absolute;
+	left: 15px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 5;
+}
 </style>
 </head>
+
 <body class="d-flex flex-column">
 	<main class="flex-shrink-0">
-
 		<%@ include file="navigation.jsp"%>
-
-
-
-
+		<!-- Navigation-->
 		<section class="py-5">
 			<div class="container px-5">
-				<!-- Contact form-->
 				<div class="bg-light rounded-4 py-5 px-4 px-md-5">
 					<div class="text-center mb-5">
 						<div
@@ -46,224 +77,243 @@
 							<i class="bi bi-envelope"></i>
 						</div>
 						<h1 class="fw-bolder">회원가입</h1>
-						<p class="lead fw-normal text-muted mb-0">*은 필수항목입니다.</p>
 					</div>
-					<div class="row gx-5 justify-content-center">
-						<div class="col-lg-8 col-xl-7">
-
-
-
-							<form id="userForm" method="post">
-
-								<!-- Name input-->
-								<div class="row">
-									<div class="col">
-										<div class="form-floating mb-3">
-											<input class="form-control" id="id" name="id" type="text"
-												placeholder="Enter your name..."
-												data-sb-validations="required" /> <label for="name">아이디
-												*</label>
+					<div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+						<div class="row justify-content-center">
+							<div class="col-6">
+								<div class="">
+									<!-- <div class="border rounded"> -->
+									<form id="userForm" method="post">
+										<!-- 아이디 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="id" name="id" type="text" placeholder="아이디"
+												data-sb-validations="required">
 											<div class="invalid-feedback"
 												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa fa-user position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
-									</div>
-									<div class="col-auto">
-										<button type="button" class="btn btn-secondary btn-lg"
-											style="height: 58px;" onclick="checkDuplicate('id')">중복확인</button>
-									</div>
-									<div class="mt-n1" id="idDuplicateMessage"></div>
-									<br>
-								</div>
-
-
-								<!-- Name input-->
-								<div class="row">
-									<div class="col">
-										<div class="form-floating mb-3">
-											<input class="form-control" id="password" name="password"
-												type="password" placeholder="Enter your name..."
-												data-sb-validations="required" /> <label for="name">비밀번호</label>
+										<!-- 비밀번호 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="password" name="password" type="password"
+												placeholder="비밀번호" data-sb-validations="required">
 											<div class="invalid-feedback"
 												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa-solid fa-lock position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
-									</div>
-										
-										<div class="col">
-										<div class="form-floating mb-3">
-											<input class="form-control" id="passwordConfirm"
-												name="passwordConfirm" type="password"
-												placeholder="Enter your name..."
-												data-sb-validations="required" /> <label for="name">비밀번호
-												확인</label>
+										<!-- 비밀번호 확인 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="passwordConfirm" name="passwordConfirm" type="password"
+												placeholder="비밀번호 확인" data-sb-validations="required">
 											<div class="invalid-feedback"
 												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa-solid fa-lock position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
-									</div>
-									<div class="mt-n1" id="passwordMatchMessage"></div>
-									<br>
-								</div>
-
-								<!-- <input type="hidden" name="action" value="register">  -->
-								<!-- ID: <input type="text" id="id" name="id"> <input
-									type="button" value="중복확인" onclick="checkDuplicate('id')"> -->
-								<!-- 비밀번호: <input type="password" id="password" name="password"><br>
-								비밀번호 확인: <input type="password" id="passwordConfirm"
-									name="passwordConfirm"><br>
-								비밀번호 확인 메시지
-								<span id="passwordMatchMessage"></span>
-								 -->
-
-
-								<!-- 이메일 입력 -->
-								<div class="row">
-									<div class="col">
-										<div class="form-floating mb-3">
-											<input class="form-control" id="email" name="email"
-												type="text" placeholder="이메일을 입력하세요..."
-												data-sb-validations="required" /> <label for="name">이메일</label>
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-floating mb-3">
-											<input class="form-control" id="emailDomain"
-												name="emailDomain" type="text" placeholder="이메일을 입력하세요..."
-												data-sb-validations="required" /><label for="name">이메일 도메인</label>
-										</div>
-									</div>
-
-
-
-								</div>
-								<div class="row">
-
-									<div class="col">
-										<div class="form-floating mb-3">
-											<select id="emailDomainSelect" class="form-select"
-												onchange="setEmailDomain()">
-												<option value="">직접 입력</option>
-												<option value="gmail.com">Gmail.com</option>
-												<option value="naver.com">Naver.com</option>
-												<option value="daum.net">Daum.net</option>
-											</select> <label for="emailDomainSelect">선택해주세요</label>
+										<div class="mt-n1" id="idCheckDuplicateMessage"></div>
+										<div class="mt-n1" id="passwordMatchMessage"></div>
+										필수사항
+										<!-- 이름 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="name" name="name" type="text" placeholder="이름"
+												data-sb-validations="required">
 											<div class="invalid-feedback"
-												data-sb-feedback="name:required">도메인을 선택해주세요.</div>
+												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa fa-user position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
-									</div>
-									<div class="col-auto">
-										<button type="button" class="btn btn-secondary btn-lg"
-											style="height: 58px;" onclick="checkDuplicate('email')">중복확인</button>
-									</div>
-									<div class="col-auto">
-										<button type="button" class="btn btn-secondary btn-lg"
-											style="height: 58px;" id="sendVerification" onclick="checkDuplicate('email')">인증번호 발송</button>
-									</div>
-									<div class="mt-n1" id="emailDuplicateMessage"></div>
-									<br>
+										<!-- 닉네임 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="nickname" name="nickname" type="text" placeholder="닉네임"
+												data-sb-validations="required">
+											<div class="invalid-feedback"
+												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa-solid fa-comment-dots position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
+										<!-- 주민번호 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="identifynumber" name="identifynumber" type="text"
+												placeholder="주민번호" data-sb-validations="required">
+											<div class="invalid-feedback"
+												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa-regular fa-id-card position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
+										<!-- 전화번호 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="phonenumber" name="phonenumber" type="text"
+												placeholder="전화번호" data-sb-validations="required">
+											<div class="invalid-feedback"
+												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa-solid fa-mobile-screen-button position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
+										<!-- 주소 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="address" name="address" type="text" placeholder="주소"
+												data-sb-validations="required" disabled>
+											<div class="invalid-feedback"
+												data-sb-feedback="name:required">A name is required.</div>
+											<i class="fa-solid fa-location-dot position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
+										<input type="button" onclick="goPopup()" value="주소찾기">
+										<!-- 이메일 입력 -->
+										<div
+											style="position: relative; display: flex; align-items: center; height: 50px; padding: 2px;">
+											<i class="fa-solid fa-envelope position-absolute"
+												style="left: 15px; transform: translateY(-50%); top: 50%; z-index: 3;"></i>
+											<input type="text" id="email" name="email" placeholder="이메일"
+												class="form-control ps-5"
+												style="height: 50px; padding-right: 90px; padding-left: 30px;"
+												autocapitalize="off">
+											<div id="emailDomain"
+												style="position: absolute; right: 10px; background: white; color: gray; z-index: 2;">@gmail.com</div>
+										</div>
+										<div class="col" style="padding: 2px;">
+											<div class="form-floating mb-3"
+												style="height: 50px; margin-bottom: 0px">
+												<select id="emailDomainSelect" class="form-select"
+													onchange="updateEmailDomainDisplay()">
+													<option value="@gmail.com" selected>Gmail.com</option>
+													<option value="@naver.com">Naver.com</option>
+													<option value="@daum.net">Daum.net</option>
+													<option value="">직접 입력</option>
+												</select> <label for="emailDomainSelect">도메인 선택</label>
+											</div>
+											<div id="verificationSection"
+												style="display: flex; align-items: center; padding: 2px;"">
+												<input class="form-control" type="text"
+													id="verificationCodeInput"
+													style="width: 82%; margin-right: 10px;" disabled>
+												<button id="requestVerificationButton" type="button"
+													class="btn btn-danger" onclick="sendVerification()">인증요청</button>
+												<button id="confirmVerificationButton" type="button"
+													value="확인" style="display: none;" class="btn btn-danger"
+													onclick="checkVerificationCode()">인증확인</button>
+											</div>
+										</div>
+										<div class="mt-n1" id="nicknameCheckDuplicateMessage"></div>
+										<div class="mt-n1" id="phonenumberCheckDuplicateMessage"></div>
+										<div class="mt-n1" id="emailCheckDuplicateMessage"></div>
+
+
+										</br> 선택사항
+										<!-- 혈액형 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<select class="form-control"
+												style="height: 50px; appearance: none; padding-left: 45px; background: #fff;"
+												id="bloodtype" name="bloodtype">
+
+
+												<option value="null"
+													${user.bloodtype == '' ? 'selected' : ''}>혈액형
+													[선택안함]</option>
+												<option value="A" ${user.bloodtype == 'A' ? 'selected' : ''}>A형</option>
+												<option value="B" ${user.bloodtype == 'B' ? 'selected' : ''}>B형</option>
+												<option value="AB"
+													${user.bloodtype == 'AB' ? 'selected' : ''}>AB형</option>
+												<option value="O" ${user.bloodtype == 'O' ? 'selected' : ''}>O형</option>
+											</select> <i class="fa-solid fa-droplet position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
+										<!-- MBTI 입력 -->
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<select class="form-control"
+												style="height: 50px; appearance: none; padding-left: 45px; background: #fff;"
+												id="mbti" name="mbti">
+												<option value="null" ${user.mbti == '' ? 'selected' : ''}>MBTI
+													[선택안함]</option>
+												<option value="ISTJ"
+													${user.mbti == 'ISTJ' ? 'selected' : ''}>ISTJ</option>
+												<option value="ISFJ"
+													${user.mbti == 'ISFJ' ? 'selected' : ''}>ISFJ</option>
+												<option value="INFJ"
+													${user.mbti == 'INFJ' ? 'selected' : ''}>INFJ</option>
+												<option value="INTJ"
+													${user.mbti == 'INTJ' ? 'selected' : ''}>INTJ</option>
+												<option value="ISTP"
+													${user.mbti == 'ISTP' ? 'selected' : ''}>ISTP</option>
+												<option value="ISFP"
+													${user.mbti == 'ISFP' ? 'selected' : ''}>ISFP</option>
+												<option value="INFP"
+													${user.mbti == 'INFP' ? 'selected' : ''}>INFP</option>
+												<option value="INTP"
+													${user.mbti == 'INTP' ? 'selected' : ''}>INTP</option>
+												<option value="ESTP"
+													${user.mbti == 'ESTP' ? 'selected' : ''}>ESTP</option>
+												<option value="ESFP"
+													${user.mbti == 'ESFP' ? 'selected' : ''}>ESFP</option>
+												<option value="ENFP"
+													${user.mbti == 'ENFP' ? 'selected' : ''}>ENFP</option>
+												<option value="ENTP"
+													${user.mbti == 'ENTP' ? 'selected' : ''}>ENTP</option>
+												<option value="ESTJ"
+													${user.mbti == 'ESTJ' ? 'selected' : ''}>ESTJ</option>
+												<option value="ESFJ"
+													${user.mbti == 'ESFJ' ? 'selected' : ''}>ESFJ</option>
+												<option value="ENFJ"
+													${user.mbti == 'ENFJ' ? 'selected' : ''}>ENFJ</option>
+												<option value="ENTJ"
+													${user.mbti == 'ENTJ' ? 'selected' : ''}>ENTJ</option>
+											</select> <i class="fa-solid fa-droplet position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
+										<!-- 사진 입력 -->
+										<div class="form-group position-relative" style="padding: 2px;">
+    <input class="form-control ps-5"
+        style="height: 50px; opacity: 0; width: 100%; cursor: pointer;"
+        id="profilePhoto" name="profilePhotoPath" type="file"
+        data-sb-validations="required" accept="image/*" onchange="updateLabel()"> 
+    <label for="profilePhoto" class="form-control"
+        style="position: absolute; top: 0; left: 0; height: 100%; cursor: pointer; display: flex; align-items: center; padding-left: 50px;">
+        <i class="fa-solid fa-camera"
+        style="position: absolute; left: 15px;"></i> 
+        <span id="profilePhotoPathLabel">프로필 사진 추가</span>
+    </label>
+    <div class="invalid-feedback"
+        style="position: absolute; top: 55px;">A profile photo is required.</div>
+</div>
+									</form>
+
+
+										<!-- '가입' 버튼 -->
+										<button type="button" value="확인"
+											style="height: 50px; padding: 2px;"
+											class="btn btn-dark form-control" onclick="submitForm()">가입</button>
 								</div>
 
-
-								<!-- 	<!-- Name input-->
-								<!-- 	<div class="row">
-									<div class="col">
-										<div class="form-floating mb-3">
-											<input class="form-control" id="email" name="email"
-												type="text" placeholder="Enter your name..."
-												data-sb-validations="required" /> <label for="name">이메일</label>
-
-										</div>
-										<input class="form-control" id="emailDomain"
-											name="emailDomain" type="text" placeholder="@gmail.com"
-											data-sb-validations="required" /> <label for="name">비밀번호
-											확인</label>
-										<div class="invalid-feedback" data-sb-feedback="name:required">A
-											name is required.</div>
-
-
-										<select id="emailDomainSelect" onchange="setEmailDomain()">
-											<option value="">직접 입력</option>
-											<option value="gmail.com">Gmail.com</option>
-											<option value="naver.com">Naver.com</option>
-											<option value="daum.net">Daum.net</option>
-										</select>
-									</div>
-
-									<div class="col-auto">
-										<button type="button" class="btn btn-secondary btn-lg"
-											style="height: 58px;" onclick="checkDuplicate('email')">중복확인</button>
-									</div>
-								</div> -->
-
-
-								<!-- E-Mail: <input type="text" id="email" name="email">@ <input
-									type="text" id="emailDomain"> <select
-									id="emailDomainSelect" onchange="setEmailDomain()">
-									<option value="">직접 입력</option>
-									<option value="gmail.com">Gmail.com</option>
-									<option value="naver.com">Naver.com</option>
-									<option value="daum.net">Daum.net</option>
-								</select> <input type="button" value="중복확인"
-									onclick="checkDuplicate('email')"> -->
-								<!-- <input type="button" id="sendVerification" value="인증번호 발송">
-								<span id="emailDuplicateMessage"></span><br> -->
-								
-								
-								 인증번호: <input
-									type="text" id="verificationCodeInput"> <input
-									type="button" id="confirmVerificationButton" value="확인"
-									onclick="checkVerificationCode()"><br> 이름: <input
-									type="text" id="name" name="name"><br> 닉네임: <input
-									type="text" id="nickname" name="nickname"> <input
-									type="button" value="중복확인" onclick="checkDuplicate('nickname')">
-								<span id="nicknameDuplicateMessage"></span><br> 주민등록번호: <input
-									type="text" id="identifynumber" name="identifynumber"><br>
-
-
-
-
-								전화번호: <input type="text" id="phonenumber" name="phonenumber">
-								<input type="button" value="중복확인"
-									onclick="checkDuplicate('phonenumber')"> <span
-									id="phonenumberDuplicateMessage"></span><br> 도로명주소: <input
-									type="text" id="address" name="address" readonly> <input
-									type="button" onclick="goPopup()" value="주소찾기"><br>
-
-								<input type="hidden" id="join_date" name="join_date"> <input
-									type="hidden" id="attendance" name="attendance"> MBTI:
-								<select id="mbti" name="mbti">
-									<option value="null">----</option>
-									<option value="ESTJ">ESTJ</option>
-									<option value="ESTP">ESTP</option>
-									<option value="ESFJ">ESFJ</option>
-									<option value="ESFP">ESFP</option>
-									<option value="ENTJ">ENTJ</option>
-									<option value="ENTP">ENTP</option>
-									<option value="ENFJ">ENFJ</option>
-									<option value="ENFP">ENFP</option>
-									<option value="ISTJ">ISTJ</option>
-									<option value="ISTP">ISTP</option>
-									<option value="ISFJ">ISFJ</option>
-									<option value="ISFP">ISFP</option>
-									<option value="INTJ">INTJ</option>
-									<option value="INTP">INTP</option>
-									<option value="INFJ">INFJ</option>
-									<option value="INFP">INFP</option>
-								</select><br> 혈액형:
-								<!-- <input type="text" id="bloodtype" name="bloodtype"><br> -->
-								<select id="bloodtype" name="bloodtype">
-									<option value="null">----</option>
-									<option value="A">A형</option>
-									<option value="B">B형</option>
-									<option value="AB">AB형</option>
-									<option value="O">O형</option>
-								</select> <input type="button" value="가입" onclick="submitForm()">
-							</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-
 	</main>
+
+
+
+
 
 
 
@@ -272,6 +322,93 @@
 </body>
 
 <script>
+function updateLabel() {
+    var input = document.getElementById('profilePhoto');
+    var fileLabel = document.getElementById('profilePhotoPathLabel');
+    var fileName = input.files.length > 0 ? input.files[0].name : '프로필 사진 추가';
+
+    profilePhotoPathLabel.textContent = fileName; // 파일 이름을 레이블로 설정
+}
+
+
+//디바운싱 함수
+function debounce(func, wait) {
+    let timeout;
+
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+// 중복확인 함수
+function checkDuplicate(field) {
+    var inputElement = document.getElementById(field);
+    var value = inputElement.value;
+    var emailValue = document.getElementById('email').value;
+    var emailDomainValue = document.getElementById('emailDomainSelect').value;
+    var fullValue;
+
+    // 이메일 필드인 경우 도메인과 합친다
+    if (field === 'email') {
+    	if (emailDomainValue === '') {
+    		fullValue = emailValue
+    	} else {
+        fullValue = emailValue + emailDomainValue;
+    	}
+    } else {
+        fullValue = value;
+    }
+
+    fetch('/join/begin?action=checkDuplicate&field=' + field + '&value=' + encodeURIComponent(fullValue), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({[field]: fullValue})
+    })
+    .then(response => response.text())
+    .then(data => {
+        var duplicateMessage = document.getElementById(field + 'CheckDuplicateMessage');
+        var sendVerificationButton = document.getElementById('sendVerification'); // 인증 버튼 DOM 요소 가져오기
+
+        if (data === "duplicate") {
+            duplicateMessage.textContent = "이미 사용 중인 " + field + "입니다.";
+            duplicateMessage.classList.remove('message-success');
+            duplicateMessage.classList.add('message-error');
+            // 사용 중인 경우 포커스 잃어도 메시지 유지
+            inputElement.onblur = null;
+            sendVerificationButton.disabled = true; // 중복인 경우 인증 버튼 비활성화
+        } else {
+            duplicateMessage.textContent = "사용 가능한 " + field + "입니다.";
+            duplicateMessage.classList.remove('message-error');
+            duplicateMessage.classList.add('message-success');
+         // 사용 가능한 경우 포커스 잃으면 메시지 삭제
+            inputElement.onblur = function() {
+                duplicateMessage.textContent = '';
+            };
+            if (field === 'email') {
+            	sendVerificationButton.disabled = false; // 중복이 아닌 경우에만 인증 버튼 활성화
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// 각 입력 필드에 대해 디바운스된 이벤트 핸들러 추가
+document.getElementById('id').addEventListener('input', debounce(() => checkDuplicate('id'), 500));
+document.getElementById('nickname').addEventListener('input', debounce(() => checkDuplicate('nickname'), 500));
+document.getElementById('phonenumber').addEventListener('input', debounce(() => checkDuplicate('phonenumber'), 500));
+
+document.getElementById('email').addEventListener('input', debounce(() => checkDuplicate('email'), 500));
+document.getElementById('emailDomain').addEventListener('input', debounce(() => checkDuplicate('email'), 500));
+
 //비밀번호와 비밀번호 확인을 비동기적으로 일치 여부를 확인하는 함수
 function checkPasswordMatch() {
     var password = document.getElementById('password').value;
@@ -279,22 +416,42 @@ function checkPasswordMatch() {
     var passwordMatchMessage = document.getElementById('passwordMatchMessage');
 
     if (password === passwordConfirm) {
-        // 비밀번호가 일치할 때
         passwordMatchMessage.textContent = "비밀번호가 일치합니다.";
         passwordMatchMessage.style.color = "green";
+        // 일치하는 경우 포커스를 잃으면 메시지 삭제
+        document.getElementById('passwordConfirm').onblur = function() {
+            passwordMatchMessage.textContent = ''; // 일치 시 메시지를 항상 삭제
+        };
     } else {
-        // 비밀번호가 일치하지 않을 때
         passwordMatchMessage.textContent = "비밀번호가 일치하지 않습니다.";
         passwordMatchMessage.style.color = "red";
+        // 일치하지 않는 경우 포커스를 잃어도 메시지 유지
+        document.getElementById('passwordConfirm').onblur = null;
     }
 }
 
-// 비밀번호 확인 필드의 값이 변경될 때마다 일치 여부를 확인
+// 이벤트 리스너를 추가합니다.
+document.getElementById('password').addEventListener('input', checkPasswordMatch);
 document.getElementById('passwordConfirm').addEventListener('input', checkPasswordMatch);
 
 
+//이메일 도메인 표시
+function updateEmailDomainDisplay() {
+    var emailDomainSelect = document.getElementById('emailDomainSelect');
+    var emailDomainDisplay = document.getElementById('emailDomain');
+    
+    var selectedDomain = emailDomainSelect.value;
+    
+    if (selectedDomain) {
+        emailDomainDisplay.textContent = '@' + selectedDomain; // 선택된 도메인으로 텍스트 업데이트
+    } else {
+        emailDomainDisplay.textContent = ''; // 도메인이 '직접 입력'으로 설정되면 아무것도 표시하지 않음
+    }
+}
+
 document.getElementById('sendVerification').addEventListener('click', sendVerification);
  
+ // 인증번호 일치 확인
 function checkVerificationCode() {
     var verificationCodeInput = document.getElementById('verificationCodeInput').value;
     
@@ -326,22 +483,29 @@ function checkVerificationCode() {
     });
 } 
  
- 
+ // 이메일 인증번호 발송
 function sendVerification() {
     var email = document.getElementById('email').value;
-    var emailDomain = document.getElementById('emailDomain').value;
-    var fullEmail = email + '@' + emailDomain;
+    var emailDomain = document.getElementById('emailDomainSelect').value;
+    var fullEmail = email + emailDomain;
 
     // fetch를 사용하여 서버에 요청 전송
-   fetch('/join/begin?action=sendVerification&email=' + encodeURIComponent(fullEmail), {
+ fetch('/join/begin?action=sendVerification&email=' + fullEmail, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'email': fullEmail})
     })
     .then(response => {
         if (response.ok) {
             alert("인증번호가 " + fullEmail + "로 발송되었습니다.");
+            document.getElementById('verificationCodeInput').disabled = false;
+            document.getElementById('requestVerificationButton').style.display = 'none';
+            document.getElementById('confirmVerificationButton').style.display = 'inline';
+        
+            
+            
         } else {
             // 오류 응답 처리
             console.error('서버 오류:', response.statusText);
@@ -355,111 +519,15 @@ function sendVerification() {
     });
 }
 
-
-/* function sendVerification() {
-
-    var email = document.getElementById('email').value;
-    var emailDomain = document.getElementById('emailDomain').value;
-    // 이메일을 서버로 전송하여 인증 번호를 발송하는 로직을 구현하세요.
-    // 이 예제에서는 간단히 알림 창으로 메시지를 출력합니다.
-    alert("인증 번호가 " + email + '@' + emailDomain + "로 발송되었습니다.");
-} */
-// var formData = {
-// 		id: document.getElementById("id").value,
-//         password: document.getElementById("password").value,
-//         email: document.getElementById("email").value,
-//         name: document.getElementById("name").value,
-//         nickname: document.getElementById("nickname").value,
-//         identifynumber: document.getElementById("identifynumber").value,
-//         phonenumber: document.getElementById("phonenumber").value,
-//         address: document.getElementById("address").value,
-//         join_date: document.getElementById("join_date").value,
-//         attendance: document.getElementById("attendance").value,
-// }
-function checkDuplicate(field) {
-	var value = document.getElementById(field).value;
-	var emailValue = document.getElementById('email').value;
-    var emailDomainValue = document.getElementById('emailDomain').value;
-
-	// 이메일 필드가 아닌 경우에는 그냥 value를 전송
-    if (field !== 'email') {
-        var data = {
-            [field]: value
-        };
-    } else { // 이메일 필드인 경우 이메일과 도메인을 합쳐서 전송
-    	value = emailValue + '@' + emailDomainValue;
-        var data = {
-            'email': value
-            };
-    }
-
-    fetch('/join/begin?action=checkDuplicate&field=' + field + '&value=' + value, {
-    	    method: 'POST',
-    	    headers: {
-    	        'Content-Type': 'application/json'
-    	    },
-    	    body: JSON.stringify(data)
-    	})
-    	.then(response => response.text()) // JSON 형식이 아닌 텍스트로 응답을 파싱
-    	.then(data => {
-            var duplicateMessage = document.getElementById(field + 'DuplicateMessage');
-            var sendVerificationButton = document.getElementById('sendVerification');
-            if (field === 'email') {
-                if (data === "duplicate") {
-                    duplicateMessage.textContent = "이미 사용 중인 " + field + "입니다.";
-                    sendVerificationButton.disabled = true;
-                    sendVerificationButton.style.display = 'none';
-                } else {
-                    duplicateMessage.textContent = "사용 가능한 " + field + "입니다.";
-                    sendVerificationButton.disabled = false;
-                    sendVerificationButton.style.display = 'inline';
-                }
-            } else {
-                if (data === "duplicate") {
-                    duplicateMessage.textContent = "이미 사용 중인 " + field + "입니다.";
-                } else {
-                    duplicateMessage.textContent = "사용 가능한 " + field + "입니다.";
-                }
-            }
-    	})
-    	.catch(error => {
-    	    // 에러 처리 로직
-    	});
-}
-
-
-/* function autoCompleteEmail(domain) {
-    var emailInput = document.getElementById('email');
-    var emailDomainSelect = document.getElementById('emailDomain');
-    if (domain === '') {
-        emailInput.value = '';
-        emailInput.focus();
-    } else {
-        emailInput.value = domain;
-    }
-}
- */
-function setEmailDomain() {
-    var emailDomainSelect = document.getElementById('emailDomainSelect');
-    var selectedDomain = emailDomainSelect.value;
-    var emailInput = document.getElementById('emailDomain');
-    if (selectedDomain === '') {
-        emailInput.value = '';
-        emailInput.focus();
-    } else {
-        emailInput.value = selectedDomain;
-    }
-}
-
-
 function submitForm() {
     var form = document.getElementById("userForm");
     var formData = new FormData(form);
+    var profilePhotoPath = document.getElementById('profilePhotoPathLabel').textContent;
     var jsonObject = {};
     
     var email = document.getElementById('email').value;
     var emailDomain = document.getElementById('emailDomain').value;
-    var fullEmail = email + '@' + emailDomain;
+    var fullEmail = email + emailDomain;
 
     formData.forEach(function(value, key) {
         jsonObject[key] = value;
@@ -468,6 +536,7 @@ function submitForm() {
     jsonObject["email"] = fullEmail;
     jsonObject["attendance"] = 0;
     jsonObject["join_date"] = new Date().toISOString().slice(0,10);
+    jsonObject["profilePhotoPath"] = profilePhotoPath;
     
     var json = JSON.stringify(jsonObject);
 
