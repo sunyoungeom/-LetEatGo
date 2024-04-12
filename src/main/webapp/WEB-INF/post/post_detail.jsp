@@ -101,8 +101,14 @@ input[type="button"]:hover {
 </head>
 <body>
 <%@ include file="../user/navigation.jsp"%>
-	<h1>게시물 상세 페이지</h1>
-	<div id="postDetail"></div>
+	<div id="postDetail" style="border: 2px solid gray; padding: 10px; border-radius: 10px; margin-right:100px; margin-left:100px;">
+		<h1 id="title" style="margin: 15px"></h1>
+		<p id="nickname" style="margin: 15px; margin-bottom: 0px"></p>
+		<p id="resistdate" style="margin: 15px; margin-top: 0px"></p>
+		<hr>
+		<p id="content" style="margin: 15px; margin-top: 35px; margin-bottom: 35px"></p>
+	</div>
+	
 	<div id="reviewForm">
 		<h2>리뷰 작성</h2>
 		<!-- <i class="bi bi-star"></i>
@@ -127,6 +133,7 @@ input[type="button"]:hover {
 			<button type="submit" class="btn btn-primary">리뷰 등록</button>
 		</form>
 	</div>
+	
 	<input type="hidden" id="post_Id"
 		value="<%=request.getParameter("post_Id")%>">
 	<input type="button" value="채팅방 참여" onclick="chatWinOpen()">
@@ -134,25 +141,27 @@ input[type="button"]:hover {
     const postDetail = document.getElementById("postDetail");
     const reviewForm = document.getElementById("reviewForm");
     const reviewFormSubmit = document.getElementById("reviewFormSubmit");
+    const title = document.getElementById("title");
+    const nickname = document.getElementById("nickname");
+    const resistdate = document.getElementById("resistdate");
+    const content = document.getElementById("content");
     const postId = document.getElementById("post_Id").value;
-    const apiURL = `http://localhost:8080/post/detail?post_Id=${postId}`;
     
-    fetch(apiURL, {
+    fetch(`http://localhost:8080/post/detail?post_Id=${postId}`, {
         method: 'POST',
     })
     .then(response => response.json())
     .then(async (data) => {
     const userId = data.user.id;
+    const posttitle = data.post.title
+    const postresistdate = data.post.resistDate
     const postContent = data.post.content;
     const isCurrentUserId = await isCurrentUser(data.user.user_id);
     
-    let userIdParagraph = document.createElement("p");
-    userIdParagraph.innerText = `사용자 ID: ${userId}`;
-    postDetail.appendChild(userIdParagraph);
-
-    let postContentParagraph = document.createElement("p");
-    postContentParagraph.innerText = `게시물 내용: ${postContent}`;
-    postDetail.appendChild(postContentParagraph);
+    title.innerText = `${posttitle}`;
+    nickname.innerText = `${userId}`;
+    resistdate.innerText = `${postresistdate}`;
+    content.innerText = `게시물 내용: ${postContent}`;
     
     
     if(isCurrentUserId) {
@@ -314,7 +323,7 @@ input[type="button"]:hover {
             reviewItem.appendChild(deleteButton);
         }
 
-        postDetail.appendChild(reviewItem);
+        reviewForm.appendChild(reviewItem);
     }
 })
     .catch(error => {

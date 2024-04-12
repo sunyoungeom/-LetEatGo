@@ -75,7 +75,7 @@ public interface PostMapper {
     @Select("select * from posts where place = #{place}")
     List<Post> getPostsByPlace(String place);
     
-    @Select("SELECT * FROM posts WHERE id = #{id} ORDER BY id DESC LIMIT 10;")
+    @Select("SELECT * FROM posts WHERE writeuser_id = #{id} ORDER BY post_id DESC LIMIT 10;")
     List<Post> getPlaceById(int id);
 }
     
