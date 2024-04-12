@@ -30,10 +30,10 @@ public class RecentVistServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Object attribute = req.getSession().getAttribute("user");
 		User user = (User) attribute;
-		int writeUser_id = user.getUser_id();
-		
+		int writeuser_id = user.getUser_id();
+		System.out.println(writeuser_id);
 		PostService postService = new PostService();
-		List<Post> placeByIdList = postService.getPlaceById(writeUser_id);
+		List<Post> placeByIdList = postService.getPlaceById(writeuser_id);
 		System.out.println(placeByIdList.toString());
 		ServletUtil.sendJsonBody(placeByIdList, resp);
 	}

@@ -1,246 +1,296 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page isELIgnored="true"%>
+pageEncoding="UTF-8"%> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
+prefix="c"%> <%@ page isELIgnored="true"%>
 
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8" />
-<title>키워드로 장소검색하고 목록으로 표출하기</title>
-<style>
-.map_wrap, .map_wrap * {
-	margin: 0;
-	padding: 0;
-	font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
-	font-size: 12px;
-}
+  <head>
+    <meta charset="utf-8" />
+    <title>키워드로 장소검색하고 목록으로 표출하기</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.2.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .map_wrap,
+      .map_wrap * {
+        margin: 0;
+        padding: 0;
+        font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+        font-size: 12px;
+      }
 
-.map_wrap a, .map_wrap a:hover, .map_wrap a:active {
-	color: #000;
-	text-decoration: none;
-}
+      .map_wrap a,
+      .map_wrap a:hover,
+      .map_wrap a:active {
+        color: #000;
+        text-decoration: none;
+      }
 
-.map_wrap {
-	position: relative;
-	width: 100%;
-	height: 500px;
-	display: flex;
-}
+      .map_wrap {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        display: flex;
+      }
 
-#menu_wrap {
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 250px;
-	margin: 10px 0 30px 10px;
-	padding: 5px;
-	overflow-y: auto;
-	background: rgba(255, 255, 255, 0.7);
-	z-index: 1;
-	font-size: 12px;
-	border-radius: 10px;
-}
+      #menu_wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        margin: 10px 0 30px 10px;
+        padding: 5px;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 1;
+        font-size: 12px;
+        border-radius: 10px;
+      }
 
-.bg_white {
-	background: #fff;
-}
+      .bg_white {
+        background: #fff;
+      }
 
-#menu_wrap hr {
-	display: block;
-	height: 1px;
-	border: 0;
-	border-top: 2px solid #5f5f5f;
-	margin: 3px 0;
-}
+      #menu_wrap hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 2px solid #5f5f5f;
+        margin: 3px 0;
+      }
 
-#menu_wrap .option {
-	text-align: center;
-}
+      #menu_wrap .option {
+        text-align: center;
+      }
 
-#menu_wrap .option p {
-	margin: 10px 0;
-}
+      #menu_wrap .option p {
+        margin: 10px 0;
+      }
 
-#menu_wrap .option button {
-	margin-left: 5px;
-}
+      #menu_wrap .option button {
+        margin-left: 5px;
+      }
 
-#placesList li {
-	list-style: none;
-}
+      #placesList li {
+        list-style: none;
+      }
 
-#placesList .item {
-	position: relative;
-	border-bottom: 1px solid #888;
-	overflow: hidden;
-	cursor: pointer;
-	min-height: 65px;
-}
+      #placesList .item {
+        position: relative;
+        border-bottom: 1px solid #888;
+        overflow: hidden;
+        cursor: pointer;
+        min-height: 65px;
+      }
 
-#placesList .item span {
-	display: block;
-	margin-top: 4px;
-}
+      #placesList .item span {
+        display: block;
+        margin-top: 4px;
+      }
 
-#placesList .item h5, #placesList .item .info {
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-}
+      #placesList .item h5,
+      #placesList .item .info {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
 
-#placesList .item .info {
-	padding: 10px 0 10px 55px;
-}
+      #placesList .item .info {
+        padding: 10px 0 10px 55px;
+      }
 
-#placesList .info .gray {
-	color: #8a8a8a;
-}
+      #placesList .info .gray {
+        color: #8a8a8a;
+      }
 
-#placesList .info .jibun {
-	padding-left: 26px;
-	background:
-		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
-		no-repeat;
-}
+      #placesList .info .jibun {
+        padding-left: 26px;
+        background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
+          no-repeat;
+      }
 
-#placesList .info .tel {
-	color: #009900;
-}
+      #placesList .info .tel {
+        color: #009900;
+      }
 
-#placesList .item .markerbg {
-	float: left;
-	position: absolute;
-	width: 36px;
-	height: 37px;
-	margin: 10px 0 0 10px;
-	background:
-		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
-		no-repeat;
-}
+      #placesList .item .markerbg {
+        float: left;
+        position: absolute;
+        width: 36px;
+        height: 37px;
+        margin: 10px 0 0 10px;
+        background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
+          no-repeat;
+      }
 
-#placesList .item .marker_1 {
-	background-position: 0 -10px;
-}
+      #placesList .item .marker_1 {
+        background-position: 0 -10px;
+      }
 
-#placesList .item .marker_2 {
-	background-position: 0 -56px;
-}
+      #placesList .item .marker_2 {
+        background-position: 0 -56px;
+      }
 
-#placesList .item .marker_3 {
-	background-position: 0 -102px;
-}
+      #placesList .item .marker_3 {
+        background-position: 0 -102px;
+      }
 
-#placesList .item .marker_4 {
-	background-position: 0 -148px;
-}
+      #placesList .item .marker_4 {
+        background-position: 0 -148px;
+      }
 
-#placesList .item .marker_5 {
-	background-position: 0 -194px;
-}
+      #placesList .item .marker_5 {
+        background-position: 0 -194px;
+      }
 
-#placesList .item .marker_6 {
-	background-position: 0 -240px;
-}
+      #placesList .item .marker_6 {
+        background-position: 0 -240px;
+      }
 
-#placesList .item .marker_7 {
-	background-position: 0 -286px;
-}
+      #placesList .item .marker_7 {
+        background-position: 0 -286px;
+      }
 
-#placesList .item .marker_8 {
-	background-position: 0 -332px;
-}
+      #placesList .item .marker_8 {
+        background-position: 0 -332px;
+      }
 
-#placesList .item .marker_9 {
-	background-position: 0 -378px;
-}
+      #placesList .item .marker_9 {
+        background-position: 0 -378px;
+      }
 
-#placesList .item .marker_10 {
-	background-position: 0 -423px;
-}
+      #placesList .item .marker_10 {
+        background-position: 0 -423px;
+      }
 
-#placesList .item .marker_11 {
-	background-position: 0 -470px;
-}
+      #placesList .item .marker_11 {
+        background-position: 0 -470px;
+      }
 
-#placesList .item .marker_12 {
-	background-position: 0 -516px;
-}
+      #placesList .item .marker_12 {
+        background-position: 0 -516px;
+      }
 
-#placesList .item .marker_13 {
-	background-position: 0 -562px;
-}
+      #placesList .item .marker_13 {
+        background-position: 0 -562px;
+      }
 
-#placesList .item .marker_14 {
-	background-position: 0 -608px;
-}
+      #placesList .item .marker_14 {
+        background-position: 0 -608px;
+      }
 
-#placesList .item .marker_15 {
-	background-position: 0 -654px;
-}
+      #placesList .item .marker_15 {
+        background-position: 0 -654px;
+      }
 
-#pagination {
-	margin: 10px auto;
-	text-align: center;
-}
+      #pagination {
+        margin: 10px auto;
+        text-align: center;
+      }
 
-#pagination a {
-	display: inline-block;
-	margin-right: 10px;
-}
+      #pagination a {
+        display: inline-block;
+        margin-right: 10px;
+      }
 
-#pagination .on {
-	font-weight: bold;
-	cursor: default;
-	color: #777;
-}
+      #pagination .on {
+        font-weight: bold;
+        cursor: default;
+        color: #777;
+      }
 
-#ing {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  #ing > div {
-    width: calc(50% - 10px); /* 가로 방향으로 나란히 배치되므로 50% 너비로 설정 */
-    margin: 5px; /* 각 요소 사이의 간격을 조절합니다 */
-    flex: 0 0 auto; /* 요소의 너비를 자동으로 설정하고, 크기를 변경하지 않습니다 */
-  }
-</style>
-</head>
-<body>
-	<%@ include file="../user/navigation.jsp"%>
-	<div class="map_wrap">
-		<div id="map"
-			style="width: 70%; height: 100%; position: relative; overflow: hidden; float: left;"></div>
+      .content {
+        background-color: #f8f9fa; /* 컨텐츠 영역 배경색을 연회색으로 설정 */
+        padding: 20px; /* 내부 패딩 추가 */
+        margin-left: 10%; /* 왼쪽 여백 설정 */
+        margin-right: 10%; /* 오른쪽 여백 설정 */
+      }
+    </style>
+  </head>
+  <body>
+    <%@ include file="../user/navigation.jsp"%>
+    <div class="content">
+      <div class="text-center mb-5">
+        <h1 class="display-5 fw-bolder mb-0">
+          <span class="text-gradient d-inline"
+            >검색 후 마커를 클릭 해보세요!</span
+          >
+        </h1>
+      </div>
 
+      <div style="position: relative">
+        <!-- 기존 마진을 없애기 위해 div 추가 -->
+        <div
+          id="comboContainer"
+          style="position: absolute; bottom: 0; right: 0; margin: 0"
+        >
+          <!-- 콤보박스 -->
+          <select class="form-select">
 
-		<div id="menu_wrap" class="bg_white" style="width: 20%; height: 90%">
-			<div class="option">
-				<div>
-					<form onsubmit="searchPlaces(); return false;">
-						키워드 : <input type="text" id="keyword" size="15" />
-						<button type="submit">검색하기</button>
-					</form>
-				</div>
-			</div>
-			<hr />
-			<ul id="placesList"></ul>
-			<div id="pagination"></div>
-		</div>
-		<div id="searchResult"
-			style="width: 30%; height: 100%; background-color: #fff; padding: 10px; position: relative; float: left; margin-left: 10px;"></div>
-		<br> <br> <br>
-	</div>
-	<div id="createpost" style="display: flex;"></div>
-	<br>
-	<div id="bu"></div>
-	<br>
-	<div id="ing" style="position: relative;"></div>
-	<div id="end"></div>
+            <option selected>블로그 보기</option>
+            <option>진행중인 모임 보기</option>
+            <option>종료된 모임 보기</option>
+          </select>
+        </div>
+      </div>
+      <div class="map_wrap">
+        <div
+          id="map"
+          style="
+            width: 70%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            float: left;
+          "
+        ></div>
 
-	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"></script>
-	<script>
+        <div id="menu_wrap" class="bg_white" style="width: 20%; height: 90%">
+          <div class="option">
+            <div>
+              <form onsubmit="searchPlaces(); return false;">
+                키워드 : <input type="text" id="keyword" size="15" />
+                <button type="submit">검색하기</button>
+              </form>
+            </div>
+          </div>
+          <hr />
+          <ul id="placesList"></ul>
+          <div id="pagination"></div>
+        </div>
+        <!-- <div id="combo" style="">
+
+        </div> -->
+        <div
+          id="searchResult"
+          style="
+            width: 30%;
+            height: 100%;
+            background-color: #fff;
+            padding: 10px;
+            position: relative;
+            float: left;
+            margin-left: 10px;
+            margin-top: 0;
+          "
+        ></div>
+      </div>
+      <div id="createpost" style="display: flex"></div>
+      <br />
+      <div id="bu"></div>
+      <br />
+      <div id="ing" style="position: relative"></div>
+      <div id="end"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"
+    ></script>
+    <script>
       // 사용자 주소기반으로 첫지도 위치 특정
       const keywordinput = document.getElementById("keyword");
       const apiURL = "http://localhost:8080/map/keyword";
@@ -335,8 +385,8 @@
           // 해당 장소에 인포윈도우에 장소명을 표시합니다
           // mouseout 했을 때는 인포윈도우를 닫습니다
           function decodeHtmlCharCodes(str) {
-            return str.replace(/(&#(\d+);)/g, (match, capture, charCode) =>
-              String.fromCharCode(charCode)
+            return str.replace(/(&#[\d<>]+;)/g, (match, capture) =>
+              String.fromCharCode(capture.replace(/[^0-9]/g, ""))
             );
           }
 
@@ -351,13 +401,18 @@
               infowindow.close();
             });
             // 클릭 이벤트 리스너 설정
+
             kakao.maps.event.addListener(marker, "click", function () {
+              document.querySelector('.form-select').selectedIndex = 0;
               const resultTitle = document.getElementById("searchResult");
               const ing = document.getElementById("ing");
               const end = document.getElementById("end");
               resultTitle.innerHTML = ""; // 기존 내용 비우기
-              ing.innerHTML ="";
-              end.innerHTML= "";
+
+              // searchResult를 가져와서 오른쪽 메뉴를 추가
+              const searchResult = document.getElementById("searchResult");
+              ing.innerHTML = "";
+              end.innerHTML = "";
               const clickedMarker = this;
               // 클릭한 마커의 인덱스를 찾습니다.
               const markerIndex = markers.indexOf(clickedMarker);
@@ -368,9 +423,140 @@
               const keyword = title + clickedPlace.address_name;
               //document.title = title;
               // 검색 API를 호출하여 결과를 처리합니다.
-              fetch(`/map/search?keyword=${encodeURIComponent(keyword)}&title=${title}`)
+              fetch(
+                `/map/search?keyword=${encodeURIComponent(
+                  keyword
+                )}&title=${title}`
+              )
                 .then((resp) => resp.json()) // JSON 형식으로 변환
                 .then((data) => {
+                  document
+                    .querySelector(".form-select")
+                    .addEventListener("change", function () {
+                      const selectedOption = this.value; // 선택된 옵션의 값
+
+                      // 선택된 옵션에 따라 다른 동작 수행
+                      if (selectedOption === "블로그 보기") {
+                        resultTitle.innerHTML = "";
+                        const newDiv = document.createElement("div");
+                        newDiv.classList.add(
+                          "text-center",
+                          "mb-2",
+                          "mt-1",
+                          "fs-6"
+                        );
+
+                        newDiv.innerHTML = ` <h4 class="display-5 fw-bolder mb-0">
+                                          연관 블로그
+                                        </h4>
+                                        `;
+
+                        resultTitle.appendChild(newDiv);
+
+                        let gridDiv = document.createElement("div");
+                        gridDiv.classList.add("grid-container");
+                        let gridItem = document.createElement("div");
+                        gridItem.classList.add("grid-item"); // 그리드 아이템 클래스 추가
+
+                        data.blog.forEach((element, index) => {
+                          let img = document.createElement("img");
+                          img.src = `${element.thumbnail}`;
+                          img.alt = "Thumbnail";
+                          img.style.marginBottom = "5px"; // 이미지 하단 마진 추가
+                          // img.style.marginLeft = "2px"; // 이미지 좌측 마진 추가
+                          img.style.marginRight = "5px"; // 이미지 우측 마진 추가
+
+                          // 이미지를 resultTitle에 추가
+                          resultTitle.appendChild(img);
+
+                          // 현재 인덱스가 배열의 마지막 요소인지, 홀수 번째 요소인지 확인하여 <hr> 추가
+                        });
+
+                        // 나머지 요소들을 출력하는 두 번째 루프
+                        data.blog.forEach((element, index) => {
+                          // 이미지 이후의 요소들을 출력
+                          let br = document.createElement("br");
+                          let at = document.createElement("a");
+                          let p2 = document.createElement("p");
+                          at.href = `${element.blogurl}`;
+                          at.style.fontSize = "1.8em";
+                          at.style.fontWeight = "bold"; // 글자 굵기 설정
+                          p2.style.fontSize = "1.4em";
+                          at.innerText = decodeHtmlCharCodes(
+                            `${element.title}`
+                          );
+                          p2.innerText =
+                            decodeHtmlCharCodes(`${element.contents}`) + "...";
+
+                          // 요소들을 resultTitle에 추가
+                          resultTitle.appendChild(br);
+                          resultTitle.appendChild(at);
+                          resultTitle.appendChild(p2);
+
+                          // 경계선 추가
+                          if ((index + 1) % 1 === 0) {
+                            let hr = document.createElement("hr");
+                            hr.style.marginBottom = "10px"; // 경계선 하단 마진 추가
+                            resultTitle.appendChild(hr);
+                          }
+                        });
+
+                        // 결과 타이틀에 그리드 컨테이너 추가
+                        resultTitle.appendChild(gridDiv);
+                        // 결과 타이틀에 스크롤바 추가
+                        resultTitle.style.overflowY = "scroll";
+                        resultTitle.style.maxHeight = "100%"; // 스크롤바 최대
+
+                        // 나머지 요소들이 들어있는 그리드 컨테이너를 결과 타이틀에 추가
+                        resultTitle.appendChild(gridDiv);
+                        // 블로그 보기에 대한 처리
+                      } else if (selectedOption === "진행중인 모임 보기") {
+                        // 진행중인 모임 보기에 대한 처리
+                        resultTitle.innerHTML = "";
+                        data.ing.forEach((element) => {
+                          let p = document.createElement("p");
+                          let p2 = document.createElement("p");
+                          let tr = document.createElement("tr");
+                          let hr = document.createElement("hr");
+                          p.innerText = element.title;
+                          p2.innerText = element.content;
+                          p.style.fontSize = "1.8em";
+                          p.style.fontWeight = "bold"; // 글자 굵기 설정
+                          p2.style.fontSize = "1.4em";
+                          tr.addEventListener("click", () => {
+                            window.location.href = `/post/detail?post_Id=${element.post_Id}`;
+                          });
+                          tr.appendChild(p);
+                          tr.appendChild(p2);
+
+                          resultTitle.appendChild(tr); // a 태그를 ing에 추가
+                          resultTitle.appendChild(hr);
+                        });
+                      } else if (selectedOption === "종료된 모임 보기") {
+                        // 종료된 모임 보기에 대한 처리
+                        resultTitle.innerHTML = "";
+                        data.end.forEach((element) => {
+                          let p = document.createElement("p");
+                          let p2 = document.createElement("p");
+                          let tr = document.createElement("tr");
+                          let hr = document.createElement("hr");
+                          p.innerText = element.title;
+                          p2.innerText = element.content;
+                          p.style.fontSize = "1.8em";
+                          p.style.fontWeight = "bold"; // 글자 굵기 설정
+                          p2.style.fontSize = "1.4em";
+                          tr.addEventListener("click", () => {
+                            window.location.href = `/post/detail?post_Id=${element.post_Id}`;
+                          });
+                          tr.appendChild(p);
+                          tr.appendChild(p2);
+
+                          resultTitle.appendChild(tr); // a 태그를 ing에 추가
+                          resultTitle.appendChild(hr);
+                        });
+                      }
+                    });
+
                   const createpost = document.getElementById("createpost");
                   createpost.innerHTML = "";
                   let a = document.createElement("a");
@@ -379,64 +565,72 @@
                   a.style.fontSize = "1.5em"; // 크기 조정
                   createpost.appendChild(a);
 
-                  const bu = document.getElementById("bu")
-                  let h3 = document.createElement("h3");
-                  bu.innerHTML = "";
-                  h3.innerText= "진행중인 모임들"
-                  bu.appendChild(h3)
+                  const newDiv = document.createElement("div");
+                  newDiv.classList.add("text-center", "mb-2", "mt-1", "fs-6");
 
-                  console.log(data); 
-                  // 검색 결과를 출력합니다.
-                  data.blog.forEach((element) => {
-                    // 결과를 보여줄 요소들을 생성합니다.
-                    let h2 = document.createElement("h2");
-                    let p = document.createElement("p");
+                  newDiv.innerHTML = ` <h4 class="display-5 fw-bolder mb-0">
+                                          연관 블로그
+                                        </h4>
+                                        `;
+
+                  resultTitle.appendChild(newDiv);
+
+                  let gridDiv = document.createElement("div");
+                  gridDiv.classList.add("grid-container");
+                  let gridItem = document.createElement("div");
+                  gridItem.classList.add("grid-item"); // 그리드 아이템 클래스 추가
+
+                  data.blog.forEach((element, index) => {
+                    let img = document.createElement("img");
+                    img.src = `${element.thumbnail}`;
+                    img.alt = "Thumbnail";
+                    img.style.marginBottom = "5px"; // 이미지 하단 마진 추가
+                    // img.style.marginLeft = "2px"; // 이미지 좌측 마진 추가
+                    img.style.marginRight = "5px"; // 이미지 우측 마진 추가
+
+                    // 이미지를 resultTitle에 추가
+                    resultTitle.appendChild(img);
+
+                    // 현재 인덱스가 배열의 마지막 요소인지, 홀수 번째 요소인지 확인하여 <hr> 추가
+                  });
+
+                  // 나머지 요소들을 출력하는 두 번째 루프
+                  data.blog.forEach((element, index) => {
+                    // 이미지 이후의 요소들을 출력
+                    let br = document.createElement("br");
+                    let at = document.createElement("a");
                     let p2 = document.createElement("p");
-                    let hr = document.createElement("hr");
-
-                    // 결과의 제목, 블로그 URL, 내용을 설정합니다.
-                    h2.innerText = decodeHtmlCharCodes(`${element.title}`);
-                    p.innerText = `${element.blogurl}`;
+                    at.href = `${element.blogurl}`;
+                    at.style.fontSize = "1.8em";
+                    at.style.fontWeight = "bold"; // 글자 굵기 설정
+                    p2.style.fontSize = "1.4em";
+                    at.innerText = decodeHtmlCharCodes(`${element.title}`);
                     p2.innerText =
                       decodeHtmlCharCodes(`${element.contents}`) + "...";
 
-                    // 요소들을 결과 타이틀에 추가합니다.
-                    resultTitle.appendChild(h2);
-                    resultTitle.appendChild(p);
+                    // 요소들을 resultTitle에 추가
+                    resultTitle.appendChild(br);
+                    resultTitle.appendChild(at);
                     resultTitle.appendChild(p2);
-                    resultTitle.appendChild(hr);
+
+                    // 경계선 추가
+                    if ((index + 1) % 1 === 0) {
+                      let hr = document.createElement("hr");
+                      hr.style.marginBottom = "10px"; // 경계선 하단 마진 추가
+                      resultTitle.appendChild(hr);
+                    }
                   });
 
-                  data.ing.forEach((element) =>{
-                    let p = document.createElement("p");
-                    let p2 = document.createElement("p");
-                    let hr = document.createElement("hr")
-                    p.innerText = element.title 
-                    p2.innerText = element.content
-                    ing.appendChild(p);
-                    ing.appendChild(p2)
-                    ing.appendChild(hr)
-                  })
+                  // 결과 타이틀에 그리드 컨테이너 추가
+                  resultTitle.appendChild(gridDiv);
+                  // 결과 타이틀에 스크롤바 추가
+                  resultTitle.style.overflowY = "scroll";
+                  resultTitle.style.maxHeight = "100%"; // 스크롤바 최대
 
-                  data.end.forEach((element) =>{
-                    let p = document.createElement("p");
-                    let p2 = document.createElement("p");
-                    let a = document.createElement("a");
-                    let hr = document.createElement("hr")
-                    p.innerText = element.title;
-                    p2.innerText = element.content
-                    a.href= "";
-                    a.appendChild(p);
-                    a.appendChild(p2);
-
-                    ing.appendChild(a); // a 태그를 ing에 추가
-                    ing.appendChild(hr);
-                  })
+                  // 나머지 요소들이 들어있는 그리드 컨테이너를 결과 타이틀에 추가
+                  resultTitle.appendChild(gridDiv);
 
                   // 클릭한 마커 아래에 링크를 추가합니다.
-                 
-
-
                 })
                 .catch((error) => {
                   console.error("검색 API 호출 중 오류 발생:", error);
@@ -576,5 +770,5 @@
         }
       }
     </script>
-</body>
+  </body>
 </html>

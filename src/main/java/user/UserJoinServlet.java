@@ -81,6 +81,7 @@ public class UserJoinServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			User user = new User();
 			user.setEmail(email);
+			System.out.println(email+"check");
 
 			// 이메일 전송
 			SendEmail emailSender = new SendEmail();
