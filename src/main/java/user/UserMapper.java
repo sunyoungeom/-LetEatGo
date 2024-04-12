@@ -7,8 +7,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 	// 유저 등록
-	@Insert("INSERT INTO users (id, password, email, name, nickname, identifynumber, phonenumber, address, join_date, attendance, mbti, bloodtype) "
-			+ "VALUES (#{id}, #{password}, #{email}, #{name}, #{nickname}, #{identifynumber}, #{phonenumber}, #{address}, #{join_date}, #{attendance}, #{mbti}, #{bloodtype})")
+	@Insert("INSERT INTO users (id, password, email, name, nickname, identifynumber, phonenumber, address, join_date, attendance, mbti, bloodtype, profile_photo_path) "
+			+ "VALUES (#{id}, #{password}, #{email}, #{name}, #{nickname}, #{identifynumber}, #{phonenumber}, #{address}, #{join_date}, #{attendance}, #{mbti}, #{bloodtype}, #{profilePhotoPath})")
 	int addUser(User user);
 
 	// 중복 검사
