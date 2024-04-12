@@ -44,7 +44,7 @@
 </head>
 <body>
 	<%@ include file="../user/navigation.jsp"%>
-
+	<br>
 	<main class="flex-shrink-0">
 		<div class="container">
 			<div class="row justify-content-center">
