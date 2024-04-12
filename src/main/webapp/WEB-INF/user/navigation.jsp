@@ -138,7 +138,7 @@
 	                    let tdId = document.createElement("td");
 	                    let tdContent = document.createElement("td");
 	                    tdId.innerText = `채팅방 번호 : ${element.post_Id}`;
-	                    tdContent.innerText = `제목 : ${element.content}`;
+	                    tdContent.innerText = `제목 : ${element.title}`;
 	                    
 	                    // 마우스 이벤트 추가
 	                    contenttr.addEventListener("mouseover", function() {

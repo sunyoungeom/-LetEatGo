@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
             
             // 유저의 닉네임 가져오기
             String nickname = user.getNickname();
+            int user_Id = user.getUser_id();
 
             // 세션에 사용자 정보 설정
             HttpSession session = request.getSession();
@@ -41,12 +42,17 @@ public class LoginServlet extends HttpServlet {
             // 쿠키에 사용자 정보 설정
             Cookie userCookie = new Cookie("username", user.getName());
             Cookie nicknameCookie = new Cookie("nickname", nickname);
+            Cookie user_IdCookie = new Cookie("user_id", String.valueOf(user_Id));
+            
+            int maxTime = 30 * 60;
             // 쿠키 유효 시간 설정 (예: 1일)
-            userCookie.setMaxAge(24 * 60 * 60);
-            nicknameCookie.setMaxAge(24 * 60 * 60);
+            userCookie.setMaxAge(maxTime);
+            nicknameCookie.setMaxAge(maxTime);
+            user_IdCookie.setMaxAge(maxTime); // 이 부분이 추가됩니다.
             
             response.addCookie(userCookie);
             response.addCookie(nicknameCookie);
+            response.addCookie(user_IdCookie);
 
             // 로그인 성공 후 인덱스 페이지로 이동
             response.sendRedirect(request.getContextPath() + "/index.jsp");

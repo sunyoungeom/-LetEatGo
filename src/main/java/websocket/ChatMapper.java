@@ -34,6 +34,18 @@ public interface ChatMapper {
     Conversations getGIdByGId(@Param("guestuser_id") int guestuserId, @Param("post_id") int postId);
     
     // (특정)유저채팅목록
-    @Select("SELECT * FROM conversations WHERE guestuser_id = #{guestuser_id}")
+    @Results(id = "postResultMap", value = {
+            @Result(property = "post_Id", column = "post_id"),
+            @Result(property = "writeUser_Id", column = "writeuser_id"),
+            @Result(property = "guestUser_Id", column = "guestuser_id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "content", column = "content"),
+            @Result(property = "resistDate", column = "resist_date"),
+            @Result(property = "expireDate", column = "expire_date"),
+            @Result(property = "status", column = "status"),
+            @Result(property = "place", column = "place"),
+            @Result(property = "view", column = "view")
+    })
+    @Select("SELECT * FROM user_conversations WHERE guestuser_id = #{guestuser_id}")
     List<Post> getListByGId(@Param("guestuser_id") int guestuserId);
 }

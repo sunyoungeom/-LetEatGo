@@ -17,13 +17,7 @@ public class ChatService {
 	public List<Post> getListByGId(int GId) {
 	    try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 	        ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
-	        List<Post> chatList = chatMapper.getListByGId(GId);
-	        sqlSession.commit();
-	        return chatList;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        // 예외 처리
-	        return null;
+	        return chatMapper.getListByGId(GId);
 	    }
 	}
 
