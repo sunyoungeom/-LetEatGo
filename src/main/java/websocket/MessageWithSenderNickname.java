@@ -4,6 +4,7 @@ package websocket;
 import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.protobuf.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,6 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MessageWithSenderNickname {
     private String content;
-    private String sentAt;
+    private Timestamp sentAt;
     private String senderNickname;
 }

@@ -1,5 +1,7 @@
 package websocket;
 
+import java.sql.Timestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,5 +16,5 @@ public class Message {
     private int postId;
     private int senderId;
     private String content;
-    private String sentAt;
+    private Timestamp sentAt;
 }

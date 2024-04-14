@@ -189,7 +189,7 @@ function closePost() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-        	postId: postId,
+            postId: postId,
             userId: userId
         })
     })
@@ -198,6 +198,16 @@ function closePost() {
             throw new Error('Failed to close post');
         }
         // 조기마감 성공 시 처리할 로직 추가
+        return response.json(); // 서버로부터 응답 받기
+    })
+    .then(data => {
+        // 서버에서 받은 데이터를 확인하여 작성자 여부를 판단
+        if (data) {
+            // 작성자인 경우 조기마감 성공 시 처리할 로직 추가
+        	alert("조기마감 되었습니다.");
+        } else {
+            alert("작성자가 아닙니다.");
+        }
     })
     .catch(error => {
         console.error('Error closing post:', error);
@@ -206,88 +216,126 @@ function closePost() {
 
 
 
+
 </script>
 <style>
+/* 전체 채팅창 스타일 */
 #chatWindow {
-    border: none;
-    width: 380px;
-    height: 310px;
-    overflow: scroll;
-    padding: 5px;
+	border: 1px solid #ccc; /* 테두리 추가 */
+	width: 380px;
+	height: 310px;
+	overflow-y: scroll; /* 세로 스크롤만 보이도록 설정 */
+	padding: 5px;
 }
 
+/* 대화 입력창 스타일 */
 #chatMessage {
-    wid: 236px;
-    height: 30px
+    width: 300px;
+    height: 60px;
+    border: 4px solid #ccc; /* 테두리 설정 */
+    margin-top: 5px;
+    margin-left: 1px;
 }
 
+/* 전송 버튼 스타일 */
+/* 전송 버튼 스타일 */
 #sendBtn {
-    height: 30px;
-    position: relative;
-    top: 2px;
-    right: -10px;
+    width: 55px;
+    height: 60px;
+    background-color: #20b2aa; /* 배경색을 적당한 색상으로 지정 */
+    color: white; /* 글자색을 흰색으로 지정 */
+    border: none; /* 테두리 제거 */
+    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
+    border-radius: 5px; /* 모서리를 둥글게 만듦 */
+    margin-top: 0px; /* 상단 여백 설정 */
+    margin-left: 0px; /* 왼쪽 여백 설정 */
+    display: inline-block; /* 인라인 블록 요소로 설정하여 다른 요소와 옆에 위치하게 함 */
 }
 
-#closeBtn {
-    margin-bottom: 30px;
-    position: relative;
-    top: 2px;
-    left: -2px;
-}
 
+
+/* 대화명 입력창 스타일 */
 #nickname {
-    width: 100px;
-    height: 25px;
-    border: 1px;
+	width: 100px;
+	height: 25px;
+	border: 1px solid #ccc; /* 테두리 추가 */
 }
 
+/* 게시판 번호 스타일 */
 #post_id {
-    width: 100px;
-    height: 25px;
-    border: 1px;
+	font-weight: bold; /* 굵은 글꼴 */
+	color: blue; /* 파란색 */
 }
 
+/* 종료 버튼 스타일 */
+#closeBtn {
+	margin-bottom: 10px; /* 하단 여백 */
+}
+
+/* 채팅 메시지 스타일 */
 .myMsg {
-    text-align: right;
+	text-align: right; /* 오른쪽 정렬 */
+	margin-bottom: 5px; /* 하단 여백 */
 }
 
-#라벨 {
-    background-color: red;
+.otherMsg {
+	text-align: left; /* 왼쪽 정렬 */
+	margin-bottom: 5px; /* 하단 여백 */
 }
 
+/* 귓속말 메시지 스타일 */
 .whisper-received {
-    color: green; /* 받은 귓속말의 색상 */
+	color: green; /* 받은 귓속말은 초록색 */
 }
 
 .whisper-sent {
-    color: blue; /* 보낸 귓속말의 색상 */
+	color: blue; /* 보낸 귓속말은 파란색 */
 }
 
+/* 시간 스타일 */
 .time {
-    color: #888; /* 작은 회색 글씨 색상 */
-    font-size: 12px; /* 작은 글씨 크기 */
+	color: #888; /* 회색 */
+	font-size: 12px; /* 작은 글꼴 */
 }
+
 #exitBtn {
-    margin-top: 100px; /* 위쪽 여백 */
-    float: right; /* 오른쪽 정렬 */
-    clear: both; /* 다음 요소와 겹치지 않게 함 */
-    display: block; /* 블록 요소로 설정하여 줄바꿈을 만듦 */
+	margin-top: 60px; /* 위쪽 여백 */
+	float: right; /* 오른쪽 정렬 */
+	clear: both; /* 다음 요소와 겹치지 않게 함 */
+	display: block; /* 블록 요소로 설정하여 줄바꿈을 만듦 */
+	background-color: #ff6347; /* 배경색을 적당한 색상으로 지정 */
+	color: white; /* 글자색을 흰색으로 지정 */
+	border: none; /* 테두리 제거 */
+	padding: 10px 20px; /* 내부 여백 설정 */
+	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
+	border-radius: 5px; /* 모서리를 둥글게 만듦 */
+}
+/* 조기마감 버튼 스타일 */
+#endBtn {
+	margin-top: 60px; /* 상단 여백 */
+	float: left; /* 왼쪽 정렬 */
+	background-color: #ff6347; /* 배경색을 적당한 색상으로 지정 */
+	color: white; /* 글자색을 흰색으로 지정 */
+	border: none; /* 테두리 제거 */
+	padding: 10px 20px; /* 내부 여백 설정 */
+	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
+	border-radius: 5px; /* 모서리를 둥글게 만듦 */
 }
 </style>
 </head>
 <body>
-    <label id="라벨">닉네임</label> :
-    <input type="text" id="nickname" value="${ user.nickname }" readonly />
-    <br>
-    <label id="게시판번호">게시판번호</label> :
-    <span id="post_id">${ post_Id }</span>
-    <button id="closeBtn" onclick="disconnect();">채팅 종료</button>
-    <div id="chatWindow"></div>
-    <div>
-        <input type="text" id="chatMessage" onkeyup="enterKey();">
-        <button id="sendBtn" onclick="sendMessage();">전송</button>
-        <button id="exitBtn" onclick="exitChatroom();">채팅방 나가기</button>
-        <button id="endBtn" onclick="closePost()">조기마감</button>
-    </div>
+	<label id="라벨">닉네임</label> :
+	<input type="text" id="nickname" value="${ user.nickname }" readonly />
+	<br>
+	<label id="게시판번호">게시판번호</label> :
+	<span id="post_id">${ post_Id }</span>
+	<button id="closeBtn" onclick="disconnect();">채팅 종료</button>
+	<div id="chatWindow"></div>
+	<div>
+		<input type="text" id="chatMessage" onkeyup="enterKey();">
+		<button id="sendBtn" onclick="sendMessage();">전송</button>
+		<button id="exitBtn" onclick="exitChatroom();">채팅방 나가기</button>
+		<button id="endBtn" onclick="closePost()">조기마감</button>
+	</div>
 </body>
 </html>

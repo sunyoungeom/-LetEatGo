@@ -53,18 +53,21 @@ public class ChatServer {
 	    List<MessageWithSenderNickname> chatMessages = chatService.getChatMessagesWithSenderNicknameForPost(postId);
 	    if (chatMessages != null && !chatMessages.isEmpty()) {
 	        try {
-	            for (MessageWithSenderNickname message : chatMessages) {
-	                String senderNickname = message.getSenderNickname();
+	        	for (MessageWithSenderNickname message : chatMessages) {
+	        	    String senderNickname = message.getSenderNickname();
+	        	    com.google.protobuf.Timestamp sentAt = message.getSentAt(); // DB에서 받아온 값으로 설정 >>>> ??
 
-	                JsonNode messageJson = objectMapper.createObjectNode()
-	                        .put("messageType", "normal")
-	                        .put("sender", senderNickname)
-	                        .put("content", message.getContent())
-	                        .put("timestamp", message.getSentAt()); 
+	        	    System.out.println(message.getSentAt());
+	        	    JsonNode messageJson = objectMapper.createObjectNode()
+	        	            .put("messageType", "normal")
+	        	            .put("sender", senderNickname)
+	        	            .put("content", message.getContent())
+	        	            .put("timestamp", sentAt != null ? sentAt.toString() : ""); // null 체크 후 처리
 
-	                String jsonMessage = objectMapper.writeValueAsString(messageJson);
-	                session.getBasicRemote().sendText(jsonMessage);
-	            }
+	        	    String jsonMessage = objectMapper.writeValueAsString(messageJson);
+	        	    session.getBasicRemote().sendText(jsonMessage);
+	        	}
+
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
@@ -169,7 +172,7 @@ public class ChatServer {
 			PrivateMessage priMessage = new PrivateMessage(userId, userId, content, timestampString);
 			chatService.insertPrivateMessage(priMessage);
 		} else {
-			Message message = new Message(postId, userId, content, timestampString);
+			Message message = new Message(postId, userId, content, timestamp);
 			chatService.insertMessage(message);
 		}
 	}
