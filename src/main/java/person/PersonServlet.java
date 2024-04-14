@@ -75,11 +75,11 @@ public class PersonServlet extends HttpServlet {
 
 		if (requestURI.equals("/person/activepostlist")) {
 			
-			PostDTO posts = postService.getactivePostPage(page, pagePer,userid, progressing.size());
+			PostDTO posts = postService.getactivePostPage(page, pagePer,userid, progressing.size(),progressing);
 			posts.setItems(progressing);
 			ServletUtil.sendJsonBody(posts, resp);
 		} else if (requestURI.equals("/person/completedpostlist")) {
-			PostDTO posts = postService.getactivePostPage(page, pagePer,userid, completed.size());
+			PostDTO posts = postService.getactivePostPage(page, pagePer,userid, completed.size(),completed);
 			posts.setItems(completed);
 			ServletUtil.sendJsonBody(posts, resp);
 		}

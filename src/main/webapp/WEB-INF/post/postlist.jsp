@@ -80,8 +80,6 @@
 </body>
 <!-- 게시물 호출 -->
 <script src="/js/loadPosts.js"></script>
-<!-- 페이지 번호 -->
-<script src="/js/pagination.js"></script>
 <script>
 const postTable = document.getElementById("postTable");
 const pagination = document.getElementById("pagination");
@@ -91,6 +89,7 @@ const tbody = postTable.querySelector("tbody");
 const fetchURI = `http://localhost:8080/post/list?page=${currentPage}&pagePer=${itemsPerPage}`;
 
 loadPosts(currentPage, fetchURI);
-
 </script>
+<!-- 페이지 번호 -->
+<script src="/js/pagination.js"></script>
 </html>

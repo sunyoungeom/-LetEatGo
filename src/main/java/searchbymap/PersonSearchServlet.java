@@ -42,7 +42,38 @@ public class PersonSearchServlet extends HttpServlet{
 		Map<String, Object> total = new HashMap<String, Object>();
 		total.put("userAddress", userAddress);
 		total.put("allUsers", allUsers);
+		total.put("user", user);
+		
+		ServletUtil.sendJsonBody(total, resp);
+	
+	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		Object attribute = req.getSession().getAttribute("user");
+		User user = (User) attribute;
+		int user_id = user.getUser_id();
+		UserService service = new UserService();
+		String userAddress = service.getUserAddress(user_id);
+		userAddress = userAddress.replaceAll("\\([^\\(]*\\)", "").trim();
+
+		System.out.println(userAddress);
+
+		UserService userService = new UserService();
+		List<User> allUsers = userService.getAllUsersExceptMe(user_id);
+
+		// 각 사용자의 주소를 수정하여 ()와 안의 ()안의 값을 제거
+		for (User currentUser : allUsers) {
+			String address = currentUser.getAddress();
+			address = address.replaceAll("\\([^\\(]*\\)", "").trim();
+			currentUser.setAddress(address);
+		}
+
+		Map<String, Object> total = new HashMap<String, Object>();
+		total.put("userAddress", userAddress);
+		total.put("allUsers", allUsers);
+		
 		ServletUtil.sendJsonBody(total, resp);
 	
 	}

@@ -120,7 +120,7 @@ public class PostService {
 		}
 	}
 	
-	public static PostDTO getactivePostPage(int page, int pagePer, int writeuser_id, int totalCount) {
+	public static PostDTO getactivePostPage(int page, int pagePer, int writeuser_id, int totalCount, List<Post> list) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
 			PostMapper mapper = sqlSession.getMapper(PostMapper.class);
 			int totalPage = totalCount / pagePer;
@@ -130,7 +130,7 @@ public class PostService {
 			params.put("limit", pagePer);
 			params.put("offset", pagePer * (page - 1));
 			
-			List<Post> all = mapper.getMyPage(params, writeuser_id);
+			List<Post> all = list;
 			
 			PostDTO dto = PostDTO.builder().totalPages(totalPage).currentPage(page).itemsPerPage(pagePer).items(all)
 					.build();

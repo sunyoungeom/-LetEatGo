@@ -30,7 +30,7 @@
 .image {
 	width: 200px;
 	height: 200px;
-	background-color: red;
+	background-color: white;
 	border-radius: 50%;
 }
 
@@ -261,6 +261,7 @@
 	    	loadPosts(currentPage, fetchURI);
 	    } 
 	});
+	loadPosts(currentPage, fetchURI);
 
 </script>
 </html>

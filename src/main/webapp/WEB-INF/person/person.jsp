@@ -15,24 +15,22 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
 <style>
-.circle-container {
+.topcontaine {
 	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	margin-top: 35px;
-	margin-bottom: 35px;
+	justify-content: space-between;
+	border: 2px solid gray;
+	padding: 10px;
+	border-radius: 10px;
 }
 
-.circle {
-	width: 250px;
-	height: 250px;
-	background-color: #3498db;
-	border-radius: 50%;
+.button-container {
+	width: 65%;
+	height: 270px;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: white;
-	font-size: 24px;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 20px;
+	display: flex;
 }
 
 .box {
@@ -76,29 +74,26 @@
 		<h3>핫 피플</h3>
 
 
-		<div class="topcontainer d-flex justify-content-between">
-			<div class="box">
-				<ol id="rank" style="overflow: auto";>
+		<div class="topcontaine">
+			<div class="box" style="margin-left: 5%;">
+				<ol id="rank"
+					style="overflow: auto; cursor: pointer; transition: background-color 0.3s ease;">
 					<!-- 별점랭킹 -->
 				</ol>
 			</div>
-			<div>
+			<div class="button-container" style="margin-left: 30%">
 				<div class="border p-3 mb-2"
-					style="width: 600px; height: 100px; margin-right: auto; margin-top: 50px;">
+					style="width: 60%; height: 100px; margin-right: auto; margin-top: 50px;">
 					<a href="/person/personmap">주변사람 찾기</a>
 				</div>
 				<br /> <br />
+
 				<div class="border p-3 mb-2"
-					style="width: 600px; height: 100px; margin-right: auto">
+					style="width: 60%; height: 100px; margin-right: auto">
 					<a href="/recent"> 최근 만나 사람 </a>
 				</div>
 			</div>
-		</div>
-
-
-
-	</div>
-	<!--   <div style="margin-right:20%;">
+			<!--   <div style="margin-right:20%;">
                 <div class="border p-3 mb-2"
                     style="width: 150%; height: 25%; margin-top:30%; ">
                     <a href="/person/personmap">주변사람 찾기</a>
@@ -107,48 +102,67 @@
                 <div class="border p-3 mb-2"
                     style="width: 150%; height: 25%;">최근  같이 먹은 사람</div>
             </div> -->
-	</div>
+		</div>
 
-	<br>
+		<br>
 
-	<div class="container">
-		<div class="border p-3 mb-2" style="border-radius: 10px; width: 90%;">
-			<div class="d-flex justify-content-between">
-				<div class="d-flex align-items-center">
-					<button class="btn btn-primary me-3">셔플</button>
-					<input class="form-check-input me-1" type="radio" name="option"
-						value="option1"> <label class="form-check-label me-3">혈액형</label>
-					<input class="form-check-input me-1" type="radio" name="option"
-						value="option2"> <label class="form-check-label me-3">MBTI</label>
-					<input class="form-check-input me-1" type="radio" name="option"
-						value="option3"> <label class="form-check-label">상관없음</label>
+		<div class="container">
+			<div class="border p-3 mb-2" style="border-radius: 10px; width: 90%;">
+				<div class="d-flex justify-content-between">
+					<div class="d-flex align-items-center">
+						<button class="btn btn-primary me-3">셔플</button>
+						<div class="form-check me-3">
+							<!-- 여기에 me-3 클래스 추가 -->
+							<input class="form-check-input" type="radio" name="option"
+								id="option1" value="3"> <label class="form-check-label"
+								for="option1"> 3Km 이내 </label>
+						</div>
+						<div class="form-check me-3">
+							<!-- 여기에 me-3 클래스 추가 -->
+							<input class="form-check-input" type="radio" name="option"
+								id="option2" value="5"> <label class="form-check-label"
+								for="option2"> 5Km 이내 </label>
+						</div>
+						<div class="form-check me-3">
+							<!-- 여기에 me-3 클래스 추가 -->
+							<input class="form-check-input" type="radio" name="option"
+								id="option3" value="10"> <label class="form-check-label"
+								for="option3"> 10Km 이내 </label>
+						</div>
+						<div class="form-check">
+							<!-- 여기에 me-3 클래스 추가 -->
+							<input class="form-check-input" type="radio" name="option"
+								id="option4" value="1000000" checked> <label
+								class="form-check-label" for="option4"> 상관없음 </label>
+						</div>
+					</div>
 
+					<select class="form-select" style="width: 20%;">
+						<option selected>상관없음</option>
+						<option>별점순</option>
+						<option>혈액형</option>
+						<option>MBTI</option>
+					</select>
 				</div>
-				<select class="form-select" style="width: 10%;">
-					<option selected>거리순</option>
-					<option>Value 2</option>
-				</select>
-			</div>
-			<div class="circle-container">
-				<div>
-					<div class="circle">adfsdafsdsdfasdf</div>
-					<a href="/person/detail">페이지 이동 테스트</a>
-					<div>닉네임(만 00세)</div>
-					<div>별점 평균</div>
-					<div>태크,태크</div>
+
+
+
+				<div id="personList">
+					<table id="personTable">
+						<thead>
+							<tr>
+								<th>Nickname</th>
+								<th>Age</th>
+								<th>Gender</th>
+								<th>Distance</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
 				</div>
-				<div>
-					<div class="circle">adfsdafsdsdfasdf</div>
-					<div>닉네임(만 00세)</div>
-					<div>별점 평균</div>
-					<div>태크,태크</div>
-				</div>
-				<div>
-					<div class="circle">adfsdafsdsdfasdf</div>
-					<div>닉네임(만 00세)</div>
-					<div>별점 평균</div>
-					<div>태크,태크</div>
-				</div>
+
+
+
 			</div>
 		</div>
 	</div>
@@ -159,9 +173,16 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services,geometry">
-         // fetchData 함수 정의
-      function fetchData() {
-        fetch("/person/personmap/searchperson")
+	</script>
+
+	<script>
+ // fetchData 함수 정의
+     function fetchData() {
+    	 var selectedDistance = parseInt(document.querySelector('input[name="option"]:checked').value);
+    	 var selectBox = document.querySelector('.form-select'); // 콤보 박스 선택
+    	 var selectedValue = selectBox.value; // 선택된 값
+    	 
+    	 fetch("/person/personmap/searchperson")
           .then((response) => {
             if (!response.ok) {
               throw new Error("Network response was not ok");
@@ -172,7 +193,9 @@
             // 받아온 데이터에서 중심 좌표와 다른 주소들을 가져옴
             var userAddress = data.userAddress;
             var allUsers = data.allUsers;
-
+            var bloodtype = data.user.bloodtype;
+            
+            console.log(`User.bloodtype: ${bloodtype}`);
             // 주소를 좌표로 변환하는 함수
             function addressToCoords(address) {
               return new Promise(function (resolve, reject) {
@@ -190,7 +213,6 @@
                 });
               });
             }
-
             // 두 지점 간의 거리를 계산하는 함수 (Haversine 공식)
             function calculateDistance(coord1, coord2) {
               var R = 6371; // 지구의 반지름 (단위: km)
@@ -198,36 +220,28 @@
               var lon1 = coord1.getLng();
               var lat2 = coord2.getLat();
               var lon2 = coord2.getLng();
-
               var dLat = ((lat2 - lat1) * Math.PI) / 180;
               var dLon = ((lon2 - lon1) * Math.PI) / 180;
-
               var a =
                 Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 Math.cos((lat1 * Math.PI) / 180) *
                   Math.cos((lat2 * Math.PI) / 180) *
                   Math.sin(dLon / 2) *
                   Math.sin(dLon / 2);
-
               var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
               var distance = R * c;
               return distance.toFixed(1); // 소수점 1자리까지 반올림
             }
-
             // 만 나이 계산 함수
             function calculateAge(birthYear) {
               var currentYear = new Date().getFullYear();
               var age = currentYear - birthYear;
               return age;
             }
-
             // 성별 판별 함수
             function getGender(lastDigit) {
               return lastDigit % 2 === 1 ? "남자" : "여자";
             }
-
-
             // 중심 좌표와 다른 주소들 간의 거리를 계산하여 출력
             addressToCoords(userAddress)
               .then(function (centerCoords) {
@@ -235,10 +249,8 @@
                   .getElementById("personList")
                   .getElementsByTagName("tbody")[0];
                 var personTable = document.getElementById("personTable");
-                var distanceSelect = document.getElementById("distanceSelect");
-                var selectedDistance = parseInt(distanceSelect.value);
+                var selectedDistance = parseInt(document.querySelector('input[name="option"]:checked').value);
                 personList.innerHTML = ""; // 이전 결과 삭제
-
                 allUsers.forEach(function (user) {
                   addressToCoords(user.address)
                     .then(function (coords) {
@@ -261,7 +273,9 @@
                         age = parseInt(age.toString().slice(1));
                       }
                       // 선택된 거리보다 작은 경우에만 출력
-                      if (distance <= selectedDistance) {
+                    	console.log(`user.bloodType: ${user.bloodtype}`);
+						
+                      if (distance <= selectedDistance && user.bloodtype === bloodtype) {
                         var row = personList.insertRow();
                         var cellNickname = row.insertCell(0);
                         var cellAge = row.insertCell(1);
@@ -275,7 +289,6 @@
                         cellAge.innerHTML = age + "세";
                         cellGender.innerHTML = gender;
                         cellDistance.innerHTML = distance + "km";
-
                         // 마커 표시 및 이벤트 리스너 추가
                         addressToCoords(user.address)
                           .then(function (coords) {
@@ -285,7 +298,6 @@
                                 position: coords,
                                 map: map,
                               });
-
                               // 마커 이벤트 리스너 추가
                               addMarkerEventListeners(marker, user, age, gender, distance);
                             }
@@ -299,7 +311,6 @@
                       console.error(error);
                     });
                 });
-
                 // 지도에 마커 표시
                 var mapContainer = document.getElementById("map");
                 var mapOptions = {
@@ -319,42 +330,38 @@
             );
           });
       }
-
       // fetchData 함수 호출
       fetchData();
-
-      // 콤보박스 변경 이벤트 핸들러
-      var distanceSelect = document.getElementById("distanceSelect");
-      distanceSelect.addEventListener("change", function () {
-        fetchData(); // 거리 옵션이 변경되면 다시 데이터 가져오기
+   // 라디오 버튼 변경 이벤트 핸들러
+      document.querySelectorAll('input[name="option"]').forEach((radio) => {
+          radio.addEventListener('change', fetchData);
       });
 </script>
 
-<script>
-	fetch(`http://localhost:8080/person/totalpersoninfo`, {
-	    method: 'PUT'
-	})
-	.then((resp) => resp.json())
-	.then((data) => {
-	    const rank = document.getElementById('rank');
-	    data.slice(0, 10).forEach((user) => { 
-	    	console.log(user);
-	        const li = document.createElement('li'); // li 요소 생성
-	        const userId = user.id; // 유저 객체에서 아이디 가져오기
-	        li.textContent = userId; // 유저 아이디를 li 요소에 추가
-	        
-	    	 // 클릭 이벤트 추가
-            li.addEventListener('click', function() {
-                window.location.href = `/person/detail?userid=${user.user_id}`;
-            });
-	        
-	        
-	        
-	        rank.appendChild(li); // ul에 li 요소 추가
-	        
-	        
-	    });
-	});
+	<script>
+// 순위 1위부터 10위
+fetch(`http://localhost:8080/person/totalpersoninfo`, {
+    method: 'PUT'
+})
+.then((resp) => resp.json())
+.then((data) => {
+    const rank = document.getElementById('rank');
+    data.slice(0, 10).forEach((user) => { 
+        console.log(user);
+        const li = document.createElement('li'); // li 요소 생성
+        const userId = user.id; // 유저 객체에서 아이디 가져오기
+        li.textContent = userId; // 유저 아이디를 li 요소에 추가
+        
+        // 클릭 이벤트 추가
+        li.addEventListener('click', function() {
+            window.location.href = `/person/detail?userid=${user.user_id}`;
+        });
+        
+        rank.appendChild(li); // ul에 li 요소 추가
+    });
+});
+	
+
 </script>
 </body>
 </html>
