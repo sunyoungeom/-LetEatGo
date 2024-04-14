@@ -28,7 +28,10 @@ h1 {
 
 /* 게시물 상세 페이지의 리뷰 작성 폼 스타일 */
 #reviewForm {
+	border: 2px solid gray; /* 테두리 스타일 */
+    border-radius: 10px; /* 라운드 테두리 */
 	margin-bottom: 30px; /* 리뷰 작성 폼 아래 여백 설정 */
+	padding: 5px;
 }
 
 /* 리뷰 작성 폼 안의 요소들의 스타일 */
@@ -109,7 +112,9 @@ input[type="button"]:hover {
 		<p id="content" style="margin: 15px; margin-top: 35px; margin-bottom: 35px"></p>
 	</div>
 	
-	<div id="reviewForm">
+	
+	
+	<div id="reviewForm" >
 		<h2>리뷰 작성</h2>
 		<!-- <i class="bi bi-star"></i>
 		<i class="bi bi-star-fill"></i>
@@ -118,12 +123,13 @@ input[type="button"]:hover {
 		<i class="bi bi-star-fill"></i> -->
 		<form id="reviewFormSubmit">
 			 <div class="star-rating">
-            <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
-            <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
-            <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
-            <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
-            <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
-        </div>
+	            <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
+	            <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
+	            <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
+	            <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
+	            <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+       		 </div>
+			
 			<div class="mb-3">
 				<label for="review" class="form-label">리뷰 내용</label>
 				<!-- 수정: 리뷰 내용을 입력 받는 입력 필드를 textarea로 변경 -->
@@ -134,6 +140,14 @@ input[type="button"]:hover {
 		</form>
 	</div>
 	
+	<div id="reviewList" style="border: 2px solid gray;">
+	    <h2>리뷰 목록</h2>
+	    <div id="reviews-container"></div>
+	    <button id="show-more-btn">더 보기</button>
+	</div>
+	
+	<br>
+	
 	<input type="hidden" id="post_Id"
 		value="<%=request.getParameter("post_Id")%>">
 	<input type="button" value="채팅방 참여" onclick="chatWinOpen()">
@@ -141,6 +155,8 @@ input[type="button"]:hover {
     const postDetail = document.getElementById("postDetail");
     const reviewForm = document.getElementById("reviewForm");
     const reviewFormSubmit = document.getElementById("reviewFormSubmit");
+    const reviewList = document.getElementById("reviewList");
+    
     const title = document.getElementById("title");
     const nickname = document.getElementById("nickname");
     const resistdate = document.getElementById("resistdate");
@@ -323,7 +339,7 @@ input[type="button"]:hover {
             reviewItem.appendChild(deleteButton);
         }
 
-        reviewForm.appendChild(reviewItem);
+        reviewList.appendChild(reviewItem);
     }
 })
     .catch(error => {

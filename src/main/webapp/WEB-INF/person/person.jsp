@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page isELIgnored="true"%>
 <!DOCTYPE html>
@@ -8,142 +8,157 @@
 <meta charset="UTF-8">
 <title>사람 목록</title>
 <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
-    rel="stylesheet" />
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+	rel="stylesheet" />
 <!-- Bootstrap CSS -->
 <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-    rel="stylesheet">
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 <style>
-    .circle-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin-top: 35px;
-        margin-bottom: 35px;
-    }
+.circle-container {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin-top: 35px;
+	margin-bottom: 35px;
+}
 
-    .circle {
-        width: 250px;
-        height: 250px;
-        background-color: #3498db;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        font-size: 24px;
-    }
+.circle {
+	width: 250px;
+	height: 250px;
+	background-color: #3498db;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: 24px;
+}
 
-    .box {
-        display: inline-block;
-        width: 450px;
-        height: 420px;
-        border: 2px solid gray;
-        padding: 10px;
-        border-radius: 10px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-    }
+.box {
+	display: inline-block;
+	width: 50%;
+	height: 100%;
+	border: 2px solid gray;
+	padding: 10px;
+	border-radius: 10px;
+}
 
-    .rectangle {
-        display: inline-block;
-        width: 170px;
-        height: 170px;
-        border: 2px solid gray;
-        padding: 10px;
-        border-radius: 10px;
-        margin: 10px;
-    }
-
-    @media screen and (max-width: 768px) {
-        .box {
-            width: 100%;
-        }
-        .rectangle {
-            width: 100%;
-            margin: 10px 0;
-        }
-        .circle-container {
-            margin-right: 20px;
-            margin-left: 20px;
-        }
-    }
+@media screen and (max-width: 768px) {
+	.box {
+		width: 100%;
+	}
+	.circle-container {
+		margin-right: 20px;
+		margin-left: 20px;
+	}
+}
 </style>
 </head>
 <body>
-    <%@ include file="../user/navigation.jsp"%>
-    <br>
-    <div class="total" style="margin: 0 20%">
-        <div class="container d-flex justify-content-between">
-            <div class="box">
-                <div class="rectangle"></div>
-                <div class="rectangle"></div>
-                <div class="rectangle"></div>
-                <div class="rectangle"></div>
-            </div>
+	<%@ include file="../user/navigation.jsp"%>
+	<br>
+	<div class="total" style="margin: 0 20%">
+		<main class="flex-shrink-0">
+			<div class="container mt-5 d-flex justify-content-center">
+				<form class="d-flex flex-row align-items-center col-8">
+					<input class="form-control mr-2 rounded-pill" type="search"
+						placeholder="Search" aria-label="Search" />
+					<button class="btn btn-outline-success rounded-pill" type="submit">
+						<i class="bi bi-search"></i>
+						<!-- 돋보기 아이콘 -->
+					</button>
+				</form>
+			</div>
+		</main>
 
-            <div>
+		<br>
+		<h3>핫 피플</h3>
+
+
+		<div class="topcontainer d-flex justify-content-between">
+			<div class="box">
+				<ol id="rank" style="overflow: auto";>
+					<!-- 별점랭킹 -->
+				</ol>
+			</div>
+			<div>
+				<div class="border p-3 mb-2"
+					style="width: 600px; height: 100px; margin-right: auto; margin-top: 50px;">
+					<a href="/person/personmap">주변사람 찾기</a>
+				</div>
+				<br /> <br />
+				<div class="border p-3 mb-2"
+					style="width: 600px; height: 100px; margin-right: auto">
+					<a href="/recent"> 최근 만나 사람 </a>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+	<!--   <div style="margin-right:20%;">
                 <div class="border p-3 mb-2"
-                    style="width: 600px; height: 100px; margin-right: auto; margin-top: 50px">
+                    style="width: 150%; height: 25%; margin-top:30%; ">
                     <a href="/person/personmap">주변사람 찾기</a>
                     </div>
                 <br> <br>
                 <div class="border p-3 mb-2"
-                    style="width: 600px; height: 100px; margin-right: auto;">최근
-                    같이 먹은 사람</div>
-            </div>
-        </div>
+                    style="width: 150%; height: 25%;">최근  같이 먹은 사람</div>
+            </div> -->
+	</div>
 
-        <br>
-        <div class="container" style="margin: 0 8%;">
-            <div class="border p-3 mb-2" style="border-radius: 10px; width: 90%;">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <button class="btn btn-primary me-3">셔플</button>
-                        <input class="form-check-input me-1" type="radio" name="option"
-                            value="option1"> <label class="form-check-label me-3">혈액형</label>
-                        <input class="form-check-input me-1" type="radio" name="option"
-                            value="option2"> <label class="form-check-label me-3">MBTI</label>
-                        <input class="form-check-input me-1" type="radio" name="option"
-                            value="option3"> <label class="form-check-label">상관없음</label>
+	<br>
 
-                    </div>
-                    <select class="form-select" style="width: 10%;">
-                        <option selected>거리순</option>
-                        <option>Value 2</option>
-                    </select>
-                </div>
-                <div class="circle-container">
-                    <div>
-                        <div class="circle">adfsdafsdsdfasdf</div>
-                        <a href="/person/detail">페이지 이동 테스트</a>
-                        <div>닉네임(만 00세)</div>
-                        <div>별점 평균</div>
-                        <div>태크,태크</div>
-                    </div>
-                    <div>
-                        <div class="circle">adfsdafsdsdfasdf</div>
-                        <div>닉네임(만 00세)</div>
-                        <div>별점 평균</div>
-                        <div>태크,태크</div>
-                    </div>
-                    <div>
-                        <div class="circle">adfsdafsdsdfasdf</div>
-                        <div>닉네임(만 00세)</div>
-                        <div>별점 평균</div>
-                        <div>태크,태크</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="border p-3 mb-2" style="border-radius: 10px; width: 90%;">
+			<div class="d-flex justify-content-between">
+				<div class="d-flex align-items-center">
+					<button class="btn btn-primary me-3">셔플</button>
+					<input class="form-check-input me-1" type="radio" name="option"
+						value="option1"> <label class="form-check-label me-3">혈액형</label>
+					<input class="form-check-input me-1" type="radio" name="option"
+						value="option2"> <label class="form-check-label me-3">MBTI</label>
+					<input class="form-check-input me-1" type="radio" name="option"
+						value="option3"> <label class="form-check-label">상관없음</label>
+
+				</div>
+				<select class="form-select" style="width: 10%;">
+					<option selected>거리순</option>
+					<option>Value 2</option>
+				</select>
+			</div>
+			<div class="circle-container">
+				<div>
+					<div class="circle">adfsdafsdsdfasdf</div>
+					<a href="/person/detail">페이지 이동 테스트</a>
+					<div>닉네임(만 00세)</div>
+					<div>별점 평균</div>
+					<div>태크,태크</div>
+				</div>
+				<div>
+					<div class="circle">adfsdafsdsdfasdf</div>
+					<div>닉네임(만 00세)</div>
+					<div>별점 평균</div>
+					<div>태크,태크</div>
+				</div>
+				<div>
+					<div class="circle">adfsdafsdsdfasdf</div>
+					<div>닉네임(만 00세)</div>
+					<div>별점 평균</div>
+					<div>태크,태크</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
 
 	<!-- Bootstrap JS -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript"
-    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services,geometry">
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services,geometry">
          // fetchData 함수 정의
       function fetchData() {
         fetch("/person/personmap/searchperson")
@@ -313,7 +328,33 @@
       distanceSelect.addEventListener("change", function () {
         fetchData(); // 거리 옵션이 변경되면 다시 데이터 가져오기
       });
+</script>
 
+<script>
+	fetch(`http://localhost:8080/person/totalpersoninfo`, {
+	    method: 'PUT'
+	})
+	.then((resp) => resp.json())
+	.then((data) => {
+	    const rank = document.getElementById('rank');
+	    data.slice(0, 10).forEach((user) => { 
+	    	console.log(user);
+	        const li = document.createElement('li'); // li 요소 생성
+	        const userId = user.id; // 유저 객체에서 아이디 가져오기
+	        li.textContent = userId; // 유저 아이디를 li 요소에 추가
+	        
+	    	 // 클릭 이벤트 추가
+            li.addEventListener('click', function() {
+                window.location.href = `/person/detail?userid=${user.user_id}`;
+            });
+	        
+	        
+	        
+	        rank.appendChild(li); // ul에 li 요소 추가
+	        
+	        
+	    });
+	});
 </script>
 </body>
 </html>

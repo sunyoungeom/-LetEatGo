@@ -23,8 +23,7 @@ public interface PostMapper {
     // 특정 유저가 작성한 게시물 조회
     @Select("SELECT * FROM posts WHERE writeuser_id = #{writeuser_id}")
     List<Post> getUserPostList(@Param("writeuser_id") int writeuser_id);
-    
-    
+ 
     // 게시물 작성
     @Insert(value = "INSERT INTO posts (title,content, writeuser_id,expiredate, resistdate,place) " +
             "VALUES (#{post.title}, #{post.content}, #{post.writeUser_Id}, #{post.expireDate}, now(), #{post.place})")

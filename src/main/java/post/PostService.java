@@ -19,7 +19,8 @@ public class PostService {
 			return postMapper.getAllPosts();
 		}
 	}
-
+	
+	
 	// 조회수 증가 메서드
 	public void increasePostViews(int postId) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -74,7 +75,9 @@ public class PostService {
 			sqlSession.commit();
 		}
 	}
-
+	
+	
+	
 	// 페이지 번호와 페이지 크기를 모두 명시하면 해당 페이지의 게시물을 반환
 
 	public static PostDTO getPostPage(int page, int pagePer) {
@@ -116,6 +119,25 @@ public class PostService {
 			return dto;
 		}
 	}
+	
+	public static PostDTO getactivePostPage(int page, int pagePer, int writeuser_id, int totalCount) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
+			PostMapper mapper = sqlSession.getMapper(PostMapper.class);
+			int totalPage = totalCount / pagePer;
+			totalPage += totalCount % pagePer == 0 ? 0 : 1;
+			
+			Map<String, Integer> params = new HashMap<>();
+			params.put("limit", pagePer);
+			params.put("offset", pagePer * (page - 1));
+			
+			List<Post> all = mapper.getMyPage(params, writeuser_id);
+			
+			PostDTO dto = PostDTO.builder().totalPages(totalPage).currentPage(page).itemsPerPage(pagePer).items(all)
+					.build();
+			
+			return dto;
+		}
+	}
 
 	// 게시글 만료 상태 변환?
 	public void statusTransition(int postId) {
@@ -127,7 +149,6 @@ public class PostService {
 			postMapper.updatePost(post);
 		}
 	}
-	// 조기마감 상태, 마감 남아있는 사람들 = 참가인원, 리뷰를 참여한 사람만  
 	// 특정 유저가 작성한 게시글
 	public List<Post> getUserPostList(int writeuser_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
