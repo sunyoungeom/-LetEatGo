@@ -77,4 +77,30 @@ public class ChatService {
 		}
 	}
 
+    // 채팅방에 있는 유저가 채팅창을 다시 열었을 때 이전 귓속말 내용 가져오기
+    public List<PrivateMessage> getPrivateMessages(int senderId, int receiverId) {
+        try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+            ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
+            return chatMapper.getPrivateMessages(senderId, receiverId);
+        }
+    }
+    
+    public List<MessageWithSenderNickname> getChatMessagesWithSenderNicknameForPost(int postId) {
+        try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+            ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
+            return chatMapper.getChatMessagesWithSenderNicknameForPost(postId);
+        }
+    }
+    
+    public int updateconversationsStatus(int postId) {
+    	try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+    		ChatMapper chatMapper = sqlSession.getMapper(ChatMapper.class);
+	        int rowsAffected = chatMapper.updateconversationsStatus(postId, 1); // 상태 값을 1로 변경
+	        sqlSession.commit(); // 변경 사항 커밋
+	        return rowsAffected; // 업데이트된 행의 수 반환
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0; // 실패한 경우 0 반환
+	    }
+    }
 }

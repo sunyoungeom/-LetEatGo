@@ -25,7 +25,7 @@ window.onload = function() {
     nickname = document.getElementById("nickname").value;
 }
 
-// 메시지 전송
+//메시지 전송
 function sendMessage() {
     var messageContent = chatMessage.value; // 메시지 내용
     if (!postId) {
@@ -36,21 +36,22 @@ function sendMessage() {
         return;
     }
     
- 	var isWhisper = messageContent.startsWith("/w") || messageContent.startsWith("/ㅈ") || messageContent.startsWith("/W");
-    
+    // 귓속말 여부 확인
+    var isWhisper = messageContent.startsWith("/w") || messageContent.startsWith("/ㅈ") || messageContent.startsWith("/W");
+    var receiverId = -1; // 수신자 ID
+    if (isWhisper) {
+        // 귓속말 대상 추출
+        var whisperParts = messageContent.split(" ");
+        receiverId = whisperParts[1]; // 귓속말 대상의 ID
+    }
+
     // JSON 데이터 생성
     var jsonData = { 
         sender: nickname,
-        content: messageContent
+        content: messageContent,
+        isWhisper: isWhisper, // 귓속말 여부
+        receiverId: receiverId // 수신자 ID
     };
-    
-    // 귓속말인 경우 추가 필드 설정
-    if (isWhisper) {
-        jsonData.isWhisper = true; // 귓속말 여부
-        // 귓속말 대상 추출
-        var whisperParts = messageContent.split(" ");
-        jsonData.receiver = whisperParts[1]; // 귓속말 대상
-    }
 
     // 서버로 JSON 데이터 전송
     webSocket.send(JSON.stringify(jsonData));
@@ -157,6 +158,53 @@ function exitChatroom() {
     });
 }
 
+function getUserIdFromCookie(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for(let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}
+
+function closePost() {
+    const postId = "${post_Id}";
+    const userId = getUserIdFromCookie("user_id"); // 쿠키에서 userId 추출
+    console.log("User ID:", userId);
+    console.log("Post ID:", postId);
+    if (!userId) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+    fetch('/post/close/' + postId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        	postId: postId,
+            userId: userId
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to close post');
+        }
+        // 조기마감 성공 시 처리할 로직 추가
+    })
+    .catch(error => {
+        console.error('Error closing post:', error);
+    });
+}
+
+
 
 </script>
 <style>
@@ -238,8 +286,8 @@ function exitChatroom() {
     <div>
         <input type="text" id="chatMessage" onkeyup="enterKey();">
         <button id="sendBtn" onclick="sendMessage();">전송</button>
-        
         <button id="exitBtn" onclick="exitChatroom();">채팅방 나가기</button>
+        <button id="endBtn" onclick="closePost()">조기마감</button>
     </div>
 </body>
 </html>

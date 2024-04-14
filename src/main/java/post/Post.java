@@ -21,5 +21,4 @@ public class Post {
     private int status;
     private String place;
     private int view;
- 
 }

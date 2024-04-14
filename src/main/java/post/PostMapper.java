@@ -77,5 +77,8 @@ public interface PostMapper {
     
     @Select("SELECT * FROM posts WHERE writeuser_id = #{user_id} ORDER BY writeuser_id DESC LIMIT 10;")
     List<Post> getPlaceById(@Param("user_id")int user_id);
+    
+    @Update("UPDATE posts SET status = 1 WHERE post_id = #{post_id}")
+    int updatePostStatus(@Param("post_id") int postId, @Param("status") int status);
 }
     

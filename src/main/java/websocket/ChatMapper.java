@@ -20,8 +20,8 @@ public interface ChatMapper {
     void insertPrivateMessage(PrivateMessage privateMessage);
 
     // 채팅방 입장
-    @Insert("INSERT INTO conversations (post_id, writeuser_id, guestuser_id) " +
-            "VALUES (#{post_id}, #{writeuser_id}, #{guestuser_id})")
+    @Insert("INSERT INTO conversations (post_id, writeuser_id, guestuser_id , roomInTime) " +
+            "VALUES (#{post_id}, #{writeuser_id}, #{guestuser_id}, #{roomInTime})")
     void insertChatroom(Conversations conversations);
     
     // 채팅방 (아예)나가기
@@ -48,4 +48,25 @@ public interface ChatMapper {
     })
     @Select("SELECT * FROM user_conversations WHERE guestuser_id = #{guestuser_id}")
     List<Post> getListByGId(@Param("guestuser_id") int guestuserId);
+    
+    // 채팅방에 있는 유저가 채팅창을 다시 열었을 때 이전 메시지 가져오기
+    @Select("SELECT * FROM messages WHERE post_id = #{postId} ORDER BY sent_at ASC")
+    List<Message> getChatMessagesForPost(int postId);
+    
+    // 귓속말 가져오기
+    @Select("SELECT * FROM private_message " +
+            "WHERE (sender_id = #{senderId} AND receiver_id = #{receiverId}) " +
+            "ORDER BY pri_sent_at ASC")
+    List<PrivateMessage> getPrivateMessages(@Param("senderId") int senderId, @Param("receiverId") int receiverId);
+
+    
+    
+    @Select("SELECT messages.content, messages.sent_at, users.nickname AS senderNickname " +
+            "FROM messages " +
+            "JOIN users ON messages.sender_id = users.user_id " +
+            "WHERE messages.post_id = #{postId}")
+    List<MessageWithSenderNickname> getChatMessagesWithSenderNicknameForPost(@Param("postId") int postId);
+
+    @Update("UPDATE conversations SET status = 1 WHERE post_id = #{post_id}")
+    int updateconversationsStatus(@Param("post_id") int postId, @Param("status") int status);
 }

@@ -55,7 +55,10 @@ public class ChatwindowServlet extends HttpServlet {
                 // 이 부분에서 새로운 Post 객체를 생성하여 초기화합니다.
                 post = new Post(); // 적절한 생성자를 사용하여 객체를 초기화해야 합니다.
                 int writeuser_id = post.getWriteUser_Id(); // post 객체가 어디서 가져올지는 알 수 없으므로 수정이 필요할 수 있습니다.
-                Conversations conversations = new Conversations(postId, writeuser_id, guestuser_id);
+                Conversations conversations = new Conversations();
+                conversations.setPost_id(postId);
+                conversations.setWriteuser_id(writeuser_id);
+                conversations.setGuestuser_id(guestuser_id);
                 chatService.deleteChatroom(conversations);
                 System.out.println("삭제됨");
             } else {

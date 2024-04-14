@@ -2,6 +2,8 @@ package user;
 
 import org.apache.ibatis.annotations.*;
 
+import websocket.MessageWithSenderNickname;
+
 import java.util.List;
 
 @Mapper
@@ -57,6 +59,11 @@ public interface UserMapper {
 	// 닉네임으로 유저아이디 찾기 (일웅필요함)
 	@Select("SELECT user_id FROM users WHERE nickname = #{nickname}")
 	int getUserIdByNickName(String nickname);
+	
+	// 유저아이디로 닉네임 찾기 (일웅)
+	@Select("SELECT nickname FROM users WHERE user_id = #{user_id}")
+	String getNicknameById(int user_id);
+	
 
 	// 유저 수정
 	@Update("UPDATE users "
@@ -97,5 +104,9 @@ public interface UserMapper {
 	
 	@Select("SELECT * FROM users where user_id != #{user_id}")
 	List<User> getAllUsersExceptMe(int user_id);
+
+	@Select("SELECT COUNT(*) FROM posts WHERE post_id = #{post_id} AND writeuser_id = #{user_id}")
+	int isPostOwner(@Param("post_id") int post_id, @Param("user_id") int user_id);
+
 
 }
