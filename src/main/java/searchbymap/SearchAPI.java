@@ -75,13 +75,5 @@ public class SearchAPI {
         return html.replaceAll("\\<.*?\\>", "");
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class SearchResult {
-        private String title;
-        private String blogurl;
-        private String contents;
-        private String thumbnail;
-    }
+  
 }

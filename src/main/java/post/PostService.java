@@ -127,7 +127,7 @@ public class PostService {
 			postMapper.updatePost(post);
 		}
 	}
-
+	// 조기마감 상태, 마감 남아있는 사람들 = 참가인원, 리뷰를 참여한 사람만  
 	// 특정 유저가 작성한 게시글
 	public List<Post> getUserPostList(int writeuser_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
