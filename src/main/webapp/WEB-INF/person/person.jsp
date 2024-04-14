@@ -194,6 +194,7 @@
             var userAddress = data.userAddress;
             var allUsers = data.allUsers;
             var bloodtype = data.user.bloodtype;
+            var mbti = data.user.mbti;
             
             console.log(`User.bloodtype: ${bloodtype}`);
             // 주소를 좌표로 변환하는 함수
@@ -274,50 +275,45 @@
                       }
                       // 선택된 거리보다 작은 경우에만 출력
                     	console.log(`user.bloodType: ${user.bloodtype}`);
+                    	console.log(selectedValue);
 						
-                      if (distance <= selectedDistance && user.bloodtype === bloodtype) {
-                        var row = personList.insertRow();
-                        var cellNickname = row.insertCell(0);
-                        var cellAge = row.insertCell(1);
-                        var cellGender = row.insertCell(2);
-                        var cellDistance = row.insertCell(3);
-                        row.onclick = function () {
-                          // 클릭 시 해당 링크로 이동
-                          // 여기에 링크 주소 넣으면 됨
-                        };
-                        cellNickname.innerHTML = user.nickname;
-                        cellAge.innerHTML = age + "세";
-                        cellGender.innerHTML = gender;
-                        cellDistance.innerHTML = distance + "km";
-                        // 마커 표시 및 이벤트 리스너 추가
-                        addressToCoords(user.address)
-                          .then(function (coords) {
-                            var distance = calculateDistance(centerCoords, coords);
-                            if (distance <= selectedDistance) {
-                              var marker = new kakao.maps.Marker({
-                                position: coords,
-                                map: map,
-                              });
-                              // 마커 이벤트 리스너 추가
-                              addMarkerEventListeners(marker, user, age, gender, distance);
-                            }
-                          })
-                          .catch(function (error) {
-                            console.error(error);
-                          });
+                      if (distance <= selectedDistance) {
+                        if(user.bloodtype === bloodtype && selectedValue=="혈액형") {
+                        	  var row = personList.insertRow();
+                              var cellNickname = row.insertCell(0);
+                              var cellAge = row.insertCell(1);
+                              var cellGender = row.insertCell(2);
+                              var cellDistance = row.insertCell(3);
+                              row.onclick = function () {
+                                // 클릭 시 해당 링크로 이동
+                                // 여기에 링크 주소 넣으면 됨
+                              };
+                              cellNickname.innerHTML = user.nickname;
+                              cellAge.innerHTML = age + "세";
+                              cellGender.innerHTML = gender;
+                              cellDistance.innerHTML = distance + "km";
+                        } else if(user.mbti == mbti && selectedValue=="MBTI") {
+                        	var row = personList.insertRow();
+                            var cellNickname = row.insertCell(0);
+                            var cellAge = row.insertCell(1);
+                            var cellGender = row.insertCell(2);
+                            var cellDistance = row.insertCell(3);
+                            row.onclick = function () {
+                              // 클릭 시 해당 링크로 이동
+                              // 여기에 링크 주소 넣으면 됨
+                            };
+                            cellNickname.innerHTML = user.nickname;
+                            cellAge.innerHTML = age + "세";
+                            cellGender.innerHTML = gender;
+                            cellDistance.innerHTML = distance + "km";
+                        	
+                        }
                       }
                     })
                     .catch(function (error) {
                       console.error(error);
                     });
                 });
-                // 지도에 마커 표시
-                var mapContainer = document.getElementById("map");
-                var mapOptions = {
-                  center: centerCoords,
-                  level: 7,
-                };
-                var map = new kakao.maps.Map(mapContainer, mapOptions);
               })
               .catch(function (error) {
                 console.error(error);

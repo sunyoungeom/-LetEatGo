@@ -148,7 +148,7 @@ prefix="c"%>
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
     fetch("http://localhost:8080/recent", {
-      method: "POST",
+      method: 'PUT',
     })
       .then((resp) => resp.json())
       .then((data) => {

@@ -30,6 +30,11 @@ public interface PostMapper {
     @SelectKey(keyProperty = "post_id", statement =  "SELECT LAST_INSERT_ID();" , resultType = Integer.class, before = false)
     int createPost(@Param("post")Post post, @Param("user")User user);
 
+    // 조회수 기준으로로 정렬
+    @Select("SELECT * FROM posts ORDER BY view DESC")
+    List<Post> getPostsOrderByViewDesc();
+
+    
     
     @Select("SELECT LAST_INSERT_ID()")
     int lastInsertId();

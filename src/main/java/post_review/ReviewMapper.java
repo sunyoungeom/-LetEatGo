@@ -74,4 +74,8 @@ public interface ReviewMapper {
 
     @Select("SELECT COUNT(*) FROM post_reviews WHERE writeuser_id = #{writeuser_id}")
     int myCountAll( @Param("writeuser_id") int writeuser_id);
+    
+    // 유저 평균 별점
+//    @Select("SELECT AVG(rating) FROM post_review WHERE post_id IN (SELECT post_id FROM post WHERE writeuser_id = #{user_id})")
+//    double getAverageRatingByUserId(String user_id);
 }

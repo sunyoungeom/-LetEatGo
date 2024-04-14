@@ -31,6 +31,15 @@ public class PostService {
 		}
 	}
 	
+	public List<Post> getPostsOrderByViewDesc (){
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			return postMapper.getPostsOrderByViewDesc();
+		}
+	}
+	
+	
 	// 특정 게시물 조회 메서드
 	public Post getPostById(int postId) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
