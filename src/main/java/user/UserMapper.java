@@ -86,7 +86,7 @@ public interface UserMapper {
 	@Update("UPDATE users SET email = #{email} WHERE id = #{id}")
 	void updateEmail(String id, String email);
 
-	@Update("UPDATE users SET niaddressckname = #{address} WHERE id = #{id}")
+	@Update("UPDATE users SET address = #{address} WHERE id = #{id}")
 	void updateAddress(String id, String address);
 
 	@Update("UPDATE users SET mbti = #{mbti} WHERE id = #{id}")

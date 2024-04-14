@@ -146,24 +146,38 @@
 										<div class="form-group position-relative"
 											style="padding: 2px;">
 											<input class="form-control ps-5" style="height: 50px;"
+												id="identifynumber" type="text"
+												placeholder="주민번호 (예: 040101-3)"
+												data-sb-validations="required"> <input type="hidden"
+												id="formattedIdentifynumber" name="identifynumber">
+											<div class="invalid-feedback"
+												data-sb-feedback="identifynumber:required">주민번호는
+												필수입니다.</div>
+											<i class="fa-regular fa-id-card position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
+
+
+										<!-- 	<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
 												id="identifynumber" name="identifynumber" type="text"
 												placeholder="주민번호" data-sb-validations="required">
 											<div class="invalid-feedback"
 												data-sb-feedback="name:required">A name is required.</div>
 											<i class="fa-regular fa-id-card position-absolute"
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
-										</div>
+										</div> -->
 										<!-- 전화번호 입력 -->
-										<div class="form-group position-relative"
-											style="padding: 2px;">
-											<input class="form-control ps-5" style="height: 50px;"
-												id="phonenumber" name="phonenumber" type="text"
-												placeholder="전화번호" data-sb-validations="required">
-											<div class="invalid-feedback"
-												data-sb-feedback="name:required">A name is required.</div>
-											<i class="fa-solid fa-mobile-screen-button position-absolute"
-												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
-										</div>
+										<div class="form-group position-relative" style="padding: 2px;">
+    <input class="form-control ps-5" style="height: 50px;" id="phonenumber" name="phonenumber" type="text"
+        placeholder="전화번호 (예: 010-1234-5678)" data-sb-validations="required">
+    <div class="invalid-feedback" data-sb-feedback="phonenumber:required">전화번호는 필수입니다.</div>
+    <i class="fa-solid fa-mobile-screen-button position-absolute"
+        style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+</div>
+
+
 										<!-- 주소 입력 -->
 										<div class="form-group position-relative"
 											style="padding: 2px;">
@@ -280,27 +294,35 @@
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
 										<!-- 사진 입력 -->
-										<div class="form-group position-relative" style="padding: 2px;">
-    <input class="form-control ps-5"
-        style="height: 50px; opacity: 0; width: 100%; cursor: pointer;"
-        id="profilePhoto" name="profilePhotoPath" type="file"
-        data-sb-validations="required" accept="image/*" onchange="updateLabel()"> 
-    <label for="profilePhoto" class="form-control"
-        style="position: absolute; top: 0; left: 0; height: 100%; cursor: pointer; display: flex; align-items: center; padding-left: 50px;">
-        <i class="fa-solid fa-camera"
-        style="position: absolute; left: 15px;"></i> 
-        <span id="profilePhotoPathLabel">프로필 사진 추가</span>
-    </label>
-    <div class="invalid-feedback"
-        style="position: absolute; top: 55px;">A profile photo is required.</div>
-</div>
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5"
+												style="height: 50px; opacity: 0; width: 100%; cursor: pointer;"
+												id="profilePhoto" name="profilePhotoPath" type="file"
+												data-sb-validations="required" accept="image/*"
+												onchange="updateLabel()"> <label for="profilePhoto"
+												class="form-control"
+												style="position: absolute; top: 0; left: 0; height: 100%; cursor: pointer; display: flex; align-items: center; padding-left: 50px;">
+												<i class="fa-solid fa-camera"
+												style="position: absolute; left: 15px;"></i> <span
+												id="profilePhotoPathLabel">프로필 사진 추가</span>
+											</label>
+											<div class="invalid-feedback"
+												style="position: absolute; top: 55px;">A profile photo
+												is required.</div>
+										</div>
+									</form>
+									<form id="uploadForm" enctype="multipart/form-data">
+										<!-- 사용자 ID, 실제 사용 시 해당 사용자의 ID로 설정해야 합니다. -->
+										<input type="file" name="file" required>
+										<button type="submit">파일 업로드</button>
 									</form>
 
 
-										<!-- '가입' 버튼 -->
-										<button type="button" value="확인"
-											style="height: 50px; padding: 2px;"
-											class="btn btn-dark form-control" onclick="submitForm()">가입</button>
+									<!-- '가입' 버튼 -->
+									<button type="button" value="확인"
+										style="height: 50px; padding: 2px;"
+										class="btn btn-dark form-control" onclick="submitForm()">가입</button>
 								</div>
 
 							</div>
@@ -322,6 +344,39 @@
 </body>
 
 <script>
+document.getElementById('phonenumber').addEventListener('input', function(e) {
+    var input = e.target;
+    var formattedValue = input.value.replace(/[^\d]/g, ''); // 숫자만 추출
+    if (formattedValue.length > 3) {
+        formattedValue = formattedValue.substring(0, 3) + '-' + formattedValue.substring(3);
+    }
+    if (formattedValue.length > 8) {
+        formattedValue = formattedValue.substring(0, 8) + '-' + formattedValue.substring(8);
+    }
+    input.value = formattedValue.substring(0, 13); // 올바른 전화번호 길이 (하이픈 포함 13자)
+});
+
+
+document.getElementById('identifynumber').addEventListener('input', function (e) {
+    var value = e.target.value.replace(/[^\d]/g, '');  // 숫자만 추출
+    var formatted = '';
+
+    // 최대 입력 가능한 길이를 초과한 입력 방지
+    value = value.substring(0, 7);
+
+    // 입력받은 숫자를 형식에 맞게 변환
+    for (var i = 0; i < value.length; i++) {
+        if (i === 6) {
+            formatted += '-';
+        }
+        formatted += value[i];
+    }
+
+    e.target.value = formatted;
+    document.getElementById('identifynumber').value = value; // 숨겨진 필드에 하이픈 없는 값 저장
+});
+
+
 function updateLabel() {
     var input = document.getElementById('profilePhoto');
     var fileLabel = document.getElementById('profilePhotoPathLabel');
@@ -443,7 +498,7 @@ function updateEmailDomainDisplay() {
     var selectedDomain = emailDomainSelect.value;
     
     if (selectedDomain) {
-        emailDomainDisplay.textContent = '@' + selectedDomain; // 선택된 도메인으로 텍스트 업데이트
+        emailDomainDisplay.textContent = selectedDomain; // 선택된 도메인으로 텍스트 업데이트
     } else {
         emailDomainDisplay.textContent = ''; // 도메인이 '직접 입력'으로 설정되면 아무것도 표시하지 않음
     }
@@ -524,11 +579,12 @@ function submitForm() {
     var formData = new FormData(form);
     var profilePhotoPath = document.getElementById('profilePhotoPathLabel').textContent;
     var jsonObject = {};
-    
+
     var email = document.getElementById('email').value;
-    var emailDomain = document.getElementById('emailDomain').value || '';
+    var emailDomain = document.getElementById('emailDomainSelect').value || '';
     var fullEmail = email + emailDomain;
     console.log("Email Domain: ", emailDomain); 
+    uploadFile();
     formData.forEach(function(value, key) {
         jsonObject[key] = value;
     });
@@ -550,6 +606,7 @@ function submitForm() {
     .then(response => {
         if (response.ok) {
             alert("회원가입이 완료되었습니다.");
+            uploadFile(); 
            /*  window.location.href = '/userJoinResult.jsp'; */
             window.location.href = '/join/end';
         } else {
@@ -567,7 +624,37 @@ function submitForm() {
         }
     })
     }
+    
+ function uploadFile() {
+    var form = document.getElementById('uploadForm');
+    var formData = new FormData(form);
 
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('File upload successful:', data);
+    })
+    .catch(error => console.error('File upload error:', error));
+}
+ 
+/*  document.getElementById('uploadForm').addEventListener('submit', function(event) {
+     event.preventDefault(); // 폼의 기본 제출 막기
+     var formData = new FormData(this);
+
+     fetch('/upload', {
+         method: 'POST',
+         body: formData
+     })
+     .then(response => response.text()) // 응답을 텍스트로 받음
+     .then(data => {
+         console.log('Success:', data);
+         alert(data); // 성공 메시지 표시
+     })
+     .catch(error => console.error('Error:', error));
+ }); */
 function goPopup(){
 	// 주소검색을 수행할 팝업 페이지를 호출합니다.
 	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://business.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.

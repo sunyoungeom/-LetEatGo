@@ -4,7 +4,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>회원 탈퇴</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+	rel="stylesheet" />
+<!-- Bootstrap icons-->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+	rel="stylesheet" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="./Resources/css/styles.css" rel="stylesheet" />
 <style>
 /* 모달 창 스타일 */
 .modal {
@@ -60,26 +73,98 @@ to {
 }
 </style>
 </head>
-<body>
-	<h2>회원 탈퇴</h2>
-	<form id="deleteForm">
-		<label for="id">사용자 ID:</label> <input type="text" id="id"
-			name="id" required><br>
-		<br> <label for="password">비밀번호:</label> <input type="password"
-			id="password" name="password" required><br>
-		<br> <input type="submit" id="deleteButton" value="탈퇴">
-	</form>
+<body class="d-flex flex-column h-100">
+	<main class="flex-shrink-0">
 
-	<!-- 모달 창 -->
-	<div id="myModal" class="modal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<p>정말로 탈퇴하시겠습니까?</p>
-			<button id="confirmButton">확인</button>
+		<%@ include file="/WEB-INF/user/navigation.jsp"%>
+		<!-- 모달 창 -->
+<!-- 
+		<section class="py-5">
+			<div class="container px-5">
+				Login form
+				<div class="bg-light rounded-4 py-5 px-4 px-md-5">
+					<div class="row gx-5 justify-content-center">
+						<div class="col-lg-8 col-xl-6"> -->
+						<section class="py-5">
+			<div class="container px-5">
+				<div class="bg-light rounded-4 py-5 px-4 px-md-5">
+					<div class="row align-items-center">
+						<!-- 내정보 -->
+						<div class="col-md-3 mb-3 mb-md-0" style="height: 500px;">
+							<%@ include file="/WEB-INF/myinfo/MyInfoSidebar.jsp"%>
+						</div>
+						<!-- 테이블 -->
+						<div class="col-md-9">
+							<div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+								<div class="row justify-content-center">
+									<div class="col-8">
+
+					<div class="text-center mb-5">
+						<div
+							class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 mb-3">
+							<i class="bi bi-person"></i>
+						</div>
+						<h1 class="fw-bolder">회원탈퇴</h1>
+					</div>
+							<form id="deleteForm">
+
+								<!-- Name input-->
+								<div class="row">
+									<div class="col">
+										<div class="form-floating mb-3">
+											<input class="form-control form-control-sm" id="id" name="id" type="text" 
+												placeholder="Enter your name..."
+												data-sb-validations="required" /> <label for="name">아이디</label>
+											<div class="invalid-feedback"
+												data-sb-feedback="name:required">A name is required.</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Password input-->
+								<div class="form-floating mb-3">
+									<input class="form-control form-control-sm" name="password" type="password" 
+										placeholder="name@example.com"
+										data-sb-validations="required,email" /> <label for="email">비밀번호</label>
+									<div class="invalid-feedback" data-sb-feedback="email:required">An
+										email is required.</div>
+									<div class="invalid-feedback" data-sb-feedback="email:email">Email
+										is not valid.</div>
+								</div>
+								<!-- Submit Button-->
+								<div class="d-grid mt-5">
+									<button class="btn btn-dark btn-lg rounded-pill"
+										id="deleteButton"
+										style="font-size: 24px; padding: 20px; width: 100%;"
+										type="submit">탈퇴</button>
+								</div>
+							</form>
+							<!-- <hr class="divider mt-5"> -->
+							
+						</div>
+					</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				
+			</div>
+		</section>
+
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<p>정말로 탈퇴하시겠습니까?</p>
+				<button id="confirmButton">확인</button>
+			</div>
 		</div>
-	</div>
+		<!-- Bootstrap core JS-->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+		<!-- Core theme JS-->
 
-	<script>
+
+		<script>
         // 모달 창 요소 가져오기
         var modal = document.getElementById("myModal");
 
