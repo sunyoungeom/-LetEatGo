@@ -1,7 +1,10 @@
 package post;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import searchbymap.SearchAPI;
+import searchbymap.SearchResult;
 import user.User;
 import util.ServletUtil;
 
@@ -27,9 +32,25 @@ public class RecentVistServlet extends HttpServlet {
 		Object attribute = req.getSession().getAttribute("user");
 		User user = (User) attribute;
 		int writeuser_id = user.getUser_id();
-		List<Post> placeByIdList = postService.getPlaceById(writeuser_id);
+
+		Map<String, Object> postListBlogList = new HashMap<String, Object>();
 		
-		ServletUtil.sendJsonBody(placeByIdList, resp);
+		List<Post> placeByIdList = postService.getPlaceById(writeuser_id);
+		List<List<SearchResult>> blogList = new ArrayList<List<SearchResult>>();
+
+		
+		for(Post p : placeByIdList) {
+			String keyword = p.getPlace();
+			List<SearchResult> list = new ArrayList<SearchResult>(); 
+			list = SearchAPI.searchBlogAsJson(keyword);
+			
+			blogList.add(list);
+		}
+		
+		postListBlogList.put("placeByIdList", placeByIdList);
+		postListBlogList.put("blogList", blogList);
+		
+		ServletUtil.sendJsonBody(postListBlogList, resp);
 	}
 
 

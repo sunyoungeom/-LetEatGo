@@ -116,9 +116,14 @@ public interface PostMapper {
     
     @Select("select * from posts where place = #{place}")
     List<Post> getPostsByPlace(String place);
-    
-    @Select("SELECT * FROM posts WHERE writeuser_id = #{user_id} ORDER BY writeuser_id DESC LIMIT 10;")
+
+    // 최신글 부터 나오게
+    @Select("SELECT * FROM posts WHERE writeuser_id = #{user_id} ORDER BY post_id DESC LIMIT 10;")
     List<Post> getPlaceById(@Param("user_id")int user_id);
+
+    //	    기존꺼
+//    @Select("SELECT * FROM posts WHERE writeuser_id = #{user_id} ORDER BY writeuser_id DESC LIMIT 10;")
+//    List<Post> getPlaceById(@Param("user_id")int user_id);
     
     @Update("UPDATE posts SET status = 1 WHERE post_id = #{post_id}")
     int updatePostStatus(@Param("post_id") int postId, @Param("status") int status);
