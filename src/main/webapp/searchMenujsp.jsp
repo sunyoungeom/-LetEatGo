@@ -27,6 +27,28 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
+<style>
+    /* 스크롤바의 전체 스타일 */
+    ::-webkit-scrollbar {
+        width: 10px; /* 스크롤바의 너비 */
+    }
+
+    /* 스크롤바의 track (스크롤바의 배경) */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; /* 스크롤바 배경색 */
+    }
+
+    /* 스크롤바의 thumb (스크롤바의 핸들) */
+    ::-webkit-scrollbar-thumb {
+        background: #888; /* 스크롤바 핸들 색 */
+        border-radius: 5px; /* 스크롤바 핸들의 둥근 모서리 반경 */
+    }
+
+    /* 스크롤바가 hover 됐을 때 */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; /* 스크롤바 핸들 hover 시 색상 */
+    }
+</style>
 <body class="d-flex flex-column h-100 bg-light">
 	<%@ include file="/WEB-INF/user/navigation.jsp"%>
 	
