@@ -139,7 +139,21 @@
 
     // 페이지를 로드할 때 초기 데이터를 가져오는 함수 호출
     loadPosts(currentPage);
+	function formattedDate(element) {
+        // MySQL DATETIME 값을 Date 객체로 변환
+        const timestamp = Number(element.reviewDate);
+        const date = new Date(timestamp);
 
+        // 년, 월, 일 추출
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고, 2자리로 맞춤
+        const day = String(date.getDate()).padStart(2, "0"); // 일은 1일부터 시작하므로 2자리로 맞춤
+
+        // 'YYYY-MM-DD' 형식으로 문자열 조합
+        const formattedDate = `${year}-${month}-${day}`;
+
+        return formattedDate;
+      }
     function loadPosts(page) {
         fetch(`http://localhost:8080/review/list?page=${page}&pagePer=${itemsPerPage}`, {
             method: 'POST'
@@ -155,7 +169,7 @@
                 let tdActions = document.createElement("td"); // 수정 및 삭제 버튼을 포함할 셀
                 
                 tdTitle.innerText = `${element.review}`;
-                tdResistDate.innerText = `${element.resistdate}`;
+                tdResistDate.innerText = formattedDate(element);
                 
                 // 클릭 이벤트 추가하여 상세 페이지로 이동
                 contenttr.addEventListener("click", () => {
@@ -207,7 +221,6 @@
             displayPagination(data.totalPages, page); // 페이지네이션 표시
         });
     }
-    <%@ include file="/WEB-INF/layout/footer.jsp" %>
 
 </script>
 <!-- 페이지 번호 -->
