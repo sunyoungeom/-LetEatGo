@@ -143,7 +143,7 @@
                 var distanceSelect = document.getElementById("distanceSelect");
                 var selectedDistance = parseInt(distanceSelect.value);
                 personList.innerHTML = ""; // 이전 결과 삭제
-
+				
                 allUsers.forEach(function (user) {
                   addressToCoords(user.address)
                     .then(function (coords) {
@@ -173,8 +173,10 @@
                         var cellGender = row.insertCell(2);
                         var cellDistance = row.insertCell(3);
                         row.onclick = function () {
-                          // 클릭 시 해당 링크로 이동
-                          // 여기에 링크 주소 넣으면 됨
+                        	 // 클릭 이벤트 추가
+                            //li.addEventListener('click', function() {
+                                window.location.href = `/person/detail?userid=${user.user_id}`;
+                            //});
                         };
                         cellNickname.innerHTML = user.nickname;
                         cellAge.innerHTML = age + "세";

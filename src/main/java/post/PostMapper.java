@@ -6,6 +6,7 @@ import user.User;
 
 import java.util.List;
 import java.util.Map;
+import java.sql.Date;
 
 public interface PostMapper {
     // 전체 조회
@@ -34,7 +35,26 @@ public interface PostMapper {
     @Select("SELECT * FROM posts ORDER BY view DESC")
     List<Post> getPostsOrderByViewDesc();
 
-    
+    // 리뷰 권한을 주기위한 포스트상태 1 채밍방1 상태값 찾는
+    @Select("SELECT p.post_id, p.writeuser_id, p.guestuser_id, p.title, p.content, p.resistdate, p.expiredate, p.status, p.place, p.view, c.guestuser_id as conversation_guestuser_id " +
+            "FROM posts p " +
+            "JOIN conversations c ON p.post_id = c.post_id " +
+            "WHERE p.status = 1 AND c.status = 1")
+    @Results({
+        @Result(property = "postId", column = "post_id"),
+        @Result(property = "writeUserId", column = "writeuser_id"),
+        @Result(property = "guestUserId", column = "guestuser_id"),
+        @Result(property = "title", column = "title"),
+        @Result(property = "content", column = "content"),
+        @Result(property = "resistDate", column = "resistdate"),
+        @Result(property = "expireDate", column = "expiredate"),
+        @Result(property = "status", column = "status"),
+        @Result(property = "place", column = "place"),
+        @Result(property = "view", column = "view"),
+        @Result(property = "conversationGuestUserId", column = "conversation_guestuser_id")
+    })
+    List<PostWithGuestUserIdDTO> getPostsWithStatusAndGuestUserId();
+
     
     @Select("SELECT LAST_INSERT_ID()")
     int lastInsertId();
@@ -51,17 +71,17 @@ public interface PostMapper {
     void deletePost(@Param("post_Id") int postId);
     
     // 페이징 처리를 위한 쿼리
-    @Select("SELECT * FROM posts WHERE status = 0 LIMIT #{limit} OFFSET #{offset}")
+    @Select("SELECT * FROM posts WHERE status = 1 LIMIT #{limit} OFFSET #{offset}")
     List<Post> getPage(Map<String, Integer> params);
 
-    @Select("SELECT COUNT(*) FROM posts WHERE status = 0")
+    @Select("SELECT COUNT(*) FROM posts WHERE status = 1")
     int countAll();
     
     //개인 페이지 페이징 처리 위한 쿼리
-    @Select("SELECT * FROM posts WHERE status = 0 AND writeuser_id = #{writeuser_id} LIMIT #{params.limit} OFFSET #{params.offset}")
+    @Select("SELECT * FROM posts WHERE writeuser_id = #{writeuser_id} LIMIT #{params.limit} OFFSET #{params.offset}")
     List<Post> getMyPage(@Param("params") Map<String, Integer> params, @Param("writeuser_id") int writeuser_id);
     
-    @Select("SELECT COUNT(*) FROM posts WHERE status = 0 AND writeuser_id = #{writeuser_id}")
+    @Select("SELECT COUNT(*) FROM posts WHERE writeuser_id = #{writeuser_id}")
     int myCountAll(int writeuser_id);
     
     @Insert("INSERT INTO post_tag (post_id,budget,booze,age,gender,peopleLimit)" +

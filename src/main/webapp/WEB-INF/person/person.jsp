@@ -139,7 +139,6 @@
 
 					<select class="form-select" style="width: 20%;">
 						<option selected>상관없음</option>
-						<option>별점순</option>
 						<option>혈액형</option>
 						<option>MBTI</option>
 					</select>
@@ -274,11 +273,10 @@
                         age = parseInt(age.toString().slice(1));
                       }
                       // 선택된 거리보다 작은 경우에만 출력
-                    	console.log(`user.bloodType: ${user.bloodtype}`);
-                    	console.log(selectedValue);
-						
+                      
                       if (distance <= selectedDistance) {
                         if(user.bloodtype === bloodtype && selectedValue=="혈액형") {
+                        	console.log("혈액형참");
                         	  var row = personList.insertRow();
                               var cellNickname = row.insertCell(0);
                               var cellAge = row.insertCell(1);
@@ -293,6 +291,22 @@
                               cellGender.innerHTML = gender;
                               cellDistance.innerHTML = distance + "km";
                         } else if(user.mbti == mbti && selectedValue=="MBTI") {
+                        	console.log("MBTI참");
+                        	var row = personList.insertRow();
+                            var cellNickname = row.insertCell(0);
+                            var cellAge = row.insertCell(1);
+                            var cellGender = row.insertCell(2);
+                            var cellDistance = row.insertCell(3);
+                            row.onclick = function () {
+                              // 클릭 시 해당 링크로 이동
+                              // 여기에 링크 주소 넣으면 됨
+                            };
+                            cellNickname.innerHTML = user.nickname;
+                            cellAge.innerHTML = age + "세";
+                            cellGender.innerHTML = gender;
+                            cellDistance.innerHTML = distance + "km";
+                        	
+                        } else if(selectedValue=="상관없음"){
                         	var row = personList.insertRow();
                             var cellNickname = row.insertCell(0);
                             var cellAge = row.insertCell(1);

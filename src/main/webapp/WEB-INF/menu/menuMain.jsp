@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
 prefix="c"%>
-
+<%@ page isELIgnored="true"%>
 <!DOCTYPE html>
 <html lang="kor">
   <head>
@@ -46,7 +46,7 @@ prefix="c"%>
   <body class="d-flex flex-column h-100 bg-light">
     <%@ include file="/WEB-INF/user/navigation.jsp"%>
 
-    <main class="flex-shrink-0">
+ <main class="flex-shrink-0">
       <div class="container mt-5 d-flex justify-content-center">
         <form class="d-flex flex-row align-items-center col-8">
           <input
@@ -62,6 +62,7 @@ prefix="c"%>
         </form>
       </div>
     </main>
+    
 
     <br />
 
@@ -147,6 +148,7 @@ prefix="c"%>
   <script>
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
+    
     fetch("http://localhost:8080/recent", {
       method: 'PUT',
     })
@@ -167,7 +169,7 @@ prefix="c"%>
             element.title.length > maxTitleLength
               ? element.title.substring(0, maxTitleLength) + "..."
               : element.title;
-          tdresistdate.innerText = `${element.resistdate}`;
+          tdresistdate.innerText = `${element.resistDate}`;
           tdview.innerText = `${element.view}`;
 
           // 각 셀에 스코프 및 스타일 지정
