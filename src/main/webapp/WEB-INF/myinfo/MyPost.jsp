@@ -113,16 +113,7 @@
 												</tr>
 											</thead>
 											<tbody class="table-group-divider">
-												<!--    <tr>
-                                                    <th scope="row">하이하이여</th>
-                                                    <td>2024-04-06</td>
-                                                    <td>
-                                                        <div class="btn-group-sm">
-                                                            <button class="btn btn-primary btn-small">수정</button>
-                                                            <button class="btn btn-danger btn-small">삭제</button>
-                                                        </div>
-                                                    </td>
-                                                </tr> -->
+											<!-- 스크립트영역에서 채우기 -->
 											</tbody>
 										</table>
 										<nav aria-label="Page navigation example">
@@ -157,8 +148,10 @@
         })
         .then((resp) => resp.json())
         .then((data) => {
+        	
+        	
             tbody.innerHTML = ""; // 기존 게시물 내용 초기화
-            
+           	
 	    	 const maxTitleLength = 12; // 예시로 20자로 설정
             
             data.items.forEach((element) => {
