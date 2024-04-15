@@ -45,8 +45,6 @@ public class UserJoinServlet extends HttpServlet {
 			// 이메일 인증 코드 발송 요청 처리
 			String email = request.getParameter("email");
 			User isDuplicate = service.getEmailByEmail(email);
-			System.out.println(email);
-			System.out.println(isDuplicate.getEmail());
 
 			if (isDuplicate != null) {
 				// 이메일이 이미 사용 중인 경우
