@@ -43,8 +43,6 @@ public class MyWebContextListener implements ServletContextListener {
 		BasicDataSource ds = new BasicDataSource();
 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
-		
 		ds.setUrl("jdbc:mysql://localhost:3306/sys");
 		ds.setUsername("root");
 		ds.setPassword("root");
