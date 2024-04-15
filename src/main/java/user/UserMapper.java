@@ -28,6 +28,15 @@ public interface UserMapper {
 
 	// 유저 전체 조회
 	@Select("SELECT * FROM users")
+	@Results({ @Result(property = "user_id", column = "user_id"), @Result(property = "id", column = "id"),
+			@Result(property = "password", column = "password"), @Result(property = "join_date", column = "join_date"),
+			@Result(property = "attendance", column = "attendance"), @Result(property = "email", column = "email"),
+			@Result(property = "name", column = "name"), @Result(property = "nickname", column = "nickname"),
+			@Result(property = "address", column = "address"), @Result(property = "mbti", column = "mbti"),
+			@Result(property = "bloodtype", column = "bloodtype"),
+			@Result(property = "identifynumber", column = "identifynumber"),
+			@Result(property = "phonenumber", column = "phonenumber"),
+			@Result(property = "profilePhotoPath", column = "profilePhotoPath") })
 	List<User> getAllUsers();
 
 	// 유저 삭제
@@ -101,7 +110,7 @@ public interface UserMapper {
 
 	@Update("UPDATE users SET bloodtype = #{bloodtype} WHERE id = #{id}")
 	void updateBloodtype(String id, String bloodtype);
-	
+
 	@Select("SELECT * FROM users where user_id != #{user_id}")
 	List<User> getAllUsersExceptMe(int user_id);
 

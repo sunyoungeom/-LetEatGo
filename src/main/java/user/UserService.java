@@ -12,6 +12,13 @@ import listener.MyWebContextListener;
 
 public class UserService {
 
+	public List<User> getAllUsers() {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getAllUsers();
+		}
+	}
+	
 	public User getIdById(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);

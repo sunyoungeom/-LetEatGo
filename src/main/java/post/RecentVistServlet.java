@@ -14,6 +14,7 @@ import util.ServletUtil;
 
 @WebServlet("/recent")
 public class RecentVistServlet extends HttpServlet {
+	PostService postService = new PostService();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,11 +26,19 @@ public class RecentVistServlet extends HttpServlet {
 		Object attribute = req.getSession().getAttribute("user");
 		User user = (User) attribute;
 		int writeuser_id = user.getUser_id();
-		System.out.println(writeuser_id);
-		PostService postService = new PostService();
 		List<Post> placeByIdList = postService.getPlaceById(writeuser_id);
-		System.out.println(placeByIdList.toString());
+		
 		ServletUtil.sendJsonBody(placeByIdList, resp);
+	}
+
+
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<Post> viewDesc = postService.getPostsOrderByViewDesc();
+		List<Post> top5Posts = viewDesc.subList(0, Math.min(5, viewDesc.size())); // 최소값 선택
+		System.out.println(top5Posts);
+		ServletUtil.sendJsonBody(top5Posts, resp);
+
 	}
 	
 
