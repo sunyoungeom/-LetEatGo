@@ -51,117 +51,353 @@
 		margin-left: 20px;
 	}
 }
+
+.carousel-item .col-md-4 {
+	padding: 0 10px; /* 좌우 패딩을 24px로 설정 */
+}
+
+.card {
+	height: auto;
+	background-color: #FFFFFF; /* 백그라운드 색상 */
+	border: 1px solid #dee2e6; /* 테두리 */
+}
+
+.card-body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px; /* 내부 패딩 */
+	text-align: center;
+}
+
+.card-img-top {
+	width: 100px;
+	height: auto;
+	margin-top: 11px;
+	margin-bottom: 11px; /* 이미지 하단 마진 추가 */
+}
+
+.card-text {
+	margin: 0; /* 텍스트 마진 제거 */
+}
 </style>
 </head>
 <body>
-	<%@ include file="../user/navigation.jsp"%>
-	<br>
-	<div class="total" style="margin: 0 20%">
-		<main class="flex-shrink-0">
-			<div class="container mt-5 d-flex justify-content-center">
-				<form class="d-flex flex-row align-items-center col-8">
-					<input class="form-control mr-2 rounded-pill" type="search"
-						placeholder="Search" aria-label="Search" />
-				</form>
-			</div>
-		</main>
+	<%@ include file="/WEB-INF/user/navigation.jsp"%>
 
-		<br>
-		<h3>핫 피플</h3>
-
-
-		<div class="topcontaine">
-			<div class="box" style="margin-left: 5%;">
-				<ol id="rank"
-					style="overflow: auto; cursor: pointer; transition: background-color 0.3s ease;">
-					<!-- 별점랭킹 -->
-				</ol>
-			</div>
-			<div class="button-container" style="margin-left: 30%">
-				<div class="border p-3 mb-2"
-					style="width: 60%; height: 100px; margin-right: auto; margin-top: 50px;">
-					<a href="/person/personmap">주변사람 찾기</a>
-				</div>
-				<br /> <br />
-
-				<div class="border p-3 mb-2"
-					style="width: 60%; height: 100px; margin-right: auto">
-					<a href="/recent/person"> 최근 만나 사람 </a>
-				</div>
-			</div>
-			<!--   <div style="margin-right:20%;">
-                <div class="border p-3 mb-2"
-                    style="width: 150%; height: 25%; margin-top:30%; ">
-                    <a href="/person/personmap">주변사람 찾기</a>
-                    </div>
-                <br> <br>
-                <div class="border p-3 mb-2"
-                    style="width: 150%; height: 25%;">최근  같이 먹은 사람</div>
-            </div> -->
+	<main class="flex-shrink-0">
+		<div class="container mt-5 d-flex justify-content-center">
+			<form
+				class="d-flex flex-row align-items-center col-8 position-relative">
+				<input class="form-control rounded-pill pl-3 pr-5" type="search"
+					placeholder="Search" aria-label="Search" id="search" name="query"
+					style="padding-right: 40px;" /> <i
+					class="bi bi-search position-absolute"
+					style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
+			</form>
 		</div>
-
-		<br>
+		<br />
 
 		<div class="container">
-			<div class="border p-3 mb-2" style="border-radius: 10px; width: 90%;">
-				<div class="d-flex justify-content-between">
-					<div class="d-flex align-items-center">
-						<button class="btn btn-primary me-3">셔플</button>
-						<div class="form-check me-3">
-							<!-- 여기에 me-3 클래스 추가 -->
-							<input class="form-check-input" type="radio" name="option"
-								id="option1" value="3"> <label class="form-check-label"
-								for="option1"> 3Km 이내 </label>
+			<div class="d-flex justify-content-center">
+				<div class="col-8">
+					<h3>핫 피플</h3>
+
+					<div id="menuCarousel" class="carousel slide"
+						data-bs-ride="carousel" data-bs-interval="3000">
+						<div class="carousel-inner">
+
+							<!-- Carousel Item 1 -->
+							<div class="carousel-item active">
+								<div class="d-flex justify-content-center">
+									<!-- 각 카드를 이곳에 배치 -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-1" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-1"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+
+									<!-- 두 번째 카드 (중식) -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-2" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-2"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+
+									<!-- 세 번째 카드 (양식) -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-3" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-3"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 추가 Carousel Items (필요한 경우) -->
+							<!-- Carousel Item 1 -->
+							<div class="carousel-item active">
+								<div class="d-flex justify-content-center">
+									<!-- 각 카드를 이곳에 배치 -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-4" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-4"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+
+									<!-- 두 번째 카드 (중식) -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-5" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-5"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+
+									<!-- 세 번째 카드 (양식) -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-6" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-6"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="carousel-item active">
+								<div class="d-flex justify-content-center">
+									<!-- 각 카드를 이곳에 배치 -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-7" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-7"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+
+									<!-- 두 번째 카드 (중식) -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-8" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-8"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+
+									<!-- 세 번째 카드 (양식) -->
+									<div class="col-md-4">
+										<div class="card overflow-hidden rounded-4 border-0 mb-3"
+											id="card-9" style="height: auto; cursor: pointer;">
+											<div class="card-body p-0 border rounded-4">
+												<div class="d-flex flex-column align-items-center p-3">
+													<img src="../Resources/image/profile.png" alt="음식 이미지"
+														class="card-img-top"
+														style="width: 100px; height: auto; margin-top: 11px;">
+													<div class="card-body">
+														<p class="card-text" id="card-text-9"></p>
+													</div>
+												</div>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
 						</div>
-						<div class="form-check me-3">
-							<!-- 여기에 me-3 클래스 추가 -->
-							<input class="form-check-input" type="radio" name="option"
-								id="option2" value="5"> <label class="form-check-label"
-								for="option2"> 5Km 이내 </label>
+
+						<div class="row">
+							<div class="col-lg-4">
+								<a href="/person/personmap"
+									style="text-decoration: none; color: #343a40;">
+									<div class="border p-3 mb-2 rounded-4"
+										style="height: 70px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
+										<h4 class="fw-bolder" style="margin-bottom: 0px;">주변 사람
+											찾기</h4>
+									</div>
+								</a>
+							</div>
+							<div class="col-lg-4">
+								<a href="/recent/person"
+									style="text-decoration: none; color: #343a40;">
+									<div class="border p-3 mb-2 rounded-4"
+										style="height: 70px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
+										<h4 class="fw-bolder" style="margin-bottom: 0px;">최근 만난
+											사람</h4>
+									</div>
+								</a>
+							</div>
+							<div class="col-lg-4">
+								<form action="/post/createPost" method="get"
+									style="text-decoration: none; color: #343a40;">
+									<button type="submit" class="border p-3 mb-2 rounded-4"
+										style="height: 70px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center; width: 100%; border: none;">
+										<h4 class="fw-bolder" style="margin-bottom: 0px;">같이 먹어요</h4>
+									</button>
+								</form>
+							</div>
 						</div>
-						<div class="form-check me-3">
-							<!-- 여기에 me-3 클래스 추가 -->
-							<input class="form-check-input" type="radio" name="option"
-								id="option3" value="10"> <label class="form-check-label"
-								for="option3"> 10Km 이내 </label>
-						</div>
-						<div class="form-check">
-							<!-- 여기에 me-3 클래스 추가 -->
-							<input class="form-check-input" type="radio" name="option"
-								id="option4" value="1000000" checked> <label
-								class="form-check-label" for="option4"> 상관없음 </label>
+
+						<br />
+
+
+
+						<div class="row">
+							<div class="container">
+								<hr>
+								<br>
+								<h3>최근 게시물</h3>
+								<div class="border p-3 mb-2" style="border-radius: 10px;">
+									<div class="d-flex justify-content-between">
+										<div class="d-flex align-items-center">
+											<button class="btn btn-primary me-3">셔플</button>
+											<div class="form-check me-3">
+												<!-- 여기에 me-3 클래스 추가 -->
+												<input class="form-check-input" type="radio" name="option"
+													id="option1" value="3"> <label
+													class="form-check-label" for="option1"> 3Km 이내 </label>
+											</div>
+											<div class="form-check me-3">
+												<!-- 여기에 me-3 클래스 추가 -->
+												<input class="form-check-input" type="radio" name="option"
+													id="option2" value="5"> <label
+													class="form-check-label" for="option2"> 5Km 이내 </label>
+											</div>
+											<div class="form-check me-3">
+												<!-- 여기에 me-3 클래스 추가 -->
+												<input class="form-check-input" type="radio" name="option"
+													id="option3" value="10"> <label
+													class="form-check-label" for="option3"> 10Km 이내 </label>
+											</div>
+											<div class="form-check">
+												<!-- 여기에 me-3 클래스 추가 -->
+												<input class="form-check-input" type="radio" name="option"
+													id="option4" value="1000000" checked> <label
+													class="form-check-label" for="option4"> 상관없음 </label>
+											</div>
+										</div>
+
+										<select class="form-select" style="width: 20%;">
+											<option selected>상관없음</option>
+											<option>혈액형</option>
+											<option>MBTI</option>
+										</select>
+									</div>
+
+
+
+									<div id="personList">
+										<table id="personTable">
+											<thead>
+												<tr>
+													<th>Nickname</th>
+													<th>Age</th>
+													<th>Gender</th>
+													<th>Distance</th>
+												</tr>
+											</thead>
+											<tbody></tbody>
+										</table>
+									</div>
+
+
+
+								</div>
+							</div>
 						</div>
 					</div>
-
-					<select class="form-select" style="width: 20%;">
-						<option selected>상관없음</option>
-						<option>혈액형</option>
-						<option>MBTI</option>
-					</select>
 				</div>
-
-
-
-				<div id="personList">
-					<table id="personTable">
-						<thead>
-							<tr>
-								<th>Nickname</th>
-								<th>Age</th>
-								<th>Gender</th>
-								<th>Distance</th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
-
-
-
 			</div>
-		</div>
-	</div>
-	</div>
+	</main>
+
+
+
+
+
+
+
+
+
 
 	<!-- Bootstrap JS -->
 	<script
@@ -366,6 +602,32 @@ document.querySelector('.form-control').addEventListener('input', () => {
 </script>
 
 	<script>
+	
+	fetch(`http://localhost:8080/person/totalpersoninfo`, {
+	    method: 'PUT'
+	})
+	.then((resp) => resp.json())
+	.then((data) => {
+	    data.slice(0, 9).forEach((user, index) => {
+	        const card = document.getElementById(`card-${index + 1}`);
+	        const cardText = document.getElementById(`card-text-${index + 1}`);
+	        
+	        if (cardText) {
+	            cardText.textContent = user.id; // 유저 아이디로 카드 텍스트 대체
+	        }
+	        
+	        if (card) {
+	            card.addEventListener('click', function() {
+	                window.location.href = `/person/detail?userid=${user.user_id}`;
+	            });
+	        }
+	    });
+	})
+	.catch(error => {
+	    console.error('Error fetching data: ', error);
+	});
+
+/* 
 // 순위 1위부터 10위
 fetch(`http://localhost:8080/person/totalpersoninfo`, {
     method: 'PUT'
@@ -386,7 +648,7 @@ fetch(`http://localhost:8080/person/totalpersoninfo`, {
         
         rank.appendChild(li); // ul에 li 요소 추가
     });
-});
+}); */
 	
 
 </script>

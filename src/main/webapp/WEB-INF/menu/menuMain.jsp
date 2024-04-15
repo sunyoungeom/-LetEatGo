@@ -169,7 +169,6 @@
 			</tbody>
 		</table>
 	</div>
-	</main>
 
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center" id="pagination">
@@ -332,6 +331,6 @@
         }
       });
   </script>
- <!-- 페이지 번호 -->
+<!-- 페이지 번호 -->
 <script src="/js/pagination.js"></script>
 </html>
