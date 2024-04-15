@@ -104,47 +104,75 @@ input[type="button"]:hover {
 </head>
 <body>
 <%@ include file="../user/navigation.jsp"%>
-	<div id="postDetail" style="border: 2px solid gray; padding: 10px; border-radius: 10px; margin-right:100px; margin-left:100px;">
-		<h1 id="title" style="margin: 15px"></h1>
-		<p id="nickname" style="margin: 15px; margin-bottom: 0px"></p>
-		<p id="resistdate" style="margin: 15px; margin-top: 0px"></p>
-		<hr>
-		<p id="content" style="margin: 15px; margin-top: 35px; margin-bottom: 35px"></p>
+<div id="postDetail" style="border: 2px solid gray; padding: 10px; border-radius: 10px; margin-right:100px; margin-left:100px;">
+    <table>
+        <tr>
+            <th>작성자</th>
+            <td id="nickname" style="margin: 15px; margin-bottom: 0px"></td>
+        </tr>
+        <tr>
+            <th>작성일</th>
+            <td id="resistdate" style="margin: 15px; margin-top: 0px"></td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td id="title" style="margin: 15px"></td>
+        </tr>
+        <tr>
+            <th>조회수</th>
+            <td>조회수 값</td> <!-- 조회수 데이터가 없어서 고정 값으로 처리함 -->
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td id="content" style="margin: 15px; margin-top: 35px; margin-bottom: 35px"></td>
+        </tr>
+    </table>
+</div>
+	<div id="reviewForm" style="border: 2px solid gray; border-radius: 10px; padding: 10px; margin-bottom: 20px;">
+    <h2>리뷰 작성</h2>
+    <form id="reviewFormSubmit">
+        <table>
+            <tr>
+                <td>별점</td>
+                <td>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>리뷰 내용</td>
+                <td>
+                    <textarea class="form-control" id="review" name="review" rows="5" required></textarea>
+                </td>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-primary">리뷰 등록</button>
+    </form>
+</div>
+
+	<div id="reviewList"
+		style="border: 2px solid gray; border-radius: 10px; padding: 10px;">
+		<h2>리뷰 목록</h2>
+		<div id="reviews-container">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>별점</th>
+						<th>리뷰 내용</th>
+						<!-- 다른 필요한 헤더 열 추가 -->
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 여기에 리뷰 목록 표시하는 코드를 넣으세요 -->
+				</tbody>
+			</table>
+		</div>
 	</div>
-	
-	
-	
-	<div id="reviewForm" >
-		<h2>리뷰 작성</h2>
-		<!-- <i class="bi bi-star"></i>
-		<i class="bi bi-star-fill"></i>
-		<i class="bi bi-star-fill"></i>
-		<i class="bi bi-star-fill"></i>
-		<i class="bi bi-star-fill"></i> -->
-		<form id="reviewFormSubmit">
-			 <div class="star-rating">
-	            <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
-	            <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
-	            <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
-	            <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
-	            <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
-       		 </div>
-			
-			<div class="mb-3">
-				<label for="review" class="form-label">리뷰 내용</label>
-				<!-- 수정: 리뷰 내용을 입력 받는 입력 필드를 textarea로 변경 -->
-				<textarea class="form-control" id="review" name="review" rows="5"
-					required></textarea>
-			</div>
-			<button type="submit" class="btn btn-primary">리뷰 등록</button>
-		</form>
-	</div>
-	
-	<div id="reviewList" style="border: 2px solid gray;">
-	    <h2>리뷰 목록</h2>
-	    <div id="reviews-container"></div>
-	</div>
-	
 	<br>
 	
 	<input type="hidden" id="post_Id"
@@ -441,7 +469,7 @@ function chatWinOpen() {
     console.log(nickname)
     if (!chatWindow || chatWindow.closed) {
         const url = "ChatWindow?&post_Id=" + post_Id; // URL에 게시물 ID 추가
-        chatWindow = window.open(url, "", "width=450, height=600"); // 채팅 창 열기
+        chatWindow = window.open(url, "", "width=386, height=564"); // 채팅 창 열기
     } else {
         chatWindow.focus();
     }   

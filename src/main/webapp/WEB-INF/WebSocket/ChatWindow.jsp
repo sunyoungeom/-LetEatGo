@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>채팅창 구현</title>
 <script>
@@ -231,6 +232,10 @@ function closePost() {
 	padding: 5px;
 }
 
+body {
+    background-color: pink; /* 배경색을 핑크색으로 지정 */
+}
+
 /* 대화 입력창 스타일 */
 #chatMessage {
     width: 300px;
@@ -244,8 +249,6 @@ function closePost() {
 #sendBtn {
     width: 80px;
     height: 60px;
-    background-color: #20b2aa; /* 배경색을 적당한 색상으로 지정 */
-    color: white; /* 글자색을 흰색으로 지정 */
     border: none; /* 테두리 제거 */
     cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
     border-radius: 5px; /* 모서리를 둥글게 만듦 */
@@ -305,24 +308,41 @@ function closePost() {
 	float: right; /* 오른쪽 정렬 */
 	clear: both; /* 다음 요소와 겹치지 않게 함 */
 	display: block; /* 블록 요소로 설정하여 줄바꿈을 만듦 */
-	background-color: #ff6347; /* 배경색을 적당한 색상으로 지정 */
-	color: white; /* 글자색을 흰색으로 지정 */
 	border: none; /* 테두리 제거 */
 	padding: 10px 20px; /* 내부 여백 설정 */
 	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
 	border-radius: 5px; /* 모서리를 둥글게 만듦 */
+}
+#closeBtn {
+	border:none;
+	border-radius: 5px;
+	width: 120px;
+	height: 30px;
+	background-color: #FFFFD0;
 }
 /* 조기마감 버튼 스타일 */
 #endBtn {
 	margin-top: 60px; /* 상단 여백 */
 	float: left; /* 왼쪽 정렬 */
-	background-color: #ff6347; /* 배경색을 적당한 색상으로 지정 */
-	color: white; /* 글자색을 흰색으로 지정 */
 	border: none; /* 테두리 제거 */
 	padding: 10px 20px; /* 내부 여백 설정 */
 	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
 	border-radius: 5px; /* 모서리를 둥글게 만듦 */
 }
+ /* .btn-dark 클래스의 배경색을 회색(#808080)으로 설정 */
+    .btn-dark {
+        background-color: #808080;
+    }
+
+    /* .btn-dark 클래스의 테두리 색을 회색(#808080)으로 설정 */
+    .btn-dark {
+        border-color: #808080;
+    }
+
+    /* .btn-dark 클래스의 텍스트 색을 흰색(#ffffff)으로 설정 */
+    .btn-dark {
+        color: #ffffff;
+    }
 </style>
 </head>
 <body>
@@ -335,9 +355,9 @@ function closePost() {
 	<div id="chatWindow"></div>
 	<div>
 		<input type="text" id="chatMessage" onkeyup="enterKey();">
-		<button id="sendBtn" onclick="sendMessage();">전송</button>
-		<button id="exitBtn" onclick="exitChatroom();">채팅방 나가기</button>
-		<button id="endBtn" onclick="closePost()">조기마감</button>
+		<button id="sendBtn" class="btn btn-dark" onclick="sendMessage();">전송</button>
+		<button id="exitBtn" class="btn btn-dark" onclick="exitChatroom();">채팅방 나가기</button>
+		<button id="endBtn" class="btn btn-dark" onclick="closePost()">조기마감</button>
 	</div>
 </body>
 </html>

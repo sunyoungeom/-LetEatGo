@@ -50,22 +50,27 @@
 
 /* 글씨의 위아래 간격 조정 */
 .chatContent td {
-	line-height: 3; /* 1.5의 배수로 설정하여 위아래 간격을 조절할 수 있습니다. */
+	font-size: 14px; /* 기존에는 16px이었던 것을 원하는 크기로 변경 */
+	line-height: 1.5; /* 1.5의 배수로 설정하여 위아래 간격을 조절할 수 있습니다. */
 	padding: 5px 10px; /* 셀 내부 여백 설정 */
 }
 
 /* 채팅방 입장 버튼 스타일 */
 .joinChatButton {
-	background-color: #007bff;
+	background-color: #343a40;
 	color: white;
 	padding: 5px 10px;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	width: 60px;
+	height: 60px;
 }
+
 
 .joinChatButton:hover {
 	background-color: #0056b3;
+	
 }
 
 /* 버튼을 우측에 정렬 */
@@ -74,12 +79,11 @@
 }
 
 /* 가로줄 스타일 수정 */
-hr {
+#customHr {
 	border: none;
 	height: 1px;
-	background-color: #ccc;
-	margin-right: 100px 0;
-	width: 670%;
+	background-color: black;
+	margin: 2px;
 }
 </style>
 <meta charset="UTF-8">
@@ -111,7 +115,7 @@ hr {
 
                             // 변수를 사용하여 채팅방 번호를 생성합니다.
                             tdId.innerText = element.post_Id; // 게시물 번호
-                            tdContent.innerText = "제목 : " + element.title;
+                            tdContent.innerText = element.title;
 
                             // 채팅방 입장 버튼 설정
                             joinButton.innerText = "입장";
@@ -147,6 +151,7 @@ hr {
 
                             // 가로줄 추가
                             var horizontalLine = document.createElement("hr");
+                            horizontalLine.id = "customHr"; // 원하는 아이디 값 설정
                             chatTableBody.appendChild(horizontalLine);
                         });
                     })
