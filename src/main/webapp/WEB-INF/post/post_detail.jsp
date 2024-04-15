@@ -143,7 +143,6 @@ input[type="button"]:hover {
 	<div id="reviewList" style="border: 2px solid gray;">
 	    <h2>리뷰 목록</h2>
 	    <div id="reviews-container"></div>
-	    <button id="show-more-btn">더 보기</button>
 	</div>
 	
 	<br>
