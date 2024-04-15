@@ -38,12 +38,6 @@
 				<div class="collapse" id="collapseMenu">
 					<ul class="nav flex-column">
 						<li class="nav-item"><a class="nav-link"
-							href="/myInfo?detail=total"> <svg class="bi me-2" width="32"
-									height="16">
-                        <use xlink:href="#speedometer2"></use>
-                    </svg>전체보기
-						</a></li>
-						<li class="nav-item"><a class="nav-link"
 							href="/myInfo?detail=post"><svg class="bi me-2" width="32"
 									height="16">
                         <use xlink:href="#speedometer2"></use>

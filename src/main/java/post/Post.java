@@ -17,7 +17,7 @@ public class Post {
     private int guestUser_Id;
     private String title;
     private String content;
-    private Date resistDate;
+    private Date resistdate;
     private String expireDate;
     private int status;
     private String place;
