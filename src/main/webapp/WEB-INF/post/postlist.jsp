@@ -86,7 +86,21 @@ const itemsPerPage = 15; // 페이지당 아이템 수
 const tbody = postTable.querySelector("tbody");
 
 loadPosts(currentPage);
+function formattedDate(element) {
+        // MySQL DATETIME 값을 Date 객체로 변환
+        const timestamp = Number(element.resistdate);
+        const date = new Date(timestamp);
 
+        // 년, 월, 일 추출
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고, 2자리로 맞춤
+        const day = String(date.getDate()).padStart(2, "0"); // 일은 1일부터 시작하므로 2자리로 맞춤
+
+        // 'YYYY-MM-DD' 형식으로 문자열 조합
+        const formattedDate = `${year}-${month}-${day}`;
+
+        return formattedDate;
+      }
 function loadPosts(page) {
     fetch(`http://localhost:8080/post/list?page=${page}&pagePer=${itemsPerPage}`, {
         method: 'POST'
@@ -106,7 +120,7 @@ function loadPosts(page) {
             
             tdId.innerText = `${element.post_Id}`;
             tdtitle.innerText = element.title.length > maxTitleLength ? element.title.substring(0, maxTitleLength) + '...' : element.title;
-            tdresistdate.innerText = `${element.resistdate}`;
+            tdresistdate.innerText = formattedDate(element);
             tdview.innerText = `${element.view}`;
             
             // 각 셀에 스코프 및 스타일 지정

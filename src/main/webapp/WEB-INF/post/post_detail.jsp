@@ -17,7 +17,7 @@
 /* 게시물 상세 페이지 전체를 감싸는 컨테이너의 스타일 */
 body {
 	font-family: Arial, sans-serif; /* 글꼴 설정 */
-	padding: 20px; /* 페이지의 내용과 가장자리 사이의 간격 설정 */
+	padding: 0px; /* 페이지의 내용과 가장자리 사이의 간격 설정 */
 }
 
 /* 게시물 상세 페이지의 제목 스타일 */
@@ -189,7 +189,21 @@ input[type="button"]:hover {
     const resistdate = document.getElementById("resistdate");
     const content = document.getElementById("content");
     const postId = document.getElementById("post_Id").value;
-    
+    function formattedDate(data) {
+        // MySQL DATETIME 값을 Date 객체로 변환
+        const timestamp = Number(data.post.resistdate);
+        const date = new Date(timestamp);
+
+        // 년, 월, 일 추출
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고, 2자리로 맞춤
+        const day = String(date.getDate()).padStart(2, "0"); // 일은 1일부터 시작하므로 2자리로 맞춤
+
+        // 'YYYY-MM-DD' 형식으로 문자열 조합
+        const formattedDate = `${year}-${month}-${day}`;
+
+        return formattedDate;
+      }
     fetch(`http://localhost:8080/post/detail?post_Id=${postId}`, {
         method: 'POST',
     })
@@ -197,51 +211,75 @@ input[type="button"]:hover {
     .then(async (data) => {
     const userId = data.user.id;
     const posttitle = data.post.title
-    const postresistdate = data.post.resistDate
+    const postresistdate =formattedDate(data)
     const postContent = data.post.content;
     const isCurrentUserId = await isCurrentUser(data.user.user_id);
     
+    const postDTOList  = data.DTOList;
+	const postId = data.post.post_Id;
+    
+	console.log(postDTOList,"DTO값");
+	console.log(postId,"포스트아이디값");
+	const isPostIdMatched = postDTOList.some(item => item.postId === postId);
+	
+	
+	const isguestIdMatched = postDTOList.some(item => item.postId === userId);
+	
+	
+	
     title.innerText = `${posttitle}`;
     nickname.innerText = `${userId}`;
     resistdate.innerText = `${postresistdate}`;
     content.innerText = `게시물 내용: ${postContent}`;
     
     
-    if(isCurrentUserId) {
-	 	// 게시물 수정 버튼 생성
-	    let editButton = document.createElement("button");
-	    editButton.innerText = "게시물 수정";
-	    editButton.addEventListener("click", () => {
-	    	window.location.href = `editpost?postId=${postId}`;
-	    });
-	    postDetail.appendChild(editButton);
-	
-	    // 게시물 삭제 버튼 생성
-	    let deleteButton = document.createElement("button");
-	    deleteButton.innerText = "게시물 삭제";
-	    deleteButton.addEventListener("click", () => {
-	        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
-	        fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
-	        	method: 'DELETE'
-	        })
-	        .then(response => {
-                if (response.ok) {
-                	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
-                	 window.location.href = `mypostlist`;
-                } else {
-                    console.error('게시글 삭제 중 오류 발생:', response.status);
-                    alert('게시글 삭제 중 오류가 발생했습니다.');
-                }
-            })
-	    });
-	    postDetail.appendChild(deleteButton);
-    }
+    
+	    if(isCurrentUserId) {
+		 	// 게시물 수정 버튼 생성
+		    let editButton = document.createElement("button");
+		    editButton.innerText = "게시물 수정";
+		    editButton.addEventListener("click", () => {
+		    	window.location.href = `editpost?postId=${postId}`;
+		    });
+		    postDetail.appendChild(editButton);
+		
+		    // 게시물 삭제 버튼 생성
+		    let deleteButton = document.createElement("button");
+		    deleteButton.innerText = "게시물 삭제";
+		    deleteButton.addEventListener("click", () => {
+		        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+		        fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
+		        	method: 'DELETE'
+		        })
+		        .then(response => {
+	                if (response.ok) {
+	                	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
+	                	 window.location.href = `mypostlist`;
+	                } else {
+	                    console.error('게시글 삭제 중 오류 발생:', response.status);
+	                    alert('게시글 삭제 중 오류가 발생했습니다.');
+	                }
+	            })
+		    });
+		    postDetail.appendChild(deleteButton);
+	    }
+    
+    
     
     // 리뷰 목록을 받아와서 처리하는 부분 추가
     const reviews = data.reviews;
+
+    if (!isPostIdMatched || isguestIdMatched) {
+        // 리뷰 작성 폼을 숨기거나 비활성화하는 코드 작성
+        reviewForm.style.display = 'none'; // 리뷰 작성 폼을 숨김
+    }
+        
     for (const review of reviews) {
         const isCurrentUserReview = await isCurrentUser(review.writeUserId); // 프로미스를 기다림
 
+        
+        
+        
         let reviewItem = document.createElement("div");
      // 별 평점 입력 필드 생성
         let starRating = document.createElement("div");
@@ -273,7 +311,10 @@ input[type="button"]:hover {
         reviewTextArea.rows = 2; // 텍스트 필드를 좀 더 길게 출력
         reviewTextArea.cols = 50; // 텍스트 필드를 가로로 더 길게 출력
         reviewItem.appendChild(reviewTextArea);
-
+   		
+		
+        
+        
         if (isCurrentUserReview) {
             let editButton = document.createElement("button");
             editButton.innerText = "수정";
@@ -368,6 +409,7 @@ input[type="button"]:hover {
 
         reviewList.appendChild(reviewItem);
     }
+    
 })
     .catch(error => {
         console.error('상세 게시물 내용을 불러오는 중 오류 발생:', error);

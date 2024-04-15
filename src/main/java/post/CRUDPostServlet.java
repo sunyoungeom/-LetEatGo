@@ -14,12 +14,13 @@ import user.User;
 import util.ServletUtil;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 import static util.ServletUtil.*;
@@ -63,7 +64,7 @@ public class CRUDPostServlet extends HttpServlet {
 		post.setWriteUser_Id(writeUser_id);
 		post.setTitle(title);
 		post.setContent(content);
-		post.setResistDate(resistDate);
+		post.setResistdate(resistDate);
 		post.setExpireDate(expireDate);
 		post.setPlace(place);
 

@@ -2,8 +2,6 @@ package post;
 
 import java.sql.Date;
 
-import com.google.protobuf.Timestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,15 +9,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
-    private int post_Id;
-    private int writeUser_Id;
-    private int guestUser_Id;
+public class PostWithGuestUserIdDTO {
+
+    private int postId;
+    private int writeUserId;
+    private int guestUserId;
     private String title;
     private String content;
-    private Date resistdate;
+    private Date resistDate;
     private String expireDate;
     private int status;
     private String place;
     private int view;
+    private int conversationGuestUserId;
+
+    // Getters and setters
 }
