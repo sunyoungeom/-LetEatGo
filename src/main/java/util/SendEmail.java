@@ -20,7 +20,7 @@ public class SendEmail {
 
         String toEmail = user.getEmail();
         String fromEmail = "leteatgo.send@gmail.com";
-        String appPassword = "smrpbrhborwashaq";
+        String smtpPassword = ConfigLoader.getPropertyValue("smtp_password");
 
         // SMTP 설정
         Properties properties = new Properties();
@@ -33,7 +33,7 @@ public class SendEmail {
         // 인증 객체 생성
         Authenticator authenticator = new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(fromEmail, appPassword);
+                return new PasswordAuthentication(fromEmail, smtpPassword);
             }
         };
 
