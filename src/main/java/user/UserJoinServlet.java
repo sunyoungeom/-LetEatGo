@@ -169,6 +169,11 @@ public class UserJoinServlet extends HttpServlet {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write("{\"status\":\"duplicate\"}");
+
+		} else {
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("{\"status\":\"unique\"}");
 		}
 	}
 }

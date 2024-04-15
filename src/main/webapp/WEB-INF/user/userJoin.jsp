@@ -453,19 +453,19 @@ function checkDuplicate(field) {
         fullValue = value;
     }
 
-    fetch('/join/begin?action=checkDuplicate&field=' + field + '&value=' + encodeURIComponent(fullValue), {
+    fetch('/join/begin?action=checkDuplicate&field=' + field + '&value=' + fullValue, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({[field]: fullValue})
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
         var duplicateMessage = document.getElementById(field + 'CheckDuplicateMessage');
         var sendVerificationButton = document.getElementById('sendVerification'); // 인증 버튼 DOM 요소 가져오기
 
-        if (data === "duplicate") {
+        if (data.status === "duplicate") {
             duplicateMessage.textContent = "이미 사용 중인 " + field + "입니다.";
             duplicateMessage.classList.remove('message-success');
             duplicateMessage.classList.add('message-error');
@@ -492,8 +492,7 @@ function checkDuplicate(field) {
 }
 
 // 각 입력 필드에 대해 디바운스된 이벤트 핸들러 추가
-/* document.getElementById('id').addEventListener('input', debounce(() => checkDuplicate('id'), 500));
- */document.getElementById('nickname').addEventListener('input', debounce(() => checkDuplicate('nickname'), 500));
+document.getElementById('nickname').addEventListener('input', debounce(() => checkDuplicate('nickname'), 500));
 document.getElementById('phonenumber').addEventListener('input', debounce(() => checkDuplicate('phonenumber'), 500));
 
 document.getElementById('email').addEventListener('input', debounce(() => checkDuplicate('email'), 500));
