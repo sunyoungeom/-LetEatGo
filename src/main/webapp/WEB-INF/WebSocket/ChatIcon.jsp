@@ -124,7 +124,7 @@
                                 // 채팅방 입장 버튼을 클릭했을 때의 동작 구현
                                 var postId = element.post_Id; // 클릭된 contenttr에서 post_Id 가져오기
                                 var chatWindowUrl = "/post/ChatWindow?post_Id=" + postId; // post_Id를 포함한 URL 생성
-                                window.open(chatWindowUrl, "_blank" ,"width=450, height=600"); // 새 창으로 채팅창 열기
+                                window.open(chatWindowUrl, "_blank" ,"width=386, height=564"); // 새 창으로 채팅창 열기
                             });
 
                             tdButton.appendChild(joinButton); // 버튼을 td에 추가
