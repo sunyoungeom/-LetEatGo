@@ -125,6 +125,7 @@
 <script>
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
+
     const search = document.getElementById("search");
 
     function fetchRecentPosts() {

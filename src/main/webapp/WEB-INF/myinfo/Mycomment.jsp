@@ -163,23 +163,36 @@
                 });
                 
                 
-                // 수정 버튼 생성
+                 // 수정 버튼 생성
                 let editButton = document.createElement("button");
                 editButton.textContent = "수정";
                 editButton.classList.add("btn", "btn-primary", "btn-small", "mx-1");
                 editButton.addEventListener("click", () => {
                     // 수정 기능 수행
+                    window.location.href = `editpost?postId=${postId}`;
                     console.log(`수정 버튼 클릭 - 게시물 ID: ${element.post_Id}`);
-                });
+                }); 
                 
                 // 삭제 버튼 생성
                 let deleteButton = document.createElement("button");
                 deleteButton.textContent = "삭제";
                 deleteButton.classList.add("btn", "btn-danger", "btn-small", "mx-1");
                 deleteButton.addEventListener("click", () => {
-                    // 삭제 기능 수행
+                    fetch(`http://localhost:8080/post/deleteReview/${reviewId}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('리뷰가 성공적으로 삭제되었습니다.');
+                            // 삭제된 리뷰 아이템을 화면에서도 제거
+                            event.target.parentNode.remove(); // 삭제 버튼의 부모인 리뷰 아이템을 제거
+                        } else {
+                            console.error('리뷰 삭제 중 오류 발생:', response.status);
+                            alert('리뷰 삭제 중 오류가 발생했습니다.');
+                        }
+                    })
                     console.log(`삭제 버튼 클릭 - 게시물 ID: ${element.post_Id}`);
-                });
+                }); 
                 
                 // 버튼을 셀에 추가
                 tdActions.appendChild(editButton);

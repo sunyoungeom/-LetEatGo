@@ -3,7 +3,7 @@ package post;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.sql.Date;
 import org.apache.ibatis.session.SqlSession;
 
 import listener.MyWebContextListener;
@@ -31,6 +31,13 @@ public class PostService {
 		}
 	}
 
+	public List<PostWithGuestUserIdDTO> getPostsWithStatusAndGuestUserId () {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			return postMapper.getPostsWithStatusAndGuestUserId();
+		}
+	}
 	
 	public List<Post> getPostsOrderByViewDesc (){
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
