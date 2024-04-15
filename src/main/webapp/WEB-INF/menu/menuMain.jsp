@@ -43,52 +43,52 @@
 <body class="d-flex flex-column h-100 bg-light">
 	<%@ include file="/WEB-INF/user/navigation.jsp"%>
 	<main class="flex-shrink-0">
-		<div class="container mt-5 d-flex justify-content-center">
-			<form
-				class="d-flex flex-row align-items-center col-8 position-relative">
-				<input class="form-control rounded-pill pl-3 pr-5" type="search"
-					placeholder="Search" aria-label="Search" id="search" name="query"
-					style="padding-right: 40px;" /> <i
-					class="bi bi-search position-absolute"
-					style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
-			</form>
-		</div>
-	</main>
-	<br />
-	<div>
-		<div class="container d-flex justify-content-between">
-			<div class="box"></div>
+    <div class="container mt-5 d-flex justify-content-center">
+        <form class="d-flex flex-row align-items-center col-8 position-relative">
+            <input class="form-control rounded-pill pl-3 pr-5" type="search"
+                placeholder="Search" aria-label="Search" id="search" name="query"
+                style="padding-right: 40px;" /> 
+            <i class="bi bi-search position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
+        </form>
+    </div>
+    <br />
+    <div style="margin: 0 20%">
+      <div class="container mt-5" style="display: flex;">
+    <div class="box" style="flex-grow: 1; background-color: #f0f0f0;"> <!-- 배경색은 시각적인 구분을 위해 추가함 -->
+        <!-- box 내용 -->
+    </div>
+    <div style="flex-grow: 3;">
+        <div class="border p-3 mb-2" style="height: 100px; margin-top: 50px;">
+            <a href="/map">주변 음식점 찾기</a>
+        </div>
+        <br /> <br />
+        <div class="border p-3 mb-2" style="height: 100px;">
+            <a href="/recent">최근 간 음식점</a>
+        </div>
+    </div>
+</div>
 
-			<div>
-				<div class="border p-3 mb-2"
-					style="width: 600px; height: 100px; margin-right: auto; margin-top: 50px;">
-					<a href="/map">주변 음식점 찾기</a>
-				</div>
-				<br /> <br />
-				<div class="border p-3 mb-2"
-					style="width: 600px; height: 100px; margin-right: auto">
-					<a href="/recent"> 최근 간 음식점 </a>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<br />
-	<div style="margin: 0 20%">
-		<table class="table table-hover table-bordered" id="postTable">
-			<thead class="table-light">
-				<tr>
-					<th scope="col" style="text-align: center">#</th>
-					<th scope="col">제목</th>
-					<th scope="col">작성일</th>
-					<th scope="col">조회수</th>
-				</tr>
-			</thead>
-			<tbody class="table-group-divider">
-				<!-- 데이터는 JavaScript로 채웁니다 -->
-			</tbody>
-		</table>
-	</div>
+    </div>
+
+    <br />
+    <div style="margin: 0 20%">
+        <table class="table table-hover table-bordered" id="postTable">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" style="text-align: center">#</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성일</th>
+                    <th scope="col">조회수</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <!-- 데이터는 JavaScript로 채웁니다 -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
 
 	<!-- Call to action section-->
 	<!--   <section class="py-5 bg-gradient-primary-to-secondary text-white">
