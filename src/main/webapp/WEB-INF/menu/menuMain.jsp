@@ -54,6 +54,7 @@ prefix="c"%>
             type="search"
             placeholder="Search"
             aria-label="Search"
+            id="search"
           />
           <button class="btn btn-outline-success rounded-pill" type="submit">
             <i class="bi bi-search"></i>
@@ -147,6 +148,7 @@ prefix="c"%>
   <script>
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
+    const search = document.getElementById("search");
     fetch("http://localhost:8080/recent", {
       method: 'PUT',
     })
