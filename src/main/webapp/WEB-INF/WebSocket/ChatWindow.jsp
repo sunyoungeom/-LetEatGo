@@ -238,9 +238,8 @@ function closePost() {
 }
 
 /* 전송 버튼 스타일 */
-/* 전송 버튼 스타일 */
 #sendBtn {
-    width: 55px;
+    width: 80px;
     height: 60px;
     background-color: #20b2aa; /* 배경색을 적당한 색상으로 지정 */
     color: white; /* 글자색을 흰색으로 지정 */

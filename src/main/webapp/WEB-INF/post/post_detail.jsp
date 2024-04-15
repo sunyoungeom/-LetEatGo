@@ -426,7 +426,7 @@ function chatWinOpen() {
     console.log(nickname)
     if (!chatWindow || chatWindow.closed) {
         const url = "ChatWindow?&post_Id=" + post_Id; // URL에 게시물 ID 추가
-        chatWindow = window.open(url, "", "width=400, height=550"); // 채팅 창 열기
+        chatWindow = window.open(url, "", "width=450, height=600"); // 채팅 창 열기
     } else {
         chatWindow.focus();
     }   
