@@ -153,7 +153,6 @@ h1 {
 }
 </style>
 </head>
-<
 <body>
 	<%@ include file="../user/navigation.jsp"%>
 	<div id="postDetail">

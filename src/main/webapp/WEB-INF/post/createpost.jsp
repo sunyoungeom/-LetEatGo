@@ -8,293 +8,128 @@
 <meta charset="UTF-8" />
 <title>게시물 작성</title>
 <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
-	rel="stylesheet" />
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+    rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="../Resources/css/styles.css" rel="stylesheet" />
 <style>
-.dialog {
-	display: none;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border: 1px solid #ccc;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+#container {
+    border: 2px solid black;
+    margin: 2px;
+    display: flex;
+    flex-direction: column;
 }
 
-#mapDialog {
-	width: 50%;
-	height: 50%;
+.input-container {
+    margin: 2px;
+    border: 1px solid black;
+    padding: 1px;
+    position: relative;
 }
 
-.map_wrap, .map_wrap * {
-	margin: 0;
-	padding: 0;
-	font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
-	font-size: 12px;
+.content-container {
+    position: relative;
 }
 
-.map_wrap a, .map_wrap a:hover, .map_wrap a:active {
-	color: #000;
-	text-decoration: none;
+#title {
+    width: calc(100% - 10px);
+    height: 70px;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+#title-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
 }
 
 .map_wrap {
-	position: relative;
-	width: 100%;
-	height: 1000px;
+    width: 100%;
+    height: 100%;
 }
 
 #menu_wrap {
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 250px;
-	margin: 10px 0 30px 10px;
-	padding: 5px;
-	overflow-y: auto;
-	background: rgba(255, 255, 255, 0.7);
-	z-index: 1;
-	font-size: 12px;
-	border-radius: 10px;
+    width: 30%;
+    height: 45%;
 }
 
 .bg_white {
-	background: #fff;
+    background-color: white;
 }
 
-#menu_wrap hr {
-	display: block;
-	height: 1px;
-	border: 0;
-	border-top: 2px solid #5f5f5f;
-	margin: 3px 0;
+.option {
+    margin-bottom: 10px;
 }
 
-#menu_wrap .option {
-	text-align: center;
+#placesList {
+    list-style-type: none;
+    padding: 0;
 }
 
-#menu_wrap .option p {
-	margin: 10px 0;
+#postForm {
+    display: flex;
+    flex-direction: column;
 }
 
-#menu_wrap .option button {
-	margin-left: 5px;
-}
-
-#placesList li {
-	list-style: none;
-}
-
-#placesList .item {
-	position: relative;
-	border-bottom: 1px solid #888;
-	overflow: hidden;
-	cursor: pointer;
-	min-height: 65px;
-}
-
-#placesList .item span {
-	display: block;
-	margin-top: 4px;
-}
-
-#placesList .item h5, #placesList .item .info {
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-}
-
-#placesList .item .info {
-	padding: 10px 0 10px 55px;
-}
-
-#placesList .info .gray {
-	color: #8a8a8a;
-}
-
-#placesList .info .jibun {
-	padding-left: 26px;
-	background:
-		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
-		no-repeat;
-}
-
-#placesList .info .tel {
-	color: #009900;
-}
-
-#placesList .item .markerbg {
-	float: left;
-	position: absolute;
-	width: 36px;
-	height: 37px;
-	margin: 10px 0 0 10px;
-	background:
-		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
-		no-repeat;
-}
-
-#placesList .item .marker_1 {
-	background-position: 0 -10px;
-}
-
-#placesList .item .marker_2 {
-	background-position: 0 -56px;
-}
-
-#placesList .item .marker_3 {
-	background-position: 0 -102px;
-}
-
-#placesList .item .marker_4 {
-	background-position: 0 -148px;
-}
-
-#placesList .item .marker_5 {
-	background-position: 0 -194px;
-}
-
-#placesList .item .marker_6 {
-	background-position: 0 -240px;
-}
-
-#placesList .item .marker_7 {
-	background-position: 0 -286px;
-}
-
-#placesList .item .marker_8 {
-	background-position: 0 -332px;
-}
-
-#placesList .item .marker_9 {
-	background-position: 0 -378px;
-}
-
-#placesList .item .marker_10 {
-	background-position: 0 -423px;
-}
-
-#placesList .item .marker_11 {
-	background-position: 0 -470px;
-}
-
-#placesList .item .marker_12 {
-	background-position: 0 -516px;
-}
-
-#placesList .item .marker_13 {
-	background-position: 0 -562px;
-}
-
-#placesList .item .marker_14 {
-	background-position: 0 -608px;
-}
-
-#placesList .item .marker_15 {
-	background-position: 0 -654px;
-}
-
-#pagination {
-	margin: 10px auto;
-	text-align: center;
-}
-
-#pagination a {
-	display: inline-block;
-	margin-right: 10px;
-}
-
-#pagination .on {
-	font-weight: bold;
-	cursor: default;
-	color: #777;
+#submitButton {
+    align-self: flex-end;
+    margin-top: auto;
 }
 </style>
 </head>
 <body>
-	<%@ include file="../user/navigation.jsp"%>
-
-	<div style="margin: 0 20%">
-		<h1>같이 먹어요</h1>
-
-
-		<form id="postForm" action="/createPost" method="post">
-		
-			<div style=" display= flex;">
-				<input type="submit" value="등록" />
-				
-				<p>언제 먹을까요?</p>
-				<input type="date" id="expireDate" name="expireDate" />
-			</div>
-			
-			
-			<br>
-			<div id="container" style="border: 2px solid black";>
-				<div style="margin: 2px; border: 1px solid black; padding: 1px; position: relative;">
-					 <input id="title" name="title" style="width: 100%; height: 70px; bottom: 0; resize: vertical;">
-  					 <label for="title" style="position: absolute; top: 5px; left: 5px;">제목</label>
-				</div>
-
-
-
-
-
-				<form id="mapForm">
-					<button id="openPlaceMap" type="button">장소를 선택해주세요</button>
-					<dialog id="mapDialog">
-					<div class="map_wrap">
-						<div id="map"
-							style="width: 100%; height: 500px; position: relative; overflow: hidden;"></div>
-
-						<div id="menu_wrap" class="bg_white"
-							style="width: 30%; height: 45%">
-							<div class="option">
-								<div>
-									<form onsubmit="searchPlaces(); return false;">
-										키워드 : <input type="text" id="keyword" size="15" />
-										<button type="button" id="search">검색하기</button>
-									</form>
-								</div>
-							</div>
-							<hr />
-							<ul id="placesList"></ul>
-							<div id="pagination"></div>
-						</div>
-					</div>
-					</dialog>
-
-					<br /> <br />
-				</form>
-
-
-
-
-				<div style="margin: 2px; border: 1px solid black; padding: 1px;">
-					<textarea id="content" name="content" rows="10" cols="50" style="width: 100%;">내용을 입력하세요</textarea>
-				</div>
-
-				<br /> <br /> <input type="hidden" id="placeMap" name="placeMap" />
-				<div id="place"></div>
-				<div id="tagResult"></div>
-				<button id="openTagDialog" type="button">tag</button>
-				<br />
-				<dialog id="dialogForm"></dialog>
-				<br />
-
-
-
-
-
-
-			</div>
-		</form>
-	</div>
+<%@ include file="../user/navigation.jsp"%>
+<h1>같이 먹어요</h1>
+<form id="postForm" action="/createPost" method="post">
+    <div id="container">
+        <div class="input-container">
+            <input id="title" name="title" /> <label for="title"
+                id="title-label">제목</label>
+        </div>
+        <div class="input-container">
+            <p>언제 먹을까요?</p>
+            <input type="date" id="expireDate" name="expireDate" />
+        </div>
+        <form id="mapForm">
+            <button id="openPlaceMap" type="button">장소를 선택해주세요</button>
+            <dialog id="mapDialog">
+            <div class="map_wrap">
+                <div id="map"></div>
+                <div id="menu_wrap" class="bg_white">
+                    <div class="option">
+                        <form onsubmit="searchPlaces(); return false;">
+                            키워드 : <input type="text" id="keyword" size="15" />
+                            <button type="button" id="search">검색하기</button>
+                        </form>
+                    </div>
+                    <hr />
+                    <ul id="placesList"></ul>
+                    <div id="pagination"></div>
+                </div>
+            </div>
+            </dialog>
+            <br /> <br />
+        </form>
+        <div class="content-container">
+            <textarea id="content" name="content" rows="10" cols="50">내용을 입력하세요</textarea>
+        </div>
+        <input type="hidden" id="placeMap" name="placeMap" />
+        <div id="place"></div>
+        <div id="tagResult"></div>
+        <button id="openTagDialog" type="button">tag</button>
+        <dialog id="dialogForm"></dialog>
+    </div>
+    <input id="submitButton" type="submit" value="등록" />
+</form>
+</body>
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"></script>
