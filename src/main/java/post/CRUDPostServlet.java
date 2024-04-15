@@ -14,12 +14,13 @@ import user.User;
 import util.ServletUtil;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 import static util.ServletUtil.*;

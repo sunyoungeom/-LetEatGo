@@ -169,51 +169,75 @@ input[type="button"]:hover {
     .then(async (data) => {
     const userId = data.user.id;
     const posttitle = data.post.title
-    const postresistdate = data.post.resistDate
+    const postresistdate = data.post.resistDate;
     const postContent = data.post.content;
     const isCurrentUserId = await isCurrentUser(data.user.user_id);
     
+    const postDTOList  = data.DTOList;
+	const postId = data.post.post_Id;
+    
+	console.log(postDTOList,"DTO값");
+	console.log(postId,"포스트아이디값");
+	const isPostIdMatched = postDTOList.some(item => item.postId === postId);
+	
+	
+	const isguestIdMatched = postDTOList.some(item => item.postId === userId);
+	
+	
+	
     title.innerText = `${posttitle}`;
     nickname.innerText = `${userId}`;
     resistdate.innerText = `${postresistdate}`;
     content.innerText = `게시물 내용: ${postContent}`;
     
     
-    if(isCurrentUserId) {
-	 	// 게시물 수정 버튼 생성
-	    let editButton = document.createElement("button");
-	    editButton.innerText = "게시물 수정";
-	    editButton.addEventListener("click", () => {
-	    	window.location.href = `editpost?postId=${postId}`;
-	    });
-	    postDetail.appendChild(editButton);
-	
-	    // 게시물 삭제 버튼 생성
-	    let deleteButton = document.createElement("button");
-	    deleteButton.innerText = "게시물 삭제";
-	    deleteButton.addEventListener("click", () => {
-	        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
-	        fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
-	        	method: 'DELETE'
-	        })
-	        .then(response => {
-                if (response.ok) {
-                	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
-                	 window.location.href = `mypostlist`;
-                } else {
-                    console.error('게시글 삭제 중 오류 발생:', response.status);
-                    alert('게시글 삭제 중 오류가 발생했습니다.');
-                }
-            })
-	    });
-	    postDetail.appendChild(deleteButton);
-    }
+    
+	    if(isCurrentUserId) {
+		 	// 게시물 수정 버튼 생성
+		    let editButton = document.createElement("button");
+		    editButton.innerText = "게시물 수정";
+		    editButton.addEventListener("click", () => {
+		    	window.location.href = `editpost?postId=${postId}`;
+		    });
+		    postDetail.appendChild(editButton);
+		
+		    // 게시물 삭제 버튼 생성
+		    let deleteButton = document.createElement("button");
+		    deleteButton.innerText = "게시물 삭제";
+		    deleteButton.addEventListener("click", () => {
+		        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
+		        fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
+		        	method: 'DELETE'
+		        })
+		        .then(response => {
+	                if (response.ok) {
+	                	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
+	                	 window.location.href = `mypostlist`;
+	                } else {
+	                    console.error('게시글 삭제 중 오류 발생:', response.status);
+	                    alert('게시글 삭제 중 오류가 발생했습니다.');
+	                }
+	            })
+		    });
+		    postDetail.appendChild(deleteButton);
+	    }
+    
+    
     
     // 리뷰 목록을 받아와서 처리하는 부분 추가
     const reviews = data.reviews;
+
+    if (!isPostIdMatched || isguestIdMatched) {
+        // 리뷰 작성 폼을 숨기거나 비활성화하는 코드 작성
+        reviewForm.style.display = 'none'; // 리뷰 작성 폼을 숨김
+    }
+        
     for (const review of reviews) {
         const isCurrentUserReview = await isCurrentUser(review.writeUserId); // 프로미스를 기다림
 
+        
+        
+        
         let reviewItem = document.createElement("div");
      // 별 평점 입력 필드 생성
         let starRating = document.createElement("div");
@@ -245,7 +269,10 @@ input[type="button"]:hover {
         reviewTextArea.rows = 2; // 텍스트 필드를 좀 더 길게 출력
         reviewTextArea.cols = 50; // 텍스트 필드를 가로로 더 길게 출력
         reviewItem.appendChild(reviewTextArea);
-
+   		
+		
+        
+        
         if (isCurrentUserReview) {
             let editButton = document.createElement("button");
             editButton.innerText = "수정";
@@ -340,6 +367,7 @@ input[type="button"]:hover {
 
         reviewList.appendChild(reviewItem);
     }
+    
 })
     .catch(error => {
         console.error('상세 게시물 내용을 불러오는 중 오류 발생:', error);

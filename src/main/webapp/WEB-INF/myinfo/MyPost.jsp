@@ -181,6 +181,7 @@
                 editButton.classList.add("btn", "btn-primary", "btn-small", "mx-1");
                 editButton.addEventListener("click", () => {
                     // 수정 기능 수행
+                    window.location.href = `editpost?postId=${postId}`;
                     console.log(`수정 버튼 클릭 - 게시물 ID: ${element.post_Id}`);
                 });
                 
@@ -190,6 +191,18 @@
                 deleteButton.classList.add("btn", "btn-danger", "btn-small", "mx-1");
                 deleteButton.addEventListener("click", () => {
                     // 삭제 기능 수행
+                       fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
+	        	method: 'DELETE'
+	        })
+	        .then(response => {
+                if (response.ok) {
+                	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
+                	 window.location.href = `mypostlist`;
+                } else {
+                    console.error('게시글 삭제 중 오류 발생:', response.status);
+                    alert('게시글 삭제 중 오류가 발생했습니다.');
+                }
+            })
                     console.log(`삭제 버튼 클릭 - 게시물 ID: ${element.post_Id}`);
                 });
                 
