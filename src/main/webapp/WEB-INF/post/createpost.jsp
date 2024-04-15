@@ -219,56 +219,82 @@
 </head>
 <body>
 	<%@ include file="../user/navigation.jsp"%>
-	<h1>게시물 작성</h1>
-	<form id="postForm" action="/createPost" method="post">
-		<div id="container">
-			<label for="title">제목:</label><br /> <input id="title" name="title" /><br />
-			<br />
 
-			<p>언제 먹을까요?</p>
-			<input type="date" id="expireDate" name="expireDate" /><br />
-			<br />
+	<div style="margin: 0 20%">
+		<h1>같이 먹어요</h1>
 
-			<form id="mapForm">
-				<button id="openPlaceMap" type="button">장소를 선택해주세요</button>
-				<dialog id="mapDialog">
-				<div class="map_wrap">
-					<div id="map"
-						style="width: 100%; height: 500px; position: relative; overflow: hidden;"></div>
 
-					<div id="menu_wrap" class="bg_white"
-						style="width: 30%; height: 45%">
-						<div class="option">
-							<div>
-								<form onsubmit="searchPlaces(); return false;">
-									키워드 : <input type="text" id="keyword" size="15" />
-									<button type="button" id="search">검색하기</button>
-								</form>
-							</div>
-						</div>
-						<hr />
-						<ul id="placesList"></ul>
-						<div id="pagination"></div>
-					</div>
+		<form id="postForm" action="/createPost" method="post">
+		
+			<div style=" display= flex;">
+				<input type="submit" value="등록" />
+				
+				<p>언제 먹을까요?</p>
+				<input type="date" id="expireDate" name="expireDate" />
+			</div>
+			
+			
+			<br>
+			<div id="container" style="border: 2px solid black";>
+				<div style="margin: 2px; border: 1px solid black; padding: 1px; position: relative;">
+					 <input id="title" name="title" style="width: 100%; height: 70px; bottom: 0; resize: vertical;">
+  					 <label for="title" style="position: absolute; top: 5px; left: 5px;">제목</label>
 				</div>
-				</dialog>
 
-				<br />
-				<br />
-			</form>
 
-			<label for="content">내용:</label><br />
-			<textarea id="content" name="content" rows="4" cols="50"></textarea>
-			<br /> <br /> <input type="hidden" id="placeMap" name="placeMap" />
-			<div id="place"></div>
-			<div id="tagResult"></div>
-			<button id="openTagDialog" type="button">tag</button>
-			<br />
-			<dialog id="dialogForm"></dialog>
-			<br />
-			<br /> <input type="submit" value="등록" />
-		</div>
-	</form>
+
+
+
+				<form id="mapForm">
+					<button id="openPlaceMap" type="button">장소를 선택해주세요</button>
+					<dialog id="mapDialog">
+					<div class="map_wrap">
+						<div id="map"
+							style="width: 100%; height: 500px; position: relative; overflow: hidden;"></div>
+
+						<div id="menu_wrap" class="bg_white"
+							style="width: 30%; height: 45%">
+							<div class="option">
+								<div>
+									<form onsubmit="searchPlaces(); return false;">
+										키워드 : <input type="text" id="keyword" size="15" />
+										<button type="button" id="search">검색하기</button>
+									</form>
+								</div>
+							</div>
+							<hr />
+							<ul id="placesList"></ul>
+							<div id="pagination"></div>
+						</div>
+					</div>
+					</dialog>
+
+					<br /> <br />
+				</form>
+
+
+
+
+				<div style="margin: 2px; border: 1px solid black; padding: 1px;">
+					<textarea id="content" name="content" rows="10" cols="50" style="width: 100%;">내용을 입력하세요</textarea>
+				</div>
+
+				<br /> <br /> <input type="hidden" id="placeMap" name="placeMap" />
+				<div id="place"></div>
+				<div id="tagResult"></div>
+				<button id="openTagDialog" type="button">tag</button>
+				<br />
+				<dialog id="dialogForm"></dialog>
+				<br />
+
+
+
+
+
+
+			</div>
+		</form>
+	</div>
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"></script>

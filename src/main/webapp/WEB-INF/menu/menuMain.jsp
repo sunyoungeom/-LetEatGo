@@ -56,6 +56,7 @@
 			</form>
 		</div>
 		<br />
+
 		<div class="container">
 			<div class="d-flex justify-content-center">
 				<div class="col-8">
@@ -154,6 +155,8 @@
 				<div class="box" style="flex-grow: 1; background-color: #f0f0f0;">
 					배경색은 시각적인 구분을 위해 추가함
 					box 내용
+
+
 				</div>
 				<div style="flex-grow: 3;">
 					<div class="border p-3 mb-2"
@@ -168,9 +171,45 @@
 			</div>
 
 
+ <div style="margin: 0 20%">
+			<div class="container mt-5" style="display: flex;">
+				<div class="box" style="flex-grow: 1; background-color: #f0f0f0;">
+					<!-- 배경색은 시각적인 구분을 위해 추가함 -->
+					<!-- box 내용 -->
+
+<!-- 		</div> -->
+
+		<br />
+		<div style="margin: 0 20%">
+			<table class="table table-hover table-bordered" id="postTable">
+				<thead class="table-light">
+					<tr>
+						<th scope="col" style="text-align: center">#</th>
+						<th scope="col">제목</th>
+						<th scope="col">작성일</th>
+						<th scope="col">조회수</th>
+					</tr>
+				</thead>
+				<tbody class="table-group-divider">
+					<!-- 데이터는 JavaScript로 채웁니다 -->
+				</tbody>
+			</table>
+		</div>
+	</main>
+
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center" id="pagination">
+		</ul>
+		<!-- &nbsp;&nbsp;&nbsp; -->
+		<form action="/post/createPost">
+			<button type="submit" name="submit" class="btn btn-primary">게시글
+				작성</button>
+		</form>
+	</nav>
+<!--
 		</div> -->
 
-	<br />
+<!-- 	<br />
 	<div style="margin: 0 20%">
 		<table class="table table-hover table-bordered" id="postTable">
 			<thead class="table-light">
@@ -182,11 +221,13 @@
 				</tr>
 			</thead>
 			<tbody class="table-group-divider">
-				<!-- 데이터는 JavaScript로 채웁니다 -->
+				<!-- 데이터는 JavaScript로 채웁니다 
+
 			</tbody>
 		</table>
 	</div>
 	</main>
+--> 
 
 
 	<!-- Call to action section-->
@@ -224,7 +265,8 @@
 <script>
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
-
+    let currentPage = 1; // 초기 페이지는 1로 설정
+    const itemsPerPage = 10; // 페이지당 아이템 수
     const search = document.getElementById("search");
     function formattedDate(element) {
         // MySQL DATETIME 값을 Date 객체로 변환
@@ -241,8 +283,11 @@
 
         return formattedDate;
       }
-    function fetchRecentPosts() {
-      fetch("http://localhost:8080/recent", {
+    
+	//최근 게시물 가져오기
+	fetchRecentPosts(currentPage);
+    function fetchRecentPosts(page) {
+      fetch(`http://localhost:8080/recent?page=${page}&pagePer=${itemsPerPage}`, {
         method: "PUT",
       })
         .then((resp) => resp.json())
@@ -250,7 +295,7 @@
           // 게시물 테이블의 내용을 초기화
           tbody.innerHTML = "";
           const maxTitleLength = 20; // 예시로 20자로 설정
-          data.forEach((element) => {
+          data.items.forEach((element) => {
             let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");
             let tdTitle = document.createElement("td");
@@ -288,7 +333,13 @@
             contenttr.appendChild(tdresistdate);
             contenttr.appendChild(tdview);
             tbody.appendChild(contenttr);
-
+			
+            displayPagination(data.totalPages, page);
+            
+            
+            
+            
+            
             function filterPostsByTitle(searchValue) {
               // 모든 행을 가져와서 각 행에 대해 검색어가 포함된 제목을 가지고 있는지 확인합니다.
               Array.from(tbody.children).forEach((row) => {
@@ -314,8 +365,6 @@
     }
     // 검색어와 일치하는 게시물만 표시하는 함수
 
-    // 최근 게시물 가져오기
-    fetchRecentPosts();
 
     // 검색 이벤트 리스너 추가
 
@@ -349,4 +398,5 @@
         }
       });
   </script>
+<script src="/js/pagination.js"></script>
 </html>

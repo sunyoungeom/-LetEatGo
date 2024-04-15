@@ -39,11 +39,21 @@ public class PostService {
 		}
 	}
 	
-	public List<Post> getPostsOrderByViewDesc (){
+	public List<Post> getPostsOrderByPostIdDesc (){
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 
-			return postMapper.getPostsOrderByViewDesc();
+			return postMapper.getPostsOrderByPostIdDesc();
+		}
+	}
+	
+	
+	// 해당 게시물에 참여한 게스트 아이디 
+	public List<Integer> getGuestUserIdByPostId (int postId) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			return postMapper.getGuestUserIdListByPostId(postId);
 		}
 	}
 	
@@ -93,6 +103,28 @@ public class PostService {
 		}
 	}
 	
+	//활성화된 글 페이지
+	public static PostDTO getactivePage(int page, int pagePer) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
+			PostMapper mapper = sqlSession.getMapper(PostMapper.class);
+			int totalCount = mapper.activecountAll();
+			int totalPage = totalCount / pagePer;
+			totalPage += totalCount % pagePer == 0 ? 0 : 1;
+
+			Map<String, Integer> params = new HashMap<>();
+			params.put("limit", pagePer);
+			params.put("offset", pagePer * (page - 1));
+
+			List<Post> all = mapper.getactivePage(params);
+
+			PostDTO dto = PostDTO.builder().totalPages(totalPage).currentPage(page).itemsPerPage(pagePer).items(all)
+					.build();
+
+			return dto;
+		}
+	}
+	
+	
 	
 	
 	// 페이지 번호와 페이지 크기를 모두 명시하면 해당 페이지의 게시물을 반환
@@ -116,7 +148,8 @@ public class PostService {
 			return dto;
 		}
 	}
-
+	
+	// 개인 목록 페이지
 	public static PostDTO getMyPostPage(int page, int pagePer, int writeuser_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
 			PostMapper mapper = sqlSession.getMapper(PostMapper.class);
