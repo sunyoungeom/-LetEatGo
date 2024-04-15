@@ -86,7 +86,7 @@
 
 				<div class="border p-3 mb-2"
 					style="width: 60%; height: 100px; margin-right: auto">
-					<a href="/recent"> 최근 만나 사람 </a>
+					<a href="/recent/person"> 최근 만나 사람 </a>
 				</div>
 			</div>
 			<!--   <div style="margin-right:20%;">
