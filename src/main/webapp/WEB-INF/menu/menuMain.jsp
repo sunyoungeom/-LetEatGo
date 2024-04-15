@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ page isELIgnored="true"%>
 <!DOCTYPE html>
 <html lang="kor">
 <head>
@@ -48,18 +47,14 @@
 			<form
 				class="d-flex flex-row align-items-center col-8 position-relative">
 				<input class="form-control rounded-pill pl-3 pr-5" type="search"
-					placeholder="Search" aria-label="Search"
+					placeholder="Search" aria-label="Search" id="search" name="query"
 					style="padding-right: 40px;" /> <i
 					class="bi bi-search position-absolute"
 					style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
 			</form>
 		</div>
 	</main>
-
-
-
 	<br />
-
 	<div>
 		<div class="container d-flex justify-content-between">
 			<div class="box"></div>
@@ -130,84 +125,114 @@
 <script>
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
-    fetch("http://localhost:8080/recent", {
-      method: 'PUT',
-    })
+    const search = document.getElementById("search");
+
+    function fetchRecentPosts() {
+      fetch("http://localhost:8080/recent", {
+        method: "PUT",
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          // 게시물 테이블의 내용을 초기화
+          tbody.innerHTML = "";
+          const maxTitleLength = 20; // 예시로 20자로 설정
+          data.forEach((element) => {
+            let contenttr = document.createElement("tr");
+            let tdId = document.createElement("td");
+            let tdTitle = document.createElement("td");
+            let tdresistdate = document.createElement("td");
+            let tdview = document.createElement("td");
+
+            tdId.innerText = `${element.post_Id}`;
+            tdTitle.innerText =
+              element.title.length > maxTitleLength
+                ? element.title.substring(0, maxTitleLength) + "..."
+                : element.title;
+            tdresistdate.innerText = `${element.resistdate}`;
+            tdview.innerText = `${element.view}`;
+
+            // 각 셀에 스코프 및 스타일 지정
+            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
+            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
+            tdTitle.setAttribute("scope", "col");
+            tdTitle.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
+            tdresistdate.setAttribute("scope", "col");
+            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
+            tdview.setAttribute("scope", "col");
+            tdview.style.width = "7%";
+
+            tdId.style.textAlign = "center";
+            tdview.style.textAlign = "center";
+
+            // 클릭 이벤트 추가하여 상세 페이지로 이동
+            tdTitle.addEventListener("click", () => {
+              window.location.href = `/post/detail?post_Id=${element.post_Id}`;
+            });
+
+            contenttr.appendChild(tdId);
+            contenttr.appendChild(tdTitle);
+            contenttr.appendChild(tdresistdate);
+            contenttr.appendChild(tdview);
+            tbody.appendChild(contenttr);
+
+            function filterPostsByTitle(searchValue) {
+              // 모든 행을 가져와서 각 행에 대해 검색어가 포함된 제목을 가지고 있는지 확인합니다.
+              Array.from(tbody.children).forEach((row) => {
+                const titleCell = row.querySelector("td:nth-child(2)"); // 제목이 있는 셀 선택
+                const title = titleCell.textContent.toLowerCase(); // 소문자로 변환한 제목 텍스트
+
+                // 검색어가 제목에 포함되어 있으면 해당 행을 표시하고, 아니면 숨깁니다.
+                if (title.includes(searchValue.toLowerCase())) {
+                  row.style.display = ""; // 보이기
+                } else {
+                  row.style.display = "none"; // 숨기기
+                }
+              });
+            }
+
+            // 검색 이벤트 리스너 추가
+            search.addEventListener("input", () => {
+              const searchValue = search.value.trim(); // 입력값 가져오기
+              filterPostsByTitle(searchValue); // 검색어와 일치하는 게시물만 표시
+            });
+          });
+        });
+    }
+    // 검색어와 일치하는 게시물만 표시하는 함수
+
+    // 최근 게시물 가져오기
+    fetchRecentPosts();
+
+    // 검색 이벤트 리스너 추가
+
+    fetch("http://localhost:8080/menu/recommand")
       .then((resp) => resp.json())
       .then((data) => {
-        // 게시물 테이블의 내용을 초기화
-        tbody.innerHTML = "";
-        const maxTitleLength = 20; // 예시로 20자로 설정
-        data.forEach((element) => {
-          let contenttr = document.createElement("tr");
-          let tdId = document.createElement("td");
-          let tdTitle = document.createElement("td");
-          let tdresistdate = document.createElement("td");
-          let tdview = document.createElement("td");
-
-          tdId.innerText = `${element.post_Id}`;
-          tdTitle.innerText =
-            element.title.length > maxTitleLength
-              ? element.title.substring(0, maxTitleLength) + "..."
-              : element.title;
-          tdresistdate.innerText = `${element.resistdate}`;
-          tdview.innerText = `${element.view}`;
-
-          // 각 셀에 스코프 및 스타일 지정
-          tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
-          tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
-          tdTitle.setAttribute("scope", "col");
-          tdTitle.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
-          tdresistdate.setAttribute("scope", "col");
-          tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
-          tdview.setAttribute("scope", "col");
-          tdview.style.width = "7%";
-
-          tdId.style.textAlign = "center";
-          tdview.style.textAlign = "center";
-
-          // 클릭 이벤트 추가하여 상세 페이지로 이동
-          tdTitle.addEventListener("click", () => {
-            window.location.href = `/post/detail?post_Id=${element.post_Id}`;
-          });
-
-          contenttr.appendChild(tdId);
-          contenttr.appendChild(tdTitle);
-          contenttr.appendChild(tdresistdate);
-          contenttr.appendChild(tdview);
-          tbody.appendChild(contenttr);
-        });
-      });
-
-	  fetch("http://localhost:8080/menu/recommand")
-    .then((resp) => resp.json())
-    .then((data) => {
-		
         // 첫 번째 .box 요소만 선택합니다.
         const box = document.querySelector(".box");
         // 데이터가 존재하고 첫 번째 .box 요소도 존재하는지 확인합니다.
         if (data.length > 0 && box) {
-            const searchResult = data[4]; // 첫 번째 검색 결과만 사용합니다.
-            const titleElement = document.createElement("h3");
-            // 제목을 클릭했을 때 해당 블로그로 이동하도록 설정합니다.
-            titleElement.addEventListener("click", () => {
-                window.location.href = searchResult.blogurl;
-            });
-            titleElement.textContent = searchResult.title;
-            const contentsElement = document.createElement("p");
-            contentsElement.textContent = searchResult.contents +"...";
-            const thumbnailElement = document.createElement("img");
-            thumbnailElement.src = searchResult.thumbnail;
-            let h2 =  document.createElement("h2")
-			let br =  document.createElement("br")
-			h2.innerText = "관리자 추천 맛집!"
-            // 생성된 요소들을 box에 추가합니다.
-			box.appendChild(h2);
-			box.appendChild(br);
-            box.appendChild(titleElement);
-            box.appendChild(contentsElement);
-            box.appendChild(thumbnailElement);
+          const searchResult = data[4]; // 첫 번째 검색 결과만 사용합니다.
+          const titleElement = document.createElement("h3");
+          // 제목을 클릭했을 때 해당 블로그로 이동하도록 설정합니다.
+          titleElement.addEventListener("click", () => {
+            window.location.href = searchResult.blogurl;
+          });
+          titleElement.textContent = searchResult.title;
+          const contentsElement = document.createElement("p");
+          contentsElement.textContent = searchResult.contents + "...";
+          const thumbnailElement = document.createElement("img");
+          thumbnailElement.src = searchResult.thumbnail;
+          let h2 = document.createElement("h2");
+          let br = document.createElement("br");
+          h2.innerText = "관리자 추천 맛집!";
+          // 생성된 요소들을 box에 추가합니다.
+          box.appendChild(h2);
+          box.appendChild(br);
+          box.appendChild(titleElement);
+          box.appendChild(contentsElement);
+          box.appendChild(thumbnailElement);
         }
-    });
+      });
   </script>
 </html>
