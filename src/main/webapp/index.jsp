@@ -25,6 +25,16 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="./Resources/css/styles.css" rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+<style>
+.text-gradient2 {
+	background: -webkit-linear-gradient(315deg, #000000 0%, #c4c4c4 50%, #ffffff 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+</style>
+
 </head>
 <body class="d-flex flex-column h-100 bg-light">
 	<%@ include file="WEB-INF/user/navigation.jsp"%>
@@ -36,7 +46,7 @@
 			<div class="container px-5 mb-5">
 				<div class="text-center mb-5">
 					<h1 class="display-5 fw-bolder mb-0">
-						<span class="text-gradient d-inline">아 혼자 먹기 싫다...</span>
+						<span class="text-gradient2 inline">아 혼자 먹기 싫다...</span>
 					</h1>
 				</div>
 				<div class="row justify-content-center gx-5">
@@ -46,7 +56,9 @@
 							class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
 							<!-- Project Card 1-->
 							<div class="col">
-								<div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+								<div class="card overflow-hidden shadow rounded-4 border-0 mb-5"
+									style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+
 									<div class="card-body p-0">
 										<!-- 주소추가 -->
 										<a href="/menu" style="text-decoration: none; color: inherit;">
@@ -54,9 +66,8 @@
 												<div class="p-5">
 													<h2 class="fw-bolder">음식메뉴</h2>
 												</div>
-												<img class="img-fluid"
-													src="https://dummyimage.com/300x300/343a40/6c757d"
-													alt="Project 1" />
+												<i class="fa-solid fa-utensils"
+													style="font-size: 120px; color: #343a40; margin-bottom: 20px;"></i>
 											</div>
 										</a>
 									</div>
@@ -64,7 +75,8 @@
 							</div>
 							<!-- Project Card 2-->
 							<div class="col">
-								<div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+								<div class="card overflow-hidden shadow rounded-4 border-0 mb-5"
+									style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
 									<div class="card-body p-0">
 										<!-- 주소추가 -->
 										<a href="/person"
@@ -73,9 +85,9 @@
 												<div class="p-5">
 													<h2 class="fw-bolder">사람찾기</h2>
 												</div>
-												<img class="img-fluid"
-													src="https://dummyimage.com/300x300/343a40/6c757d"
-													alt="Project 2" />
+												<i class="fa-solid fa-user-group"
+													style="font-size: 120px; color: #343a40; margin-bottom: 20px;"></i>
+
 											</div>
 										</a>
 									</div>
@@ -83,7 +95,8 @@
 							</div>
 							<!-- Project Card 3-->
 							<div class="col">
-								<div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+								<div class="card overflow-hidden shadow rounded-4 border-0 mb-5"
+									style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
 									<div class="card-body p-0">
 										<!-- 주소추가 -->
 										<a href="/post/list"
@@ -92,9 +105,8 @@
 												<div class="p-5">
 													<h2 class="fw-bolder">후기모음</h2>
 												</div>
-												<img class="img-fluid"
-													src="https://dummyimage.com/300x300/343a40/6c757d"
-													alt="Project 3" />
+												<i class="fa-solid fa-clipboard-list"
+													style="font-size: 120px; color: #343a40; margin-bottom: 20px;"></i>
 											</div>
 										</a>
 									</div>
@@ -107,44 +119,14 @@
 		</section>
 	</main>
 
-	<c:if test="${not empty user}">
-		<h3>${user.name}님환영합니다!</h3>
-	</c:if>
-	${ user }
 
-	<hr>
+	<%@ include file="/WEB-INF/layout/footer.jsp"%>
 
-
-	<!-- Call to action section-->
-	<!--   <section class="py-5 bg-gradient-primary-to-secondary text-white">
-                <div class="container px-5 my-5">
-                    <div class="text-center">
-                        <h2 class="display-4 fw-bolder mb-4">Let's build something together</h2>
-                        <a class="btn btn-outline-light btn-lg px-5 py-3 fs-6 fw-bolder" href="contact.html">Contact me</a>
-                    </div>
-                </div>
-            </section>
-        </main> -->
-	<!-- Footer-->
-	<footer class="bg-white py-4 mt-auto">
-		<div class="container px-5">
-			<div
-				class="row align-items-center justify-content-between flex-column flex-sm-row">
-				<div class="col-auto">
-					<div class="small m-0">Copyright &copy; LetEatGo 2024</div>
-				</div>
-				<div class="col-auto">
-					<a class="small" href="#!">Privacy</a> <span class="mx-1">&middot;</span>
-					<a class="small" href="#!">Terms</a> <span class="mx-1">&middot;</span>
-					<a class="small" href="#!">Contact</a>
-				</div>
-			</div>
-		</div>
-	</footer>
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
+	<!-- <!-- 	 -->
 	<script src="js/scripts.js"></script>
 </body>
 </html>

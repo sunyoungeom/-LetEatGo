@@ -62,10 +62,6 @@
 				<form class="d-flex flex-row align-items-center col-8">
 					<input class="form-control mr-2 rounded-pill" type="search"
 						placeholder="Search" aria-label="Search" />
-					<button class="btn btn-outline-success rounded-pill" type="submit">
-						<i class="bi bi-search"></i>
-						<!-- 돋보기 아이콘 -->
-					</button>
 				</form>
 			</div>
 		</main>
@@ -190,6 +186,26 @@
             return response.json();
           })
           .then((data) => {
+
+            function filterUsersByNickname(searchValue) {
+  Array.from(document.querySelectorAll("#personList tbody tr")).forEach((row) => {
+    const nicknameCell = row.querySelector("td:first-child"); // 닉네임 셀 선택
+    const nickname = nicknameCell.textContent.toLowerCase(); // 소문자로 변환한 닉네임 텍스트
+
+    // 검색어가 닉네임에 포함되어 있으면 해당 행을 표시하고, 아니면 숨깁니다.
+    if (nickname.includes(searchValue.toLowerCase())) {
+      row.style.display = ""; // 보이기
+    } else {
+      row.style.display = "none"; // 숨기기
+    }
+  });
+}
+
+// 검색 이벤트 리스너 추가
+document.querySelector('.form-control').addEventListener('input', () => {
+  const searchValue = document.querySelector('.form-control').value.trim(); // 입력값 가져오기
+  filterUsersByNickname(searchValue); // 검색어와 일치하는 사용자만 표시
+});
             // 받아온 데이터에서 중심 좌표와 다른 주소들을 가져옴
             var userAddress = data.userAddress;
             var allUsers = data.allUsers;

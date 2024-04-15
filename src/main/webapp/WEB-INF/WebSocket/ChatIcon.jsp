@@ -1,60 +1,90 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-     <style>
-        /* 추가된 스타일 */
-        #chattingIcon {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 2rem;
-            background-color: #007bff;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            justify-content: center;
-        }
+<style>
+/* 추가된 스타일 */
+#chattingIcon {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	font-size: 2rem;
+	background-color: #007bff;
+	color: white;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	justify-content: center;
+}
 
-        #chattingIcon:hover {
-            background-color: #0056b3;
-        }
+#chattingIcon:hover {
+	background-color: #0056b3;
+}
 
-        .chatListModal {
-            position: fixed;
-            bottom: 80px; /* 아이콘 위 */
-            right: 20px;
-            width: 300px;
-            height: 400px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px #ccc;
-            display: none; /* 초기에는 숨김 */
-        }
+.chatListModal {
+	position: fixed;
+	bottom: 80px; /* 아이콘 위 */
+	right: 20px;
+	width: 300px;
+	height: 400px;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px #ccc;
+	display: none; /* 초기에는 숨김 */
+}
 
-        /* 스크롤바를 나타내기 위한 스타일 */
-        .chatContent {
-            overflow-y: scroll;
-            height: 100%;
-        }
+/* 스크롤바를 나타내기 위한 스타일 */
+.chatContent {
+	overflow-y: scroll;
+	height: 100%;
+}
 
-        /* 글씨의 위아래 간격 조정 */
-        .chatContent td {
-            line-height: 3; /* 1.5의 배수로 설정하여 위아래 간격을 조절할 수 있습니다. */
-        }
-    </style>
-    <meta charset="UTF-8">
-    <title>채팅 아이콘</title>
-    <script>
+/* 글씨의 위아래 간격 조정 */
+.chatContent td {
+	line-height: 3; /* 1.5의 배수로 설정하여 위아래 간격을 조절할 수 있습니다. */
+	padding: 5px 10px; /* 셀 내부 여백 설정 */
+}
+
+/* 채팅방 입장 버튼 스타일 */
+.joinChatButton {
+	background-color: #007bff;
+	color: white;
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.joinChatButton:hover {
+	background-color: #0056b3;
+}
+
+/* 버튼을 우측에 정렬 */
+.buttonCell {
+	text-align: right;
+}
+
+/* 가로줄 스타일 수정 */
+hr {
+	border: none;
+	height: 1px;
+	background-color: #ccc;
+	margin-right: 100px 0;
+	width: 670%;
+}
+</style>
+<meta charset="UTF-8">
+<title>채팅 아이콘</title>
+<script>
         function displayChatModal() {
             var chattingIcon = document.getElementById("chattingIcon");
             var chatListModal = document.getElementById("chatListModal");
@@ -76,11 +106,25 @@
                             let contenttr = document.createElement("tr");
                             let tdId = document.createElement("td");
                             let tdContent = document.createElement("td");
+                            let tdButton = document.createElement("td");
+                            let joinButton = document.createElement("button"); // 채팅방 입장 버튼 생성
 
                             // 변수를 사용하여 채팅방 번호를 생성합니다.
-                            tdId.innerText = "채팅방 번호 : " + element.post_Id;
-
+                            tdId.innerText = element.post_Id; // 게시물 번호
                             tdContent.innerText = "제목 : " + element.title;
+
+                            // 채팅방 입장 버튼 설정
+                            joinButton.innerText = "입장";
+                            joinButton.className = "joinChatButton"; // 스타일 클래스 추가
+                            joinButton.addEventListener("click", function() {
+                                // 채팅방 입장 버튼을 클릭했을 때의 동작 구현
+                                var postId = element.post_Id; // 클릭된 contenttr에서 post_Id 가져오기
+                                var chatWindowUrl = "/post/ChatWindow?post_Id=" + postId; // post_Id를 포함한 URL 생성
+                                window.open(chatWindowUrl, "_blank" ,"width=450, height=600"); // 새 창으로 채팅창 열기
+                            });
+
+                            tdButton.appendChild(joinButton); // 버튼을 td에 추가
+
                             // 마우스 이벤트 추가
                             contenttr.addEventListener("mouseover", function() {
                                 contenttr.style.backgroundColor = "#f0f0f0"; // 마우스가 올라갔을 때 배경색 변경
@@ -89,25 +133,21 @@
                             contenttr.addEventListener("mouseout", function() {
                                 contenttr.style.backgroundColor = ""; // 마우스가 나갔을 때 배경색 초기화
                             });
-
-                            // 열린 채팅 창의 참조를 저장하기 위한 변수
-                            var chatWindowReference = null;
-
-                            contenttr.addEventListener("click", function() {
-                                if (chatWindowReference && !chatWindowReference.closed) {
-                                    // 이미 열린 채팅 창이 있는 경우 해당 창으로 포커스 이동
-                                    chatWindowReference.focus();
-                                } else {
-                                    var postId = element.post_Id; // 클릭된 contenttr에서 post_Id 가져오기
-                                    console.log(postId);
-                                    var chatWindowUrl = "/post/ChatWindow?post_Id=" + postId; // post_Id를 포함한 URL 생성
-                                    chatWindowReference = window.open(chatWindowUrl, "_blank" ,"width=450, height=600"); // 새 창으로 채팅창 열기
-                                }
+                            
+                            tdContent.addEventListener("click", () => {
+                            	var postId = element.post_Id;
+                            	var postdetailURL = "/post/detail?post_Id=" + postId;
+                            	window.location.href = (postdetailURL);
                             });
 
                             contenttr.appendChild(tdId);
                             contenttr.appendChild(tdContent);
+                            contenttr.appendChild(tdButton); // 버튼이 있는 td를 contenttr에 추가
                             chatTableBody.appendChild(contenttr); // chatTableBody에 contenttr 추가
+
+                            // 가로줄 추가
+                            var horizontalLine = document.createElement("hr");
+                            chatTableBody.appendChild(horizontalLine);
                         });
                     })
                     .catch((error) => {
@@ -132,14 +172,14 @@
     </script>
 </head>
 <body>
-<div id="chatListModal" class="chatListModal">
-    <div class="chatContent" id="chatListContent">
-        <table>
-            <tbody id="chatTableBody"></tbody>
-        </table>
-    </div>
-</div>
-<div id="chattingIcon" class="bi bi-chat-dots-fill"
-     style="position: fixed; bottom: 20px; right: 20px; font-size: 2rem; cursor: pointer;"></div>
+	<div id="chatListModal" class="chatListModal">
+		<div class="chatContent" id="chatListContent">
+			<table>
+				<tbody id="chatTableBody"></tbody>
+			</table>
+		</div>
+	</div>
+	<div id="chattingIcon" class="bi bi-chat-dots-fill"
+		style="position: fixed; bottom: 20px; right: 20px; font-size: 2rem; cursor: pointer;"></div>
 </body>
 </html>
