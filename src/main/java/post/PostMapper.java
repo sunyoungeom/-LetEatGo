@@ -84,5 +84,7 @@ public interface PostMapper {
     
     @Update("UPDATE posts SET status = 1 WHERE post_id = #{post_id}")
     int updatePostStatus(@Param("post_id") int postId, @Param("status") int status);
+    
+    
 }
     

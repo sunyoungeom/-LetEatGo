@@ -1,65 +1,68 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page isELIgnored="true"%>
+pageEncoding="UTF-8"%> <%@ taglib uri="http://java.sun.com/jsp/jstl/core"
+prefix="c"%> <%@ page isELIgnored="true"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<title>Person List</title>
-<link
-   href="https://stackpath.bootstrapcdn.com/bootstrap/5.2.3/css/bootstrap.min.css"
-   rel="stylesheet" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>Person List</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.2.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-<style>
-.content {
-   background-color: #f8f9fa; /* 컨텐츠 영역 배경색을 연회색으로 설정 */
-   padding: 20px; /* 내부 패딩 추가 */
-   margin-left: 10%; /* 왼쪽 여백 설정 */
-   margin-right: 10%; /* 오른쪽 여백 설정 */
-}
-
-#
-</style>
-</head>
-<body>
-   <%@ include file="../user/navigation.jsp"%>
-   <div class="content">
-   <div class="text-center mb-5">
+    <style>
+      .content {
+        background-color: #f8f9fa; /* 컨텐츠 영역 배경색을 연회색으로 설정 */
+        padding: 20px; /* 내부 패딩 추가 */
+        margin-left: 10%; /* 왼쪽 여백 설정 */
+        margin-right: 10%; /* 오른쪽 여백 설정 */
+      }
+    </style>
+  </head>
+  <body>
+    <%@ include file="../user/navigation.jsp"%>
+    <div class="content">
+      <div class="text-center mb-5">
         <h1 class="display-5 fw-bolder mb-0">
           <span class="text-gradient d-inline"
             >주변의 밥친구를 확인해보세요!</span
           >
         </h1>
       </div>
-      <label for="distanceSelect" style="margin-left: 20%; ">Distance:</label> <select
-         id="distanceSelect">
-         <option value="3">3km 이내</option>
-         <option value="5">5km 이내</option>
-         <option value="10">10km 이내</option>
+      <label for="distanceSelect" style="margin-left: 20%">Distance:</label>
+      <select id="distanceSelect">
+        <option value="3">3km 이내</option>
+        <option value="5">5km 이내</option>
+        <option value="10">10km 이내</option>
       </select>
 
-      <div id="map" style="width: 800px; height: 400px; margin-left: 20%; margin-right: 30%;"></div>
+      <div
+        id="map"
+        style="width: 800px; height: 400px; margin-left: 20%; margin-right: 30%"
+      ></div>
       <div id="personList">
-         <table id="personTable" style=" margin-left: 35%; margin-right: 30%;">
-            <thead>
-               <tr>
-            <th style="padding-right: 10px;">Nickname</th>
-            <th style="padding-right: 10px;">Age</th>
-            <th style="padding-right: 10px;">Gender</th>
-            <th>Distance</th>
-               </tr>
-            </thead>
-            <tbody></tbody>
-         </table>
+        <table id="personTable" style="margin-left: 35%; margin-right: 30%">
+          <thead>
+            <tr id="tr">
+              <th style="padding-right: 10px">Nickname</th>
+              <th style="padding-right: 10px">Age</th>
+              <th style="padding-right: 10px">Gender</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
-   </div>
+    </div>
 
-   <script type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services,geometry"></script>
-   <script>
-    var map;
-    var infowindow = new kakao.maps.InfoWindow();
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services,geometry"
+    ></script>
+    <script>
+      var map;
+      var infowindow = new kakao.maps.InfoWindow();
       // fetchData 함수 정의
       function fetchData() {
         fetch("/person/personmap/searchperson")
@@ -73,6 +76,8 @@
             // 받아온 데이터에서 중심 좌표와 다른 주소들을 가져옴
             var userAddress = data.userAddress;
             var allUsers = data.allUsers;
+
+           
 
             // 주소를 좌표로 변환하는 함수
             function addressToCoords(address) {
@@ -129,9 +134,6 @@
             }
 
             // fetchData 함수 내부에 infowindow 변수 생성
-    
-            
-          
 
             // 중심 좌표와 다른 주소들 간의 거리를 계산하여 출력
             addressToCoords(userAddress)
@@ -184,7 +186,10 @@
                         // 마커 표시 및 이벤트 리스너 추가
                         addressToCoords(user.address)
                           .then(function (coords) {
-                            var distance = calculateDistance(centerCoords, coords);
+                            var distance = calculateDistance(
+                              centerCoords,
+                              coords
+                            );
                             if (distance <= selectedDistance) {
                               var marker = new kakao.maps.Marker({
                                 position: coords,
@@ -192,7 +197,13 @@
                               });
 
                               // 마커 이벤트 리스너 추가
-                              addMarkerEventListeners(marker, user, age, gender, distance);
+                              addMarkerEventListeners(
+                                marker,
+                                user,
+                                age,
+                                gender,
+                                distance
+                              );
                             }
                           })
                           .catch(function (error) {
@@ -225,33 +236,38 @@
           });
       }
       function displayInfowindow(marker, user, age, gender, distance) {
-                  var content = '<div style="padding:5px;">' +
-                                'Nickname: ' + user.nickname + '<br>' +
-                                'Age: ' + age + '<br>' +
-                                'Gender: ' + gender + '<br>' +
-                                'Distance: ' + distance + 'km</div>';
+        var content =
+          '<div style="padding:5px;">' +
+          "Nickname: " +
+          user.nickname +
+          "<br>" +
+          "Age: " +
+          age +
+          "<br>" +
+          "Gender: " +
+          gender +
+          "<br>" +
+          "Distance: " +
+          distance +
+          "km</div>";
 
-                  infowindow.setContent(content);
-                  infowindow.open(map, marker);
-                }
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+      }
 
-            // fetchData 함수 내부에 addMarkerEventListeners 함수 정의
-            function addMarkerEventListeners(marker, user, age, gender, distance) {
-              
-
-              // 클릭 이벤트
-              kakao.maps.event.addListener(marker, "click", function () {
-                // 클릭 시 할 일
-                 displayInfowindow(marker, user, age, gender, distance);
-              });
-
-            }
-           // kakao.maps.event.addListener(map, "dragend", function () {
-           //     var centerCoords = map.getCenter(); // 드래그가 끝난 지도의 중심 좌표 얻기
-           //     map.setCenter(centerCoords); // 지도의 중심 좌표 설정
-           //     fetchData(centerCoords); // 데이터 다시 가져오기
-          //  });
-           
+      // fetchData 함수 내부에 addMarkerEventListeners 함수 정의
+      function addMarkerEventListeners(marker, user, age, gender, distance) {
+        // 클릭 이벤트
+        kakao.maps.event.addListener(marker, "click", function () {
+          // 클릭 시 할 일
+          displayInfowindow(marker, user, age, gender, distance);
+        });
+      }
+      // kakao.maps.event.addListener(map, "dragend", function () {
+      //     var centerCoords = map.getCenter(); // 드래그가 끝난 지도의 중심 좌표 얻기
+      //     map.setCenter(centerCoords); // 지도의 중심 좌표 설정
+      //     fetchData(centerCoords); // 데이터 다시 가져오기
+      //  });
 
       // fetchData 함수 호출
       fetchData();
@@ -262,5 +278,5 @@
         fetchData(); // 거리 옵션이 변경되면 다시 데이터 가져오기
       });
     </script>
-</body>
+  </body>
 </html>
