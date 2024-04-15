@@ -70,7 +70,7 @@
 
 								<div class="card-body p-0 border rounded-4"
 									style="margin-bottom: 0px;">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a href="/menu/han" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img src="../Resources/image/bibimbap.png" alt="음식 이미지"
 												style="width: 100px; height: auto; margin-top: 11px;">
@@ -87,7 +87,7 @@
 								style="height: auto;">
 
 								<div class="card-body p-0 border rounded-4">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a href="/menu/jung" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img src="../Resources/image/jajangmyeon.png" alt="음식 이미지"
 												style="width: 100px; height: auto; margin-top: 14px;">
@@ -104,7 +104,7 @@
 								style="height: auto;">
 
 								<div class="card-body p-0 border rounded-4">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a href="/menu/il" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img src="../Resources/image/spaghetti.png" alt="음식 이미지"
 												style="width: 100px; height: auto;">

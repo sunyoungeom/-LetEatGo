@@ -46,6 +46,9 @@ public class MyWebContextListener implements ServletContextListener {
         String password = ConfigLoader.getPropertyValue("password");
 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
+//		ds.setUsername("team1");
+//		ds.setPassword("root");
 		ds.setUrl(url);
 		ds.setUsername(username);
 		ds.setPassword(password);

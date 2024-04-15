@@ -23,7 +23,7 @@
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
 								style="height: auto;">
 								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a id="link1" href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img id="img1" src="https://via.placeholder.com/150" alt="음식 이미지"
 												style="width: 150px; height: 150px; margin-top: 10px">
@@ -39,7 +39,7 @@
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
 								style="height: auto;">
 								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a id="link2" href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img id="img2" src="https://via.placeholder.com/150" alt="음식 이미지"
 												style="width: 150px; height: 150px; margin-top: 10px">
@@ -54,7 +54,7 @@
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
 								style="height: auto;">
 								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a id="link3" href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img id="img3" src="https://via.placeholder.com/150" alt="음식 이미지"
 												style="width: 150px; height: 150px; margin-top: 10px">
@@ -71,7 +71,7 @@
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
 								style="height: auto;">
 								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a id="link4" href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img id="img4" src="https://via.placeholder.com/150" alt="음식 이미지"
 												style="width: 150px; height: 150px; margin-top: 10px">
@@ -87,7 +87,7 @@
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
 								style="height: auto;">
 								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a id="link5" href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img id="img5" src="https://via.placeholder.com/150" alt="음식 이미지"
 												style="width: 150px; height: 150px; margin-top: 10px">
@@ -102,7 +102,7 @@
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
 								style="height: auto;">
 								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+									<a id="link6" href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img id="img6" src="https://via.placeholder.com/150" alt="음식 이미지"
 												style="width: 150px; height: 150px; margin-top: 10px">
@@ -146,9 +146,6 @@
 		
 	    const blogList = data["blogList"];
 		const postList = data["placeByIdList"];
-		
-	        console.log("블로그리스트값"+blogList);
-	        console.log("포스트리스트값"+postList);
 	        
 	    for (let i = 0; i < blogList.length; i++) {
 	        const resultList = blogList[i];
@@ -161,26 +158,32 @@
 	                case 0:
 	                	document.getElementById('img1').src = searchResult.thumbnail;
 	                	document.getElementById('place1').innerText = place;
+	                	document.getElementById('link1').href = "/recent/detail?index=0"; 
 	                    break;
 	                case 1:
 	                	document.getElementById('img2').src = searchResult.thumbnail;
 	                	document.getElementById('place2').innerText = place;
+	                	document.getElementById('link2').href = "/recent/detail?index=1"; 
 	                    break;
 	                case 2:
 	                	document.getElementById('img3').src = searchResult.thumbnail;
 	                	document.getElementById('place3').innerText = place;
+	                	document.getElementById('link3').href = "/recent/detail?index=2"; 
 	                    break;
 	                case 3:
 	                	document.getElementById('img4').src = searchResult.thumbnail;
 	                	document.getElementById('place4').innerText = place;
+	                	document.getElementById('link4').href = "/recent/detail?index=3"; 
 	                    break;
 	                case 4:
 	                	document.getElementById('img5').src = searchResult.thumbnail;
 	                	document.getElementById('place5').innerText = place;
+	                	document.getElementById('link5').href = "/recent/detail?index=4"; 
 	                    break;
 	                case 5:
 	                	document.getElementById('img6').src = searchResult.thumbnail;
 	                	document.getElementById('place6').innerText = place;
+	                	document.getElementById('link6').href = "/recent/detail?index=5"; 
 	                    break;
 	                default:
 	                    console.log("기타 타이틀입니다.");
