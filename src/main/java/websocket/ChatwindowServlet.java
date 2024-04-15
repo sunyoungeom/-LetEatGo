@@ -25,7 +25,7 @@ public class ChatwindowServlet extends HttpServlet {
 	private Post post;
 	private UserService userService;
 	private User user;
-
+	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		// 경로 파라미터에서 postId 추출

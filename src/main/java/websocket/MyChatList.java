@@ -29,7 +29,7 @@ public class MyChatList extends HttpServlet {
         // 쿠키에서 사용자 정보 가져오기
         Cookie[] cookies = request.getCookies();
         int userId = -1; // 사용자 ID 기본값 설정
-
+        
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("userId")) { // 쿠키 이름이 "userId"인 경우
@@ -42,7 +42,7 @@ public class MyChatList extends HttpServlet {
         if (userId != -1) {
             // 사용자 ID를 기반으로 채팅 목록 가져오기
             List<Post> chatList = chatService.getListByGId(userId);
-
+ 
             // JSON 형태로 응답을 보냄
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonChatList = objectMapper.writeValueAsString(chatList);
@@ -62,7 +62,6 @@ public class MyChatList extends HttpServlet {
         // POST 요청에 대한 처리
         // 현재 사용자의 아이디를 가져와서 해당 사용자의 채팅 목록을 가져옴
         User currentUser = (User) request.getSession().getAttribute("user");
-        PostService postservice = new PostService();
         if (currentUser != null) {
             int userId = currentUser.getUser_id();
             List<Post> chatList = chatService.getListByGId(userId);

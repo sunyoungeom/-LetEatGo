@@ -69,12 +69,13 @@ function enterKey() {
 
 // 웹소켓 서버에 연결됐을 때 실행
 webSocket.onopen = function(event) {
-    chatWindow.innerHTML += "웹소켓 서버에 연결되었습니다.<br/>";
+    chatWindow.innerHTML += "채팅창에 연결 되었습니다.<br/>";
 };
 
 // 웹소켓이 닫혔을 때(서버와의 연결이 끊켰을 때) 실행
 webSocket.onclose = function(event) {
-    chatWindow.innerHTML += "웹소켓 서버가 종료되었습니다.<br/>";
+	alert("서버와의 연결이 종료되었습니다.");
+	window.close();
 };
 
 webSocket.onerror = function(event) {
@@ -83,10 +84,12 @@ webSocket.onerror = function(event) {
 };
 
 webSocket.onmessage = function(event) {
-    var message = JSON.parse(event.data); // JSON 형식으로 메시지 파싱
+	var message = JSON.parse(event.data); // JSON 형식으로 메시지 파싱
     var sender = message.sender; // 메시지를 보낸 사용자
-    var content = message.content; //
+    var content = message.content; // 메시지 내용
+    var sentAt = new Date(message.sentAt); // 문자열을 Date 객체로 변환
 
+    var formattedTime = sentAt.getHours() + ":" + sentAt.getMinutes() + ":" + sentAt.getSeconds();
     // 귓속말 여부 확인
     var isWhisper = content.startsWith("/w") || content.startsWith("/ㅈ") || content.startsWith("/W");
     if (isWhisper) {
@@ -123,13 +126,13 @@ function disconnect() {
 }
 
 
-// 현재 시간을 가져오는 함수
+/* // 현재 시간을 가져오는 함수
 function getCurrentTime() {
     var now = new Date();
     var hours = now.getHours();
     var minutes = now.getMinutes();
     return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
-}
+} */
 
 function exitChatroom() {
     // 게시물 번호와 사용자 아이디를 가져와서 DELETE 요청을 보냅니다.

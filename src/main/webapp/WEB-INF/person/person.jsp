@@ -179,6 +179,7 @@
      function fetchData() {
     	 var selectedDistance = parseInt(document.querySelector('input[name="option"]:checked').value);
     	 var selectBox = document.querySelector('.form-select'); // 콤보 박스 선택
+    	 document.querySelector('.form-select').addEventListener('change', fetchData);
     	 var selectedValue = selectBox.value; // 선택된 값
     	 
     	 fetch("/person/personmap/searchperson")
