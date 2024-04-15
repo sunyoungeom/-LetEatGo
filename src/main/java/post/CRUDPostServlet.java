@@ -64,7 +64,7 @@ public class CRUDPostServlet extends HttpServlet {
 		post.setWriteUser_Id(writeUser_id);
 		post.setTitle(title);
 		post.setContent(content);
-		post.setResistDate(resistDate);
+		post.setResistdate(resistDate);
 		post.setExpireDate(expireDate);
 		post.setPlace(place);
 
