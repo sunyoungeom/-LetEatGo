@@ -25,6 +25,8 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="./Resources/css/styles.css" rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 <style>
 /* 모달 창 스타일 */
 .modal {
@@ -33,27 +35,48 @@
 	z-index: 1;
 	left: 0;
 	top: 0;
-	width: 50%; /* 현재의 반으로 크기 조정 */
-	height: 100%;
-	overflow: auto;
+	width: 100%; /* 전체 화면 너비 사용 */
+	height: 100%; /* 전체 화면 높이 사용 */
+	overflow: auto; /* 내용이 넘칠 경우 스크롤바 생성 */
 	background-color: rgba(0, 0, 0, 0.4); /* 배경은 반투명하게 설정 */
 }
 
 /* 모달 창 내용 스타일 */
 .modal-content {
 	background-color: #fefefe;
-	margin: 15% auto;
+	margin: 15% auto; /* 상하 마진을 15%로 설정하여 중앙에 위치 */
 	padding: 20px;
 	border: 1px solid #888;
-	width: 90%; /* 내용의 너비는 유지하고 */
-	max-width: 30%; /* 최대 너비도 조정 */
+	width: 100%; /* 내용의 너비를 화면의 50%로 설정 */
+	max-width: 600px; /* 최대 너비를 500px로 제한 */
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
 		rgba(0, 0, 0, 0.19);
-	animation-name: animatetop;
-	animation-duration: 0.4s;
 }
 
-/* 모달 창 닫기 버튼 스타일 */
+/* 모달 내 버튼 스타일 */
+.modal button {
+	width: auto; /* 버튼의 너비를 자동으로 조정 */
+	padding: 10px 20px; /* 버튼의 패딩을 10px 상하, 20px 좌우로 설정 */
+	margin-top: 10px; /* 상단 여백을 10px로 설정 */
+	background-color: #4CAF50; /* 배경색을 녹색으로 설정 */
+	color: white; /* 글자색을 흰색으로 설정 */
+	border: none; /* 테두리 없앰 */
+	border-radius: 5px; /* 테두리 둥글게 처리 */
+	cursor: pointer; /* 마우스 오버 시 커서를 손가락 모양으로 변경 */
+	font-size: 16px; /* 글자 크기 설정 */
+}
+/* 모달 내 입력 필드 스타일 */
+.modal input[type="text"], .modal input[type="email"], .modal input[type="password"]
+	{
+	width: 60%; /* 입력 필드 너비를 모달 내용 너비의 90%로 설정 */
+	padding: 12px 20px; /* 패딩을 충분히 주어 입력이 편리하도록 함 */
+	margin: 8px 0; /* 마진으로 상하 여백 제공 */
+	display: inline-block; /* 블록 레벨 요소로 표시하되, inline 속성을 갖음 */
+	border: 1px solid #ccc; /* 경계선 설정 */
+	border-radius: 4px; /* 경계선을 둥글게 처리 */
+	box-sizing: border-box; /* 박스 모델의 전체 너비를 width가 포함하도록 설정 */
+}
+
 .close {
 	color: #aaa;
 	float: right;
@@ -65,19 +88,6 @@
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
-}
-
-/* 모달 창 등장 애니메이션 */
-@
-keyframes animatetop {
-	from {top: -300px;
-	opacity: 0
-}
-
-to {
-	top: 0;
-	opacity: 1
-}
 }
 </style>
 </head>
@@ -102,58 +112,75 @@ to {
 											<table class="table" id="postTable"
 												style="margin-bottom: 0px;">
 												<tr>
-													<th scope="col" style="width: 90%; padding: 0px;"></th>
-													<th scope="col" style="width: 10%; padding: 0px;"></th>
+													<th scope="col" style="width: 87%; padding: 0px;"></th>
+													<th scope="col" style="width: 13%; padding: 0px;"></th>
 												</tr>
 												<tr>
 													<th scope="row"
-														style="padding-left: 1.5em; border-bottom: none;">
-														<span class="name_text" style="font-size: 30px; margin-right:10px">${ user.name }</span>
-												
+														style="padding-left: 1.5em; border-bottom: none;"><span
+														class="name_text"
+														style="font-size: 30px; margin-right: 10px">${ user.name }</span>
+
 														<span class="age_text" id="age" name="age">만&nbsp;${ age }세</span>
-													</th>
+														<button class="editButton btn btn-dark"
+															style="margin-left: 30px;" data-field="password"
+															onclick="openModal()">비밀번호 변경</button></th>
 												</tr>
 												<tr>
-													<th scope="row" style="padding-left: 1.5em;"><i
-														class="bi bi-person" style="padding-right: 0.5em;"></i> <span
-														class="nickname_text">${ user.nickname }</span></th>
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
+														<i class="fa-solid fa-comment-dots "
+														style="padding-right: 15px;"></i> <span
+														class="nickname_text">${ user.nickname }</span>
+													</th>
 													<th>
-														<button class="editButton" data-field="nickname"
+														<button class="editButton btn btn-dark" data-field="nickname"
 															data-action="edit">수정</button>
 													</th>
 												</tr>
 												<tr>
-													<th scope="row" style="padding-left: 1.5em;"><i
-														class="bi bi-phone" style="padding-right: 0.5em;"></i> <span
-														class="phonenumber_text">${ user.phonenumber }</span></th>
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
+														<i
+														class="fa-solid fa-mobile-screen-button position-relative"
+														style="padding-right: 15px;"></i> <span
+														class="phonenumber_text">${ user.phonenumber }</span>
+													</th>
 													<th>
-														<button class="editButton" data-field="phonenumber"
+														<button class="editButton btn btn-dark" data-field="phonenumber"
 															data-action="edit">수정</button>
 													</th>
 												</tr>
 												<tr>
-													<th scope="row" style="padding-left: 1.5em;"><i
-														class="bi bi-envelope" style="padding-right: 0.5em;"></i>
-														<span class="email_text">${ user.email }</span></th>
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
+														<i class="fa-solid fa-envelope position-relative"
+														style="padding-right: 15px;"></i> <span class="email_text">${ user.email }</span>
+													</th>
 													<th>
-														<button class="editButton" data-field="email"
+														<button class="editButton btn btn-dark" data-field="email"
 															data-action="edit">수정</button>
 													</th>
 												</tr>
 												<tr>
-													<th scope="row" style="padding-left: 1.5em;"><i
-														class="bi bi-envelope" style="padding-right: 0.5em;"></i>
-														<span class="address_text">${ user.address }</span></th>
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
+														<i class="fa-solid fa-location-dot position-relative"
+														style="padding-right: 15px;"></i> <span
+														class="address_text">${ user.address }</span>
+													</th>
 													<th>
 
-														<button class="editButton" data-field="address"
+														<button class="editButton btn btn-dark" data-field="address"
 															data-action="edit">수정</button>
 													</th>
 												</tr>
 												<tr>
-													<th scope="row" style="padding-left: 1.5em;"><i
-														class="bi bi-envelope" style="padding-right: 0.5em;"></i>
-														<select id="mbtiSelect" class="form-select">
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
+														<i class="fa-solid fa-child-reaching position-relative"
+														style="padding-right: 15px;"></i> <select id="mbtiSelect"
+														class="form-select"">
 															<option value="null" ${user.mbti == '' ? 'selected' : ''}>선택안함</option>
 															<option value="ISTJ"
 																${user.mbti == 'ISTJ' ? 'selected' : ''}>ISTJ</option>
@@ -187,17 +214,21 @@ to {
 																${user.mbti == 'ENFJ' ? 'selected' : ''}>ENFJ</option>
 															<option value="ENTJ"
 																${user.mbti == 'ENTJ' ? 'selected' : ''}>ENTJ</option>
-													</select></th>
+													</select>
+													</th>
 													<th>
-														<button class="editSelectButton" data-field="mbti"
+														<button class="editSelectButton btn btn-dark" data-field="mbti"
 															data-action="edit">수정</button>
 													</th>
 												</tr>
 
 												<tr>
-													<th scope="row" style="padding-left: 1.5em;"><i
-														class="bi bi-envelope" style="padding-right: 0.5em;"></i>
-														<select id="bloodTypeSelect" class="form-select">
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
+
+														<i class="fa-solid fa-droplet position-relative"
+														style="padding-right: 15px;"></i> <select
+														id="bloodTypeSelect" class="form-select">
 															<option value="null"
 																${user.bloodtype == '' ? 'selected' : ''}>선택안함</option>
 															<option value="A"
@@ -208,9 +239,10 @@ to {
 																${user.bloodtype == 'AB' ? 'selected' : ''}>AB형</option>
 															<option value="O"
 																${user.bloodtype == 'O' ? 'selected' : ''}>O형</option>
-													</select></th>
+													</select>
+													</th>
 													<th>
-														<button class="editSelectButton" data-field="bloodtype"
+														<button class="editSelectButton btn btn-dark" data-field="bloodtype"
 															data-action="edit">수정</button>
 													</th>
 												</tr>
@@ -240,10 +272,209 @@ to {
 		</div>
 	</div>
 
+	<!-- 이메일 인증 모달 -->
+	<div id="emailVerificationModal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('emailVerificationModal')">&times;</span>
+			<h2>이메일 변경 인증</h2>
+			<p>변경할 이메일을 입력하고 인증 코드를 요청하세요.</p>
+			<form id="emailChangeForm">
+				<label for="newEmail">새 이메일:</label> <input type="email"
+					id="newEmail" name="newEmail" required>
+				<button type="button" onclick="sendVerificationCode()">인증
+					코드 보내기</button>
+				<br> <br> <label for="emailVerificationInput">인증
+					코드:</label> <input type="text" id="emailVerificationInput"
+					name="emailVerificationInput" required>
+				<button type="button" onclick="checkVerificationCode()">인증
+					확인</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- 모달 창 -->
+	<div id="passwordModal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal('passwordModal')">&times;</span>
+			<h2>비밀번호 변경</h2>
+			<form id="passwordChangeForm">
+				<input type="password" id="currentPassword" placeholder="현재 비밀번호"
+					required><br> <input type="password" id="newPassword"
+					placeholder="새 비밀번호" required> <br> <input
+					type="password" id="newPasswordConfirm" placeholder="새 비밀번호 확인"
+					required>
+				<button type="button" onclick="changePassword()">변경하기</button>
+				<div class="mt-n1" id="passwordMatchMessage"></div>
+			</form>
+		</div>
+	</div>
+
 	<script>
+	//비밀번호와 비밀번호 확인을 비동기적으로 일치 여부를 확인하는 함수
+	function checkPasswordMatch() {
+	    var password = document.getElementById('newPassword').value;
+	    var passwordConfirm = document.getElementById('newPasswordConfirm').value;
+	    var passwordMatchMessage = document.getElementById('passwordMatchMessage');
+
+	    if (password === passwordConfirm) {
+	        passwordMatchMessage.textContent = "비밀번호가 일치합니다.";
+	        passwordMatchMessage.style.color = "green";
+	        // 일치하는 경우 포커스를 잃으면 메시지 삭제
+	        document.getElementById('newPasswordConfirm').onblur = function() {
+	            passwordMatchMessage.textContent = ''; // 일치 시 메시지를 항상 삭제
+	        };
+	    } else {
+	        passwordMatchMessage.textContent = "비밀번호가 일치하지 않습니다.";
+	        passwordMatchMessage.style.color = "red";
+	        // 일치하지 않는 경우 포커스를 잃어도 메시지 유지
+	        document.getElementById('newPasswordConfirm').onblur = null;
+	    }
+	}
+	// 이벤트 리스너를 추가합니다.
+	document.getElementById('newPassword').addEventListener('input', checkPasswordMatch);
+	document.getElementById('newPasswordConfirm').addEventListener('input', checkPasswordMatch);
 	
+	function openModal() {
+		
+	    document.getElementById('passwordModal').style.display = 'block';
+	}
+
 	
+	function changePassword() {
+	    var currentPassword = document.getElementById('currentPassword').value;
+	    var newPassword = document.getElementById('newPassword').value;
+
+	    // 현재 비밀번호와 새 비밀번호를 서버로 전송
+	    fetch('/myInfo', {
+	        method: 'PUT',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({
+	        	'field': 'password',
+	        	
+	            'currentPassword': currentPassword,
+	            'value': newPassword
+	        })
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.status === "success") {
+	            alert('비밀번호가 변경되었습니다.');
+	            closeModal('passwordModal');
+	        } else {
+	            alert('비밀번호 변경 실패: ' + data.message);
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	        alert('서버 오류가 발생했습니다. 오류: ' + error.message);
+	    });
+	}
 	
+	function openEmailVerificationModal(email) {
+	    // 이메일 변경을 위한 모달 설정
+	    var modal = document.getElementById('emailVerificationModal');
+	    var newEmailInput = document.getElementById('newEmail');
+
+	    // 새 이메일 입력 필드에 기존 이메일 주소를 플레이스홀더로 설정
+	    newEmailInput.placeholder = email; // 기존 이메일을 플레이스홀더로 사용
+
+	    // 모달 표시
+	    modal.style.display = 'block';
+
+	    // 입력 필드 초기화
+	    document.getElementById('emailVerificationInput').value = '';  // 인증번호 입력값 초기화
+	    newEmailInput.value = '';  // 새 이메일 입력값 초기화
+
+	    // 새 이메일 입력란에 포커스
+	    newEmailInput.focus();
+	}
+
+	function closeModal(modalId) {
+	    var modal = document.getElementById(modalId);
+	    modal.style.display = "none";
+	}
+
+	function sendVerificationCode() {
+	    var email = document.getElementById('newEmail').value;
+	    if(email) {
+	        // 이메일 전송 로직 (서버에 요청을 보내는 등의 작업)
+	        fetch('/join/begin?action=sendVerification&email=' + email, {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({'email': email})
+	        })
+	        .then(response => response.json())  // 서버 응답을 JSON으로 파싱
+	        .then(data => {
+	            if (data.status === "duplicate") {
+	                // 이메일이 중복되는 경우
+	                alert('이미 사용 중인 이메일 주소입니다.');
+	            } else if (data.status === "success") {
+	                // 이메일 전송이 성공적으로 이루어진 경우
+	                alert('인증 코드가 전송되었습니다. 메일을 확인해 주세요.');
+	            } else {
+	                // 이메일 전송 실패
+	                alert('인증 코드 전송에 실패했습니다. 다시 시도해주세요.');
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Request failed', error);
+	            alert('서버에 요청을 보내는 데 문제가 발생했습니다.');
+	        });
+	    } else {
+	        // 이메일 주소가 입력되지 않은 경우
+	        alert('이메일 주소를 입력해 주세요.');
+	    }
+	}
+
+	// 이메일 변경 양식 제출 방지 및 인증 코드 검증 로직
+	document.getElementById('emailChangeForm').onsubmit = function(event) {
+	    event.preventDefault();  // 폼 기본 제출 방지
+	};
+
+	// 인증번호 검증 함수
+	function checkVerificationCode() {
+	    var verificationCodeInput = document.getElementById('emailVerificationInput').value;
+	    var newEmail = document.getElementById('newEmail').value; // 새 이메일 값 가져오기
+	    var jsonData = {
+	        verificationCode: verificationCodeInput
+	    };
+
+	    fetch('/join/begin?action=checkVerificationCode', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify(jsonData)
+	    })
+	    .then(response => {
+	        if (response.ok) {
+	            alert("인증번호가 일치합니다.");
+	            closeModal('emailVerificationModal');  // 모달 닫기
+
+	            // 편집 모달에 입력값 설정 및 모달 오픈
+	            document.getElementById('editFieldDisplay').textContent = 'email';
+	            document.getElementById('editValue').value = newEmail;
+	            document.getElementById('editModal').style.display = 'block';
+
+	            // 편집 모달 제출을 자동으로 실행하고 싶다면 아래 주석을 해제
+	            document.getElementById('editForm').submit();
+	        } else {
+	            // 오류 응답 처리
+	            console.error('서버 오류:', response.statusText);
+	            alert('인증번호가 일치하지 않습니다.');
+	        }
+	    })
+	    .catch(error => {
+	        // 네트워크 오류 처리
+	        console.error('네트워크 오류:', error);
+	        alert('네트워크 오류: ' + error.message);
+	    });
+	}
+
 	document.querySelectorAll('.editSelectButton').forEach(function(button) {
         button.addEventListener('click', function() {
             var field = this.getAttribute('data-field');
@@ -314,6 +545,10 @@ document.querySelectorAll('.editButton').forEach(function(button) {
             // 주소 검색 버튼 클릭
             goPopup();  // 주소 검색 팝업 함수 호출
             return;  // 팝업을 띄우고 여기서 함수 종료
+        } else if (field === 'email') {
+            // 이메일 필드의 경우 이메일 인증 로직 수행
+            openEmailVerificationModal(oldValue);
+            return;  // 이메일 모달을 띄우고 여기서 함수 종료
         }
         // 기존 값은 placeholder로 설정
         editValueInput.setAttribute('placeholder', oldValue);
@@ -325,7 +560,6 @@ document.querySelectorAll('.editButton').forEach(function(button) {
         editValueInput.focus();
     });
 });
-
 
 function goPopup(){
 	// 주소검색을 수행할 팝업 페이지를 호출합니다.
