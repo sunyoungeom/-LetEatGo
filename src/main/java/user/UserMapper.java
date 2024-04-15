@@ -93,6 +93,9 @@ public interface UserMapper {
 	@Select("SELECT address FROM users WHERE user_id=#{user_id}")
 	String getUserAddress(int id);
 
+	@Update("UPDATE users SET password = #{password} WHERE id = #{id}")
+	void updatePassword(String id, String password);
+	
 	@Update("UPDATE users SET nickname = #{nickname} WHERE id = #{id}")
 	void updateNickname(String id, String nickname);
 
@@ -116,6 +119,5 @@ public interface UserMapper {
 
 	@Select("SELECT COUNT(*) FROM posts WHERE post_id = #{post_id} AND writeuser_id = #{user_id}")
 	int isPostOwner(@Param("post_id") int post_id, @Param("user_id") int user_id);
-
 
 }

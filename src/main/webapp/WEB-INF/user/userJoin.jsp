@@ -169,13 +169,17 @@
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div> -->
 										<!-- 전화번호 입력 -->
-										<div class="form-group position-relative" style="padding: 2px;">
-    <input class="form-control ps-5" style="height: 50px;" id="phonenumber" name="phonenumber" type="text"
-        placeholder="전화번호 (예: 010-1234-5678)" data-sb-validations="required">
-    <div class="invalid-feedback" data-sb-feedback="phonenumber:required">전화번호는 필수입니다.</div>
-    <i class="fa-solid fa-mobile-screen-button position-absolute"
-        style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
-</div>
+										<div class="form-group position-relative"
+											style="padding: 2px;">
+											<input class="form-control ps-5" style="height: 50px;"
+												id="phonenumber" name="phonenumber" type="text"
+												placeholder="전화번호 (예: 010-1234-5678)"
+												data-sb-validations="required">
+											<div class="invalid-feedback"
+												data-sb-feedback="phonenumber:required">전화번호는 필수입니다.</div>
+											<i class="fa-solid fa-mobile-screen-button position-absolute"
+												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
 
 
 										<!-- 주소 입력 -->
@@ -235,7 +239,7 @@
 										<div class="form-group position-relative"
 											style="padding: 2px;">
 											<select class="form-control"
-												style="height: 50px; appearance: none; padding-left: 45px; background: #fff;"
+												style="height: 50px; appearance: none; background: #fff;"
 												id="bloodtype" name="bloodtype">
 
 
@@ -254,7 +258,7 @@
 										<div class="form-group position-relative"
 											style="padding: 2px;">
 											<select class="form-control"
-												style="height: 50px; appearance: none; padding-left: 45px; background: #fff;"
+												style="height: 50px; appearance: none; background: #fff;"
 												id="mbti" name="mbti">
 												<option value="null" ${user.mbti == '' ? 'selected' : ''}>MBTI
 													[선택안함]</option>
@@ -344,6 +348,22 @@
 </body>
 
 <script>
+document.getElementById('id').addEventListener('input', function() {
+    var idInput = document.getElementById('id');
+    var idCheckMessage = document.getElementById('idCheckDuplicateMessage');
+    var idRegex = /^[a-zA-Z0-9]{5,15}$/; // 영문자와 숫자만 허용, 5-15자 길이
+
+    // 정규 표현식에 따른 유효성 검사
+    if (!idRegex.test(idInput.value)) {
+        idCheckMessage.textContent = '아이디는 5~15자의 영문자와 숫자만 사용 가능합니다.';
+        idCheckMessage.style.color = 'red';
+    } else {
+        idCheckMessage.textContent = '';
+        // 서버에 아이디 중복 검사 요청
+        checkIdDuplicate(idInput.value);
+    }
+});
+
 document.getElementById('phonenumber').addEventListener('input', function(e) {
     var input = e.target;
     var formattedValue = input.value.replace(/[^\d]/g, ''); // 숫자만 추출

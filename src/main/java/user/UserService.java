@@ -131,6 +131,15 @@ public class UserService {
 		}
 	}
 	
+		public void updatePassword(String id, String password) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updatePassword(id, password);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	// 유저아이디로 닉네임
 	public String getNicknameById(int userId) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -138,8 +147,6 @@ public class UserService {
 			return userMapper.getNicknameById(userId);
 		}
 	}
-	
-	
 
 	public void updateNickname(String id, String nickname) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
