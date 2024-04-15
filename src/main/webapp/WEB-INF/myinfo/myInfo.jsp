@@ -108,7 +108,9 @@ to {
 												<tr>
 													<th scope="row"
 														style="padding-left: 1.5em; border-bottom: none;">
-														<div class="name_text" style="font-size: 30px;">${ user.name }</div>
+														<span class="name_text" style="font-size: 30px; margin-right:10px">${ user.name }</span>
+												
+														<span class="age_text" id="age" name="age">만&nbsp;${ age }세</span>
 													</th>
 												</tr>
 												<tr>
@@ -143,6 +145,7 @@ to {
 														class="bi bi-envelope" style="padding-right: 0.5em;"></i>
 														<span class="address_text">${ user.address }</span></th>
 													<th>
+
 														<button class="editButton" data-field="address"
 															data-action="edit">수정</button>
 													</th>
@@ -151,8 +154,7 @@ to {
 													<th scope="row" style="padding-left: 1.5em;"><i
 														class="bi bi-envelope" style="padding-right: 0.5em;"></i>
 														<select id="mbtiSelect" class="form-select">
-														<option value="null"
-																${user.mbti == '' ? 'selected' : ''}>선택안함</option>
+															<option value="null" ${user.mbti == '' ? 'selected' : ''}>선택안함</option>
 															<option value="ISTJ"
 																${user.mbti == 'ISTJ' ? 'selected' : ''}>ISTJ</option>
 															<option value="ISFJ"
@@ -196,7 +198,7 @@ to {
 													<th scope="row" style="padding-left: 1.5em;"><i
 														class="bi bi-envelope" style="padding-right: 0.5em;"></i>
 														<select id="bloodTypeSelect" class="form-select">
-														<option value="null"
+															<option value="null"
 																${user.bloodtype == '' ? 'selected' : ''}>선택안함</option>
 															<option value="A"
 																${user.bloodtype == 'A' ? 'selected' : ''}>A형</option>
@@ -239,6 +241,9 @@ to {
 	</div>
 
 	<script>
+	
+	
+	
 	document.querySelectorAll('.editSelectButton').forEach(function(button) {
         button.addEventListener('click', function() {
             var field = this.getAttribute('data-field');
@@ -293,16 +298,25 @@ to {
 	// 수정 버튼 클릭 시 모달 창 띄우기
 document.querySelectorAll('.editButton').forEach(function(button) {
     button.addEventListener('click', function() {
+    	
         var field = this.getAttribute('data-field');
-        var oldValue = this.parentElement.previousElementSibling.querySelector('span').textContent.trim();
+        var spanElement = this.parentElement.previousElementSibling.querySelector('span');
+        var oldValue = spanElement.textContent.trim();
         var editValueInput = document.getElementById('editValue');
-        
+
         // 이전 입력 값을 비워줌
         editValueInput.value = '';
-        
+
+        if (field === 'phonenumber') {
+            // 전화번호 수정을 위한 입력 처리 설정
+            editValueInput.addEventListener('input', formatPhoneNumber);
+        } else if (field === 'address') {
+            // 주소 검색 버튼 클릭
+            goPopup();  // 주소 검색 팝업 함수 호출
+            return;  // 팝업을 띄우고 여기서 함수 종료
+        }
         // 기존 값은 placeholder로 설정
         editValueInput.setAttribute('placeholder', oldValue);
-        
         document.getElementById('editFieldDisplay').textContent = field + ':';
         var modal = document.getElementById('editModal');
         modal.style.display = 'block';
@@ -311,6 +325,73 @@ document.querySelectorAll('.editButton').forEach(function(button) {
         editValueInput.focus();
     });
 });
+
+
+function goPopup(){
+	// 주소검색을 수행할 팝업 페이지를 호출합니다.
+	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://business.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
+	var pop = window.open("/Address/addressAPI.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+	// 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://business.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다.
+    //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes"); 
+   
+}
+
+function jusoCallBack(address){
+    // 팝업 페이지에서 주소 입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
+    var addressTextElement = document.querySelector('.address_text');
+    if (addressTextElement) {
+        addressTextElement.textContent = address; // 비입력 요소일 경우 textContent 사용
+        // JSON 형식으로 데이터 전달
+        var jsonData = JSON.stringify({address: address});
+	    
+        var data = {
+    	        field: 'address',
+    	        value: address
+    	    };
+        var jsonData = JSON.stringify(data);
+        
+        fetch('/myInfo?detail=profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+        	alert('수정되었습니다.');
+            window.opener = self;
+            window.close();
+        })
+        .catch(function(error) {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+}
+
+// 전화번호 형식 유지 함수
+function formatPhoneNumber(e) {
+    var value = e.target.value.replace(/[^\d]/g, '');
+    var formatted = '';
+
+    value = value.substring(0, 11);
+
+    for (var i = 0; i < value.length; i++) {
+        if (i === 3 || i === 7) {
+            formatted += '-';
+        }
+        formatted += value[i];
+    }
+
+    e.target.value = formatted;
+}
+
+
 	// 모달 창 닫기
 	document.querySelector('.close').addEventListener('click', function() {
 	    var modal = document.getElementById('editModal');
@@ -359,21 +440,24 @@ document.querySelectorAll('.editButton').forEach(function(button) {
 	        }
 	        return response.json();
 	    })
-	    .then(function(data) {
-	        // 서버 응답에 따른 처리
-	        var modal = document.getElementById('editModal');
-	        modal.style.display = 'none';
-            alert('수정되었습니다.');
+	   .then(data => {
+    if (data.message === "duplicate") {
+        alert('이미 사용중입니다.');
+    } else {
+        var modal = document.getElementById('editModal');
+        modal.style.display = 'none';
+        alert('수정되었습니다.');
 
-	        // 수정된 값을 페이지에 반영
-	        var textElement = document.querySelector('.' + field + '_text');
-	        if (textElement) {
-	            textElement.textContent = value;
-	        }
-	        
-	        // 입력 필드의 placeholder 값을 현재 값으로 변경
-	        document.getElementById('editValue').setAttribute('placeholder', value);
-	    })
+        // 수정된 값을 페이지에 반영
+        var textElement = document.querySelector('.' + field + '_text');
+        if (textElement) {
+            textElement.textContent = value;
+        }
+
+        // 입력 필드의 placeholder 값을 현재 값으로 변경
+        document.getElementById('editValue').setAttribute('placeholder', value);
+    }
+})
 	    
 	    .catch(function(error) {
 	        // 오류 처리
