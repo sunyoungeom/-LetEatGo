@@ -63,13 +63,13 @@
 						<!-- 프로젝트 카드 1 -->
 						<div class="col-md-4">
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
-								style="height: auto; background-color: #FFABB9;">
+								style="height: auto;">
 								<div class="card-body p-0">
 									<a href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
-											<h2 class="fw-bolder">음식</h2>
 											<i class="fa-solid fa-bowl-rice"
 												style="font-size: 5rem; color: #343a40;"></i>
+											<h2 class="fw-bolder">음식</h2>
 										</div>
 									</a>
 								</div>
@@ -79,13 +79,15 @@
 						<!-- 프로젝트 카드 2 -->
 						<div class="col-md-4">
 							<div class="card overflow-hidden rounded-4 border-0 mb-5"
-								style="height: auto; background-color: #FFABB9;">
+								style="height: auto; ">
 								<div class="card-body p-0">
 									<a href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
-											<h2 class="fw-bolder">음식</h2>
-											<i class="fa-solid fa-mug-hot"
-												style="font-size: 5rem; color: #343a40;"></i>
+											<!-- <i class="fa-solid fa-mug-hot"
+												style="font-size: 5rem; color: #343a40;"></i> -->
+												<img src="../Resources/image/짜장면.png" alt="음식 이미지"
+                             style="width: 100px; height: auto;">
+											<h2 class="fw-bolder">짜장면</h2>
 										</div>
 									</a>
 								</div>
@@ -99,9 +101,9 @@
 								<div class="card-body p-0">
 									<a href="/menu" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
-											<h2 class="fw-bolder">음식</h2>
 											<i class="fa-solid fa-pizza-slice"
 												style="font-size: 5rem; color: #343a40;"></i>
+											<h2 class="fw-bolder">음식</h2>
 										</div>
 									</a>
 								</div>

@@ -7,7 +7,114 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
+<body class="d-flex flex-column h-100 bg-light">
+	<%@ include file="/WEB-INF/user/navigation.jsp"%>
+
+	<main class="flex-shrink-0">
+		<div class="container mt-5 d-flex justify-content-center">
+		</div>
+		<br />
+		<div class="container">
+			<div class="d-flex justify-content-center">
+				<div class="col-8">
+				<h3>최근 간 곳</h3>
+					<div class="row row-cols-1 row-cols-md-3 g-4">
+						<!-- 프로젝트 카드 1 -->
+						<div class="col-md-4">
+							<div class="card overflow-hidden rounded-4 border-0 mb-5"
+								style="height: auto;">
+								<div class="card-body p-0">
+									<a href="/menu" style="text-decoration: none; color: inherit;">
+										<div class="d-flex flex-column align-items-center p-3">
+											 <img src="https://via.placeholder.com/150" alt="음식 이미지" style="width: 150px; height: 150px; margin-top: 10px">
+											<h2 class="fw-bolder" style="margin-top: 10px">음식</h2>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- 프로젝트 카드 2 -->
+						<div class="col-md-4">
+							<div class="card overflow-hidden rounded-4 border-0 mb-5"
+								style="height: auto;">
+								<div class="card-body p-0">
+									<a href="/menu" style="text-decoration: none; color: inherit;">
+										<div class="d-flex flex-column align-items-center p-3">
+											 <img src="https://via.placeholder.com/150" alt="음식 이미지" style="width: 150px; height: 150px; margin-top: 10px">
+											<h2 class="fw-bolder" style="margin-top: 10px">음식</h2>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- 프로젝트 카드 3 -->
+						<div class="col-md-4">
+							<div class="card overflow-hidden rounded-4 border-0 mb-5"
+								style="height: auto;">
+								<div class="card-body p-0">
+									<a href="/menu" style="text-decoration: none; color: inherit;">
+										<div class="d-flex flex-column align-items-center p-3">
+											 <img src="https://via.placeholder.com/150" alt="음식 이미지" style="width: 150px; height: 150px; margin-top: 10px">
+											<h2 class="fw-bolder" style="margin-top: 10px">음식</h2>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row row-cols-1 row-cols-md-3 g-4">
+						<!-- 프로젝트 카드 1 -->
+						<div class="col-md-4">
+							<div class="card overflow-hidden rounded-4 border-0 mb-5"
+								style="height: auto;">
+								<div class="card-body p-0">
+									<a href="/menu" style="text-decoration: none; color: inherit;">
+										<div class="d-flex flex-column align-items-center p-3">
+											 <img src="https://via.placeholder.com/150" alt="음식 이미지" style="width: 150px; height: 150px; margin-top: 10px">
+											<h2 class="fw-bolder" style="margin-top: 10px">음식</h2>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- 프로젝트 카드 2 -->
+						<div class="col-md-4">
+							<div class="card overflow-hidden rounded-4 border-0 mb-5"
+								style="height: auto;">
+								<div class="card-body p-0">
+									<a href="/menu" style="text-decoration: none; color: inherit;">
+										<div class="d-flex flex-column align-items-center p-3">
+											 <img src="https://via.placeholder.com/150" alt="음식 이미지" style="width: 150px; height: 150px; margin-top: 10px">
+											<h2 class="fw-bolder" style="margin-top: 10px">음식</h2>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- 프로젝트 카드 3 -->
+						<div class="col-md-4">
+							<div class="card overflow-hidden rounded-4 border-0 mb-5"
+								style="height: auto;">
+								<div class="card-body p-0">
+									<a href="/menu" style="text-decoration: none; color: inherit;">
+										<div class="d-flex flex-column align-items-center p-3">
+											 <img src="https://via.placeholder.com/150" alt="음식 이미지" style="width: 150px; height: 150px; margin-top: 10px">
+											<h2 class="fw-bolder" style="margin-top: 10px">음식</h2>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</main>
+
+<%-- <body>
 	<%@ include file="../user/navigation.jsp"%>
     <div id="recentPostList"></div>
 </body>
@@ -35,7 +142,7 @@
 				</div>
 			</div>
 		</main>
-</body>
+</body> --%>
 <Script>
 		const postTable = document.getElementById("postTable");
 		const tbody = postTable.querySelector("tbody");
