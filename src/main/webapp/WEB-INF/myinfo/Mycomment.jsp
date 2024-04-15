@@ -5,129 +5,130 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내게시물</title>
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Custom CSS for Table and Pagination -->
-    <style>
-        /* Custom CSS for Table */
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            background-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내게시물</title>
+<!-- Bootstrap icons-->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+	rel="stylesheet" />
+<!-- Custom CSS for Table and Pagination -->
+<style>
+/* Custom CSS for Table */
+.table {
+	width: 100%;
+	margin-bottom: 1rem;
+	background-color: transparent;
+}
 
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-        }
+.table th, .table td {
+	padding: 0.75rem;
+	vertical-align: top;
+	border-top: 1px solid #dee2e6;
+}
 
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
-        }
+.table thead th {
+	vertical-align: bottom;
+	border-bottom: 2px solid #dee2e6;
+}
 
-        /* Custom CSS for Pagination */
-        .pagination {
-            margin-top: 20px;
-        }
+/* Custom CSS for Pagination */
+.pagination {
+	margin-top: 20px;
+}
 
-        .pagination .page-item {
-            display: inline-block;
-        }
+.pagination .page-item {
+	display: inline-block;
+}
 
-        .pagination .page-item .page-link {
-            color: #007bff;
-            border: 1px solid #dee2e6;
-            padding: 0.375rem 0.75rem;
-        }
+.pagination .page-item .page-link {
+	color: #007bff;
+	border: 1px solid #dee2e6;
+	padding: 0.375rem 0.75rem;
+}
 
-        .pagination .page-item.active .page-link {
-            z-index: 1;
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+.pagination .page-item.active .page-link {
+	z-index: 1;
+	color: #fff;
+	background-color: #007bff;
+	border-color: #007bff;
+}
 
-        .pagination .page-link {
-            position: relative;
-            display: block;
-            padding: 0.5rem 0.75rem;
-            margin-left: -1px;
-            line-height: 1.25;
-            text-decoration: none;
-            background-color: #fff;
-            border: 1px solid #dee2e6;
-        }
+.pagination .page-link {
+	position: relative;
+	display: block;
+	padding: 0.5rem 0.75rem;
+	margin-left: -1px;
+	line-height: 1.25;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #dee2e6;
+}
 
-        .pagination .page-link:hover {
-            z-index: 2;
-            color: #0056b3;
-            text-decoration: none;
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-        }
+.pagination .page-link:hover {
+	z-index: 2;
+	color: #0056b3;
+	text-decoration: none;
+	background-color: #e9ecef;
+	border-color: #dee2e6;
+}
 
-        /* Custom CSS for buttons */
-        .btn-small {
-            padding: 0.2rem 0.5rem;
-            font-size: 0.8rem;
-        }
+/* Custom CSS for buttons */
+.btn-small {
+	padding: 0.2rem 0.5rem;
+	font-size: 0.8rem;
+}
 
-        /* Custom CSS for button group */
-        .btn-group-sm .btn {
-            padding: 0.2rem 0.5rem;
-            font-size: 0.8rem;
-        }
-    </style>
+/* Custom CSS for button group */
+.btn-group-sm .btn {
+	padding: 0.2rem 0.5rem;
+	font-size: 0.8rem;
+}
+</style>
 </head>
 <body class="d-flex flex-column h-100">
-    <main class="flex-shrink-0">
-        <!-- Navigation-->
-        <%@ include file="/WEB-INF/user/navigation.jsp"%>
-        <section class="py-5">
-            <div class="container px-5">
-                <div class="bg-light rounded-4 py-5 px-4 px-md-5">
-                    <div class="row align-items-center">
-                        <!-- 내정보 -->
-                        <div class="col-md-3 mb-3 mb-md-0" style="height: 500px;">
-                            <%@ include file="/WEB-INF/myinfo/MyInfoSidebar.jsp"%>
-                        </div>
-                        <!-- 테이블 -->
-                        <div class="col-md-9">
-                            <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
-                                <div class="row justify-content-center">
-                                    <div class="col-12">
-                                        <h3>내가쓴댓글</h3>
-                                        <table class="table table-hover table-bordered" id="postTable">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th scope="col" style="width: 60%;">제목</th>
-                                                    <th scope="col" style="width: 20%;">작성일</th>
-                                                    <th scope="col" style="width: 20%;"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-group-divider">
-                                            </tbody>
-                                        </table>
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination justify-content-center" id="pagination">
-                                                <!-- Pagination dynamically created by JavaScript -->
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+	<main class="flex-shrink-0">
+		<!-- Navigation-->
+		<%@ include file="/WEB-INF/user/navigation.jsp"%>
+		<section class="py-5">
+			<div class="container px-5">
+				<div class="bg-light rounded-4 py-5 px-4 px-md-5">
+					<div class="row align-items-center">
+						<!-- 내정보 -->
+						<div class="col-md-3 mb-3 mb-md-0" style="height: 500px;">
+							<%@ include file="/WEB-INF/myinfo/MyInfoSidebar.jsp"%>
+						</div>
+						<!-- 테이블 -->
+						<div class="col-md-9">
+							<div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+								<div class="row justify-content-center">
+									<div class="col-12">
+										<h3>내가쓴댓글</h3>
+										<table class="table table-hover table-bordered" id="postTable">
+											<thead class="table-light">
+												<tr>
+													<th scope="col" style="width: 60%;">제목</th>
+													<th scope="col" style="width: 20%;">작성일</th>
+													<th scope="col" style="width: 20%;"></th>
+												</tr>
+											</thead>
+											<tbody class="table-group-divider">
+											</tbody>
+										</table>
+										<nav aria-label="Page navigation example">
+											<ul class="pagination justify-content-center" id="pagination">
+												<!-- Pagination dynamically created by JavaScript -->
+											</ul>
+										</nav>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
 </body>
 <script type="text/javascript">
     const postTable = document.getElementById("postTable");
@@ -193,8 +194,9 @@
             displayPagination(data.totalPages, page); // 페이지네이션 표시
         });
     }
+    <%@ include file="/WEB-INF/layout/footer.jsp" %>
 
 </script>
-    <!-- 페이지 번호 -->
+<!-- 페이지 번호 -->
 <script src="/js/pagination.js"></script>
 </html>

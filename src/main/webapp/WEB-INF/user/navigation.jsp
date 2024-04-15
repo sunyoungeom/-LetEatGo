@@ -60,6 +60,7 @@
 			</div>
 		</div>
 	</nav>
+	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- 채팅 아이콘 표시 여부 설정 -->
 </body>
