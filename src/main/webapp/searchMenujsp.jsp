@@ -45,8 +45,8 @@
 	
 	<br>
 	
-	<div style="display: flex; border: 3px solid black; margin: 0px 20%; overflow: auto;">
-		<div style="display: flex; justify-content: space-between; margin: 0px 26%; height: 200px;">
+	<div style="margin: 0px 26%; height:650px; overflow: auto; background-color: white; border-radius: 15px; ">
+		<div style="display: flex; justify-content: space-between; margin: 10px; height: 200px;">
 		    <span style="display: flex;  flex-direction: column; width: 28%; height: 100%">
 		    	<span style="border: 1px solid black; width: 100%; height: 70%">
 		    		이미지
@@ -58,10 +58,65 @@
 		    	</span>
 		    </span>
 		    
-		    <span style="border: 1px solid black; width: 70%; height: 100%;">
+		    <span style="border: 1px solid black; width: 70%; height: 100%; border-radius: 15px;">
 		    	검색결과 리뷰
 		    </span>
 		</div>
+		
+		
+		<div style="display: flex; justify-content: space-between; margin: 10px; height: 200px;">
+		    <span style="display: flex;  flex-direction: column; width: 28%; height: 100%">
+		    	<span style="border: 1px solid black; width: 100%; height: 70%">
+		    		이미지
+		    	</span>
+		    	
+		    	
+		    	<span style="border: 1px solid black; width: 100%; height: 30%">
+		    		상호명/위치
+		    	</span>
+		    </span>
+		    
+		    <span style="border: 1px solid black; width: 70%; height: 100%; border-radius: 15px;">
+		    	검색결과 리뷰
+		    </span>
+		</div>
+		
+		
+		<div style="display: flex; justify-content: space-between; margin: 10px; height: 200px;">
+		    <span style="display: flex;  flex-direction: column; width: 28%; height: 100%">
+		    	<span style="border: 1px solid black; width: 100%; height: 70%">
+		    		이미지
+		    	</span>
+		    	
+		    	
+		    	<span style="border: 1px solid black; width: 100%; height: 30%">
+		    		상호명/위치
+		    	</span>
+		    </span>
+		    
+		    <span style="border: 1px solid black; width: 70%; height: 100%; border-radius: 15px;">
+		    	검색결과 리뷰
+		    </span>
+		</div>
+
+		<div style="display: flex; justify-content: space-between; margin: 10px; height: 200px;">
+		    <span style="display: flex;  flex-direction: column; width: 28%; height: 100%">
+		    	<span style="border: 1px solid black; width: 100%; height: 70%">
+		    		이미지
+		    	</span>
+		    	
+		    	
+		    	<span style="border: 1px solid black; width: 100%; height: 30%">
+		    		상호명/위치
+		    	</span>
+		    </span>
+		    
+		    <span style="border: 1px solid black; width: 70%; height: 100%; border-radius: 15px;">
+		    	검색결과 리뷰
+		    </span>
+		</div>
+		
+		
 	</div>
 
 	
