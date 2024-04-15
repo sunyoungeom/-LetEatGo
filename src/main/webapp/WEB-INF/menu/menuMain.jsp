@@ -204,6 +204,8 @@
     let currentPage = 1; // 초기 페이지는 1로 설정
     const itemsPerPage = 10; // 페이지당 아이템 수
     const search = document.getElementById("search");
+
+    
     function formattedDate(element) {
         // MySQL DATETIME 값을 Date 객체로 변환
         const timestamp = Number(element.resistdate);
@@ -220,9 +222,9 @@
         return formattedDate;
       }
     
+    loadPosts(currentPage);
 	//최근 게시물 가져오기
-	fetchRecentPosts(currentPage);
-    function fetchRecentPosts(page) {
+    function loadPosts(page) {
       fetch(`http://localhost:8080/recent?page=${page}&pagePer=${itemsPerPage}`, {
         method: "PUT",
       })
@@ -270,7 +272,6 @@
             contenttr.appendChild(tdview);
             tbody.appendChild(contenttr);
 			
-            displayPagination(data.totalPages, page);
             
             function filterPostsByTitle(searchValue) {
               // 모든 행을 가져와서 각 행에 대해 검색어가 포함된 제목을 가지고 있는지 확인합니다.
@@ -293,6 +294,7 @@
               filterPostsByTitle(searchValue); // 검색어와 일치하는 게시물만 표시
             });
           });
+          displayPagination(data.totalPages, page); // 페이지네이션 표시
         });
     }
     // 검색어와 일치하는 게시물만 표시하는 함수
@@ -330,5 +332,6 @@
         }
       });
   </script>
+ <!-- 페이지 번호 -->
 <script src="/js/pagination.js"></script>
 </html>
