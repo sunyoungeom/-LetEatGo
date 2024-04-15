@@ -72,6 +72,16 @@ public class ReviewService {
             return reviewMapper.getReviewsByUserId(userId);
         }
     }
+    
+    // 특정 유저가 받은 리뷰 별점 평균 계산
+    public double getAverageRatingByUserId(int userId) {
+    	 try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+             ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
+             return reviewMapper.getAverageRatingByUserId(userId);
+         } catch (Exception e) {
+        	 return 0;
+         }
+    }
 
     public static ReviewDTO getReviewPage(int page, int pagePer) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {

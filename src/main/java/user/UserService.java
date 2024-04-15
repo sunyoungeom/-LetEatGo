@@ -12,6 +12,13 @@ import listener.MyWebContextListener;
 
 public class UserService {
 
+	public List<User> getAllUsers() {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getAllUsers();
+		}
+	}
+	
 	public User getIdById(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -116,6 +123,7 @@ public class UserService {
 		}
 	}
 
+	// 닉네임으로 유저아이디들고오기
 	public int getUserIdByNickName(String nickname) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -130,6 +138,13 @@ public class UserService {
 			sqlSession.commit(); // 변경사항 커밋
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	// 유저아이디로 닉네임
+	public String getNicknameById(int userId) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getNicknameById(userId);
 		}
 	}
 
@@ -198,6 +213,17 @@ public class UserService {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			return userMapper.getAllUsersExceptMe(user_id);
 		}
+	}
+
+	public boolean isPostOwner(int post_id, int user_id) {
+	    try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+	        int result = userMapper.isPostOwner(post_id, user_id);
+	        return result > 0; // 반환된 값이 0보다 크면 true, 아니면 false 반환
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false; // 예외 발생 시 기본적으로 false 반환
+	    }
 	}
 
 }

@@ -34,6 +34,10 @@ public interface ReviewMapper {
     // 특정 유저가 작성한 리뷰 목록 조회
     @Select("SELECT * FROM post_reviews WHERE writeuser_id=#{userId}")
     List<Review> getReviewsByUserId(int userId);
+
+    // 특정 유저가 받은 리뷰 별점 평균 계산
+    @Select("SELECT AVG(rating) FROM post_reviews WHERE writeuser_id=#{userId}")
+    double getAverageRatingByUserId(int userId);
     
     // 특정 게시물에 대한 리뷰 목록 조회
     @Results({
@@ -70,4 +74,8 @@ public interface ReviewMapper {
 
     @Select("SELECT COUNT(*) FROM post_reviews WHERE writeuser_id = #{writeuser_id}")
     int myCountAll( @Param("writeuser_id") int writeuser_id);
+    
+    // 유저 평균 별점
+//    @Select("SELECT AVG(rating) FROM post_review WHERE post_id IN (SELECT post_id FROM post WHERE writeuser_id = #{user_id})")
+//    double getAverageRatingByUserId(String user_id);
 }

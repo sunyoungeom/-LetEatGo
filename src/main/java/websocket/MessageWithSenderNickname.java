@@ -1,20 +1,21 @@
+// MessageWithSenderNickname.java
 package websocket;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.protobuf.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import user.User;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Message {
-    private int postId;
-    private int senderId;
+public class MessageWithSenderNickname {
     private String content;
     private Timestamp sentAt;
+    private String senderNickname;
 }

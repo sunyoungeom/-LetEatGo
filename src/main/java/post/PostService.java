@@ -19,7 +19,8 @@ public class PostService {
 			return postMapper.getAllPosts();
 		}
 	}
-
+	
+	
 	// 조회수 증가 메서드
 	public void increasePostViews(int postId) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -29,6 +30,16 @@ public class PostService {
 			sqlSession.commit();
 		}
 	}
+
+	
+	public List<Post> getPostsOrderByViewDesc (){
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			return postMapper.getPostsOrderByViewDesc();
+		}
+	}
+	
 	
 	// 특정 게시물 조회 메서드
 	public Post getPostById(int postId) {
@@ -74,7 +85,9 @@ public class PostService {
 			sqlSession.commit();
 		}
 	}
-
+	
+	
+	
 	// 페이지 번호와 페이지 크기를 모두 명시하면 해당 페이지의 게시물을 반환
 
 	public static PostDTO getPostPage(int page, int pagePer) {
@@ -116,18 +129,40 @@ public class PostService {
 			return dto;
 		}
 	}
-
-	// 게시글 만료 상태 변환?
-	public void statusTransition(int postId) {
-		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
-
-			Post post = postMapper.getPostById(postId);
-			post.setStatus(1);
-			postMapper.updatePost(post);
+	
+	public static PostDTO getactivePostPage(int page, int pagePer, int writeuser_id, int totalCount, List<Post> list) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession();) {
+			PostMapper mapper = sqlSession.getMapper(PostMapper.class);
+			int totalPage = totalCount / pagePer;
+			totalPage += totalCount % pagePer == 0 ? 0 : 1;
+			
+			Map<String, Integer> params = new HashMap<>();
+			params.put("limit", pagePer);
+			params.put("offset", pagePer * (page - 1));
+			
+			List<Post> all = list;
+			
+			PostDTO dto = PostDTO.builder().totalPages(totalPage).currentPage(page).itemsPerPage(pagePer).items(all)
+					.build();
+			
+			return dto;
 		}
 	}
-	// 조기마감 상태, 마감 남아있는 사람들 = 참가인원, 리뷰를 참여한 사람만  
+
+	public int updatePostStatus(int postId) {
+	    try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+	        PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+	        int rowsAffected = postMapper.updatePostStatus(postId, 1); // 상태 값을 1로 변경
+	        sqlSession.commit(); // 변경 사항 커밋
+	        return rowsAffected; // 업데이트된 행의 수 반환
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0; // 실패한 경우 0 반환
+	    }
+	}
+
+
+	// 조기마감 상태, 마감 남아있는 사람들 = 참가인원, 리뷰를 참여한 사람만
 	// 특정 유저가 작성한 게시글
 	public List<Post> getUserPostList(int writeuser_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -156,7 +191,7 @@ public class PostService {
 	public List<Post> getPlaceById(int user_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
-			
+
 			return postMapper.getPlaceById(user_id);
 
 		}
