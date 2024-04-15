@@ -96,19 +96,19 @@ webSocket.onmessage = function(event) {
 
         // 귓속말 표시
         if (receiver === nickname) {
-            chatWindow.innerHTML += "<div class='whisper-received'>" + sender + " [귓속말]: " + whisperContent + " <span class='time'>" + getCurrentTime() + "</span></div>";
+            chatWindow.innerHTML += "<div class='whisper-received'>" + sender + " [귓속말]: " + whisperContent + " <span class='time'>"  + "</span></div>";
         } else if (sender === nickname) {
-            chatWindow.innerHTML += "<div class='whisper-sent'>" + sender + " [귓속말] to " + receiver + ": " + whisperContent + " <span class='time'>" + getCurrentTime() + "</span></div>";
+            chatWindow.innerHTML += "<div class='whisper-sent'>" + sender + " [귓속말] to " + receiver + ": " + whisperContent + " <span class='time'>"  + "</span></div>";
         }
     } else {
         // 일반 메시지 표시
         var messageHtml = "";
         if (sender === nickname) {
             // 보낸 사람의 채팅은 오른쪽에 표시
-            messageHtml = "<div class='myMsg'><strong>" + sender + ": </strong>" + content + "<span class='time'>" + getCurrentTime() + "</span></div>";
+            messageHtml = "<div class='myMsg'><strong>" + sender + ": </strong>" + content + "<span class='time'>" + "</span></div>";
         } else {
             // 받는 사람의 채팅은 왼쪽에 표시
-            messageHtml = "<div class='otherMsg'><strong>" + sender + ": </strong>" + content + "<span class='time'>" + getCurrentTime() + "</span></div>";
+            messageHtml = "<div class='otherMsg'><strong>" + sender + ": </strong>" + content + "<span class='time'>" + "</span></div>";
         }
         chatWindow.innerHTML += messageHtml;
     }
