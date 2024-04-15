@@ -128,6 +128,17 @@ public interface PostMapper {
     @Update("UPDATE posts SET status = 1 WHERE post_id = #{post_id}")
     int updatePostStatus(@Param("post_id") int postId, @Param("status") int status);
     
+    @Select("SELECT place FROM posts WHERE post_Id = #{post_Id}")
+    String getPlaceByPostId(@Param("post_Id") int postId);
     
+    @Select("SELECT budget, age, gender, peopleLimit FROM post_tag WHERE post_id = #{post_id}")
+    @Results({
+        @Result(property = "budget", column = "budget"),
+        @Result(property = "age", column = "age"),
+        @Result(property = "gender", column = "gender"),
+        @Result(property = "peopleLimit", column = "peopleLimit")
+    })
+    PostTag getPostTagbyPostId(@Param("post_id") int post_id);
+
 }
     

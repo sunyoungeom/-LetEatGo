@@ -51,7 +51,10 @@ public class PostDetailServlet extends HttpServlet {
 			List<PostWithGuestUserIdDTO> DTOList = postService.getPostsWithStatusAndGuestUserId();
 			
 			User user = userService.getUser(post.getWriteUser_Id());
-
+			String place = postService.getPlaceByPostId(postId);
+			PostTag tag = postService.getPostTagbyPostId(postId);
+			System.out.println("장소 : " + place);
+			System.out.println("태그 : " + tag);
 			// 해당 게시물의 리뷰 목록도 함께 가져옵니다.
 			List<Review> reviews = reviewService.getReviewsByPostId(postId);
 			// 게시물과 리뷰 목록을 함께 담아 JSON 형태로 응답합니다.
@@ -59,8 +62,9 @@ public class PostDetailServlet extends HttpServlet {
 			responseMap.put("post", post);
 			responseMap.put("user", user);
 			responseMap.put("reviews", reviews);
+			responseMap.put("place", place);
+			responseMap.put("tags", tag);
 			responseMap.put("DTOList", DTOList);
-			System.out.println(responseMap.get("DTOList"));
 			// JSON 형태로 변환하여 응답합니다.
 			ServletUtil.sendJsonBody(responseMap, resp);
 		} else if (requestURI.endsWith("/post/addReview")) {

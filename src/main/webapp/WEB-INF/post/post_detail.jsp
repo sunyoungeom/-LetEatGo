@@ -117,32 +117,32 @@ h1 {
 #reviewContainer {
 	display: flex; /* 플렉스 박스 사용 */
 	margin-left: 50px;
-	width:90%;
+	width: 90%;
 }
 
 #reviewForm {
-    flex: 1; /* 동일한 크기를 가지도록 설정 */
-    padding: 10px; /* 내부 여백 추가 */
-    border: 2px solid #c8bfe7; /* 테두리 스타일 */
-    border-radius: 10px; /* 라운드 테두리 */
-    max-width: 50%;
-    height: 350px;
-    background-color: #c8bfe7;
-    
+	flex: 1; /* 동일한 크기를 가지도록 설정 */
+	padding: 10px; /* 내부 여백 추가 */
+	border: 2px solid #c8bfe7; /* 테두리 스타일 */
+	border-radius: 10px; /* 라운드 테두리 */
+	max-width: 50%;
+	height: 350px;
+	background-color: #c8bfe7;
 }
 
 /* 리뷰 목록 폼의 스타일 */
 #reviewList {
-    flex: 1; /* 동일한 크기를 가지도록 설정 */
-    padding: 10px; /* 내부 여백 추가 */
-    border: 2px solid pink; /* 테두리 스타일 */
-    max-width: 50%;
-    border-radius: 10px; /* 라운드 테두리 */
-    overflow-y: auto; /* 세로 스크롤 바가 필요한 경우만 표시 */
-    width: 50px;
-    height: 350px;
-    background-color: pink;
+	flex: 1; /* 동일한 크기를 가지도록 설정 */
+	padding: 10px; /* 내부 여백 추가 */
+	border: 2px solid pink; /* 테두리 스타일 */
+	max-width: 50%;
+	border-radius: 10px; /* 라운드 테두리 */
+	overflow-y: auto; /* 세로 스크롤 바가 필요한 경우만 표시 */
+	width: 50px;
+	height: 350px;
+	background-color: pink;
 }
+
 #postDetail {
 	border: 2px solid gray;
 	padding: 10px;
@@ -151,31 +151,48 @@ h1 {
 	margin-right: 50px;
 	max-width: 90%;
 }
-
 </style>
 </head>
+<
 <body>
 	<%@ include file="../user/navigation.jsp"%>
 	<div id="postDetail">
 		<table style="border-collapse: collapse; width: 100%;">
-    <tr>
-        <th style="border: 1px solid #000; padding: 10px;">제목</th>
-        <td id="title" style="border: 1px solid #000; padding: 10px;"></td>
-    </tr>
-    <tr>
-        <th style="border: 1px solid #000; padding: 10px;">작성자</th>
-        <td id="nickname" style="border: 1px solid #000; padding: 10px;"></td>
-    </tr>
-    <tr>
-        <th style="border: 1px solid #000; padding: 10px;">작성일</th>
-        <td id="resistdate" style="border: 1px solid #000; padding: 10px;"></td>
-    </tr>
-    <tr>
-        <th style="border: 1px solid #000; padding: 10px;">내용</th>
-        <td id="content" rowspan="2" style="border: 1px solid #000; padding: 10px; height: 200px;"></td>
-    </tr>
-</table>
-
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">제목</th>
+				<td id="title" colspan="3"
+					style="border: 1px solid #000; padding: 10px;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; width: 25%; text-align: center;">작성자</th>
+				<td id="nickname"
+					style="border: 1px solid #000; padding: 10px; width: 25%;"></td>
+				<th
+					style="border: 1px solid #000; padding: 10px; width: 25%; text-align: center;">작성일</th>
+				<td id="resistdate"
+					style="border: 1px solid #000; padding: 10px; width: 25%;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">태그</th>
+				<td id="tags" colspan="3"
+					style="border: 1px solid #000; padding: 10px;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">장소</th>
+				<td id="place" colspan="3"
+					style="border: 1px solid #000; padding: 10px;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">내용</th>
+				<td id="content" colspan="3"
+					style="border: 1px solid #000; padding: 10px; height: 200px;"></td>
+			</tr>
+		</table>
 	</div>
 	<div id="reviewContainer">
 		<div id="reviewForm">
@@ -245,6 +262,8 @@ h1 {
     const resistdate = document.getElementById("resistdate");
     const content = document.getElementById("content");
     const postId = document.getElementById("post_Id").value;
+    const place = document.getElementById("place");
+    const tag = document.getElementById("tags");
     function formattedDate(data) {
         // MySQL DATETIME 값을 Date 객체로 변환
         const timestamp = Number(data.post.resistdate);
@@ -269,6 +288,8 @@ h1 {
     const posttitle = data.post.title
     const postresistdate =formattedDate(data)
     const postContent = data.post.content;
+    const postPlace = data.post.place;
+    const postTag = data.tags;
     const isCurrentUserId = await isCurrentUser(data.user.user_id);
     
     const postDTOList  = data.DTOList;
@@ -276,20 +297,47 @@ h1 {
     
 	console.log(postDTOList,"DTO값");
 	console.log(postId,"포스트아이디값");
+	console.log(postTag,"태그");
 	const isPostIdMatched = postDTOList.some(item => item.postId === postId);
 	
-	
 	const isguestIdMatched = postDTOList.some(item => item.postId === userId);
-	
-	
 	
     title.innerText = `${posttitle}`;
     nickname.innerText = `${userId}`;
     resistdate.innerText = `${postresistdate}`;
     content.innerText = `게시물 내용: ${postContent}`;
-    
-    
-    
+    place.innerText = `${postPlace}`;
+    const filteredPostTag = {};
+    for (const key in postTag) {
+        if (key !== 'post_tag_id' && key !== 'post_Id') {
+            filteredPostTag[key] = postTag[key];
+        }
+    }
+
+// 새로운 객체의 속성을 문자열로 변환하여 tag에 할당
+let formattedPostTag = '';
+for (const key in filteredPostTag) {
+    let value = filteredPostTag[key];
+    if (value === null) {
+        value = '상관없음';
+    }
+    if (key === 'budget') {
+        formattedPostTag += `인당 금액: ${value}\n`;
+    } else if (key === 'booze') {
+        formattedPostTag += `음주 유무: ${value}\n`;
+    } else if (key === 'age') {
+        formattedPostTag += `나이: ${value}\n`;
+    } else if (key === 'gender') {
+        formattedPostTag += `성별: ${value}\n`;
+    } else if (key === 'peopleLimit') {
+        formattedPostTag += `인원수: ${value}\n`;
+    } else {
+        formattedPostTag += `${key}: ${value}\n`;
+    }
+}
+tag.innerText = formattedPostTag;
+
+
 	    if(isCurrentUserId) {
 		 	// 게시물 수정 버튼 생성
 		    let editButton = document.createElement("button");
