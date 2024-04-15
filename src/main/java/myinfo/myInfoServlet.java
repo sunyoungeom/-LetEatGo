@@ -60,9 +60,12 @@ public class myInfoServlet extends HttpServlet {
 		String body = ServletUtil.readBody(req);
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode jsonNode = mapper.readTree(body);
+		System.out.println(body);
 
 		String field = jsonNode.get("field").asText();
 		String value = jsonNode.get("value").asText();
+		System.out.println(field);
+		System.out.println(value);
 
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("user");
@@ -72,6 +75,21 @@ public class myInfoServlet extends HttpServlet {
 
 		// 필드 값에 따라 적절한 서비스 함수 호출
 		switch (field) {
+		case "password":
+			if(user.getPassword().equals(jsonNode.get("currentPassword").asText())) {
+				userService.updatePassword(user.getId(), value);
+				user.setPassword(value);
+			}  else {
+                // 비밀번호가 일치하지 않을 때 에러 처리
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                PrintWriter out = resp.getWriter();
+                out.print("{\"status\": \"error\", \"message\": \"현재 비밀번호가 올비르지 않습니다.\"}");
+                out.flush();
+                return;
+            }
+			break;
 		case "nickname":
 			isDuplicate = userService.getNicknameByNickname(value);
 			if (!checkDuplicate(isDuplicate, resp)) {
@@ -120,7 +138,7 @@ public class myInfoServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
 		PrintWriter out = resp.getWriter();
-		out.print("{\"message\": \"Field updated successfully\"}");
+		out.print("{\"status\": \"success\"}");
 		out.flush();
 	}
 

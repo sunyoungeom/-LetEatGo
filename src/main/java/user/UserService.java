@@ -122,6 +122,16 @@ public class UserService {
 			return userMapper.getUserIdByNickName(nickname);
 		}
 	}
+	
+		public void updatePassword(String id, String password) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updatePassword(id, password);
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void updateNickname(String id, String nickname) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {

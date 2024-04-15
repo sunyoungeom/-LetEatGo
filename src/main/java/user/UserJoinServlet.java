@@ -37,71 +37,25 @@ public class UserJoinServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-//     // 중복 확인 요청 처리
+
 		if ("checkDuplicate".equals(action)) {
-			String field = request.getParameter("field");
-			String value = request.getParameter("value");
-			User isDuplicate = null;
-			System.out.println(field);
-
-			switch (field) {
-			case "id":
-				isDuplicate = service.getIdById(value);
-				break;
-			case "email":
-				isDuplicate = service.getEmailByEmail(value);
-				System.out.println(value);
-				break;
-			case "nickname":
-				isDuplicate = service.getNicknameByNickname(value);
-				break;
-			case "phonenumber":
-				isDuplicate = service.getPhoneNumberByPhoneNumber(value);
-				break;
-			default:
-				break;
-			}
-
-			if (isDuplicate != null) {
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write("duplicate");
-			}
-
-//            // 결과를 JSON 형태로 클라이언트에 전달
-//            Map<String, Object> result = new HashMap<>();
-//            result.put("result", isDuplicate);
-//            response.setContentType("application/json");
-//            response.setCharacterEncoding("UTF-8");
-//            System.out.println(result.toString());
-//            objectMapper.writeValue(response.getWriter(), result);
+			// 중복 확인 로직
+			checkDuplicate(request, response);
 		} else if ("sendVerification".equals(action)) {
 			// 이메일 인증 코드 발송 요청 처리
-
 			String email = request.getParameter("email");
-			User user = new User();
-			user.setEmail(email);
-			System.out.println(email+"check");
+			User isDuplicate = service.getEmailByEmail(email);
+			System.out.println(email);
+			System.out.println(isDuplicate.getEmail());
 
-			// 이메일 전송
-			SendEmail emailSender = new SendEmail();
-			String verificationCode = emailSender.getRandom(); // 랜덤 코드 생성
-
-			// 세션에 랜덤 코드 저장
-			HttpSession session = request.getSession();
-			session.setAttribute("verificationCode", verificationCode);
-
-			// 인증 코드를 메일로 발송
-			boolean isEmailSent = emailSender.sendEmail(user, verificationCode);
-
-			if (isEmailSent) {
-				// 클라이언트에게 성공 응답 전송
-				response.setStatus(HttpServletResponse.SC_OK);
-				response.getWriter().write("success");
+			if (isDuplicate != null) {
+				// 이메일이 이미 사용 중인 경우
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write("{\"status\":\"duplicate\"}");
 			} else {
-				// 클라이언트에게 실패 응답 전송
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().write("failed");
+				// 이메일 전송 로직
+				sendVerificationCode(email, request, response);
 			}
 		} else if ("checkVerificationCode".equals(action)) {
 			String body = ServletUtil.readBody(request);
@@ -160,6 +114,63 @@ public class UserJoinServlet extends HttpServlet {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 Internal Server Error
 				response.getWriter().println("서버 오류가 발생했습니다.");
 			}
+		}
+	}
+
+	private void sendVerificationCode(String email, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		User user = new User();
+		user.setEmail(email);
+		System.out.println(email + " check");
+
+		// 이메일 전송
+		SendEmail emailSender = new SendEmail();
+		String verificationCode = emailSender.getRandom(); // 랜덤 코드 생성
+
+		// 세션에 랜덤 코드 저장
+		HttpSession session = request.getSession();
+		session.setAttribute("verificationCode", verificationCode);
+
+		// 인증 코드를 메일로 발송
+		boolean isEmailSent = emailSender.sendEmail(user, verificationCode);
+
+		if (isEmailSent) {
+			// 클라이언트에게 성공 응답 전송
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().write("{\"status\":\"success\"}");
+		} else {
+			// 클라이언트에게 실패 응답 전송
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().write("{\"status\":\"failed\"}");
+		}
+	}
+
+	private void checkDuplicate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String field = request.getParameter("field");
+		String value = request.getParameter("value");
+		User isDuplicate = null;
+
+		switch (field) {
+		case "id":
+			isDuplicate = service.getIdById(value);
+			break;
+		case "email":
+			isDuplicate = service.getEmailByEmail(value);
+			break;
+		case "nickname":
+			isDuplicate = service.getNicknameByNickname(value);
+			break;
+		case "phonenumber":
+			isDuplicate = service.getPhoneNumberByPhoneNumber(value);
+			break;
+		default:
+			break;
+		}
+
+		if (isDuplicate != null) {
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("{\"status\":\"duplicate\"}");
 		}
 	}
 }
