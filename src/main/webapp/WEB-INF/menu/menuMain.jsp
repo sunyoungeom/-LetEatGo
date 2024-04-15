@@ -56,20 +56,25 @@
 			</form>
 		</div>
 		<br />
+
 		<div class="container">
 			<div class="d-flex justify-content-center">
 				<div class="col-8">
-					<div class="row row-cols-1 row-cols-md-3 g-4">
+					<div class="row row-cols-1 row-cols-md-3 g-4"
+						style="margin-top: 0px;">
+
 						<!-- 프로젝트 카드 1 -->
 						<div class="col-md-4">
-							<div class="card overflow-hidden rounded-4 border-0 mb-5"
-								style="height: auto; background-color: #FFABB9;">
-								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+							<div class="card overflow-hidden rounded-4 border-0 mb-3"
+								style="height: auto;">
+
+								<div class="card-body p-0 border rounded-4"
+									style="margin-bottom: 0px;">
+									<a href="/menu/han" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
-											<h2 class="fw-bolder">음식</h2>
-											<i class="fa-solid fa-bowl-rice"
-												style="font-size: 5rem; color: #343a40;"></i>
+											<img src="../Resources/image/bibimbap.png" alt="음식 이미지"
+												style="width: 100px; height: auto; margin-top: 11px;">
+											<h2 class="fw-bolder" style="margin-top: 10px">한식</h2>
 										</div>
 									</a>
 								</div>
@@ -78,14 +83,15 @@
 
 						<!-- 프로젝트 카드 2 -->
 						<div class="col-md-4">
-							<div class="card overflow-hidden rounded-4 border-0 mb-5"
-								style="height: auto; background-color: #FFABB9;">
-								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+							<div class="card overflow-hidden rounded-4 border-0 mb-3"
+								style="height: auto;">
+
+								<div class="card-body p-0 border rounded-4">
+									<a href="/menu/jung" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
-											<h2 class="fw-bolder">음식</h2>
-											<i class="fa-solid fa-mug-hot"
-												style="font-size: 5rem; color: #343a40;"></i>
+											<img src="../Resources/image/jajangmyeon.png" alt="음식 이미지"
+												style="width: 100px; height: auto; margin-top: 14px;">
+											<h2 class="fw-bolder" style="margin-top: 10px">중식</h2>
 										</div>
 									</a>
 								</div>
@@ -94,82 +100,61 @@
 
 						<!-- 프로젝트 카드 3 -->
 						<div class="col-md-4">
-							<div class="card overflow-hidden rounded-4 border-0 mb-5"
-								style="height: auto; background-color: #FFABB9;">
-								<div class="card-body p-0">
-									<a href="/menu" style="text-decoration: none; color: inherit;">
+							<div class="card overflow-hidden rounded-4 border-0 mb-3"
+								style="height: auto;">
+
+								<div class="card-body p-0 border rounded-4">
+									<a href="/menu/il" style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
-											<h2 class="fw-bolder">음식</h2>
-											<i class="fa-solid fa-pizza-slice"
-												style="font-size: 5rem; color: #343a40;"></i>
+											<img src="../Resources/image/spaghetti.png" alt="음식 이미지"
+												style="width: 100px; height: auto;">
+											<h2 class="fw-bolder" style="margin-top: 10px">양식</h2>
 										</div>
 									</a>
 								</div>
 							</div>
 						</div>
+
 					</div>
 					<div class="row">
-						<div class="col-lg-6">
+						<div class="col-lg-4">
 							<a href="/map" style="text-decoration: none; color: #343a40;">
 								<div class="border p-3 mb-2 rounded-4"
 									style="height: 70px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
-									<h4 class="fw-bolder">주변 음식점 찾기</h3>
+									<h4 class="fw-bolder" style="margin-bottom: 0px;">주변 음식점
+										찾기</h4>
 								</div>
 							</a>
 						</div>
-						<div class="col-lg-6">
+						<div class="col-lg-4">
 							<a href="/recent" style="text-decoration: none; color: #343a40;">
 								<div class="border p-3 mb-2 rounded-4"
 									style="height: 70px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
-									<h4 class="fw-bolder">최근 간 음식점</h3>
+									<h4 class="fw-bolder" style="margin-bottom: 0px;">최근 간 음식점</h4>
 								</div>
 							</a>
 						</div>
+						<div class="col-lg-4">
+							<form action="/post/createPost" method="get"
+								style="text-decoration: none; color: #343a40;">
+								<button type="submit" class="border p-3 mb-2 rounded-4"
+									style="height: 70px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center; width: 100%; border: none;">
+									<h4 class="fw-bolder" style="margin-bottom: 0px;">같이 먹어요</h4>
+								</button>
+							</form>
+						</div>
 					</div>
-
-
 				</div>
 			</div>
 		</div>
 	</main>
 
 
-	<!-- 
-	<main class="flex-shrink-0">
-		<div class="container mt-5 d-flex justify-content-center">
-			<form
-				class="d-flex flex-row align-items-center col-8 position-relative">
-				<input class="form-control rounded-pill pl-3 pr-5" type="search"
-					placeholder="Search" aria-label="Search" id="search" name="query"
-					style="padding-right: 40px;" /> <i
-					class="bi bi-search position-absolute"
-					style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
-			</form>
-		</div>
-		<br />
-		<div style="margin: 0 20%">
-			<div class="container mt-5" style="display: flex;">
-				<div class="box" style="flex-grow: 1; background-color: #f0f0f0;">
-					배경색은 시각적인 구분을 위해 추가함
-					box 내용
-				</div>
-				<div style="flex-grow: 3;">
-					<div class="border p-3 mb-2"
-						style="height: 100px; margin-top: 50px;">
-						<a href="/map">주변 음식점 찾기</a>
-					</div>
-					<br /> <br />
-					<div class="border p-3 mb-2" style="height: 100px;">
-						<a href="/recent">최근 간 음식점</a>
-					</div>
-				</div>
-			</div>
-
-
-		</div> -->
-
 	<br />
 	<div style="margin: 0 20%">
+		<hr>
+		<br>
+		<h3>최근 게시물</h3>
 		<table class="table table-hover table-bordered" id="postTable">
 			<thead class="table-light">
 				<tr>
@@ -186,17 +171,11 @@
 	</div>
 	</main>
 
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center" id="pagination">
+		</ul>
+	</nav>
 
-	<!-- Call to action section-->
-	<!--   <section class="py-5 bg-gradient-primary-to-secondary text-white">
-                <div class="container px-5 my-5">
-                    <div class="text-center">
-                        <h2 class="display-4 fw-bolder mb-4">Let's build something together</h2>
-                        <a class="btn btn-outline-light btn-lg px-5 py-3 fs-6 fw-bolder" href="contact.html">Contact me</a>
-                    </div>
-                </div>
-            </section>
-        </main> -->
 	<!-- Footer-->
 	<footer class="bg-white py-4 mt-auto">
 		<div class="container px-5">
@@ -222,8 +201,11 @@
 <script>
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
-
+    let currentPage = 1; // 초기 페이지는 1로 설정
+    const itemsPerPage = 10; // 페이지당 아이템 수
     const search = document.getElementById("search");
+
+    
     function formattedDate(element) {
         // MySQL DATETIME 값을 Date 객체로 변환
         const timestamp = Number(element.resistdate);
@@ -239,8 +221,11 @@
 
         return formattedDate;
       }
-    function fetchRecentPosts() {
-      fetch("http://localhost:8080/recent", {
+    
+    loadPosts(currentPage);
+	//최근 게시물 가져오기
+    function loadPosts(page) {
+      fetch(`http://localhost:8080/recent?page=${page}&pagePer=${itemsPerPage}`, {
         method: "PUT",
       })
         .then((resp) => resp.json())
@@ -248,7 +233,7 @@
           // 게시물 테이블의 내용을 초기화
           tbody.innerHTML = "";
           const maxTitleLength = 20; // 예시로 20자로 설정
-          data.forEach((element) => {
+          data.items.forEach((element) => {
             let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");
             let tdTitle = document.createElement("td");
@@ -286,7 +271,8 @@
             contenttr.appendChild(tdresistdate);
             contenttr.appendChild(tdview);
             tbody.appendChild(contenttr);
-
+			
+            
             function filterPostsByTitle(searchValue) {
               // 모든 행을 가져와서 각 행에 대해 검색어가 포함된 제목을 가지고 있는지 확인합니다.
               Array.from(tbody.children).forEach((row) => {
@@ -308,12 +294,11 @@
               filterPostsByTitle(searchValue); // 검색어와 일치하는 게시물만 표시
             });
           });
+          displayPagination(data.totalPages, page); // 페이지네이션 표시
         });
     }
     // 검색어와 일치하는 게시물만 표시하는 함수
 
-    // 최근 게시물 가져오기
-    fetchRecentPosts();
 
     // 검색 이벤트 리스너 추가
 
@@ -347,4 +332,6 @@
         }
       });
   </script>
+ <!-- 페이지 번호 -->
+<script src="/js/pagination.js"></script>
 </html>

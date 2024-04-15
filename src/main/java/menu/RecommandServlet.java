@@ -21,7 +21,6 @@ public class RecommandServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 클라이언트로부터 query 파라미터 값을 받아옵니다.
 		String queryParam = req.getParameter("keyword");
-		System.out.println(queryParam);
 		// 쿼리 파라미터를 리스트 배열로 변환합니다.
 		String[] queries = queryParam.split("\\n"); // 개행 문자를 기준으로 문자열을 분할하여 배열로 만듭니다.
 		List<String> queryList = Arrays.asList(queries); // 배열을 리스트로 변환합니다.

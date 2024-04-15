@@ -32,9 +32,20 @@ public interface PostMapper {
     int createPost(@Param("post")Post post, @Param("user")User user);
 
     // 조회수 기준으로로 정렬
-    @Select("SELECT * FROM posts ORDER BY view DESC")
-    List<Post> getPostsOrderByViewDesc();
+    @Select("SELECT * FROM posts WHERE status = 0 ORDER BY post_id DESC")
+    List<Post> getPostsOrderByPostIdDesc();
 
+    
+    // 해당 게시물에 참여한 게스트 아이디 
+    @Select("SELECT c.guestuser_id " +
+            "FROM posts p " +
+            "JOIN conversations c ON p.post_id = c.post_id " +
+            "WHERE p.post_id = #{postId} " +
+            "AND p.status = 1 " +
+            "AND c.status = 1") 
+    List<Integer> getGuestUserIdListByPostId(@Param("postId") int postId);
+    
+    
     // 리뷰 권한을 주기위한 포스트상태 1 채밍방1 상태값 찾는
     @Select("SELECT p.post_id, p.writeuser_id, p.guestuser_id, p.title, p.content, p.resistdate, p.expiredate, p.status, p.place, p.view, c.guestuser_id as conversation_guestuser_id " +
             "FROM posts p " +
@@ -76,6 +87,13 @@ public interface PostMapper {
 
     @Select("SELECT COUNT(*) FROM posts WHERE status = 1")
     int countAll();
+
+    // 활성화된 글 페이징 처리를 위한 쿼리
+    @Select("SELECT * FROM posts WHERE status = 0  ORDER BY post_id DESC LIMIT #{limit} OFFSET #{offset}")
+    List<Post> getactivePage(Map<String, Integer> params);
+    
+    @Select("SELECT COUNT(*) FROM posts WHERE status = 0")
+    int activecountAll();
     
     //개인 페이지 페이징 처리 위한 쿼리
     @Select("SELECT * FROM posts WHERE writeuser_id = #{writeuser_id} LIMIT #{params.limit} OFFSET #{params.offset}")
@@ -98,9 +116,14 @@ public interface PostMapper {
     
     @Select("select * from posts where place = #{place}")
     List<Post> getPostsByPlace(String place);
-    
-    @Select("SELECT * FROM posts WHERE writeuser_id = #{user_id} ORDER BY writeuser_id DESC LIMIT 10;")
+
+    // 최신글 부터 나오게
+    @Select("SELECT * FROM posts WHERE writeuser_id = #{user_id} ORDER BY post_id DESC LIMIT 10;")
     List<Post> getPlaceById(@Param("user_id")int user_id);
+
+    //	    기존꺼
+//    @Select("SELECT * FROM posts WHERE writeuser_id = #{user_id} ORDER BY writeuser_id DESC LIMIT 10;")
+//    List<Post> getPlaceById(@Param("user_id")int user_id);
     
     @Update("UPDATE posts SET status = 1 WHERE post_id = #{post_id}")
     int updatePostStatus(@Param("post_id") int postId, @Param("status") int status);
