@@ -32,7 +32,7 @@
 		<!-- Navigation-->
 		<%@ include file="/WEB-INF/user/navigation.jsp"%>
 
-		
+
 
 		<section class="py-5">
 			<div class="container px-5">
@@ -79,17 +79,19 @@
 								</div>
 							</form>
 							<!-- <hr class="divider mt-5"> -->
-							<div class="d-grid mt-4">
+							<!-- <div class="d-grid mt-4">
 								<a href="javascript:kakaoLogin()"> <img
 									src="./Resources/kakao_login_large_wide.png"
 									class="rounded-pill" style="width: 100%;" alt="카카오로 로그인하기">
 								</a>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
+		<%@ include file="/WEB-INF/layout/footer.jsp"%>
+
 		<!-- Bootstrap core JS-->
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

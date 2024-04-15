@@ -134,8 +134,8 @@
 														class="nickname_text">${ user.nickname }</span>
 													</th>
 													<th>
-														<button class="editButton btn btn-dark" data-field="nickname"
-															data-action="edit">수정</button>
+														<button class="editButton btn btn-dark"
+															data-field="nickname" data-action="edit">수정</button>
 													</th>
 												</tr>
 												<tr>
@@ -147,8 +147,8 @@
 														class="phonenumber_text">${ user.phonenumber }</span>
 													</th>
 													<th>
-														<button class="editButton btn btn-dark" data-field="phonenumber"
-															data-action="edit">수정</button>
+														<button class="editButton btn btn-dark"
+															data-field="phonenumber" data-action="edit">수정</button>
 													</th>
 												</tr>
 												<tr>
@@ -171,8 +171,33 @@
 													</th>
 													<th>
 
-														<button class="editButton btn btn-dark" data-field="address"
-															data-action="edit">수정</button>
+														<button class="editButton btn btn-dark"
+															data-field="address" data-action="edit">수정</button>
+													</th>
+												</tr>
+												<tr>
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
+
+														<i class="fa-solid fa-droplet position-relative"
+														style="padding-right: 15px;"></i> <select
+														id="bloodTypeSelect" class="form-select">
+															<option value="null"
+																${user.bloodtype == '' ? 'selected' : ''}>혈액형
+													[선택안함]</option>
+															<option value="A"
+																${user.bloodtype == 'A' ? 'selected' : ''}>A형</option>
+															<option value="B"
+																${user.bloodtype == 'B' ? 'selected' : ''}>B형</option>
+															<option value="AB"
+																${user.bloodtype == 'AB' ? 'selected' : ''}>AB형</option>
+															<option value="O"
+																${user.bloodtype == 'O' ? 'selected' : ''}>O형</option>
+													</select>
+													</th>
+													<th>
+														<button class="editSelectButton btn btn-dark"
+															data-field="bloodtype" data-action="edit">수정</button>
 													</th>
 												</tr>
 												<tr>
@@ -181,7 +206,8 @@
 														<i class="fa-solid fa-child-reaching position-relative"
 														style="padding-right: 15px;"></i> <select id="mbtiSelect"
 														class="form-select"">
-															<option value="null" ${user.mbti == '' ? 'selected' : ''}>선택안함</option>
+															<option value="null" ${user.mbti == '' ? 'selected' : ''}>MBTI
+													[선택안함]</option>
 															<option value="ISTJ"
 																${user.mbti == 'ISTJ' ? 'selected' : ''}>ISTJ</option>
 															<option value="ISFJ"
@@ -217,35 +243,12 @@
 													</select>
 													</th>
 													<th>
-														<button class="editSelectButton btn btn-dark" data-field="mbti"
-															data-action="edit">수정</button>
+														<button class="editSelectButton btn btn-dark"
+															data-field="mbti" data-action="edit">수정</button>
 													</th>
 												</tr>
 
-												<tr>
-													<th scope="row"
-														style="margin-left: 15px; display: flex; align-items: center;">
-
-														<i class="fa-solid fa-droplet position-relative"
-														style="padding-right: 15px;"></i> <select
-														id="bloodTypeSelect" class="form-select">
-															<option value="null"
-																${user.bloodtype == '' ? 'selected' : ''}>선택안함</option>
-															<option value="A"
-																${user.bloodtype == 'A' ? 'selected' : ''}>A형</option>
-															<option value="B"
-																${user.bloodtype == 'B' ? 'selected' : ''}>B형</option>
-															<option value="AB"
-																${user.bloodtype == 'AB' ? 'selected' : ''}>AB형</option>
-															<option value="O"
-																${user.bloodtype == 'O' ? 'selected' : ''}>O형</option>
-													</select>
-													</th>
-													<th>
-														<button class="editSelectButton btn btn-dark" data-field="bloodtype"
-															data-action="edit">수정</button>
-													</th>
-												</tr>
+												
 
 											</table>
 										</div>
@@ -258,6 +261,7 @@
 			</div>
 		</section>
 	</main>
+	<%@ include file="/WEB-INF/layout/footer.jsp"%>
 
 	<!-- 수정 모달 -->
 	<div id="editModal" class="modal">

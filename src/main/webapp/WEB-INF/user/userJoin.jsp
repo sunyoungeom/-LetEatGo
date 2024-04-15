@@ -42,25 +42,34 @@
 	color: red;
 }
 
-.form-group {
+/* .form-group {
 	display: flex;
 	align-items: center; /* 세로 중앙 정렬 */
-	position: relative;
-	padding: 2px;
-}
+position
 
-.form-group input {
-	flex-grow: 1; /* 입력 필드가 남은 공간을 모두 차지하도록 설정 */
-	height: 50px; /* 입력 필드 높이 조정 */
-}
 
-.form-group i {
-	position: absolute;
-	left: 15px;
-	top: 50%;
-	transform: translateY(-50%);
-	z-index: 5;
+:
+
+ 
+
+relative
+
+
+;
+padding
+
+
+:
+
+ 
+
+2px
+
+
+;
 }
+*
+/
 </style>
 </head>
 
@@ -84,6 +93,7 @@
 								<div class="">
 									<!-- <div class="border rounded"> -->
 									<form id="userForm" method="post">
+										<h4>아이디 및 비밀번호</h4>
 										<!-- 아이디 입력 -->
 										<div class="form-group position-relative"
 											style="padding: 2px;">
@@ -119,7 +129,8 @@
 										</div>
 										<div class="mt-n1" id="idCheckDuplicateMessage"></div>
 										<div class="mt-n1" id="passwordMatchMessage"></div>
-										필수사항
+										<br>
+										<h4>필수사항</h4>
 										<!-- 이름 입력 -->
 										<div class="form-group position-relative"
 											style="padding: 2px;">
@@ -157,17 +168,6 @@
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
 
-
-										<!-- 	<div class="form-group position-relative"
-											style="padding: 2px;">
-											<input class="form-control ps-5" style="height: 50px;"
-												id="identifynumber" name="identifynumber" type="text"
-												placeholder="주민번호" data-sb-validations="required">
-											<div class="invalid-feedback"
-												data-sb-feedback="name:required">A name is required.</div>
-											<i class="fa-regular fa-id-card position-absolute"
-												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
-										</div> -->
 										<!-- 전화번호 입력 -->
 										<div class="form-group position-relative"
 											style="padding: 2px;">
@@ -181,19 +181,24 @@
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
 
-
 										<!-- 주소 입력 -->
 										<div class="form-group position-relative"
 											style="padding: 2px;">
-											<input class="form-control ps-5" style="height: 50px;"
+											<input class="form-control ps-5 pe-5" style="height: 50px;"
 												id="address" name="address" type="text" placeholder="주소"
 												data-sb-validations="required" readonly>
+											<button type="button"
+												class="btn btn-default position-absolute"
+												onclick="goPopup()"
+												style="top: 50%; right: 10px; transform: translateY(-50%);">
+												<i class="fa-solid fa-search"></i>
+											</button>
+											<i class="fa-solid fa-location-dot position-absolute"
+												style="top: 50%; left: 15px; transform: translateY(-50%);"></i>
 											<div class="invalid-feedback"
 												data-sb-feedback="name:required">A name is required.</div>
-											<i class="fa-solid fa-location-dot position-absolute"
-												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
-										<input type="button" onclick="goPopup()" value="주소찾기">
+
 										<!-- 이메일 입력 -->
 										<div
 											style="position: relative; display: flex; align-items: center; height: 50px; padding: 2px;">
@@ -234,12 +239,14 @@
 										<div class="mt-n1" id="emailCheckDuplicateMessage"></div>
 
 
-										</br> 선택사항
+										</br>
+										<h4>선택사항</h4>
+
 										<!-- 혈액형 입력 -->
 										<div class="form-group position-relative"
 											style="padding: 2px;">
 											<select class="form-control"
-												style="height: 50px; appearance: none; background: #fff;"
+												style="height: 50px; appearance: none; padding-left: 45px; background: #fff;"
 												id="bloodtype" name="bloodtype">
 
 
@@ -258,7 +265,7 @@
 										<div class="form-group position-relative"
 											style="padding: 2px;">
 											<select class="form-control"
-												style="height: 50px; appearance: none; background: #fff;"
+												style="height: 50px; appearance: none; padding-left: 45px; background: #fff;"
 												id="mbti" name="mbti">
 												<option value="null" ${user.mbti == '' ? 'selected' : ''}>MBTI
 													[선택안함]</option>
@@ -294,12 +301,13 @@
 													${user.mbti == 'ENFJ' ? 'selected' : ''}>ENFJ</option>
 												<option value="ENTJ"
 													${user.mbti == 'ENTJ' ? 'selected' : ''}>ENTJ</option>
-											</select> <i class="fa-solid fa-droplet position-absolute"
+											</select> <i class="fa-solid fa-child-reaching position-absolute"
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
 										<!-- 사진 입력 -->
+									<div style="display: none;">
 										<div class="form-group position-relative"
-											style="padding: 2px;">
+											style="padding: 2px; display: none;">
 											<input class="form-control ps-5"
 												style="height: 50px; opacity: 0; width: 100%; cursor: pointer;"
 												id="profilePhoto" name="profilePhotoPath" type="file"
@@ -314,19 +322,19 @@
 											<div class="invalid-feedback"
 												style="position: absolute; top: 55px;">A profile photo
 												is required.</div>
-										</div>
+										
+								</div>
 									</form>
 									<form id="uploadForm" enctype="multipart/form-data">
-										<!-- 사용자 ID, 실제 사용 시 해당 사용자의 ID로 설정해야 합니다. -->
+										사용자 ID, 실제 사용 시 해당 사용자의 ID로 설정해야 합니다.
 										<input type="file" name="file" required>
 										<button type="submit">파일 업로드</button>
-									</form>
+									</div>
 
-
-									<!-- '가입' 버튼 -->
-									<button type="button" value="확인"
-										style="height: 50px; padding: 2px;"
-										class="btn btn-dark form-control" onclick="submitForm()">가입</button>
+										<!-- '가입' 버튼 -->
+										<button type="button" value="확인"
+											style="height: 50px; padding: 2px;"
+											class="btn btn-dark form-control" onclick="submitForm()">가입</button>
 								</div>
 
 							</div>
@@ -337,6 +345,7 @@
 		</section>
 	</main>
 
+	<%@ include file="/WEB-INF/layout/footer.jsp"%>
 
 
 
@@ -348,7 +357,11 @@
 </body>
 
 <script>
-document.getElementById('id').addEventListener('input', function() {
+
+
+
+//입력 필드에 이벤트 리스너 추가
+document.getElementById('id').addEventListener('input', debounce(function() {
     var idInput = document.getElementById('id');
     var idCheckMessage = document.getElementById('idCheckDuplicateMessage');
     var idRegex = /^[a-zA-Z0-9]{5,15}$/; // 영문자와 숫자만 허용, 5-15자 길이
@@ -359,10 +372,11 @@ document.getElementById('id').addEventListener('input', function() {
         idCheckMessage.style.color = 'red';
     } else {
         idCheckMessage.textContent = '';
-        // 서버에 아이디 중복 검사 요청
-        checkIdDuplicate(idInput.value);
+        // 유효성 검사를 통과한 경우 서버에 중복 검사 요청
+        checkDuplicate('id');
     }
-});
+}, 500));
+
 
 document.getElementById('phonenumber').addEventListener('input', function(e) {
     var input = e.target;
@@ -455,19 +469,20 @@ function checkDuplicate(field) {
             duplicateMessage.textContent = "이미 사용 중인 " + field + "입니다.";
             duplicateMessage.classList.remove('message-success');
             duplicateMessage.classList.add('message-error');
-            // 사용 중인 경우 포커스 잃어도 메시지 유지
-            inputElement.onblur = null;
+            duplicateMessage.style.color = 'red'; // 중복인 경우 빨간색 표시
+            inputElement.onblur = null; // 중복인 경우 포커스 잃어도 메시지 유지
             sendVerificationButton.disabled = true; // 중복인 경우 인증 버튼 비활성화
         } else {
             duplicateMessage.textContent = "사용 가능한 " + field + "입니다.";
             duplicateMessage.classList.remove('message-error');
             duplicateMessage.classList.add('message-success');
-         // 사용 가능한 경우 포커스 잃으면 메시지 삭제
+            duplicateMessage.style.color = 'green'; // 사용 가능한 경우 녹색으로 표시
             inputElement.onblur = function() {
                 duplicateMessage.textContent = '';
+                duplicateMessage.style.color = ''; // 색상 초기화
             };
             if (field === 'email') {
-            	sendVerificationButton.disabled = false; // 중복이 아닌 경우에만 인증 버튼 활성화
+                sendVerificationButton.disabled = false; // 중복이 아닌 경우에만 인증 버튼 활성화
             }
         }
     })
@@ -477,8 +492,8 @@ function checkDuplicate(field) {
 }
 
 // 각 입력 필드에 대해 디바운스된 이벤트 핸들러 추가
-document.getElementById('id').addEventListener('input', debounce(() => checkDuplicate('id'), 500));
-document.getElementById('nickname').addEventListener('input', debounce(() => checkDuplicate('nickname'), 500));
+/* document.getElementById('id').addEventListener('input', debounce(() => checkDuplicate('id'), 500));
+ */document.getElementById('nickname').addEventListener('input', debounce(() => checkDuplicate('nickname'), 500));
 document.getElementById('phonenumber').addEventListener('input', debounce(() => checkDuplicate('phonenumber'), 500));
 
 document.getElementById('email').addEventListener('input', debounce(() => checkDuplicate('email'), 500));

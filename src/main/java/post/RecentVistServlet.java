@@ -35,8 +35,10 @@ public class RecentVistServlet extends HttpServlet {
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<Post> viewDesc = postService.getPostsOrderByViewDesc();
+
 		System.out.println(viewDesc);
 		List<Post> top5Posts = viewDesc.subList(0, Math.max(5, viewDesc.size())); 
+
 		System.out.println(top5Posts);
 		ServletUtil.sendJsonBody(top5Posts, resp);
 

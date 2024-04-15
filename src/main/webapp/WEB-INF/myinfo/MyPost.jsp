@@ -220,7 +220,8 @@
         });
     }
 
- 
+    <%@ include file="/WEB-INF/layout/footer.jsp" %>
+
 </script>
 <!-- 페이지 번호 -->
 <script src="/js/pagination.js"></script>

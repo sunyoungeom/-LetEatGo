@@ -207,6 +207,7 @@
             displayPagination(data.totalPages, page); // 페이지네이션 표시
         });
     }
+    <%@ include file="/WEB-INF/layout/footer.jsp" %>
 
 </script>
 <!-- 페이지 번호 -->
