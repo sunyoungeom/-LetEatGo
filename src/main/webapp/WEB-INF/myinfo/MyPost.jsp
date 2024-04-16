@@ -157,7 +157,7 @@
       }
     function loadPosts(page) {
     	
-        fetch(`http://localhost:8080/post/mypostlist?page=${page}&pagePer=${itemsPerPage}`, {
+        fetch(`/post/mypostlist?page=${page}&pagePer=${itemsPerPage}`, {
             method: 'POST'
         })
         .then((resp) => resp.json())
@@ -198,7 +198,7 @@
                 deleteButton.classList.add("btn", "btn-danger", "btn-small", "mx-1");
                 deleteButton.addEventListener("click", () => {
                     // 삭제 기능 수행
-                       fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
+                       fetch(`/post/deletePost?postId=${postId}`, {
 	        	method: 'DELETE'
 	        })
 	        .then(response => {

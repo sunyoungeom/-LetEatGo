@@ -248,7 +248,7 @@
 	} */
 	
 	
-	fetch(`http://localhost:8080/person/personinfo?userid=${userid}`, {
+	fetch(`/person/personinfo?userid=${userid}`, {
 	    method: 'PUT'
 	})
 	.then((resp) => resp.json())
@@ -293,7 +293,7 @@
         // 진행중 라디오 버튼이 선택되어 있는 경우 loadPosts 함수 호출
         if (progressingRadio.checked) {
             function loadPosts(page) {
-        	    fetch(`http://localhost:8080/person/activepostlist?page=${page}&pagePer=${itemsPerPage}&userid=${userid}`, {
+        	    fetch(`/person/activepostlist?page=${page}&pagePer=${itemsPerPage}&userid=${userid}`, {
         	        method: 'POST'
         	    })
         	    .then((resp) => resp.json())
@@ -329,7 +329,7 @@
         	            
         	            // 클릭 이벤트 추가하여 상세 페이지로 이동
         	            tdtitle.addEventListener("click", () => {
-        	                window.location.href = `http://localhost:8080/post/detail?post_Id=${element.post_Id}`;
+        	                window.location.href = `/post/detail?post_Id=${element.post_Id}`;
         	            });
         	            
         	            contenttr.appendChild(tdId);
@@ -352,7 +352,7 @@
 	progressingRadio.addEventListener("change", () => {
 	    if (progressingRadio.checked) {
 		 function loadPosts(page) {
-     	    fetch(`http://localhost:8080/person/activepostlist?page=${page}&pagePer=${itemsPerPage}&userid=${userid}`, {
+     	    fetch(`/person/activepostlist?page=${page}&pagePer=${itemsPerPage}&userid=${userid}`, {
      	        method: 'POST'
      	    })
      	    .then((resp) => resp.json())
@@ -388,7 +388,7 @@
      	            
      	            // 클릭 이벤트 추가하여 상세 페이지로 이동
      	            tdtitle.addEventListener("click", () => {
-     	                window.location.href = `http://localhost:8080/post/detail?post_Id=${element.post_Id}`;
+     	                window.location.href = `/post/detail?post_Id=${element.post_Id}`;
      	            });
      	            
      	            contenttr.appendChild(tdId);
@@ -410,7 +410,7 @@
 	completedRadio.addEventListener("change", () => {
 		
 	    if (completedRadio.checked) {
-     	    fetch(`http://localhost:8080/person/completedpostlist?page=${page}&pagePer=${itemsPerPage}&userid=${userid}`, {
+     	    fetch(`/person/completedpostlist?page=${page}&pagePer=${itemsPerPage}&userid=${userid}`, {
      	        method: 'POST'
      	    })
      	    .then((resp) => resp.json())
@@ -446,7 +446,7 @@
      	            
      	            // 클릭 이벤트 추가하여 상세 페이지로 이동
      	            tdtitle.addEventListener("click", () => {
-     	                window.location.href = `http://localhost:8080/post/detail?post_Id=${element.post_Id}`;
+     	                window.location.href = `/post/detail?post_Id=${element.post_Id}`;
      	            });
      	            
      	            contenttr.appendChild(tdId);

@@ -155,7 +155,7 @@
         return formattedDate;
       }
     function loadPosts(page) {
-        fetch(`http://localhost:8080/review/list?page=${page}&pagePer=${itemsPerPage}`, {
+        fetch(`/review/list?page=${page}&pagePer=${itemsPerPage}`, {
             method: 'POST'
         })
         .then((resp) => resp.json())
@@ -192,7 +192,7 @@
                 deleteButton.textContent = "삭제";
                 deleteButton.classList.add("btn", "btn-danger", "btn-small", "mx-1");
                 deleteButton.addEventListener("click", () => {
-                    fetch(`http://localhost:8080/post/deleteReview/${reviewId}`, {
+                    fetch(`/post/deleteReview/${reviewId}`, {
                         method: 'DELETE'
                     })
                     .then(response => {
