@@ -157,10 +157,10 @@ padding
 										<div class="form-group position-relative"
 											style="padding: 2px;">
 											<input class="form-control ps-5" style="height: 50px;"
-												id="identifynumber" type="text"
+												 id="identifynumber" name="identifynumber" type="text"
 												placeholder="주민번호 (예: 040101-3)"
 												data-sb-validations="required"> <input type="hidden"
-												id="formattedIdentifynumber" name="identifynumber">
+												id="formattedIdentifynumber">
 											<div class="invalid-feedback"
 												data-sb-feedback="identifynumber:required">주민번호는
 												필수입니다.</div>
@@ -305,7 +305,7 @@ padding
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
 										<!-- 사진 입력 -->
-									<div style="display: none;">
+								<!-- 	<div style="display: none;">
 										<div class="form-group position-relative"
 											style="padding: 2px; display: none;">
 											<input class="form-control ps-5"
@@ -329,7 +329,7 @@ padding
 										사용자 ID, 실제 사용 시 해당 사용자의 ID로 설정해야 합니다.
 										<input type="file" name="file" required>
 										<button type="submit">파일 업로드</button>
-									</div>
+									</div> -->
 
 										<!-- '가입' 버튼 -->
 										<button type="button" value="확인"
@@ -411,14 +411,14 @@ document.getElementById('identifynumber').addEventListener('input', function (e)
 });
 
 
-function updateLabel() {
+/* function updateLabel() {
     var input = document.getElementById('profilePhoto');
     var fileLabel = document.getElementById('profilePhotoPathLabel');
     var fileName = input.files.length > 0 ? input.files[0].name : '프로필 사진 추가';
 
     profilePhotoPathLabel.textContent = fileName; // 파일 이름을 레이블로 설정
 }
-
+ */
 
 //디바운싱 함수
 function debounce(func, wait) {
@@ -611,14 +611,14 @@ function sendVerification() {
 function submitForm() {
     var form = document.getElementById("userForm");
     var formData = new FormData(form);
-    var profilePhotoPath = document.getElementById('profilePhotoPathLabel').textContent;
-    var jsonObject = {};
+/*     var profilePhotoPath = document.getElementById('profilePhotoPathLabel').textContent;
+ */    var jsonObject = {};
 
     var email = document.getElementById('email').value;
     var emailDomain = document.getElementById('emailDomainSelect').value || '';
     var fullEmail = email + emailDomain;
     console.log("Email Domain: ", emailDomain); 
-    uploadFile();
+  /*   uploadFile(); */
     formData.forEach(function(value, key) {
         jsonObject[key] = value;
     });
@@ -626,7 +626,6 @@ function submitForm() {
     jsonObject["email"] = fullEmail;
     jsonObject["attendance"] = 0;
     jsonObject["join_date"] = new Date().toISOString().slice(0,10);
-    jsonObject["profilePhotoPath"] = profilePhotoPath;
     
     var json = JSON.stringify(jsonObject);
 
@@ -640,7 +639,7 @@ function submitForm() {
     .then(response => {
         if (response.ok) {
             alert("회원가입이 완료되었습니다.");
-            uploadFile(); 
+           /*  uploadFile();  */
            /*  window.location.href = '/userJoinResult.jsp'; */
             window.location.href = '/join/end';
         } else {
@@ -659,7 +658,7 @@ function submitForm() {
     })
     }
     
- function uploadFile() {
+/*  function uploadFile() {
     var form = document.getElementById('uploadForm');
     var formData = new FormData(form);
 
@@ -672,7 +671,7 @@ function submitForm() {
         console.log('File upload successful:', data);
     })
     .catch(error => console.error('File upload error:', error));
-}
+} */
  
 /*  document.getElementById('uploadForm').addEventListener('submit', function(event) {
      event.preventDefault(); // 폼의 기본 제출 막기

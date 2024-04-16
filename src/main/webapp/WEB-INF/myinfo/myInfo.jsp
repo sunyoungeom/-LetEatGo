@@ -130,9 +130,20 @@
 												<tr>
 													<th scope="row"
 														style="margin-left: 15px; display: flex; align-items: center;">
+														<i class="fa-solid fa-envelope position-relative"
+														style="padding-right: 15px;"></i> <span class="email_text">이메일: ${ user.email }</span>
+													</th>
+													<th>
+														<button class="editButton btn btn-dark" data-field="email"
+															data-action="edit" style="display: none">수정</button>
+													</th>
+												</tr>
+												<tr>
+													<th scope="row"
+														style="margin-left: 15px; display: flex; align-items: center;">
 														<i class="fa-solid fa-comment-dots "
 														style="padding-right: 15px;"></i> <span
-														class="nickname_text">${ user.nickname }</span>
+														class="nickname_text">닉네임: ${ user.nickname }</span>
 													</th>
 													<th>
 														<button class="editButton btn btn-dark"
@@ -145,7 +156,7 @@
 														<i
 														class="fa-solid fa-mobile-screen-button position-relative"
 														style="padding-right: 15px;"></i> <span
-														class="phonenumber_text">${ user.phonenumber }</span>
+														class="phonenumber_text">전화번호: ${ user.phonenumber }</span>
 													</th>
 													<th>
 														<button class="editButton btn btn-dark"
@@ -155,20 +166,9 @@
 												<tr>
 													<th scope="row"
 														style="margin-left: 15px; display: flex; align-items: center;">
-														<i class="fa-solid fa-envelope position-relative"
-														style="padding-right: 15px;"></i> <span class="email_text">${ user.email }</span>
-													</th>
-													<th>
-														<button class="editButton btn btn-dark" data-field="email"
-															data-action="edit">수정</button>
-													</th>
-												</tr>
-												<tr>
-													<th scope="row"
-														style="margin-left: 15px; display: flex; align-items: center;">
 														<i class="fa-solid fa-location-dot position-relative"
 														style="padding-right: 15px;"></i> <span
-														class="address_text">${ user.address }</span>
+														class="address_text">주소: ${ user.address }</span>
 													</th>
 													<th>
 

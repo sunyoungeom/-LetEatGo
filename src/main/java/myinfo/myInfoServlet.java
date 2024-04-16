@@ -27,6 +27,7 @@ public class myInfoServlet extends HttpServlet {
 		if (detail != null) {
 			if (detail.equals("profile")) {
 				// 사용자 세션에서 주민번호 가져오기
+				System.out.println("fsdfsdfsdfsd");
 				HttpSession session = req.getSession();
 				User user = (User) session.getAttribute("user"); // User 객체는 세션에 저장된 사용자 정보를 가정
 				String identifyNumber = user.getIdentifynumber(); // 사용자의 주민번호

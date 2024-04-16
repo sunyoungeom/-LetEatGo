@@ -9,8 +9,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 	// 유저 등록
-	@Insert("INSERT INTO users (id, password, email, name, nickname, identifynumber, phonenumber, address, join_date, attendance, mbti, bloodtype, profile_photo_path) "
-			+ "VALUES (#{id}, #{password}, #{email}, #{name}, #{nickname}, #{identifynumber}, #{phonenumber}, #{address}, #{join_date}, #{attendance}, #{mbti}, #{bloodtype}, #{profilePhotoPath})")
+	@Insert("INSERT INTO users (id, password, email, name, nickname, identifynumber, phonenumber, address, join_date, attendance, mbti, bloodtype) "
+			+ "VALUES (#{id}, #{password}, #{email}, #{name}, #{nickname}, #{identifynumber}, #{phonenumber}, #{address}, #{join_date}, #{attendance}, #{mbti}, #{bloodtype})")
 	int addUser(User user);
 
 	// 중복 검사
@@ -35,8 +35,7 @@ public interface UserMapper {
 			@Result(property = "address", column = "address"), @Result(property = "mbti", column = "mbti"),
 			@Result(property = "bloodtype", column = "bloodtype"),
 			@Result(property = "identifynumber", column = "identifynumber"),
-			@Result(property = "phonenumber", column = "phonenumber"),
-			@Result(property = "profilePhotoPath", column = "profilePhotoPath") })
+			@Result(property = "phonenumber", column = "phonenumber")})
 	List<User> getAllUsers();
 
 	// 유저 삭제
