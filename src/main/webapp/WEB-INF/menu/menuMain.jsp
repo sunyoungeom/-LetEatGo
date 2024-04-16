@@ -224,7 +224,7 @@
     loadPosts(currentPage);
 	//최근 게시물 가져오기
     function loadPosts(page) {
-      fetch(`http://localhost:8080/recent?page=${page}&pagePer=${itemsPerPage}`, {
+      fetch(`/recent?page=${page}&pagePer=${itemsPerPage}`, {
         method: "PUT",
       })
         .then((resp) => resp.json())
@@ -301,7 +301,7 @@
 
     // 검색 이벤트 리스너 추가
 
-    fetch("http://localhost:8080/menu/recommand")
+    fetch("/menu/recommand")
       .then((resp) => resp.json())
       .then((data) => {
         // 첫 번째 .box 요소만 선택합니다.
