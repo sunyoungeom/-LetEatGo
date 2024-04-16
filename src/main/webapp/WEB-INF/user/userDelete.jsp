@@ -123,7 +123,7 @@ to {
 
 								<!-- Password input-->
 								<div class="form-floating mb-3">
-									<input class="form-control form-control-sm" name="password" type="password" 
+									<input class="form-control form-control-sm" id="password" name="password" type="password" 
 										placeholder="name@example.com"
 										data-sb-validations="required,email" /> <label for="email">비밀번호</label>
 									<div class="invalid-feedback" data-sb-feedback="email:required">An
