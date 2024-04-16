@@ -457,16 +457,14 @@
 	    })
 	    .then(response => {
 	        if (response.ok) {
-	            alert("인증번호가 일치합니다.");
+	           alert("인증번호가 일치합니다.");
 	            closeModal('emailVerificationModal');  // 모달 닫기
 
 	            // 편집 모달에 입력값 설정 및 모달 오픈
-	            document.getElementById('editFieldDisplay').textContent = 'email';
-	            document.getElementById('editValue').value = newEmail;
-	            document.getElementById('editModal').style.display = 'block';
-
-	            // 편집 모달 제출을 자동으로 실행하고 싶다면 아래 주석을 해제
-	            document.getElementById('editForm').submit();
+            document.getElementById('editFieldDisplay').textContent = 'email';
+            document.getElementById('editValue').value = newEmail;
+            document.getElementById('editModal').style.display = 'block';
+            document.getElementById('editForm').submit(); // 자동 폼 제출
 	        } else {
 	            // 오류 응답 처리
 	            console.error('서버 오류:', response.statusText);
