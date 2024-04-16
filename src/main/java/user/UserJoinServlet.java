@@ -92,7 +92,7 @@ public class UserJoinServlet extends HttpServlet {
 					response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
 
 					objectMapper.writeValue(response.getWriter(), errors);
-					System.out.println("유효성 오류: " + errors);
+//					System.out.println("유효성 오류: " + errors);
 					return;
 				}
 

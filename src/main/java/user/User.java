@@ -27,5 +27,5 @@ public class User {
 	private String bloodtype;
 	private String identifynumber;
 	private String phonenumber;
-	private String profilePhotoPath;
+//	private String profilePhotoPath;
 }
