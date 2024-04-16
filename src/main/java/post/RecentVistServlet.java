@@ -32,20 +32,20 @@ public class RecentVistServlet extends HttpServlet {
 		Object attribute = req.getSession().getAttribute("user");
 		User user = (User) attribute;
 		int writeuser_id = user.getUser_id();
-		System.out.println("유저값 확인: user");
 
 		Map<String, Object> postListBlogList = new HashMap<String, Object>();
 		
 		List<Post> placeByIdList = postService.getPlaceById(writeuser_id);
 		List<List<SearchResult>> blogList = new ArrayList<List<SearchResult>>();
-
+		
 		
 		for(Post p : placeByIdList) {
 			String keyword = p.getPlace();
 			List<SearchResult> list = new ArrayList<SearchResult>(); 
-			list = SearchAPI.searchBlogAsJson(keyword);
-			
-			blogList.add(list);
+			if(keyword != null && !keyword.isEmpty()) {
+				list = SearchAPI.searchBlogAsJson(keyword);
+				blogList.add(list);
+			}
 		}
 		
 		postListBlogList.put("placeByIdList", placeByIdList);

@@ -172,7 +172,7 @@
                 let contenttr = document.createElement("tr");
                 let tdTitle = document.createElement("td");
                 let tdResistDate = document.createElement("td");
-                let tdActions = document.createElement("td"); // 수정 및 삭제 버튼을 포함할 셀
+               // let tdActions = document.createElement("td"); // 수정 및 삭제 버튼을 포함할 셀
                 
                 tdTitle.innerText = element.title.length > maxTitleLength ? element.title.substring(0, maxTitleLength) + '...' : element.title;
                 tdResistDate.innerText = formattedDate(element);
@@ -181,7 +181,7 @@
                 contenttr.addEventListener("click", () => {
                     window.location.href = `/post/detail?post_Id=${element.post_Id}`;
                 });
-                
+              /*   
                 // 수정 버튼 생성
                 let editButton = document.createElement("button");
                 editButton.textContent = "수정";
@@ -211,15 +211,15 @@
                 }
             })
                     console.log(`삭제 버튼 클릭 - 게시물 ID: ${element.post_Id}`);
-                });
+                }); */
                 
                 // 버튼을 셀에 추가
-                tdActions.appendChild(editButton);
-                tdActions.appendChild(deleteButton);
+               // tdActions.appendChild(editButton);
+               // tdActions.appendChild(deleteButton);
                 
                 contenttr.appendChild(tdTitle);
                 contenttr.appendChild(tdResistDate);
-                contenttr.appendChild(tdActions); // 수정 및 삭제 버튼을 포함한 셀 추가
+                //contenttr.appendChild(tdActions); // 수정 및 삭제 버튼을 포함한 셀 추가
                 tbody.appendChild(contenttr);
             });
             
