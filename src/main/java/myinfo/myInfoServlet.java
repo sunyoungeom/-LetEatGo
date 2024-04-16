@@ -46,7 +46,6 @@ public class myInfoServlet extends HttpServlet {
 
 			else {
 				// 처리할 액션이 없는 경우 예외 처리
-				System.out.println("fsdfsdfsd");
 				resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter value");
 			}
 		} else {
@@ -60,12 +59,9 @@ public class myInfoServlet extends HttpServlet {
 		String body = ServletUtil.readBody(req);
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode jsonNode = mapper.readTree(body);
-		System.out.println(body);
 
 		String field = jsonNode.get("field").asText();
 		String value = jsonNode.get("value").asText();
-		System.out.println(field);
-		System.out.println(value);
 
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("user");

@@ -317,16 +317,12 @@
 								</form>
 							</div>
 						</div>
-
 						<br />
-
-
-
 						<div class="row">
 							<div class="container">
 								<hr>
 								<br>
-								<h3>최근 게시물</h3>
+								<h3>조건별 사람 찾기</h3>
 								<div class="border p-3 mb-2" style="border-radius: 10px;">
 									<div class="d-flex justify-content-between">
 										<div class="d-flex align-items-center">
@@ -367,7 +363,7 @@
 
 
 									<div id="personList">
-										<table id="personTable">
+										<table class="table" id="personTable">
 											<thead>
 												<tr>
 													<th>Nickname</th>
