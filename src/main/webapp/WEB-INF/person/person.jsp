@@ -302,7 +302,7 @@
 									style="text-decoration: none; color: #343a40;">
 									<div class="border p-3 mb-2 rounded-4"
 										style="height: 70px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
-										<h4 class="fw-bolder" style="margin-bottom: 0px;">최근 만난
+										<h4 class="fw-bolder" style="margin-bottom: 0px;">마지막에 만난
 											사람</h4>
 									</div>
 								</a>
@@ -326,7 +326,6 @@
 								<div class="border p-3 mb-2" style="border-radius: 10px;">
 									<div class="d-flex justify-content-between">
 										<div class="d-flex align-items-center">
-											<button class="btn btn-primary me-3">셔플</button>
 											<div class="form-check me-3">
 												<!-- 여기에 me-3 클래스 추가 -->
 												<input class="form-check-input" type="radio" name="option"

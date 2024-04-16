@@ -51,7 +51,7 @@
 				<!-- 가운데 정렬을 위한 클래스 적용 -->
 				<div class="col-10">
 					<!-- 6칸 설정 -->
-					<h3>Table 1</h3>
+					<h3>후기</h3>
 					<table class="table table-hover table-bordered" id="postTable">
 						<thead class="table-light">
 							<tr>
@@ -70,7 +70,6 @@
 							</ul>
 					    	<!-- &nbsp;&nbsp;&nbsp; -->
 							<form action="/post/createPost">
-					        	<button type="submit" name="submit" class="btn btn-primary">게시글 작성</button>
 					    	</form>
 						</nav>
 				</div>
