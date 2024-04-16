@@ -23,8 +23,8 @@ public class RecentVistServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		req.getRequestDispatcher("/WEB-INF/post/recent_vist.jsp").forward(req, resp);
+			System.out.println("겟방식 확인: 실행여부");
+			req.getRequestDispatcher("/WEB-INF/post/recent_vist.jsp").forward(req, resp);
 	}
 
 	@Override
@@ -32,6 +32,7 @@ public class RecentVistServlet extends HttpServlet {
 		Object attribute = req.getSession().getAttribute("user");
 		User user = (User) attribute;
 		int writeuser_id = user.getUser_id();
+		System.out.println("유저값 확인: user");
 
 		Map<String, Object> postListBlogList = new HashMap<String, Object>();
 		
