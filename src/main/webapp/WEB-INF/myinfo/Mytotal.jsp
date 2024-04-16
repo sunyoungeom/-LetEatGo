@@ -182,7 +182,7 @@
     loadreviews(currentPage);
     
     function loadreviews(page) {
-        fetch(`http://localhost:8080/review/list?page=${page}&pagePer=${itemsPerPage}`, {
+        fetch(`/review/list?page=${page}&pagePer=${itemsPerPage}`, {
             method: 'POST'
         })
         .then((resp) => resp.json())
@@ -237,7 +237,7 @@
     }
     function loadPosts(page) {
     	
-        fetch(`http://localhost:8080/post/mypostlist?page=${page}&pagePer=${itemsPerPage}`, {
+        fetch(`/post/mypostlist?page=${page}&pagePer=${itemsPerPage}`, {
             method: 'POST'
         })
         .then((resp) => resp.json())

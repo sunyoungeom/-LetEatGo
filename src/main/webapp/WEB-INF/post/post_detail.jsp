@@ -278,7 +278,7 @@ h1 {
 
         return formattedDate;
       }
-    fetch(`http://localhost:8080/post/detail?post_Id=${postId}`, {
+    fetch(`/post/detail?post_Id=${postId}`, {
         method: 'POST',
     })
     .then(response => response.json())
@@ -351,7 +351,7 @@ tag.innerText = formattedPostTag;
 		    deleteButton.innerText = "게시물 삭제";
 		    deleteButton.addEventListener("click", () => {
 		        // 삭제 작업을 수행하는 함수 호출 또는 해당 작업을 수행하는 코드를 여기에 추가
-		        fetch(`http://localhost:8080/post/deletePost?postId=${postId}`, {
+		        fetch(`/post/deletePost?postId=${postId}`, {
 		        	method: 'DELETE'
 		        })
 		        .then(response => {
@@ -454,7 +454,7 @@ tag.innerText = formattedPostTag;
                 const reviewId = saveButton.dataset.reviewId;
 
              // 서버에 수정된 리뷰 내용과 평점을 전송하는 코드
-                fetch(`http://localhost:8080/post/updateReview/${reviewId}`, {
+                fetch(`/post/updateReview/${reviewId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -489,7 +489,7 @@ tag.innerText = formattedPostTag;
                 const reviewId = event.target.dataset.reviewId; // 클릭된 버튼의 데이터 속성인 data-reviewId 가져오기
 
                 // 서버에 삭제 요청을 보내는 코드
-                fetch(`http://localhost:8080/post/deleteReview/${reviewId}`, {
+                fetch(`/post/deleteReview/${reviewId}`, {
                     method: 'DELETE'
                 })
                 .then(response => {
@@ -541,7 +541,7 @@ tag.innerText = formattedPostTag;
                 console.log(writeUserId); // 사용자 ID 확인
                 
                 // 리뷰를 서버로 전송하는 코드 작성
-                return fetch(`http://localhost:8080/post/addReview`, {
+                return fetch(`/post/addReview`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -574,7 +574,7 @@ tag.innerText = formattedPostTag;
     // 사용자의 ID를 가져오는 함수
 function getUserId() {
     // 서버로부터 사용자의 ID를 가져오는 비동기 함수 호출
-    return fetch('http://localhost:8080/post/getUserId', {
+    return fetch('/post/getUserId', {
         method: 'POST' 
     })
 	  .then(response => response.json())

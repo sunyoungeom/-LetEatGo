@@ -138,7 +138,7 @@
       }
         
         
-	fetch("http://localhost:8080/recent", {
+	fetch("/recent", {
 	    method: 'POST'
 	})
 	.then((resp) => resp.json())

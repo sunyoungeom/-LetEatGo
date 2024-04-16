@@ -599,7 +599,7 @@ document.querySelector('.form-control').addEventListener('input', () => {
 
 	<script>
 	
-	fetch(`http://localhost:8080/person/totalpersoninfo`, {
+	fetch(`/person/totalpersoninfo`, {
 	    method: 'PUT'
 	})
 	.then((resp) => resp.json())
