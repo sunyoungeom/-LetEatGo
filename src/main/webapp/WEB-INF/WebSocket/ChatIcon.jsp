@@ -119,17 +119,16 @@
                             joinButton.innerText = "입장";
                             joinButton.className = "joinChatButton"; // 스타일 클래스 추가
                            	var chatWindow = null;
-                           	joinButton.addEventListener("click", function() {
-                           	    // 채팅방 입장 버튼을 클릭했을 때의 동작 구현
-                           	    var postId = element.post_Id; // 클릭된 contenttr에서 post_Id 가져오기
-                           	    if (!chatWindow || chatWindow.closed) {
-                           	        var chatWindowUrl = "/post/ChatWindow?post_Id=" + postId; // post_Id를 포함한 URL 생성
-                           	        chatWindow = window.open(chatWindowUrl, "" ,"width=386, height=564"); // 새 창으로 채팅창 열기
-                           	    } else {
-                           	        chatWindow.focus();
-                           	    }
-                           	});
-
+                            joinButton.addEventListener("click", function() {
+                                // 채팅방 입장 버튼을 클릭했을 때의 동작 구현
+                                var postId = element.post_Id; // 클릭된 contenttr에서 post_Id 가져오기
+                                if (!chatWindow || chatWindow.closed) {
+                              	 	var chatWindowUrl = "/post/ChatWindow?post_Id=" + postId; // post_Id를 포함한 URL 생성
+	                                window.open(chatWindowUrl, "" ,"width=386, height=564"); // 새 창으로 채팅창 열기
+                                } else {
+                                	chatWindow.focus();
+                                }
+                            });
 
                             tdButton.appendChild(joinButton); // 버튼을 td에 추가
 
