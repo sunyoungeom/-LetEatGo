@@ -299,7 +299,7 @@
       // postId 파라미터 값을 가져옵니다.
       const postId = urlParams.get('postId');
       
-      fetch(`http://localhost:8080/post/editpost?postId=${postId}`, {
+      fetch(`/post/editpost?postId=${postId}`, {
     	    method: 'PUT' 
     	})
     	.then((resp) => resp.json())
@@ -366,7 +366,7 @@
         mapDialog.showModal();
 
         const keywordinput = document.getElementById("keyword");
-        const apiURL = "http://localhost:8080/map/keyword";
+        const apiURL = "/map/keyword";
 
         var markers = [];
 
@@ -620,7 +620,7 @@
       openTagDialogBtn.addEventListener("click", openTagDialog);
 
       function openTagDialog(postTag) {
-        fetch("http://localhost:8080/tagform.html")
+        fetch("/tagform.html")
           .then((resp) => resp.text())
           .then((inner) => {
             dialogForm.innerHTML = inner;

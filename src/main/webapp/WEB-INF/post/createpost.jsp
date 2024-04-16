@@ -327,7 +327,7 @@ div {
         mapDialog.showModal();
 
         const keywordinput = document.getElementById("keyword");
-        const apiURL = "http://localhost:8080/map/keyword";
+        const apiURL = "/map/keyword";
 
         var markers = [];
 
@@ -579,7 +579,7 @@ div {
       openTagDialogBtn.addEventListener("click", openTagDialog);
 
       function openTagDialog(e) {
-        fetch("http://localhost:8080/tagform.html")
+        fetch("/tagform.html")
           .then((resp) => resp.text())
           .then((inner) => {
             dialogForm.innerHTML = inner;

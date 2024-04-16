@@ -74,7 +74,7 @@
 	console.log(index); // 이제 index 값인 3을 얻을 수 있습니다.
 	
 
-	fetch("http://localhost:8080/recent", {
+	fetch("/recent", {
 	    method: 'POST'
 	})
 	.then((resp) => resp.json())
@@ -111,7 +111,7 @@
     <script>
       // 사용자 주소기반으로 첫지도 위치 특정
       const keywordinput = document.getElementById("keyword");
-      const apiURL = "http://localhost:8080/map/keyword";
+      const apiURL = "/map/keyword";
 
       fetch(apiURL)
         .then((response) => response.text())

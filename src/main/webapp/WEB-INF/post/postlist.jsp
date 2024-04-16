@@ -102,7 +102,7 @@ function formattedDate(element) {
         return formattedDate;
       }
 function loadPosts(page) {
-    fetch(`http://localhost:8080/post/list?page=${page}&pagePer=${itemsPerPage}`, {
+    fetch(`/post/list?page=${page}&pagePer=${itemsPerPage}`, {
         method: 'POST'
     })
     .then((resp) => resp.json())
@@ -138,7 +138,7 @@ function loadPosts(page) {
             
             // 클릭 이벤트 추가하여 상세 페이지로 이동
             tdtitle.addEventListener("click", () => {
-                window.location.href = `http://localhost:8080/post/detail?post_Id=${element.post_Id}`;
+                window.location.href = `/post/detail?post_Id=${element.post_Id}`;
             });
             
             contenttr.appendChild(tdId);

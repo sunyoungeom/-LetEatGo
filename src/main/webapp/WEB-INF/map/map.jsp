@@ -293,7 +293,7 @@ prefix="c"%> <%@ page isELIgnored="true"%>
     <script>
       // 사용자 주소기반으로 첫지도 위치 특정
       const keywordinput = document.getElementById("keyword");
-      const apiURL = "http://localhost:8080/map/keyword";
+      const apiURL = "/map/keyword";
 
       fetch(apiURL)
         .then((response) => response.text())

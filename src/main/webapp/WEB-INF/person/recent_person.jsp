@@ -47,7 +47,7 @@
 	const postTable = document.getElementById("personTable");
 	const tbody = personTable.querySelector("tbody");
 	
-	fetch("http://localhost:8080/recent/person", {
+	fetch("/recent/person", {
         method: 'POST'
    	})
     .then((resp) => resp.json())
