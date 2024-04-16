@@ -39,11 +39,27 @@ public class PostService {
 		}
 	}
 	
+	public String getPlaceByPostId(int postId) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			return postMapper.getPlaceByPostId(postId);
+		}
+	}
+	
 	public List<Post> getPostsOrderByPostIdDesc (){
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
 
 			return postMapper.getPostsOrderByPostIdDesc();
+		}
+	}
+	
+	public  PostTag getPostTagbyPostId(int postId) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
+
+			return postMapper.getPostTagbyPostId(postId);
 		}
 	}
 	

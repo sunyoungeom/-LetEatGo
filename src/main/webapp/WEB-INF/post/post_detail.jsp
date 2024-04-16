@@ -29,7 +29,7 @@ h1 {
 /* 게시물 상세 페이지의 리뷰 작성 폼 스타일 */
 #reviewForm {
 	border: 2px solid gray; /* 테두리 스타일 */
-    border-radius: 10px; /* 라운드 테두리 */
+	border-radius: 10px; /* 라운드 테두리 */
 	margin-bottom: 30px; /* 리뷰 작성 폼 아래 여백 설정 */
 	padding: 5px;
 }
@@ -69,6 +69,8 @@ input[type="button"] {
 	border: none; /* 버튼 테두리 없앰 */
 	border-radius: 5px; /* 버튼 테두리를 둥글게 설정 */
 	cursor: pointer; /* 마우스 커서를 손가락 형태로 변경하여 클릭 가능한 상태로 표시 */
+	margin-left: 55px;
+	width: 300px;
 }
 
 input[type="button"]:hover {
@@ -76,81 +78,179 @@ input[type="button"]:hover {
 }
 /* 별 모양을 만드는 CSS */
 .star-rating {
-    font-size: 0;
-    display: flex;
-    flex-direction: row-reverse; /* 별을 오른쪽에서 왼쪽으로 배치 */
-    justify-content: flex-end
+	font-size: 0;
+	display: flex;
+	flex-direction: row-reverse; /* 별을 오른쪽에서 왼쪽으로 배치 */
+	justify-content: flex-end
 }
 
 .star-rating input {
-    display: none;
+	display: none;
 }
 
 .star-rating label {
-    font-size: 30px;
-    cursor: pointer;
+	font-size: 30px;
+	cursor: pointer;
 }
 
 .star-rating label:before {
-    content: '☆'; /* 선택되지 않은 별의 모양을 변경 */
-    display: inline-block;
+	content: '☆'; /* 선택되지 않은 별의 모양을 변경 */
+	display: inline-block;
 }
 
 .star-rating input:checked ~ label:before {
-    content: '★';
-    color: gold; /* 채워진 별의 색상을 변경할 수 있습니다. */
+	content: '★';
+	color: gold; /* 채워진 별의 색상을 변경할 수 있습니다. */
+}
+
+body {
+	font-family: Arial, sans-serif; /* 글꼴 설정 */
+	padding: 0px; /* 페이지의 내용과 가장자리 사이의 간격 설정 */
+}
+
+/* 게시물 상세 페이지의 제목 스타일 */
+h1 {
+	color: #333; /* 제목의 글자 색상 설정 */
+	margin-bottom: 20px; /* 제목 아래 여백 설정 */
+}
+/* 게시물 상세 페이지의 리뷰 작성 폼 스타일 */
+#reviewContainer {
+	display: flex; /* 플렉스 박스 사용 */
+	margin-left: 50px;
+	width: 90%;
+}
+
+#reviewForm {
+	flex: 1; /* 동일한 크기를 가지도록 설정 */
+	padding: 10px; /* 내부 여백 추가 */
+	border: 2px solid #c8bfe7; /* 테두리 스타일 */
+	border-radius: 10px; /* 라운드 테두리 */
+	max-width: 50%;
+	height: 350px;
+	background-color: #c8bfe7;
+}
+
+/* 리뷰 목록 폼의 스타일 */
+#reviewList {
+	flex: 1; /* 동일한 크기를 가지도록 설정 */
+	padding: 10px; /* 내부 여백 추가 */
+	border: 2px solid pink; /* 테두리 스타일 */
+	max-width: 50%;
+	border-radius: 10px; /* 라운드 테두리 */
+	overflow-y: auto; /* 세로 스크롤 바가 필요한 경우만 표시 */
+	width: 50px;
+	height: 350px;
+	background-color: pink;
+}
+
+#postDetail {
+	border: 2px solid gray;
+	padding: 10px;
+	border-radius: 10px;
+	margin-left: 50px;
+	margin-right: 50px;
+	max-width: 90%;
 }
 </style>
 </head>
 <body>
-<%@ include file="../user/navigation.jsp"%>
-	<div id="postDetail" style="border: 2px solid gray; padding: 10px; border-radius: 10px; margin-right:100px; margin-left:100px;">
-		<h1 id="title" style="margin: 15px"></h1>
-		<p id="nickname" style="margin: 15px; margin-bottom: 0px"></p>
-		<p id="resistdate" style="margin: 15px; margin-top: 0px"></p>
-		<hr>
-		<p id="content" style="margin: 15px; margin-top: 35px; margin-bottom: 35px"></p>
+	<%@ include file="../user/navigation.jsp"%>
+	<div id="postDetail">
+		<table style="border-collapse: collapse; width: 100%;">
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">제목</th>
+				<td id="title" colspan="3"
+					style="border: 1px solid #000; padding: 10px;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; width: 25%; text-align: center;">작성자</th>
+				<td id="nickname"
+					style="border: 1px solid #000; padding: 10px; width: 25%;"></td>
+				<th
+					style="border: 1px solid #000; padding: 10px; width: 25%; text-align: center;">작성일</th>
+				<td id="resistdate"
+					style="border: 1px solid #000; padding: 10px; width: 25%;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">태그</th>
+				<td id="tags" colspan="3"
+					style="border: 1px solid #000; padding: 10px;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">장소</th>
+				<td id="place" colspan="3"
+					style="border: 1px solid #000; padding: 10px;"></td>
+			</tr>
+			<tr>
+				<th
+					style="border: 1px solid #000; padding: 10px; text-align: center;">내용</th>
+				<td id="content" colspan="3"
+					style="border: 1px solid #000; padding: 10px; height: 200px;"></td>
+			</tr>
+		</table>
 	</div>
-	
-	
-	
-	<div id="reviewForm" >
-		<h2>리뷰 작성</h2>
-		<!-- <i class="bi bi-star"></i>
-		<i class="bi bi-star-fill"></i>
-		<i class="bi bi-star-fill"></i>
-		<i class="bi bi-star-fill"></i>
-		<i class="bi bi-star-fill"></i> -->
-		<form id="reviewFormSubmit">
-			 <div class="star-rating">
-	            <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
-	            <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
-	            <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
-	            <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
-	            <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
-       		 </div>
-			
-			<div class="mb-3">
-				<label for="review" class="form-label">리뷰 내용</label>
-				<!-- 수정: 리뷰 내용을 입력 받는 입력 필드를 textarea로 변경 -->
-				<textarea class="form-control" id="review" name="review" rows="5"
-					required></textarea>
+	<div id="reviewContainer">
+		<div id="reviewForm">
+			<h2>리뷰 작성</h2>
+			<form id="reviewFormSubmit">
+				<table>
+					<tr>
+						<td>별점</td>
+						<td>
+							<div class="star-rating">
+								<input type="radio" id="star5" name="rating" value="5"><label
+									for="star5"></label> <input type="radio" id="star4"
+									name="rating" value="4"><label for="star4"></label> <input
+									type="radio" id="star3" name="rating" value="3"><label
+									for="star3"></label> <input type="radio" id="star2"
+									name="rating" value="2"><label for="star2"></label> <input
+									type="radio" id="star1" name="rating" value="1"><label
+									for="star1"></label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>리뷰 내용</td>
+						<td><textarea class="form-control" id="review" name="review"
+								rows="5" required></textarea></td>
+					</tr>
+				</table>
+				<button type="submit" class="btn btn-primary">리뷰 등록</button>
+			</form>
+		</div>
+
+
+		<div id="reviewList">
+			<h2>리뷰 목록</h2>
+			<div id="reviews-container">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>별점</th>
+							<th>리뷰 내용</th>
+							<!-- 다른 필요한 헤더 열 추가 -->
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 여기에 리뷰 목록 표시하는 코드를 넣으세요 -->
+					</tbody>
+				</table>
 			</div>
-			<button type="submit" class="btn btn-primary">리뷰 등록</button>
-		</form>
+		</div>
 	</div>
-	
-	<div id="reviewList" style="border: 2px solid gray;">
-	    <h2>리뷰 목록</h2>
-	    <div id="reviews-container"></div>
-	</div>
-	
 	<br>
-	
+
 	<input type="hidden" id="post_Id"
 		value="<%=request.getParameter("post_Id")%>">
 	<input type="button" value="채팅방 참여" onclick="chatWinOpen()">
 	<script>
+	const postDetailWidth = document.getElementById("postDetail").offsetWidth;
+    document.getElementById("reviewForm").style.width = `${postDetailWidth / 2}px`;
+    document.getElementById("reviewList").style.width = `${postDetailWidth / 2}px`;
     const postDetail = document.getElementById("postDetail");
     const reviewForm = document.getElementById("reviewForm");
     const reviewFormSubmit = document.getElementById("reviewFormSubmit");
@@ -161,6 +261,8 @@ input[type="button"]:hover {
     const resistdate = document.getElementById("resistdate");
     const content = document.getElementById("content");
     const postId = document.getElementById("post_Id").value;
+    const place = document.getElementById("place");
+    const tag = document.getElementById("tags");
     function formattedDate(data) {
         // MySQL DATETIME 값을 Date 객체로 변환
         const timestamp = Number(data.post.resistdate);
@@ -185,6 +287,8 @@ input[type="button"]:hover {
     const posttitle = data.post.title
     const postresistdate =formattedDate(data)
     const postContent = data.post.content;
+    const postPlace = data.post.place;
+    const postTag = data.tags;
     const isCurrentUserId = await isCurrentUser(data.user.user_id);
     
     const postDTOList  = data.DTOList;
@@ -192,20 +296,47 @@ input[type="button"]:hover {
     
 	console.log(postDTOList,"DTO값");
 	console.log(postId,"포스트아이디값");
+	console.log(postTag,"태그");
 	const isPostIdMatched = postDTOList.some(item => item.postId === postId);
 	
-	
 	const isguestIdMatched = postDTOList.some(item => item.postId === userId);
-	
-	
 	
     title.innerText = `${posttitle}`;
     nickname.innerText = `${userId}`;
     resistdate.innerText = `${postresistdate}`;
     content.innerText = `게시물 내용: ${postContent}`;
-    
-    
-    
+    place.innerText = `${postPlace}`;
+    const filteredPostTag = {};
+    for (const key in postTag) {
+        if (key !== 'post_tag_id' && key !== 'post_Id') {
+            filteredPostTag[key] = postTag[key];
+        }
+    }
+
+// 새로운 객체의 속성을 문자열로 변환하여 tag에 할당
+let formattedPostTag = '';
+for (const key in filteredPostTag) {
+    let value = filteredPostTag[key];
+    if (value === null) {
+        value = '상관없음';
+    }
+    if (key === 'budget') {
+        formattedPostTag += `인당 금액: ${value}\n`;
+    } else if (key === 'booze') {
+        formattedPostTag += `음주 유무: ${value}\n`;
+    } else if (key === 'age') {
+        formattedPostTag += `나이: ${value}\n`;
+    } else if (key === 'gender') {
+        formattedPostTag += `성별: ${value}\n`;
+    } else if (key === 'peopleLimit') {
+        formattedPostTag += `인원수: ${value}\n`;
+    } else {
+        formattedPostTag += `${key}: ${value}\n`;
+    }
+}
+tag.innerText = formattedPostTag;
+
+
 	    if(isCurrentUserId) {
 		 	// 게시물 수정 버튼 생성
 		    let editButton = document.createElement("button");
@@ -483,7 +614,7 @@ function chatWinOpen() {
     console.log(nickname)
     if (!chatWindow || chatWindow.closed) {
         const url = "ChatWindow?&post_Id=" + post_Id; // URL에 게시물 ID 추가
-        chatWindow = window.open(url, "", "width=450, height=600"); // 채팅 창 열기
+        chatWindow = window.open(url, "", "width=386, height=564"); // 채팅 창 열기
     } else {
         chatWindow.focus();
     }   

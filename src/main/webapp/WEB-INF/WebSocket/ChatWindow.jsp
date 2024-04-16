@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>채팅창 구현</title>
 <script>
@@ -69,12 +70,13 @@ function enterKey() {
 
 // 웹소켓 서버에 연결됐을 때 실행
 webSocket.onopen = function(event) {
-    chatWindow.innerHTML += "웹소켓 서버에 연결되었습니다.<br/>";
+    chatWindow.innerHTML += "채팅창에 연결 되었습니다.<br/>";
 };
 
 // 웹소켓이 닫혔을 때(서버와의 연결이 끊켰을 때) 실행
 webSocket.onclose = function(event) {
-    chatWindow.innerHTML += "웹소켓 서버가 종료되었습니다.<br/>";
+	alert("서버와의 연결이 종료되었습니다.");
+	window.close();
 };
 
 webSocket.onerror = function(event) {
@@ -83,10 +85,12 @@ webSocket.onerror = function(event) {
 };
 
 webSocket.onmessage = function(event) {
-    var message = JSON.parse(event.data); // JSON 형식으로 메시지 파싱
+	var message = JSON.parse(event.data); // JSON 형식으로 메시지 파싱
     var sender = message.sender; // 메시지를 보낸 사용자
-    var content = message.content; //
+    var content = message.content; // 메시지 내용
+    var sentAt = new Date(message.sentAt); // 문자열을 Date 객체로 변환
 
+    var formattedTime = sentAt.getHours() + ":" + sentAt.getMinutes() + ":" + sentAt.getSeconds();
     // 귓속말 여부 확인
     var isWhisper = content.startsWith("/w") || content.startsWith("/ㅈ") || content.startsWith("/W");
     if (isWhisper) {
@@ -123,13 +127,13 @@ function disconnect() {
 }
 
 
-// 현재 시간을 가져오는 함수
+/* // 현재 시간을 가져오는 함수
 function getCurrentTime() {
     var now = new Date();
     var hours = now.getHours();
     var minutes = now.getMinutes();
     return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
-}
+} */
 
 function exitChatroom() {
     // 게시물 번호와 사용자 아이디를 가져와서 DELETE 요청을 보냅니다.
@@ -228,6 +232,10 @@ function closePost() {
 	padding: 5px;
 }
 
+body {
+    background-color: pink; /* 배경색을 핑크색으로 지정 */
+}
+
 /* 대화 입력창 스타일 */
 #chatMessage {
     width: 300px;
@@ -241,8 +249,6 @@ function closePost() {
 #sendBtn {
     width: 80px;
     height: 60px;
-    background-color: #20b2aa; /* 배경색을 적당한 색상으로 지정 */
-    color: white; /* 글자색을 흰색으로 지정 */
     border: none; /* 테두리 제거 */
     cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
     border-radius: 5px; /* 모서리를 둥글게 만듦 */
@@ -302,24 +308,41 @@ function closePost() {
 	float: right; /* 오른쪽 정렬 */
 	clear: both; /* 다음 요소와 겹치지 않게 함 */
 	display: block; /* 블록 요소로 설정하여 줄바꿈을 만듦 */
-	background-color: #ff6347; /* 배경색을 적당한 색상으로 지정 */
-	color: white; /* 글자색을 흰색으로 지정 */
 	border: none; /* 테두리 제거 */
 	padding: 10px 20px; /* 내부 여백 설정 */
 	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
 	border-radius: 5px; /* 모서리를 둥글게 만듦 */
+}
+#closeBtn {
+	border:none;
+	border-radius: 5px;
+	width: 120px;
+	height: 30px;
+	background-color: #FFFFD0;
 }
 /* 조기마감 버튼 스타일 */
 #endBtn {
 	margin-top: 60px; /* 상단 여백 */
 	float: left; /* 왼쪽 정렬 */
-	background-color: #ff6347; /* 배경색을 적당한 색상으로 지정 */
-	color: white; /* 글자색을 흰색으로 지정 */
 	border: none; /* 테두리 제거 */
 	padding: 10px 20px; /* 내부 여백 설정 */
 	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냄 */
 	border-radius: 5px; /* 모서리를 둥글게 만듦 */
 }
+ /* .btn-dark 클래스의 배경색을 회색(#808080)으로 설정 */
+    .btn-dark {
+        background-color: #808080;
+    }
+
+    /* .btn-dark 클래스의 테두리 색을 회색(#808080)으로 설정 */
+    .btn-dark {
+        border-color: #808080;
+    }
+
+    /* .btn-dark 클래스의 텍스트 색을 흰색(#ffffff)으로 설정 */
+    .btn-dark {
+        color: #ffffff;
+    }
 </style>
 </head>
 <body>
@@ -332,9 +355,9 @@ function closePost() {
 	<div id="chatWindow"></div>
 	<div>
 		<input type="text" id="chatMessage" onkeyup="enterKey();">
-		<button id="sendBtn" onclick="sendMessage();">전송</button>
-		<button id="exitBtn" onclick="exitChatroom();">채팅방 나가기</button>
-		<button id="endBtn" onclick="closePost()">조기마감</button>
+		<button id="sendBtn" class="btn btn-dark" onclick="sendMessage();">전송</button>
+		<button id="exitBtn" class="btn btn-dark" onclick="exitChatroom();">채팅방 나가기</button>
+		<button id="endBtn" class="btn btn-dark" onclick="closePost()">조기마감</button>
 	</div>
 </body>
 </html>

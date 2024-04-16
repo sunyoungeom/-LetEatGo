@@ -57,7 +57,7 @@ public class ChatServer {
 	        	    String senderNickname = message.getSenderNickname();
 	        	    com.google.protobuf.Timestamp sentAt = message.getSentAt(); // DB에서 받아온 값으로 설정 >>>> ??
 
-	        	    System.out.println(message.getSentAt());
+//	        	    System.out.println(message.getSentAt());
 	        	    JsonNode messageJson = objectMapper.createObjectNode()
 	        	            .put("messageType", "normal")
 	        	            .put("sender", senderNickname)
@@ -73,27 +73,27 @@ public class ChatServer {
 	        }
 	    }
 
-	 // 이전 귓속말 내용 가져오기
-	    int userId = (int) session.getUserProperties().get("senderId");
-	    List<PrivateMessage> privateMessages = chatService.getPrivateMessages(userId, userId);
-	    if (privateMessages != null) {
-	        for (PrivateMessage privateMessage : privateMessages) {
-	            if (privateMessage != null) { // privateMessage가 null인 경우 처리
-	                String senderNickname = userService.getNicknameById(privateMessage.getSenderId());
-	                String receiverNickname = userService.getNicknameById(privateMessage.getReceiverId());
-	                System.out.println("보내는사람:" + senderNickname);
-	                System.out.println("받는사람 :" + receiverNickname);
-	                JsonNode messageJson = objectMapper.createObjectNode()
-	                        .put("messageType", "whisper")
-	                        .put("sender", senderNickname)
-	                        .put("receiver", receiverNickname)
-	                        .put("content", privateMessage.getPriContent())
-	                        .put("timestamp", privateMessage.getPriSentAt()); 
-	                String jsonMessage = objectMapper.writeValueAsString(messageJson);
-	                session.getBasicRemote().sendText(jsonMessage);
-	            }
-	        }
-	    }
+//	 // 이전 귓속말 내용 가져오기
+//	    int userId = (int) session.getUserProperties().get("senderId");
+//	    List<PrivateMessage> privateMessages = chatService.getPrivateMessages(userId, userId);
+//	    if (privateMessages != null) {
+//	        for (PrivateMessage privateMessage : privateMessages) {
+//	            if (privateMessage != null) { // privateMessage가 null인 경우 처리
+//	                String senderNickname = userService.getNicknameById(privateMessage.getSenderId());
+//	                String receiverNickname = userService.getNicknameById(privateMessage.getReceiverId());
+//	                System.out.println("보내는사람:" + senderNickname);
+//	                System.out.println("받는사람 :" + receiverNickname);
+//	                JsonNode messageJson = objectMapper.createObjectNode()
+//	                        .put("messageType", "whisper")
+//	                        .put("sender", senderNickname)
+//	                        .put("receiver", receiverNickname)
+//	                        .put("content", privateMessage.getPriContent())
+//	                        .put("timestamp", privateMessage.getPriSentAt()); 
+//	                String jsonMessage = objectMapper.writeValueAsString(messageJson);
+//	                session.getBasicRemote().sendText(jsonMessage);
+//	            }
+//	        }
+//	    }
 
 
 	    // 채팅방 정보 저장
@@ -123,7 +123,6 @@ public class ChatServer {
 
 	@OnMessage
 	public void onMessage(String message, Session session, @PathParam("post_Id") int postId) throws Exception {
-		System.out.println("메시지 전송: " + session.getId() + ": " + message);
 
 		int senderId = (int) session.getUserProperties().get("senderId");
 		String senderNickname = userService.getNicknameById(senderId); // 발신자의 ID를 기반으로 발신자의 닉네임을 가져옴
@@ -135,7 +134,7 @@ public class ChatServer {
 
 		JsonNode isWhisperNode = jsonMessage.get("isWhisper");
 		if (isWhisperNode != null && isWhisperNode.isBoolean() && isWhisperNode.asBoolean()) {
-			System.out.println("귓속말 테스트");
+			
 		}
 		// 현재 시간 구하기
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
