@@ -144,4 +144,4 @@ public interface UserMapper {
 	
 	  @Select("SELECT LAST_INSERT_ID()")
 	    int lastInsertId();
-
+}
