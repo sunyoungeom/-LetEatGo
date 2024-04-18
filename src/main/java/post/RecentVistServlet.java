@@ -23,8 +23,8 @@ public class RecentVistServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		req.getRequestDispatcher("/WEB-INF/post/recent_vist.jsp").forward(req, resp);
+			System.out.println("겟방식 확인: 실행여부");
+			req.getRequestDispatcher("/WEB-INF/post/recent_vist.jsp").forward(req, resp);
 	}
 
 	@Override
@@ -37,14 +37,15 @@ public class RecentVistServlet extends HttpServlet {
 		
 		List<Post> placeByIdList = postService.getPlaceById(writeuser_id);
 		List<List<SearchResult>> blogList = new ArrayList<List<SearchResult>>();
-
+		
 		
 		for(Post p : placeByIdList) {
 			String keyword = p.getPlace();
 			List<SearchResult> list = new ArrayList<SearchResult>(); 
-			list = SearchAPI.searchBlogAsJson(keyword);
-			
-			blogList.add(list);
+			if(keyword != null && !keyword.isEmpty()) {
+				list = SearchAPI.searchBlogAsJson(keyword);
+				blogList.add(list);
+			}
 		}
 		
 		postListBlogList.put("placeByIdList", placeByIdList);

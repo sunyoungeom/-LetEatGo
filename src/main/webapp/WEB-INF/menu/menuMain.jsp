@@ -144,15 +144,10 @@
 							</form>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</main>
-
-
-	<br />
-	<div style="margin: 0 20%">
-		<hr>
+						<br />
+					<div class="row">
+					<div class="container">
+					<hr>
 		<br>
 		<h3>최근 게시물</h3>
 		<table class="table table-hover table-bordered" id="postTable">
@@ -174,6 +169,14 @@
 		<ul class="pagination justify-content-center" id="pagination">
 		</ul>
 	</nav>
+				</div>
+			</div>
+		</div>
+	</main>
+
+
+
+		
 
 	<!-- Footer-->
 	<footer class="bg-white py-4 mt-auto">

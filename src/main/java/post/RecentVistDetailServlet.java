@@ -30,7 +30,28 @@ public class RecentVistDetailServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Object attribute = req.getSession().getAttribute("user");
+		User user = (User) attribute;
+		int writeuser_id = user.getUser_id();
+
+		Map<String, Object> postListBlogList = new HashMap<String, Object>();
 		
+		List<Post> placeByIdList = postService.getPlaceById(writeuser_id);
+		List<List<SearchResult>> blogList = new ArrayList<List<SearchResult>>();
+
+		
+		for(Post p : placeByIdList) {
+			String keyword = p.getPlace();
+			List<SearchResult> list = new ArrayList<SearchResult>(); 
+			list = SearchAPI.searchBlogAsJson(keyword);
+			
+			blogList.add(list);
+		}
+		
+		postListBlogList.put("placeByIdList", placeByIdList);
+		postListBlogList.put("blogList", blogList);
+		
+		ServletUtil.sendJsonBody(postListBlogList, resp);
 	
 	}
 

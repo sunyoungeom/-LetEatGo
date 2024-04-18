@@ -232,59 +232,82 @@ div {
 </head>
 <body>
 	<%@ include file="../user/navigation.jsp"%>
-
-	<div>
-
-		<!-- 등록 언제 먹을까요와 날짜 선택 -->
-		<div id="when">
-			<h1 style="background-color: #c8bfe7;">같이 먹어요</h1>
-			<label for="expireDate">언제 먹을까요?</label> <input type="date"
-				id="expireDate" name="expireDate" style="margin-left: 10px;">
-			<!-- 제목 입력 -->
-			<div id="container" style="border-radius: 10px; padding: 10px;">
-				<div
-					style="margin: 2px; border: 1px solid black; padding: 1px; position: relative; border-radius: 10px;">
-					<input id="title" name="title"
-						style="width: 100%; height: 70px; resize: vertical; border: none; border-radius: 10px;">
-					<label for="title" style="position: absolute; top: 5px; left: 5px;">제목</label>
-				</div>
-
-
-				<!-- 지도 및 장소 선택 -->
-				<form id="mapForm">
-					<button id="openPlaceMap" type="button"
-						style="background-color: #FFFFD0; border: none; border-radius: 10px;">장소를
-						선택해주세요</button>
-					<dialog id="mapDialog"> <!-- 지도 내용 --> </dialog>
-					<br> <br>
-				</form>
-
-				<!-- 내용 입력 -->
-				<div
-					style="margin: 2px; border: 1px solid black; padding: 1px; border: none; border-radius: 10px;">
-					<textarea id="content" name="content" rows="10" cols="50"
-						style="width: 100%; border-radius: 10px;">내용을 입력하세요</textarea>
-				</div>
-
-				<!-- 장소 정보 및 태그 -->
-				<input type="hidden" id="placeMap" name="placeMap">
-				<div id="place"></div>
-				<div id="tagResult"></div>
-				<button id="openTagDialog" type="button" style="background-color: #FFFFD0; border: none; border-radius: 10px;">태그</button>
-				<br> <br>
-				<dialog id="dialogForm"></dialog>
-				<br>
-			</div>
-		</div>
-
-		<!-- 등록 버튼 -->
-		<form id="postForm" action="/createPost" method="post">
-			<div style="margin-top: 20px; text-align: left;">
-				<input type="submit" value="등록" style="border: none; border-radius: 10px; background-color: blue; color: #FFFFD0;">
-			</div>
-		</form>
-	</div>
-
+  
+    <div style="margin: 0 20%">
+      <h1>같이 먹어요</h1>
+  
+  
+      <form id="postForm" action="/createPost" method="post">
+  
+        <div style=" display= flex;">
+          <input type="submit" value="등록" />
+  
+          <p>언제 먹을까요?</p>
+          <input type="date" id="expireDate" name="expireDate" />
+        </div>
+  
+  
+        <br>
+        <div id="container" style="border: 2px solid black";>
+          <div style="margin: 2px; border: 1px solid black; padding: 1px; position: relative;">
+             <input id="title" name="title" style="width: 100%; height: 70px; bottom: 0; resize: vertical;">
+               <label for="title" style="position: absolute; top: 5px; left: 5px;">제목</label>
+          </div>
+  
+  
+  
+  
+  
+          <form id="mapForm">
+            <button id="openPlaceMap" type="button">장소를 선택해주세요</button>
+            <dialog id="mapDialog">
+            <div class="map_wrap">
+              <div id="map"
+                style="width: 100%; height: 500px; position: relative; overflow: hidden;"></div>
+  
+              <div id="menu_wrap" class="bg_white"
+                style="width: 30%; height: 45%">
+                <div class="option">
+                  <div>
+                    <form onsubmit="searchPlaces(); return false;">
+                      키워드 : <input type="text" id="keyword" size="15" />
+                      <button type="button" id="search">검색하기</button>
+                    </form>
+                  </div>
+                </div>
+                <hr />
+                <ul id="placesList"></ul>
+                <div id="pagination"></div>
+              </div>
+            </div>
+            </dialog>
+  
+            <br /> <br />
+          </form>
+  
+  
+  
+  
+          <div style="margin: 2px; border: 1px solid black; padding: 1px;">
+            <textarea id="content" name="content" rows="10" cols="50" style="width: 100%;"></textarea>
+          </div>
+  
+          <br /> <br /> <input type="hidden" id="placeMap" name="placeMap" />
+          <div id="place"></div>
+          <div id="tagResult"></div>
+          <button id="openTagDialog" type="button">tag</button>
+          <br />
+          <dialog id="dialogForm"></dialog>
+          <br />
+  
+  
+  
+  
+  
+  
+        </div>
+      </form>
+    </div> 
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff83319934d86e1c35670fdc76824c2b&libraries=services"></script>
@@ -328,7 +351,17 @@ div {
 
         const keywordinput = document.getElementById("keyword");
         const apiURL = "/map/keyword";
+        fetch(apiURL)
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data)
+          keywordinput.value = data;
 
+          searchPlaces();
+        })
+        .catch((error) => {
+          console.error("주소를 가져오는 중 에러가 발생했습니다.", error);
+        });
         var markers = [];
 
         var mapContainer = document.getElementById("map"), // 지도를 표시할 div

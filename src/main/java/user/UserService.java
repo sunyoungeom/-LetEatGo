@@ -18,7 +18,7 @@ public class UserService {
 			return userMapper.getAllUsers();
 		}
 	}
-	
+
 	public User getIdById(String id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -130,8 +130,8 @@ public class UserService {
 			return userMapper.getUserIdByNickName(nickname);
 		}
 	}
-	
-		public void updatePassword(String id, String password) {
+
+	public void updatePassword(String id, String password) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			userMapper.updatePassword(id, password);
@@ -140,6 +140,7 @@ public class UserService {
 			e.printStackTrace();
 		}
 	}
+
 	// 유저아이디로 닉네임
 	public String getNicknameById(int userId) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -216,14 +217,14 @@ public class UserService {
 	}
 
 	public boolean isPostOwner(int post_id, int user_id) {
-	    try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        int result = userMapper.isPostOwner(post_id, user_id);
-	        return result > 0; // 반환된 값이 0보다 크면 true, 아니면 false 반환
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return false; // 예외 발생 시 기본적으로 false 반환
-	    }
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			int result = userMapper.isPostOwner(post_id, user_id);
+			return result > 0; // 반환된 값이 0보다 크면 true, 아니면 false 반환
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false; // 예외 발생 시 기본적으로 false 반환
+		}
 	}
 	
 	public void updateAllUsersAttendanceStatus() {
@@ -237,4 +238,25 @@ public class UserService {
 	}
 	
 
+	public void insertFood(Food food, int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.insertFood(food, user_id);
+			sqlSession.commit();
+		}
+	}
+	public void insertHobby(Hobby hobby, int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.insertHobby(hobby, user_id);
+			sqlSession.commit();
+		}
+	}
+	public int lastInsertId() {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.lastInsertId();
+		}
+	}
+	
 }
