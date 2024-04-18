@@ -7,8 +7,9 @@
 <title>취미 태그</title>
 </head>
 <body>
-    <div class="hobby Tag">
-        <form>
+<h2>취미</h2>
+    <form action="" method="Post" id="hobbyTotal">
+        <form id="hobbyCategory">
             <input type="checkbox" id="exercise" name="hobby" value="exercise">
             <label for="exercise">운동</label><br>
             <input type="checkbox" id="viewOTT" name="hobby" value="viewOTT">
@@ -38,6 +39,23 @@
             <input type="checkbox" id="painting" name="hobby" value="painting">
             <label for="painting">그림그리기</label><br>
         </form>
-    </div>
+    <input type="submit">
+    </form>
 </body>
+<script>
+	fetch("/hobby.jsp")
+	.then((resp) => resp.text())
+	.then((inner) => {
+		document.body.innerHTML = inner;
+	});
+	function submitForm() {
+		var form = document.getElementById("hobbyTotal");
+		var formData = new FormData(form);
+		var jsonObject = {};
+		
+		var foodCategory = document.getElemetById("hobbyCategory");
+		
+		formData.forEach
+	}
+</script>
 </html>
