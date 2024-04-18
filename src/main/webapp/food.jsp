@@ -38,11 +38,9 @@
         <label><input type="checkbox" name="preference" value="상관없음"> 상관없음</label><br>
     </form>
     <br>
-    <input type="submit">
+    <button type="button" value="등록"></button>
     </form>
     
 </body>
-
-   
 
 </html>

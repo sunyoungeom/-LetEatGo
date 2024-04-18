@@ -118,5 +118,14 @@ public interface UserMapper {
 
 	@Select("SELECT COUNT(*) FROM posts WHERE post_id = #{post_id} AND writeuser_id = #{user_id}")
 	int isPostOwner(@Param("post_id") int post_id, @Param("user_id") int user_id);
-
+	
+	@Insert("insert into food (user_id, foodcategory, tasty)values (#{food.user_id},#{food.foodcategory},#{food.tasty})")
+	@SelectKey(keyProperty = "user_id", statement =  "SELECT LAST_INSERT_ID();" , resultType = Integer.class, before = false)
+	void insertFood(Food food ,int user_id);
+	
+	@Insert("insert into hobby (user_id, hobby)values (#{hobby.user_id},#{hobby.hobby})")
+	void insertHobby(Hobby hobby, int user_id);
+	
+	  @Select("SELECT LAST_INSERT_ID()")
+	    int lastInsertId();
 }

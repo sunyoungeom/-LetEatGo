@@ -27,6 +27,8 @@ public class UserJoinServlet extends HttpServlet {
 	private UserService service = new UserService();
 	private UserValidator validator = new UserValidator();
 	private ObjectMapper objectMapper = new ObjectMapper();
+	private Food food = new Food();
+	private Hobby hobby = new Hobby();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -98,6 +100,10 @@ public class UserJoinServlet extends HttpServlet {
 
 				// 유효성 검사를 통과한 경우 회원가입 처리
 				int result = service.insert(user);
+				int lastInsertId = service.lastInsertId();
+				service.insertFood(food, lastInsertId);
+				service.insertHobby(hobby, lastInsertId);
+//				service.insertFood(food, user.getUser_id());
 				if (result == 1) {
 					response.setStatus(HttpServletResponse.SC_CREATED); // 201 Created
 					response.getWriter().println("회원가입이 완료되었습니다.");
