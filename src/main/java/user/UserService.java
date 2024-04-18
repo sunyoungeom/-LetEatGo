@@ -225,5 +225,16 @@ public class UserService {
 	        return false; // 예외 발생 시 기본적으로 false 반환
 	    }
 	}
+	
+	public void updateAllUsersAttendanceStatus() {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updateAllUsersAttendanceStatus();
+			sqlSession.commit(); // 변경사항 커밋
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 }

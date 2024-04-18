@@ -85,7 +85,7 @@ public interface UserMapper {
 	void updateLogoutTime(int userId);
 
 	// 로그인 시간
-	@Update("UPDATE users " + "SET join_date = NOW() " + "WHERE user_id = #{userId}")
+	@Update("UPDATE users " + "SET join_date = NOW() " + "WHERE id = #{id}")
 	void updateLoginTime(int userId);
 
 	// 특정유저 주소값 찾기
@@ -118,5 +118,21 @@ public interface UserMapper {
 
 	@Select("SELECT COUNT(*) FROM posts WHERE post_id = #{post_id} AND writeuser_id = #{user_id}")
 	int isPostOwner(@Param("post_id") int post_id, @Param("user_id") int user_id);
+
+	 @Update("UPDATE users " +
+	            "SET attendance = CASE " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 0 THEN '10' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 1 THEN '9' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 2 THEN '8' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 3 THEN '7' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 4 THEN '6' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 5 THEN '5' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 6 THEN '4' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 7 THEN '3' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 8 THEN '2' " +
+	            "  WHEN DATEDIFF(CURRENT_DATE(), DATE(join_date)) = 9 THEN '1' " +
+	            "  ELSE '0' " +
+	            "END")
+	void updateAllUsersAttendanceStatus();
 
 }
