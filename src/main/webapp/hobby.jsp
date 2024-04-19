@@ -54,7 +54,6 @@
 		
 		var foodCategory = document.getElemetById("hobbyCategory");
 		
-		formData.forEach
 	}
 </script>
 </html>

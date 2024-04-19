@@ -2,6 +2,7 @@ package user;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 	private int user_id;
 	private String id;
@@ -27,4 +29,5 @@ public class User {
 	private String identifynumber;
 	private String phonenumber;
 //	private String profilePhotoPath;
+	private Food foodList;
 }

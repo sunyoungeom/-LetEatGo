@@ -352,20 +352,17 @@ padding
 												 <label><input type="checkbox" name="foodCategory" value="분식"> 분식</label><br>
 												 <label><input type="checkbox" name="foodCategory" value="디저트"> 디저트</label><br>
 												 <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
-											 </form>
-										 
 											 <h2>취향</h2>
-											 <form id="preference">
-												 <label><input type="checkbox" name="preference" value="매운맛"> 매운맛</label><br>
-												 <label><input type="checkbox" name="preference" value="신맛"> 신맛</label><br>
-												 <label><input type="checkbox" name="preference" value="짠맛"> 짠맛</label><br>
-												 <label><input type="checkbox" name="preference" value="단맛"> 단맛</label><br>
-												 <label><input type="checkbox" name="preference" value="맵찔이"> 맵찔이</label><br>
-												 <label><input type="checkbox" name="preference" value="상관없음"> 상관없음</label><br>
-											 </form>
+												 <label><input type="checkbox" name="foodCategory" value="매운맛"> 매운맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="신맛"> 신맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="짠맛"> 짠맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="단맛"> 단맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="맵찔이"> 맵찔이</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
 											 <br>
-											 <button type="button" id="registFood" >등록</button>
 											 </form>
+											 </form>
+											 <button type="button" id="registFood" >등록</button>
 										</dialog>
 										<button id="foodbtn">음식태그</button>
 										<dialog id="hobbyDialog">
@@ -400,7 +397,7 @@ padding
 														조립</label><br> <input type="checkbox" id="painting" name="hobby"
 														value="painting"> <label for="painting">그림그리기</label><br>
 												</form>
-												<input type="submit">
+												<button type="button" id="registFood">등록</button>
 										</dialog>
 										<button id="hobbyBtn">취미태그</button>
 										<br>
@@ -727,7 +724,7 @@ function submitForm() {
     })
     .then(response => {
         if (response.ok) {
-        	submitFood();
+        	/* submitFood(); */
             alert("회원가입이 완료되었습니다.");
            /*  uploadFile();  */
            /*  window.location.href = '/userJoinResult.jsp'; */
@@ -749,7 +746,7 @@ function submitForm() {
     }
     
 
-	function submitFood() {
+/* 	function submitFood() {
     // 선택된 음식 카테고리 가져오기
     var selectedCategories = [];
     var foodCategoryCheckboxes = document.querySelectorAll('#foodCategory input[type=checkbox]:checked');
@@ -757,39 +754,36 @@ function submitForm() {
         selectedCategories.push(checkbox.value);
     });
 
-    // 선택된 취향 가져오기
-    var selectedPreferences = [];
-    var preferenceCheckboxes = document.querySelectorAll('#preference input[type=checkbox]:checked');
-    preferenceCheckboxes.forEach(function(checkbox) {
-        selectedPreferences.push(checkbox.value);
-    });
-
     // JSON 객체 생성
     var jsonData = {
-        foodCategory: selectedCategories,
-        preference: selectedPreferences
+        "foodCategory": selectedCategories
     };
 
     // JSON 데이터를 문자열로 변환
     var jsonString = JSON.stringify(jsonData);
 
     // 서블릿으로 JSON 데이터 전송
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/join/food", true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // 요청이 성공적으로 처리됨
-                console.log("JSON 음식데이터 전송 성공");
-            } else {
-                // 요청이 실패함
-                console.error("JSON 음식데이터 전송 실패");
-            }
+    fetch("/join/food", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+        },
+        body: jsonString
+    })
+    .then(response => {
+        if (response.ok) {
+            // 요청이 성공적으로 처리됨
+            console.log("JSON 음식데이터 전송 성공");
+        } else {
+            // 요청이 실패함
+            console.error("JSON 음식데이터 전송 실패");
         }
-    };
-    xhr.send(jsonString);
-}
+    })
+    .catch(error => {
+        // 네트워크 오류 등으로 요청 처리 실패
+        console.error("네트워크 오류:", error);
+    });
+} */
 function goPopup(){
 	// 주소검색을 수행할 팝업 페이지를 호출합니다.
 	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://business.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
