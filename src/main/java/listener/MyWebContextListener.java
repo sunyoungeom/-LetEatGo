@@ -37,20 +37,39 @@ public class MyWebContextListener implements ServletContextListener {
 		configuration.addMapper(ChatMapper.class);
 		configuration.addMapper(ReviewMapper.class);
 		factory = new SqlSessionFactoryBuilder().build(configuration);
+		updateAttendanceStatus(factory);
+	}
+
+	private void updateAttendanceStatus(SqlSessionFactory factory) {
+		SqlSession session = factory.openSession();
+		try {
+			UserMapper userMapper = session.getMapper(UserMapper.class);
+			userMapper.updateAllUsersAttendanceStatus();
+			session.commit();
+		} catch (Exception e) {
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
 	}
 	
 	private void initDataSource() {
 		BasicDataSource ds = new BasicDataSource();
-		String url = ConfigLoader.getPropertyValue("url");
-        String username = ConfigLoader.getPropertyValue("username");
-        String password = ConfigLoader.getPropertyValue("password");
+//		String url = ConfigLoader.getPropertyValue("url");
+//        String username = ConfigLoader.getPropertyValue("username");
+//        String password = ConfigLoader.getPropertyValue("password");
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//		ds.setUrl("url");
+//		ds.setUsername("username");
+//		ds.setPassword("password");
+		
 		ds.setUrl("jdbc:mysql://localhost:3306/board");
 		ds.setUsername("root");
 		ds.setPassword("root");
 		dataSource = ds;
 	}
-	
 
 	public static Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
