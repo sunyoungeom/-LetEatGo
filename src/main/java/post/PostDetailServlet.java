@@ -65,6 +65,7 @@ public class PostDetailServlet extends HttpServlet {
 			responseMap.put("place", place);
 			responseMap.put("tags", tag);
 			responseMap.put("DTOList", DTOList);
+			req.getSession().setAttribute("DTOList", DTOList);
 			// JSON 형태로 변환하여 응답합니다.
 			ServletUtil.sendJsonBody(responseMap, resp);
 		} else if (requestURI.endsWith("/post/addReview")) {
