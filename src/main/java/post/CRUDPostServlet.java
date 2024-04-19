@@ -67,8 +67,9 @@ public class CRUDPostServlet extends HttpServlet {
 		post.setResistdate(resistDate);
 		post.setExpireDate(expireDate);
 		post.setPlace(place);
-
+		
 		if (requestURI.endsWith("/createPost")) {
+
 			int postid = postService.createPost(post, user);
 			PostTag postTag = new PostTag();
 			postTag.setPost_Id(postid);
@@ -79,7 +80,7 @@ public class CRUDPostServlet extends HttpServlet {
 			postTag.setPeopleLimit(peopleLimit);
 			postService.createPostTag(postid, postTag);
 
-		} else if (requestURI.endsWith("/post/editsave")) {
+		}  if (requestURI.endsWith("/post/editsave")) {
 			int postid = Integer.parseInt(request.getParameter("postId"));
 
 			PostTag postTag = new PostTag();

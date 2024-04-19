@@ -23,7 +23,7 @@ public class GocategoryServlet extends HttpServlet {
 		 }else if(requestURI.endsWith("/menu/jung")) {
 			 forwardToSearchMenujsp(req, resp, "중식", "userAddress");
 		 }else if(requestURI.endsWith("/menu/il")) {
-			 forwardToSearchMenujsp(req, resp, "일식", "userAddress");
+			 forwardToSearchMenujsp(req, resp, "양식", "userAddress");
 		 }
 	}
 	private void forwardToSearchMenujsp(HttpServletRequest req, HttpServletResponse resp, String category , String userAd) throws ServletException, IOException {

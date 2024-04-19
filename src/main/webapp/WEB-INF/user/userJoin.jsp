@@ -332,6 +332,43 @@ padding
 									</div> -->
 
 										<!-- '가입' 버튼 -->
+										<dialog id="foodDialog">
+											<h2>음식 카테고리</h2>
+   
+											<form action=""method="Post" id="foodTotal">
+											 <form id="foodCategory">
+												 <label><input type="checkbox" name="foodCategory" value="한식"> 한식</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="중식"> 중식</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="일식"> 일식</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="아시안"> 아시안</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="멕시칸"> 멕시칸</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="족발"> 족발.보쌈</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="찌개"> 찜.탕.찌개</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="피자"> 피자</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="치킨"> 치킨</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="햄버거"> 햄버거</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="야식"> 야식</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="고기"> 고기</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="분식"> 분식</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="디저트"> 디저트</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
+											 </form>
+										 
+											 <h2>취향</h2>
+											 <form id="preference">
+												 <label><input type="checkbox" name="preference" value="매운맛"> 매운맛</label><br>
+												 <label><input type="checkbox" name="preference" value="신맛"> 신맛</label><br>
+												 <label><input type="checkbox" name="preference" value="짠맛"> 짠맛</label><br>
+												 <label><input type="checkbox" name="preference" value="단맛"> 단맛</label><br>
+												 <label><input type="checkbox" name="preference" value="맵찔이"> 맵찔이</label><br>
+												 <label><input type="checkbox" name="preference" value="상관없음"> 상관없음</label><br>
+											 </form>
+											 <br>
+											 <button type="button" value="등록"></button>
+											 </form>
+										</dialog>
+										<button id="foodbtn">음식태그</button>
+										<dialog id="hobbyDialog"></dialog>
 										<button type="button" value="확인"
 											style="height: 50px; padding: 2px;"
 											class="btn btn-dark form-control" onclick="submitForm()">가입</button>
@@ -357,8 +394,17 @@ padding
 </body>
 
 <script>
-
-
+const foodbtn = document.getElementById("foodbtn");
+foodbtn.addEventListener("click", );
+ // 음식태그 버튼을 클릭하면 다이얼로그를 표시하는 함수
+document.getElementById('foodbtn').addEventListener('click', function() {
+    var dialog = document.getElementById('foodDialog');
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    dialog.showModal();
+});
+		
 
 //입력 필드에 이벤트 리스너 추가
 document.getElementById('id').addEventListener('input', debounce(function() {
@@ -638,6 +684,9 @@ function submitForm() {
     })
     .then(response => {
         if (response.ok) {
+        	fetch('/join/food',{
+        		method: 'POST'
+        	})
             alert("회원가입이 완료되었습니다.");
            /*  uploadFile();  */
            /*  window.location.href = '/userJoinResult.jsp'; */

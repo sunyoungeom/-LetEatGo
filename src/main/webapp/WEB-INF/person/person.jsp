@@ -532,7 +532,9 @@ document.querySelector('.form-control').addEventListener('input', () => {
                               var cellDistance = row.insertCell(3);
                               row.onclick = function () {
                                 // 클릭 시 해당 링크로 이동
-                                // 여기에 링크 주소 넣으면 됨
+                            	  row.addEventListener('click', function() {
+                  	                window.location.href = `/person/detail?userid=${user.user_id}`;
+                  	            });
                               };
                               cellNickname.innerHTML = user.nickname;
                               cellAge.innerHTML = age + "세";
@@ -547,7 +549,9 @@ document.querySelector('.form-control').addEventListener('input', () => {
                             var cellDistance = row.insertCell(3);
                             row.onclick = function () {
                               // 클릭 시 해당 링크로 이동
-                              // 여기에 링크 주소 넣으면 됨
+                            	row.addEventListener('click', function() {
+                  	                window.location.href = `/person/detail?userid=${user.user_id}`;
+                  	            });
                             };
                             cellNickname.innerHTML = user.nickname;
                             cellAge.innerHTML = age + "세";
@@ -562,7 +566,9 @@ document.querySelector('.form-control').addEventListener('input', () => {
                             var cellDistance = row.insertCell(3);
                             row.onclick = function () {
                               // 클릭 시 해당 링크로 이동
-                              // 여기에 링크 주소 넣으면 됨
+                            	row.addEventListener('click', function() {
+                  	                window.location.href = `/person/detail?userid=${user.user_id}`;
+                  	            });
                             };
                             cellNickname.innerHTML = user.nickname;
                             cellAge.innerHTML = age + "세";

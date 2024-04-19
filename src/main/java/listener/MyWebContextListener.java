@@ -64,9 +64,11 @@ public class MyWebContextListener implements ServletContextListener {
 //		ds.setUrl("url");
 //		ds.setUsername("username");
 //		ds.setPassword("password");
-		
-		ds.setUrl("jdbc:mysql://localhost:3306/board");
-		ds.setUsername("root");
+
+		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
+//		ds.setUrl("jdbc:mysql://localhost:3306/board");
+		ds.setUsername("team1");
+//		ds.setUsername("root");
 		ds.setPassword("root");
 		dataSource = ds;
 	}
