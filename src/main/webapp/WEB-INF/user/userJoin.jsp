@@ -368,7 +368,42 @@ padding
 											 </form>
 										</dialog>
 										<button id="foodbtn">음식태그</button>
-										<dialog id="hobbyDialog"></dialog>
+										<dialog id="hobbyDialog">
+											<h2>취미</h2>
+												<form action="" method="Post" id="hobbyTotal">
+													<form id="hobbyCategory">
+													<input type="checkbox" id="exercise" name="hobby" value="exercise">
+													<label for="exercise">운동</label><br> <input type="checkbox"
+														id="viewOTT" name="hobby" value="viewOTT"> <label
+														for="viewOTT">OTT감상</label><br> <input type="checkbox"
+														id="boardGame" name="hobby" value="boardGame"> <label
+														for="boardGame">보드게임</label><br> <input type="checkbox"
+														id="onlineGame" name="hobby" value="onlineGame"> <label
+														for="onlineGame">온라인게임</label><br> <input type="checkbox"
+														id="listeningMusic" name="hobby" value="listeningMusic"> <label
+														for="listeningMusic">음악감상</label><br> <input type="checkbox"
+														id="restaurantTour" name="hobby" value="restaurantTour"> <label
+														for="restaurantTour">맛집탐방</label><br> <input type="checkbox"
+														id="photoshoot" name="hobby" value="photoshoot"> <label
+														for="photoshoot">사진촬영</label><br> <input type="checkbox"
+														id="shopping" name="hobby" value="shopping"> <label
+														for="shopping">쇼핑</label><br> <input type="checkbox"
+														id="itemTuning" name="hobby" value="itemTuning"> <label
+														for="itemTuning">물건 튜닝</label><br> <input type="checkbox"
+														id="itemCollection" name="hobby" value="itemCollection"> <label
+														for="itemCollection">물건 수집</label><br> <input type="checkbox"
+														id="volunteer" name="hobby" value="volunteer"> <label
+														for="volunteer">자원봉사</label><br> <input type="checkbox"
+														id="trip" name="hobby" value="trip"> <label for="trip">여행</label><br>
+													<input type="checkbox" id="itemAssembly" name="hobby"
+														value="itemAssembly"> <label for="itemAssembly">물건
+														조립</label><br> <input type="checkbox" id="painting" name="hobby"
+														value="painting"> <label for="painting">그림그리기</label><br>
+												</form>
+												<input type="submit">
+										</dialog>
+										<button id="hobbyBtn">취미태그</button>
+										<br>
 										<button type="button" value="확인"
 											style="height: 50px; padding: 2px;"
 											class="btn btn-dark form-control" onclick="submitForm()">가입</button>
@@ -394,20 +429,26 @@ padding
 </body>
 
 <script>
-const foodbtn = document.getElementById("foodbtn");
- // 음식태그 버튼을 클릭하면 다이얼로그를 표시하는 함수
-document.getElementById('foodbtn').addEventListener('click', function() {
-    var foodDialog = document.getElementById('foodDialog');
-    if (!foodDialog.showModal) {
-        dialogPolyfill.registerDialog(foodDialog);
+foodbtn.addEventListener("click", function() {
+    // 음식 버튼을 클릭하면 다이얼로그를 표시하는 함수
+    var dialog = document.getElementById('foodDialog');
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
     }
     foodDialog.showModal();
 });
-
 document.getElementById('registFood').addEventListener('click', function(){
 	foodDialog.close();
 })
-		
+const hobbyBtn = document.getElementById("hobbyBtn");
+hobbyBtn.addEventListener("click", function() {
+    // 취미 버튼을 클릭하면 다이얼로그를 표시하는 함수
+    var dialog = document.getElementById('hobbyDialog');
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    dialog.showModal();    
+});
 
 //입력 필드에 이벤트 리스너 추가
 document.getElementById('id').addEventListener('input', debounce(function() {
@@ -425,7 +466,6 @@ document.getElementById('id').addEventListener('input', debounce(function() {
         checkDuplicate('id');
     }
 }, 500));
-
 
 document.getElementById('phonenumber').addEventListener('input', function(e) {
     var input = e.target;
@@ -772,4 +812,3 @@ window.onload = function() {
 
 </script>
 </html>
-
