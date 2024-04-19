@@ -255,17 +255,17 @@ h1 {
 		    // DTOList가 null이 아니고 비어있지 않은 경우에만 처리
 		    if (DTOList != null && !DTOList.isEmpty()) {
 		        for (int i = 0; i < DTOList.size(); i++) {
+		        	String includePath = "/path/to/include/file.jsp";
 		        	
 		%>
-					<%-- <p>참여자 이름<% DTOList[i].getGuestUserId;  %></p> --%>
 		            <%-- 여기에 원하는 작업 수행 --%>
-		            
+					<p>참여자 이름<%= DTOList.get(i).getGuestUserId() %></p>
 		            <%-- ratingTest.jsp를 포함하는 예시 --%>
-		            <%@ include file="/ratingTest.jsp" %>
+		             <jsp:include page="<%= includePath %>" />
 		<%
 		        }
 		    }
-		%><!-- 팝업 -->
+		%>
 
     </div>
 </div>

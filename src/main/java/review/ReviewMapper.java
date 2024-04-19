@@ -1,4 +1,4 @@
-package post_review;
+package review;
 import org.apache.ibatis.annotations.*;
 
 import post.Post;

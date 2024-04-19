@@ -16,7 +16,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import post.PostMapper;
-import post_review.ReviewMapper;
+import review.ReviewMapper;
 import user.UserMapper;
 import util.ConfigLoader;
 import websocket.ChatMapper;
@@ -49,10 +49,10 @@ public class MyWebContextListener implements ServletContextListener {
 //		ds.setUsername(username);
 //		ds.setPassword(password);
 
-//		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
-		ds.setUrl("jdbc:mysql://localhost:3306/board");
-//		ds.setUsername("team1");
-		ds.setUsername("root");
+		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
+//		ds.setUrl("jdbc:mysql://localhost:3306/board");
+		ds.setUsername("team1");
+//		ds.setUsername("root");
 		ds.setPassword("root");
 		dataSource = ds;
 	}

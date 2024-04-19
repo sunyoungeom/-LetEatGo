@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import post_review.Review;
-import post_review.ReviewMapper;
-import post_review.ReviewService;
+import review.Review;
+import review.ReviewMapper;
+import review.ReviewService;
 import user.User;
 import user.UserService;
 import util.ServletUtil;

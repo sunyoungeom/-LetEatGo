@@ -1,4 +1,4 @@
-package post_review;
+package review;
 
 import java.io.IOException;
 
