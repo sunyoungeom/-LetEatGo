@@ -364,7 +364,7 @@ padding
 												 <label><input type="checkbox" name="preference" value="상관없음"> 상관없음</label><br>
 											 </form>
 											 <br>
-											 <button type="button" value="등록"></button>
+											 <button type="button" id="registFood" >등록</button>
 											 </form>
 										</dialog>
 										<button id="foodbtn">음식태그</button>
@@ -395,15 +395,18 @@ padding
 
 <script>
 const foodbtn = document.getElementById("foodbtn");
-foodbtn.addEventListener("click", );
  // 음식태그 버튼을 클릭하면 다이얼로그를 표시하는 함수
 document.getElementById('foodbtn').addEventListener('click', function() {
-    var dialog = document.getElementById('foodDialog');
-    if (!dialog.showModal) {
-        dialogPolyfill.registerDialog(dialog);
+    var foodDialog = document.getElementById('foodDialog');
+    if (!foodDialog.showModal) {
+        dialogPolyfill.registerDialog(foodDialog);
     }
-    dialog.showModal();
+    foodDialog.showModal();
 });
+
+document.getElementById('registFood').addEventListener('click', function(){
+	foodDialog.close();
+})
 		
 
 //입력 필드에 이벤트 리스너 추가
@@ -684,9 +687,7 @@ function submitForm() {
     })
     .then(response => {
         if (response.ok) {
-        	fetch('/join/food',{
-        		method: 'POST'
-        	})
+        	submitFood();
             alert("회원가입이 완료되었습니다.");
            /*  uploadFile();  */
            /*  window.location.href = '/userJoinResult.jsp'; */
@@ -707,36 +708,48 @@ function submitForm() {
     })
     }
     
-/*  function uploadFile() {
-    var form = document.getElementById('uploadForm');
-    var formData = new FormData(form);
 
-    fetch('/upload', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('File upload successful:', data);
-    })
-    .catch(error => console.error('File upload error:', error));
-} */
- 
-/*  document.getElementById('uploadForm').addEventListener('submit', function(event) {
-     event.preventDefault(); // 폼의 기본 제출 막기
-     var formData = new FormData(this);
+	function submitFood() {
+    // 선택된 음식 카테고리 가져오기
+    var selectedCategories = [];
+    var foodCategoryCheckboxes = document.querySelectorAll('#foodCategory input[type=checkbox]:checked');
+    foodCategoryCheckboxes.forEach(function(checkbox) {
+        selectedCategories.push(checkbox.value);
+    });
 
-     fetch('/upload', {
-         method: 'POST',
-         body: formData
-     })
-     .then(response => response.text()) // 응답을 텍스트로 받음
-     .then(data => {
-         console.log('Success:', data);
-         alert(data); // 성공 메시지 표시
-     })
-     .catch(error => console.error('Error:', error));
- }); */
+    // 선택된 취향 가져오기
+    var selectedPreferences = [];
+    var preferenceCheckboxes = document.querySelectorAll('#preference input[type=checkbox]:checked');
+    preferenceCheckboxes.forEach(function(checkbox) {
+        selectedPreferences.push(checkbox.value);
+    });
+
+    // JSON 객체 생성
+    var jsonData = {
+        foodCategory: selectedCategories,
+        preference: selectedPreferences
+    };
+
+    // JSON 데이터를 문자열로 변환
+    var jsonString = JSON.stringify(jsonData);
+
+    // 서블릿으로 JSON 데이터 전송
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/join/food", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // 요청이 성공적으로 처리됨
+                console.log("JSON 음식데이터 전송 성공");
+            } else {
+                // 요청이 실패함
+                console.error("JSON 음식데이터 전송 실패");
+            }
+        }
+    };
+    xhr.send(jsonString);
+}
 function goPopup(){
 	// 주소검색을 수행할 팝업 페이지를 호출합니다.
 	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://business.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.

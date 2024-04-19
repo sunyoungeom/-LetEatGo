@@ -21,7 +21,7 @@ import user.User;
 import util.SendEmail;
 import util.ServletUtil;
 
-@WebServlet("/join/begin")
+@WebServlet({"/join/begin", "/join/food"})
 public class UserJoinServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService service = new UserService();
@@ -100,10 +100,21 @@ public class UserJoinServlet extends HttpServlet {
 
 				// 유효성 검사를 통과한 경우 회원가입 처리
 				int result = service.insert(user);
+				
 				int lastInsertId = service.lastInsertId();
+				// doPost 메서드 내에서
+				JsonNode jsonNode = objectMapper.readTree(body);
+
+				// JSON 데이터에서 음식 관련 정보를 가져옴
+				JsonNode foodNode = jsonNode.get("foodCategory");
+
+				// Food 객체 생성 및 초기화
+				Food food = new Food();
+				food.setFoodcategory(foodNode.get("foodCategory").asText()); // 예시: JSON 데이터에 "category" 키가 있다고 가정
+				food.setTastey((foodNode.get("preference").asText())); // 예시: JSON 데이터에 "preference" 키가 있다고 가정
+				
 				service.insertFood(food, lastInsertId);
-				service.insertHobby(hobby, lastInsertId);
-//				service.insertFood(food, user.getUser_id());
+			//	service.insertHobby(hobby, lastInsertId);
 				if (result == 1) {
 					response.setStatus(HttpServletResponse.SC_CREATED); // 201 Created
 					response.getWriter().println("회원가입이 완료되었습니다.");
