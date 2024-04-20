@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -61,24 +62,13 @@ public class MyWebContextListener implements ServletContextListener {
 //        String username = ConfigLoader.getPropertyValue("username");
 //        String password = ConfigLoader.getPropertyValue("password");
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-
-//		//		ds.setUrl("url");
-////		ds.setUsername("username");
-////		ds.setPassword("password");
-//		
-//		ds.setUrl("jdbc:mysql://localhost:3306/board");
-//		ds.setUsername("root");
-//		ds.setPassword("root1234");
-
-		//		ds.setUrl(url);
-//		ds.setUsername(username);
-//		ds.setPassword(password);
-
-//		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
+//		ds.setUrl("url");
+//		ds.setUsername("username");
+//		ds.setPassword("password");
+		
 		ds.setUrl("jdbc:mysql://localhost:3306/board");
 		ds.setUsername("root");
-//		ds.setUsername("root");
-		ds.setPassword("root");
+		ds.setPassword("root1234");
 		dataSource = ds;
 	}
 
@@ -88,6 +78,10 @@ public class MyWebContextListener implements ServletContextListener {
 	
 	public static SqlSession getSqlSession() {
 		return factory.openSession();
+	}
+	
+	public static SqlSession getBatchSqlSession() {
+	    return factory.openSession(ExecutorType.BATCH);
 	}
 }
  

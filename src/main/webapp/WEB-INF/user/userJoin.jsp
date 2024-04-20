@@ -335,7 +335,6 @@ padding
 										<dialog id="foodDialog">
 											<h2>음식 카테고리</h2>
    
-											<form action=""method="Post" id="foodTotal">
 											 <form id="foodCategory">
 												 <label><input type="checkbox" name="foodCategory" value="한식"> 한식</label><br>
 												 <label><input type="checkbox" name="foodCategory" value="중식"> 중식</label><br>
@@ -360,7 +359,6 @@ padding
 												 <label><input type="checkbox" name="foodCategory" value="맵찔이"> 맵찔이</label><br>
 												 <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
 											 <br>
-											 </form>
 											 </form>
 											 <button type="button" id="registFood" >등록</button>
 										</dialog>
@@ -624,7 +622,7 @@ function updateEmailDomainDisplay() {
     }
 }
 
-document.getElementById('sendVerification').addEventListener('click', sendVerification);
+document.getElementById('requestVerificationButton').addEventListener('click', sendVerification);
  
  // 인증번호 일치 확인
 function checkVerificationCode() {
@@ -693,6 +691,29 @@ function sendVerification() {
         alert('네트워크 오류: ' + error.message);
     });
 }
+// 체크박스들을 가져옴
+const checkboxes = document.querySelectorAll('input[name="foodCategory"]');
+var concatenatedValues = '';
+// 체크박스 클릭 이벤트 핸들러 등록
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('click', function() {
+        // 선택된 체크박스들의 값을 저장할 배열
+        const selectedValues = [];
+
+        // 선택된 체크박스들을 순회하면서 값 추출
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                selectedValues.push(cb.value);
+            }
+        });
+
+        // 추출된 값들을 '/'로 구분하여 하나의 문자열로 합침
+        concatenatedValues = selectedValues.join('/');
+
+        // 결과 출력 (콘솔에 출력하거나 필요한 곳에 적용)
+        console.log(concatenatedValues);
+    });
+});
 
 function submitForm() {
     var form = document.getElementById("userForm");
@@ -703,13 +724,14 @@ function submitForm() {
     var email = document.getElementById('email').value;
     var emailDomain = document.getElementById('emailDomainSelect').value || '';
     var fullEmail = email + emailDomain;
+    
     console.log("Email Domain: ", emailDomain); 
   /*   uploadFile(); */
     formData.forEach(function(value, key) {
         jsonObject[key] = value;
     });
-    
     jsonObject["email"] = fullEmail;
+   	jsonObject["foodCategory"] = concatenatedValues;
     jsonObject["attendance"] = 0;
     jsonObject["join_date"] = new Date().toISOString().slice(0,10);
     
@@ -798,11 +820,11 @@ function jusoCallBack(address){
 	window.close();
 }
 
-window.onload = function() {
+/* window.onload = function() {
     // 인증번호 발송 버튼을 비활성화
     var sendVerificationButton = document.getElementById('sendVerification');
     sendVerificationButton.disabled = true;
 }
-
+ */
 </script>
 </html>

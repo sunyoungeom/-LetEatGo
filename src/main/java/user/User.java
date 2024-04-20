@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-	private int user_id;
 	private String id;
 	private String password;
 	private Date join_date;
@@ -29,5 +28,5 @@ public class User {
 	private String identifynumber;
 	private String phonenumber;
 //	private String profilePhotoPath;
-	private Food foodList;
+	private String foodCategory;
 }

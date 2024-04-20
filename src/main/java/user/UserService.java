@@ -1,7 +1,9 @@
 package user;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 
 import listener.MyWebContextListener;
@@ -238,10 +240,10 @@ public class UserService {
 	}
 	
 
-	public void insertFood(Food foodList, int user_id) {
+	public void insertFood(int userId, String foodCategory) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			userMapper.insertFood(foodList, user_id);
+			userMapper.insertFood(userId, foodCategory);
 			sqlSession.commit();
 		}
 	}
@@ -252,4 +254,22 @@ public class UserService {
 			sqlSession.commit();
 		}
 	}
+	
+	public List<Food> getFoodCategoriesByUserId(int userId) {
+	    try (SqlSession sqlSession = MyWebContextListener.getBatchSqlSession()) {
+	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+	        String foodCategories = userMapper.getFoodCategoriesByUserId(userId);
+	        List<Food> foodList = new ArrayList<>();
+
+	        String[] categoriesArray = foodCategories.split("/");
+	        for (String category : categoriesArray) {
+	            Food food = new Food(category.trim());
+	            foodList.add(food);
+	        }
+
+	        sqlSession.commit();
+	        return foodList;
+	    }
+	}
+
 }
