@@ -28,16 +28,15 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 <style>
-.box {
-	display: inline-block;
-	width: 450px;
-	height: 420px;
-	border: 2px solid gray;
-	padding: 10px;
-	border-radius: 10px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
+.table {
+    background-color: white;
+}
+.place-badge {
+	background-color: #6c757d;
+}
+
+.tag-badge {
+	background-color: #FFA500;
 }
 </style>
 </head>
@@ -70,7 +69,8 @@
 
 								<div class="card-body p-0 border rounded-4"
 									style="margin-bottom: 0px;">
-									<a href="/menu/han" style="text-decoration: none; color: inherit;">
+									<a href="/menu/han"
+										style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img src="../Resources/image/bibimbap.png" alt="음식 이미지"
 												style="width: 100px; height: auto; margin-top: 11px;">
@@ -87,7 +87,8 @@
 								style="height: auto;">
 
 								<div class="card-body p-0 border rounded-4">
-									<a href="/menu/jung" style="text-decoration: none; color: inherit;">
+									<a href="/menu/jung"
+										style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img src="../Resources/image/jajangmyeon.png" alt="음식 이미지"
 												style="width: 100px; height: auto; margin-top: 14px;">
@@ -104,7 +105,8 @@
 								style="height: auto;">
 
 								<div class="card-body p-0 border rounded-4">
-									<a href="/menu/il" style="text-decoration: none; color: inherit;">
+									<a href="/menu/il"
+										style="text-decoration: none; color: inherit;">
 										<div class="d-flex flex-column align-items-center p-3">
 											<img src="../Resources/image/spaghetti.png" alt="음식 이미지"
 												style="width: 100px; height: auto;">
@@ -144,39 +146,35 @@
 							</form>
 						</div>
 					</div>
-						<br />
+					<br />
 					<div class="row">
-					<div class="container">
-					<hr>
-		<br>
-		<h3>최근 게시물</h3>
-		<table class="table table-hover table-bordered" id="postTable">
-			<thead class="table-light">
-				<tr>
-					<th scope="col" style="text-align: center">#</th>
-					<th scope="col">제목</th>
-					<th scope="col">작성일</th>
-					<th scope="col">조회수</th>
-				</tr>
-			</thead>
-			<tbody class="table-group-divider">
-				<!-- 데이터는 JavaScript로 채웁니다 -->
-			</tbody>
-		</table>
-	</div>
+						<div class="container">
+							<hr>
+							<br>
+							<h3>최근 게시물</h3>
+							<table class="table table-hover table-bordered" id="postTable">
+								<thead>
+									<tr>
+										<th scope="col" class="vertical-align-center text-center">#</th>
+										<th scope="col">제목</th>
+										<th scope="col" class="vertical-align-center text-center">조회수</th>
+									</tr>
+								</thead>
+								<tbody class="table-group-divider">
+									<!-- 데이터는 JavaScript로 채웁니다 -->
+								</tbody>
+							</table>
+						</div>
 
-	<nav aria-label="Page navigation example">
-		<ul class="pagination justify-content-center" id="pagination">
-		</ul>
-	</nav>
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-center" id="pagination">
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
-		</div>
 	</main>
 
-
-
-		
 
 	<!-- Footer-->
 	<footer class="bg-white py-4 mt-auto">
@@ -194,7 +192,7 @@
 			</div>
 		</div>
 	</footer>
-	
+
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -205,9 +203,9 @@
     const postTable = document.getElementById("postTable");
     const tbody = postTable.querySelector("tbody");
     let currentPage = 1; // 초기 페이지는 1로 설정
-    const itemsPerPage = 10; // 페이지당 아이템 수
+    const itemsPerPage = 5; // 페이지당 아이템 수
     const search = document.getElementById("search");
-
+    let scrollPosition = 0;
     
     function formattedDate(element) {
         // MySQL DATETIME 값을 Date 객체로 변환
@@ -226,6 +224,8 @@
       }
     
     loadPosts(currentPage);
+    
+    
 	//최근 게시물 가져오기
     function loadPosts(page) {
       fetch(`/recent?page=${page}&pagePer=${itemsPerPage}`, {
@@ -239,30 +239,65 @@
           data.items.forEach((element) => {
             let contenttr = document.createElement("tr");
             let tdId = document.createElement("td");
-            let tdTitle = document.createElement("td");
-            let tdresistdate = document.createElement("td");
+         	let tdTitle = document.createElement("td");
             let tdview = document.createElement("td");
+            
+            // 게시물 번호 스타일 적용
+            tdId.style.verticalAlign = "middle";
+            tdId.style.textAlign = "center";
 
-            tdId.innerText = `${element.post_Id}`;
-            tdTitle.innerText =
-              element.title.length > maxTitleLength
+            // 제목: 첫번째 줄, 내용 적용
+            let tdTitleFirstLine = document.createElement("span");
+            tdTitleFirstLine.innerText = `${element.place}`;
+         	// 제목: 첫번째 줄, 스타일 적용
+            tdTitleFirstLine.classList.add("badge", "place-badge");
+            tdTitleFirstLine.style.fontSize = "16px";
+
+         	// 제목: 두번째 줄, 내용 적용
+            let tdTitleSecondLine = document.createElement("span");
+            tdTitleSecondLine.innerText = element.title.length > maxTitleLength
                 ? element.title.substring(0, maxTitleLength) + "..."
                 : element.title;
-            tdresistdate.innerText = formattedDate(element);
+            // 제목: 두번째 줄, 스타일 적용
+            tdTitleSecondLine.style.fontWeight = "bold";
+            tdTitleSecondLine.style.fontSize = "24px";
+            tdTitleSecondLine.style.paddingTop = "3px";
+            tdTitleSecondLine.style.paddingBottom = "3px";
+
+         	// 제목: 세번째 줄, 내용 적용
+            let tdTitleThirdLine = document.createElement("span");
+            tdTitleThirdLine.innerText = "#태그";
+         	// 제목: 세번째 줄, 스타일 적용
+            tdTitleThirdLine.classList.add("badge", "tag-badge");
+
+        	// 제목: 네번째 줄, 내용 적용            
+            let tdTitleFourthLine = document.createElement("span");
+            tdTitleFourthLine.innerText = " | " + formattedDate(element); // 여기서 formattedDate는 날짜를 형식화하는 함수입니다.
+         	// 제목: 네번째 줄, 스타일 적용
+            tdTitleFourthLine.style.color = "gray";
+            
+            
+            // 게시물 조회수 스타일 적용
+            tdview.style.verticalAlign = "middle";
+            tdview.style.textAlign = "center";
+
+            tdId.innerText = `${element.post_Id}`;
+
+            tdTitle.appendChild(tdTitleFirstLine);
+            tdTitle.appendChild(document.createElement("br"));
+            tdTitle.appendChild(tdTitleSecondLine);
+            tdTitle.appendChild(document.createElement("br"));
+            tdTitle.appendChild(tdTitleThirdLine);
+            tdTitle.appendChild(tdTitleFourthLine);
+ 
             tdview.innerText = `${element.view}`;
 
             // 각 셀에 스코프 및 스타일 지정
-            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
-            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
+            tdId.setAttribute("scope", "col");
+            tdId.style.width = "10%";
             tdTitle.setAttribute("scope", "col");
-            tdTitle.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
-            tdresistdate.setAttribute("scope", "col");
-            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
             tdview.setAttribute("scope", "col");
-            tdview.style.width = "7%";
-
-            tdId.style.textAlign = "center";
-            tdview.style.textAlign = "center";
+            tdview.style.width = "10%";
 
             // 클릭 이벤트 추가하여 상세 페이지로 이동
             tdTitle.addEventListener("click", () => {
@@ -271,7 +306,6 @@
 
             contenttr.appendChild(tdId);
             contenttr.appendChild(tdTitle);
-            contenttr.appendChild(tdresistdate);
             contenttr.appendChild(tdview);
             tbody.appendChild(contenttr);
 			
@@ -297,44 +331,126 @@
               filterPostsByTitle(searchValue); // 검색어와 일치하는 게시물만 표시
             });
           });
+          scrollPosition = window.scrollY;
+          window.scrollTo(0, scrollPosition); 
+          currentPage = page; 
           displayPagination(data.totalPages, page); // 페이지네이션 표시
         });
     }
-    // 검색어와 일치하는 게시물만 표시하는 함수
+    
 
-
-    // 검색 이벤트 리스너 추가
-
-    fetch("/menu/recommand")
-      .then((resp) => resp.json())
-      .then((data) => {
-        // 첫 번째 .box 요소만 선택합니다.
-        const box = document.querySelector(".box");
-        // 데이터가 존재하고 첫 번째 .box 요소도 존재하는지 확인합니다.
-        if (data.length > 0 && box) {
-          const searchResult = data[4]; // 첫 번째 검색 결과만 사용합니다.
-          const titleElement = document.createElement("h3");
-          // 제목을 클릭했을 때 해당 블로그로 이동하도록 설정합니다.
-          titleElement.addEventListener("click", () => {
-            window.location.href = searchResult.blogurl;
-          });
-          titleElement.textContent = searchResult.title;
-          const contentsElement = document.createElement("p");
-          contentsElement.textContent = searchResult.contents + "...";
-          const thumbnailElement = document.createElement("img");
-          thumbnailElement.src = searchResult.thumbnail;
-          let h2 = document.createElement("h2");
-          let br = document.createElement("br");
-          h2.innerText = "관리자 추천 맛집!";
-          // 생성된 요소들을 box에 추가합니다.
-          box.appendChild(h2);
-          box.appendChild(br);
-          box.appendChild(titleElement);
-          box.appendChild(contentsElement);
-          box.appendChild(thumbnailElement);
+    function displayPagination(totalPages, currentPage) {
+        let pagination = document.getElementById("pagination"); // 페이지네이션 요소
+        pagination.innerHTML = ""; // 페이지네이션 초기화
+        
+        // 첫 페이지로 이동하는 버튼 추가
+        let firstPage = createPaginationItem("First", "&lt;&lt;");
+        pagination.appendChild(firstPage);
+        
+        // 이전 페이지 버튼 추가
+        let previous = createPaginationItem("Previous", "&laquo;");
+        pagination.appendChild(previous);
+        
+        // 페이지 번호 버튼 추가
+        let startPage;
+        let endPage;
+        
+        // 페이지 번호가 5개 이하인 경우
+        if (totalPages <= 5) {
+            startPage = 1;
+            endPage = totalPages;
+        } else { // 페이지 번호가 5개를 초과하는 경우
+            if (currentPage <= 3) { // 현재 페이지가 3 이하인 경우
+                startPage = 1;
+                endPage = 5;
+            } else if (currentPage >= totalPages - 2) { // 현재 페이지가 마지막에서 2페이지 이하인 경우
+                startPage = totalPages - 4;
+                endPage = totalPages;
+            } else { // 현재 페이지가 중간인 경우
+                startPage = currentPage - 2;
+                endPage = currentPage + 2;
+            }
         }
-      });
+        
+        for (let i = startPage; i <= endPage; i++) {
+            let pagelist = createPaginationItem(i);
+            pagination.appendChild(pagelist);
+        }
+        
+        // 다음 페이지 버튼 추가
+        let next = createPaginationItem("Next", "&raquo;");
+        pagination.appendChild(next);
+        
+        // 마지막 페이지로 이동하는 버튼 추가
+        let lastPage = createPaginationItem("Last", "&gt;&gt;");
+        pagination.appendChild(lastPage);
+        
+        // 현재 페이지 버튼 활성화
+        let activePageButton = pagination.querySelector(`[data-page="${currentPage}"]`);
+        if (activePageButton) {
+            activePageButton.classList.add("active");
+        }
+
+        // 첫 페이지 버튼 클릭 이벤트 설정
+        firstPage.addEventListener("click", (event) => {
+        loadPosts(1); // 첫 페이지의 데이터 로드
+        });
+
+        // 이전 페이지 버튼 클릭 이벤트 설정
+        previous.addEventListener("click", (event) => {
+      	if (currentPage === 1) {
+   	        return; // 현재 페이지가 1페이지인 경우 함수 종료
+   	    }
+   	    loadPosts(currentPage - 1);
+        });
+
+        // 다음 페이지 버튼 클릭 이벤트 설정
+        next.addEventListener("click", (event) => {
+        if (currentPage === totalPages) {
+       		return; // 현재 페이지가 1페이지인 경우 함수 종료
+        }
+        loadPosts(currentPage + 1); // 다음 페이지의 데이터 로드
+        });
+
+        // 마지막 페이지 버튼 클릭 이벤트 설정
+        lastPage.addEventListener("click", (event) => {
+        loadPosts(totalPages); // 마지막 페이지의 데이터 로드
+        });
+    }
+
+    // 페이지네이션 아이템을 생성하는 함수
+    function createPaginationItem(label, innerHTML) {
+        let listItem = document.createElement("li");
+        listItem.classList.add("page-item");
+        
+        let link = document.createElement("a");
+        link.classList.add("page-link");
+        link.innerText = label;
+        link.setAttribute("data-page", label); // 페이지 번호를 버튼에 데이터 속성으로 추가합니다.
+        
+        if (label === "Previous" || label === "Next" || label === "First" || label === "Last") {
+            link.setAttribute("aria-label", label);
+            link.innerHTML = innerHTML || label;
+            
+        } else {
+            link.addEventListener("click", (event) => {
+    			event.preventDefault();
+    			
+                loadPosts(label); // 해당 페이지의 데이터 로드
+                
+                // 활성화된 버튼 표시
+                let pageButtons = document.querySelectorAll(".page-link");
+                pageButtons.forEach(button => {
+                    button.classList.remove("active");
+                });
+                link.classList.add("active");
+            });
+        }
+        
+	 listItem.appendChild(link);
+        
+        return listItem;
+    }
   </script>
 <!-- 페이지 번호 -->
-<script src="/js/pagination.js"></script>
 </html>
