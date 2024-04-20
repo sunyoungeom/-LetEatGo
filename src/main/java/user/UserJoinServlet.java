@@ -101,17 +101,9 @@ public class UserJoinServlet extends HttpServlet {
 
 				// 유효성 검사를 통과한 경우 회원가입 처리
 				int result = service.insert(user);
-				service.insertFood(service.getUserId(user.getId()), user.getFoodCategory());
+				int currentUserId = service.getUserId(user.getId());
+				service.insertFood(currentUserId, user.getFoodCategory());
 				
-				// doPost 메서드 내에서
-				
-				// JSON 데이터에서 음식 관련 정보를 가져옴
-//				JsonNode foodNode = jsonNode.get("foodCategory");
-				// Food 객체 생성 및 초기화
-//				Food food = new Food();
-				// 예시: JSON 데이터에 "category" 키가 있다고 가정
-				
-//				service.insertHobby(hobby, user.getUser_id());
 				if (result == 1) {
 					response.setStatus(HttpServletResponse.SC_CREATED); // 201 Created
 					response.getWriter().println("회원가입이 완료되었습니다.");

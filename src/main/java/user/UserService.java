@@ -240,10 +240,10 @@ public class UserService {
 	}
 	
 
-	public void insertFood(int userId, String foodCategory) {
+	public void insertFood(int user_id, String foodCategory) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			userMapper.insertFood(userId, foodCategory);
+			userMapper.insertFood(user_id, foodCategory);
 			sqlSession.commit();
 		}
 	}
@@ -255,10 +255,10 @@ public class UserService {
 		}
 	}
 	
-	public List<Food> getFoodCategoriesByUserId(int userId) {
+	public List<Food> getFoodCategoriesByUserId(int user_id) {
 	    try (SqlSession sqlSession = MyWebContextListener.getBatchSqlSession()) {
 	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        String foodCategories = userMapper.getFoodCategoriesByUserId(userId);
+	        String foodCategories = userMapper.getFoodCategoriesByUserId(user_id);
 	        List<Food> foodList = new ArrayList<>();
 
 	        String[] categoriesArray = foodCategories.split("/");
