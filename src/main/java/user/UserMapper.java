@@ -61,7 +61,7 @@ public interface UserMapper {
 	@Select("SELECT * FROM users WHERE id = #{id}")
 	User getUserById(@Param("id") String id);
 
-	@Update("UPDATE users SET attendance = 1 WHERE id = #{id}")
+	@Update("UPDATE users SET attendance = 10, join_date = NOW() WHERE id = #{id}")
 	void checkAttendance(String id);
 
 	// 닉네임으로 유저아이디 찾기 (일웅필요함)
