@@ -41,13 +41,11 @@ public interface ReviewMapper {
     
     // 특정 게시물에 대한 리뷰 목록 조회
     @Results({
-        @Result(property = "reviewId", column = "review_id"),
-        @Result(property = "postId", column = "post_id"),
-        @Result(property = "writeUserId", column = "writeuser_id"),
-        @Result(property = "guestUserId", column = "guestuser_id"),
+        @Result(property = "post_id", column = "post_id"),
+        @Result(property = "writeuser_id", column = "writeuser_id"),
         @Result(property = "rating", column = "rating"),
-        @Result(property = "review", column = "review"),
-        @Result(property = "reviewDate", column = "review_date")
+        @Result(property = "review_content", column = "review_content"),
+        @Result(property = "review_date", column = "review_date")
     })
     @Select("SELECT * FROM post_reviews WHERE post_id=#{postId}")
     List<Review> getReviewsByPostId(int postId);

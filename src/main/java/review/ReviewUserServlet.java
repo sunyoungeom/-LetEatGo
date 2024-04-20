@@ -38,14 +38,14 @@ public class ReviewUserServlet extends HttpServlet{
         JSONObject jsonRequest = new JSONObject(requestBody);
 
         // 텍스트 내용과 별점 추출
-        String review = jsonRequest.getString("reviewText");
+        String review_content = jsonRequest.getString("reviewText");
         int rating = jsonRequest.getInt("starValue");
 
         // TODO: 친구 추가시 후 채팅시 post_id가 필요없음 새 테이블 또는 포레인키 제거 고민, 메소드 따로 이용?
         // 리뷰 객체 생성 및 초기화
         Review saveReview = new Review();
-        saveReview.setWriteUserId(user.getUser_id());
-        saveReview.setReview(review);
+        saveReview.setWriteuser_id(user.getUser_id());
+        saveReview.setReview_content(review_content);
         saveReview.setRating(rating);
         // 모임 끝났을때 게시글 알아내서 포스트 id 넣어주기
         //saveReview.setPostId(postId);

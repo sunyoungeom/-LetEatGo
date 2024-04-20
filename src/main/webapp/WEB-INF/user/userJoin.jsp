@@ -352,23 +352,55 @@ padding
 												 <label><input type="checkbox" name="foodCategory" value="분식"> 분식</label><br>
 												 <label><input type="checkbox" name="foodCategory" value="디저트"> 디저트</label><br>
 												 <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
-											 </form>
-										 
 											 <h2>취향</h2>
-											 <form id="preference">
-												 <label><input type="checkbox" name="preference" value="매운맛"> 매운맛</label><br>
-												 <label><input type="checkbox" name="preference" value="신맛"> 신맛</label><br>
-												 <label><input type="checkbox" name="preference" value="짠맛"> 짠맛</label><br>
-												 <label><input type="checkbox" name="preference" value="단맛"> 단맛</label><br>
-												 <label><input type="checkbox" name="preference" value="맵찔이"> 맵찔이</label><br>
-												 <label><input type="checkbox" name="preference" value="상관없음"> 상관없음</label><br>
-											 </form>
+												 <label><input type="checkbox" name="foodCategory" value="매운맛"> 매운맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="신맛"> 신맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="짠맛"> 짠맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="단맛"> 단맛</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="맵찔이"> 맵찔이</label><br>
+												 <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
 											 <br>
-											 <button type="button" value="등록"></button>
 											 </form>
+											 </form>
+											 <button type="button" id="registFood" >등록</button>
 										</dialog>
 										<button id="foodbtn">음식태그</button>
-										<dialog id="hobbyDialog"></dialog>
+										<dialog id="hobbyDialog">
+											<h2>취미</h2>
+												<form action="" method="Post" id="hobbyTotal">
+													<form id="hobbyCategory">
+													<input type="checkbox" id="exercise" name="hobby" value="exercise">
+													<label for="exercise">운동</label><br> <input type="checkbox"
+														id="viewOTT" name="hobby" value="viewOTT"> <label
+														for="viewOTT">OTT감상</label><br> <input type="checkbox"
+														id="boardGame" name="hobby" value="boardGame"> <label
+														for="boardGame">보드게임</label><br> <input type="checkbox"
+														id="onlineGame" name="hobby" value="onlineGame"> <label
+														for="onlineGame">온라인게임</label><br> <input type="checkbox"
+														id="listeningMusic" name="hobby" value="listeningMusic"> <label
+														for="listeningMusic">음악감상</label><br> <input type="checkbox"
+														id="restaurantTour" name="hobby" value="restaurantTour"> <label
+														for="restaurantTour">맛집탐방</label><br> <input type="checkbox"
+														id="photoshoot" name="hobby" value="photoshoot"> <label
+														for="photoshoot">사진촬영</label><br> <input type="checkbox"
+														id="shopping" name="hobby" value="shopping"> <label
+														for="shopping">쇼핑</label><br> <input type="checkbox"
+														id="itemTuning" name="hobby" value="itemTuning"> <label
+														for="itemTuning">물건 튜닝</label><br> <input type="checkbox"
+														id="itemCollection" name="hobby" value="itemCollection"> <label
+														for="itemCollection">물건 수집</label><br> <input type="checkbox"
+														id="volunteer" name="hobby" value="volunteer"> <label
+														for="volunteer">자원봉사</label><br> <input type="checkbox"
+														id="trip" name="hobby" value="trip"> <label for="trip">여행</label><br>
+													<input type="checkbox" id="itemAssembly" name="hobby"
+														value="itemAssembly"> <label for="itemAssembly">물건
+														조립</label><br> <input type="checkbox" id="painting" name="hobby"
+														value="painting"> <label for="painting">그림그리기</label><br>
+												</form>
+												<button type="button" id="registFood">등록</button>
+										</dialog>
+										<button id="hobbyBtn">취미태그</button>
+										<br>
 										<button type="button" value="확인"
 											style="height: 50px; padding: 2px;"
 											class="btn btn-dark form-control" onclick="submitForm()">가입</button>
@@ -394,17 +426,26 @@ padding
 </body>
 
 <script>
-const foodbtn = document.getElementById("foodbtn");
-foodbtn.addEventListener("click", );
- // 음식태그 버튼을 클릭하면 다이얼로그를 표시하는 함수
-document.getElementById('foodbtn').addEventListener('click', function() {
+foodbtn.addEventListener("click", function() {
+    // 음식 버튼을 클릭하면 다이얼로그를 표시하는 함수
     var dialog = document.getElementById('foodDialog');
     if (!dialog.showModal) {
         dialogPolyfill.registerDialog(dialog);
     }
-    dialog.showModal();
+    foodDialog.showModal();
 });
-		
+document.getElementById('registFood').addEventListener('click', function(){
+	foodDialog.close();
+})
+const hobbyBtn = document.getElementById("hobbyBtn");
+hobbyBtn.addEventListener("click", function() {
+    // 취미 버튼을 클릭하면 다이얼로그를 표시하는 함수
+    var dialog = document.getElementById('hobbyDialog');
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    dialog.showModal();    
+});
 
 //입력 필드에 이벤트 리스너 추가
 document.getElementById('id').addEventListener('input', debounce(function() {
@@ -422,7 +463,6 @@ document.getElementById('id').addEventListener('input', debounce(function() {
         checkDuplicate('id');
     }
 }, 500));
-
 
 document.getElementById('phonenumber').addEventListener('input', function(e) {
     var input = e.target;
@@ -684,9 +724,7 @@ function submitForm() {
     })
     .then(response => {
         if (response.ok) {
-        	fetch('/join/food',{
-        		method: 'POST'
-        	})
+        	/* submitFood(); */
             alert("회원가입이 완료되었습니다.");
            /*  uploadFile();  */
            /*  window.location.href = '/userJoinResult.jsp'; */
@@ -707,36 +745,45 @@ function submitForm() {
     })
     }
     
-/*  function uploadFile() {
-    var form = document.getElementById('uploadForm');
-    var formData = new FormData(form);
 
-    fetch('/upload', {
-        method: 'POST',
-        body: formData
+/* 	function submitFood() {
+    // 선택된 음식 카테고리 가져오기
+    var selectedCategories = [];
+    var foodCategoryCheckboxes = document.querySelectorAll('#foodCategory input[type=checkbox]:checked');
+    foodCategoryCheckboxes.forEach(function(checkbox) {
+        selectedCategories.push(checkbox.value);
+    });
+
+    // JSON 객체 생성
+    var jsonData = {
+        "foodCategory": selectedCategories
+    };
+
+    // JSON 데이터를 문자열로 변환
+    var jsonString = JSON.stringify(jsonData);
+
+    // 서블릿으로 JSON 데이터 전송
+    fetch("/join/food", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+        },
+        body: jsonString
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('File upload successful:', data);
+    .then(response => {
+        if (response.ok) {
+            // 요청이 성공적으로 처리됨
+            console.log("JSON 음식데이터 전송 성공");
+        } else {
+            // 요청이 실패함
+            console.error("JSON 음식데이터 전송 실패");
+        }
     })
-    .catch(error => console.error('File upload error:', error));
+    .catch(error => {
+        // 네트워크 오류 등으로 요청 처리 실패
+        console.error("네트워크 오류:", error);
+    });
 } */
- 
-/*  document.getElementById('uploadForm').addEventListener('submit', function(event) {
-     event.preventDefault(); // 폼의 기본 제출 막기
-     var formData = new FormData(this);
-
-     fetch('/upload', {
-         method: 'POST',
-         body: formData
-     })
-     .then(response => response.text()) // 응답을 텍스트로 받음
-     .then(data => {
-         console.log('Success:', data);
-         alert(data); // 성공 메시지 표시
-     })
-     .catch(error => console.error('Error:', error));
- }); */
 function goPopup(){
 	// 주소검색을 수행할 팝업 페이지를 호출합니다.
 	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://business.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
@@ -759,4 +806,3 @@ window.onload = function() {
 
 </script>
 </html>
-

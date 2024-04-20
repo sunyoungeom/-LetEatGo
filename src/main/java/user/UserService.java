@@ -238,10 +238,10 @@ public class UserService {
 	}
 	
 
-	public void insertFood(Food food, int user_id) {
+	public void insertFood(Food foodList, int user_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			userMapper.insertFood(food, user_id);
+			userMapper.insertFood(foodList, user_id);
 			sqlSession.commit();
 		}
 	}
@@ -252,11 +252,4 @@ public class UserService {
 			sqlSession.commit();
 		}
 	}
-	public int lastInsertId() {
-		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
-			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-			return userMapper.lastInsertId();
-		}
-	}
-	
 }

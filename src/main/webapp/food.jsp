@@ -26,17 +26,15 @@
         <label><input type="checkbox" name="foodCategory" value="분식"> 분식</label><br>
         <label><input type="checkbox" name="foodCategory" value="디저트"> 디저트</label><br>
         <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
+        <h2>취향</h2>
+        <label><input type="checkbox" name="foodCategory" value="매운맛"> 매운맛</label><br>
+        <label><input type="checkbox" name="foodCategory" value="신맛"> 신맛</label><br>
+        <label><input type="checkbox" name="foodCategory" value="짠맛"> 짠맛</label><br>
+        <label><input type="checkbox" name="foodCategory" value="단맛"> 단맛</label><br>
+        <label><input type="checkbox" name="foodCategory" value="맵찔이"> 맵찔이</label><br>
+        <label><input type="checkbox" name="foodCategory" value="상관없음"> 상관없음</label><br>
     </form>
 
-    <h2>취향</h2>
-    <form id="preference">
-        <label><input type="checkbox" name="preference" value="매운맛"> 매운맛</label><br>
-        <label><input type="checkbox" name="preference" value="신맛"> 신맛</label><br>
-        <label><input type="checkbox" name="preference" value="짠맛"> 짠맛</label><br>
-        <label><input type="checkbox" name="preference" value="단맛"> 단맛</label><br>
-        <label><input type="checkbox" name="preference" value="맵찔이"> 맵찔이</label><br>
-        <label><input type="checkbox" name="preference" value="상관없음"> 상관없음</label><br>
-    </form>
     <br>
     <button type="button" value="등록"></button>
     </form>

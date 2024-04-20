@@ -115,8 +115,11 @@
 						</div>
 					</div>
 				</div>
+		
 			</div>
+			
 		</section>
+		
 	<div id="test"><a href="/user/userReview">test</a> </div>
 	</main>
 

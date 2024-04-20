@@ -37,6 +37,22 @@ public class MyWebContextListener implements ServletContextListener {
 		configuration.addMapper(ChatMapper.class);
 		configuration.addMapper(ReviewMapper.class);
 		factory = new SqlSessionFactoryBuilder().build(configuration);
+		updateAttendanceStatus(factory);
+	}
+
+	private void updateAttendanceStatus(SqlSessionFactory factory) {
+		SqlSession session = factory.openSession();
+		try {
+			UserMapper userMapper = session.getMapper(UserMapper.class);
+			userMapper.updateAllUsersAttendanceStatus();
+			session.commit();
+		} catch (Exception e) {
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
 	}
 	
 	private void initDataSource() {
@@ -45,18 +61,26 @@ public class MyWebContextListener implements ServletContextListener {
 //        String username = ConfigLoader.getPropertyValue("username");
 //        String password = ConfigLoader.getPropertyValue("password");
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//		ds.setUrl(url);
+
+//		//		ds.setUrl("url");
+////		ds.setUsername("username");
+////		ds.setPassword("password");
+//		
+//		ds.setUrl("jdbc:mysql://localhost:3306/board");
+//		ds.setUsername("root");
+//		ds.setPassword("root1234");
+
+		//		ds.setUrl(url);
 //		ds.setUsername(username);
 //		ds.setPassword(password);
 
-		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
-//		ds.setUrl("jdbc:mysql://localhost:3306/board");
-		ds.setUsername("team1");
+//		ds.setUrl("jdbc:mysql://192.168.0.107:3306/board");
+		ds.setUrl("jdbc:mysql://localhost:3306/board");
+		ds.setUsername("root");
 //		ds.setUsername("root");
 		ds.setPassword("root");
 		dataSource = ds;
 	}
-	
 
 	public static Connection getConnection() throws SQLException {
 		return dataSource.getConnection();

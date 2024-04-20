@@ -33,14 +33,13 @@ public class PostDetailServlet extends HttpServlet {
 
 		// GET 요청을 처리합니다.
 		
-		request.getRequestDispatcher("/WEB-INF/post/post_detail.jsp").forward(request, response);
+		request.getRequestDispatcher("/postdetail.jsp").forward(request, response);
 		
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String requestURI = req.getRequestURI();
-		
 		
 		if (requestURI.endsWith("/post/detail")) {
 			// 게시물 상세 정보 요청 처리
@@ -49,23 +48,38 @@ public class PostDetailServlet extends HttpServlet {
 			
 			postService.increasePostViews(postId);
 			List<PostWithGuestUserIdDTO> DTOList = postService.getPostsWithStatusAndGuestUserId();
+			List<Integer>attendGuestIdList =  postService.getGuestUserIdByPostId(postId);
+			Map<String, Object> responseMap = new HashMap<>();
+			List<User> attendUserList = new ArrayList<User>();
+			List<List<Review>> attendGuestReviewList = new ArrayList<List<Review>>();
+			if(attendGuestIdList != null) {
+				for(Integer i : attendGuestIdList) {
+					attendUserList.add(userService.getUser(i));
+				}
+				for(User u : attendUserList) {
+					List<Review> reviews = new ArrayList<Review>(); 
+					reviews = reviewService.getReviewsByUserId(u.getUser_id());
+					attendGuestReviewList.add(reviews);
+				}
+			}
+			System.out.println(attendGuestReviewList.toString());
+			
 			
 			User user = userService.getUser(post.getWriteUser_Id());
 			String place = postService.getPlaceByPostId(postId);
 			PostTag tag = postService.getPostTagbyPostId(postId);
 			System.out.println("장소 : " + place);
 			System.out.println("태그 : " + tag);
-			// 해당 게시물의 리뷰 목록도 함께 가져옵니다.
-			List<Review> reviews = reviewService.getReviewsByPostId(postId);
+			req.getSession().setAttribute("DTOList", DTOList);
+			
 			// 게시물과 리뷰 목록을 함께 담아 JSON 형태로 응답합니다.
-			Map<String, Object> responseMap = new HashMap<>();
 			responseMap.put("post", post);
 			responseMap.put("user", user);
-			responseMap.put("reviews", reviews);
 			responseMap.put("place", place);
 			responseMap.put("tags", tag);
 			responseMap.put("DTOList", DTOList);
-			req.getSession().setAttribute("DTOList", DTOList);
+			responseMap.put("attendUserList", attendUserList);
+			responseMap.put("attendGuestReviewList", attendGuestReviewList);
 			// JSON 형태로 변환하여 응답합니다.
 			ServletUtil.sendJsonBody(responseMap, resp);
 		} else if (requestURI.endsWith("/post/addReview")) {

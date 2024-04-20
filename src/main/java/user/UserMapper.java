@@ -61,7 +61,7 @@ public interface UserMapper {
 	@Select("SELECT * FROM users WHERE id = #{id}")
 	User getUserById(@Param("id") String id);
 
-	@Update("UPDATE users SET attendance = 1 WHERE id = #{id}")
+	@Update("UPDATE users SET attendance = 10, join_date = NOW() WHERE id = #{id}")
 	void checkAttendance(String id);
 
 	// 닉네임으로 유저아이디 찾기 (일웅필요함)
@@ -135,13 +135,11 @@ public interface UserMapper {
 	            "END")
 	void updateAllUsersAttendanceStatus();
 
-	@Insert("insert into food (user_id, foodcategory, tasty)values (#{food.user_id},#{food.foodcategory},#{food.tasty})")
-	@SelectKey(keyProperty = "user_id", statement =  "SELECT LAST_INSERT_ID();" , resultType = Integer.class, before = false)
-	void insertFood(Food food ,int user_id);
+//	@SelectKey(keyProperty = "user_id", statement =  "SELECT LAST_INSERT_ID();" , resultType = Integer.class, before = false)
+	@Insert("insert into food (user_id, foodcategory)values (#{food.user_id},#{food.foodcategory})")
+	void insertFood(Food foodList,int user_id);
 	
 	@Insert("insert into hobby (user_id, hobby)values (#{hobby.user_id},#{hobby.hobby})")
 	void insertHobby(Hobby hobby, int user_id);
 	
-	  @Select("SELECT LAST_INSERT_ID()")
-	    int lastInsertId();
 }

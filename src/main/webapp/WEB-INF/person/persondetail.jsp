@@ -36,7 +36,8 @@
 
 .info-container {
 	width: 65%;
-	height: 270px; display : flex;
+	height: 270px;
+	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	margin-top: 20px;
@@ -72,27 +73,27 @@
 }
 /* 별 모양을 만드는 CSS */
 .star-rating {
-    font-size: 0;
-    display: flex;
-    flex-direction: row-reverse; /* 별을 오른쪽에서 왼쪽으로 배치 */
-    justify-content: flex-end;
+	font-size: 0;
+	display: flex;
+	flex-direction: row-reverse; /* 별을 오른쪽에서 왼쪽으로 배치 */
+	justify-content: flex-end;
 }
 
 .star-rating label {
-    font-size: 30px;
+	font-size: 30px;
 }
 
 /* Bootstrap Icons로 별 모양을 변경 */
 .star-rating label:before {
-    content: '\E256'; /* 별 아이콘의 유니코드 값 */
-    display: inline-block;
-    font-family: 'Bootstrap Icons'; /* Bootstrap Icons 폰트 패밀리 지정 */
-    color: #ccc; /* 비활성화된 별 아이콘의 색상 */
+	content: '\E256'; /* 별 아이콘의 유니코드 값 */
+	display: inline-block;
+	font-family: 'Bootstrap Icons'; /* Bootstrap Icons 폰트 패밀리 지정 */
+	color: #ccc; /* 비활성화된 별 아이콘의 색상 */
 }
 
 /* 활성화된 별 아이콘 색상 변경 */
 .star-rating label.active:before {
-    color: gold; /* 활성화된 별 아이콘의 색상을 변경할 수 있습니다. */
+	color: gold; /* 활성화된 별 아이콘의 색상을 변경할 수 있습니다. */
 }
 </style>
 </head>
@@ -107,28 +108,28 @@
 			</div>
 
 			<div class="info-container">
-				<div class="info" style="height: 200px; overflow: auto;display: flex;
-					align-items: center;">
-						<ul if="personinfo">
-							<li id="nickname">이름</li>
-							<li id="age">나이</li>
-							<li id="starContainer">별점</li>
-							<li id="bloodtype">혈액형</li>
-							<li id="mbti">mbti</li>
-						</ul>
+				<div class="info"
+					style="height: 200px; overflow: auto; display: flex; align-items: center;">
+					<ul if="personinfo">
+						<li id="nickname">이름</li>
+						<li id="age">나이</li>
+						<li id="starContainer">별점</li>
+						<li id="bloodtype">혈액형</li>
+						<li id="mbti">mbti</li>
+					</ul>
 				</div>
 				<div class="info" style="height: 100px; overflow: auto;">
-					자기소개 내용이 길어지면? <br> 자기소개 <br> <br> <br> <br> <br>
+					자기소개 내용이 길어지면? <br> 자기소개 <br> <br> <br> <br>
 					<br> <br> <br> <br> <br> <br> <br>
-					<br> <br> <br>GMA..fsdafsd <br> <br> <br>sdsa
-					<br>sda
+					<br> <br> <br> <br>GMA..fsdafsd <br> <br>
+					<br>sdsa <br>sda
 				</div>
 			</div>
 		</div>
 
 		<br>
 
-			<h3>글목록</h3>
+		<h3>글목록</h3>
 		<div
 			style="border: 2px solid gray; padding: 10px; border-radius: 10px;">
 			<div>
@@ -165,16 +166,17 @@
 			</div>
 		</div>
 		<br>
-		
-	<!-- 	<h3>한줄 후기</h3>
+
+		<!-- 	<h3>한줄 후기</h3>
 
 		<div class="review"padding: 10px;">사장님이 맛있고 음식이 친절해요</div>
+		 -->
 
 		<div class="actions-container">
-			<div class="action" style="border-radius: 10px;">친구추가</div>
+			<button class="action" id="friendbtn" style="border-radius: 10px;">친구추가</button>
 			<div class="action" style="border-radius: 10px;">대화신청</div>
 			<div class="action" style="border-radius: 10px;">블랙리스트등록</div>
-		</div> -->
+		</div>
 	</div>
 </body>
 <script>
@@ -193,7 +195,7 @@
 	
 	const progressingRadio = document.getElementById("progressing");
 	const completedRadio = document.getElementById("completed");
-	
+	var friendbtn = document.getElementById("friendbtn");
 	
 /* 	function loadPosts(page) {
 	    fetch(`http://localhost:8080/person/personinfo?userid=${userid}`, {
@@ -285,7 +287,6 @@
             starContainer.appendChild(starIcon);
         }
 	});
-	
 	
 	
 	//페이지 로드시 실행
