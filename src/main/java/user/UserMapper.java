@@ -136,10 +136,12 @@ public interface UserMapper {
 	void updateAllUsersAttendanceStatus();
 
 //	@SelectKey(keyProperty = "user_id", statement =  "SELECT LAST_INSERT_ID();" , resultType = Integer.class, before = false)
-	@Insert("insert into food (user_id, foodcategory)values (#{food.user_id},#{food.foodcategory})")
-	void insertFood(Food foodList,int user_id);
+	@Insert("insert into food (user_id, foodcategory)values (#{user_id},#{foodCategory})")
+	void insertFood(int user_id, String foodCategory);
 	
 	@Insert("insert into hobby (user_id, hobby)values (#{hobby.user_id},#{hobby.hobby})")
 	void insertHobby(Hobby hobby, int user_id);
 	
+	@Select("SELECT foodcategory FROM food WHERE user_id = #{user_id}")
+	String getFoodCategoriesByUserId(int userId); 
 }

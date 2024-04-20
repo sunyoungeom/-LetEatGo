@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.search.IntegerComparisonTerm;
@@ -100,9 +101,9 @@ public class UserJoinServlet extends HttpServlet {
 
 				// 유효성 검사를 통과한 경우 회원가입 처리
 				int result = service.insert(user);
+				service.insertFood(service.getUserId(user.getId()), user.getFoodCategory());
 				
 				// doPost 메서드 내에서
-				JsonNode jsonNode = objectMapper.readTree(body);
 				
 				// JSON 데이터에서 음식 관련 정보를 가져옴
 //				JsonNode foodNode = jsonNode.get("foodCategory");
@@ -110,7 +111,6 @@ public class UserJoinServlet extends HttpServlet {
 //				Food food = new Food();
 				// 예시: JSON 데이터에 "category" 키가 있다고 가정
 				
-				service.insertFood(user.getFoodList(), user.getUser_id());
 //				service.insertHobby(hobby, user.getUser_id());
 				if (result == 1) {
 					response.setStatus(HttpServletResponse.SC_CREATED); // 201 Created

@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -77,6 +78,10 @@ public class MyWebContextListener implements ServletContextListener {
 	
 	public static SqlSession getSqlSession() {
 		return factory.openSession();
+	}
+	
+	public static SqlSession getBatchSqlSession() {
+	    return factory.openSession(ExecutorType.BATCH);
 	}
 }
  
