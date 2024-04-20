@@ -1,9 +1,10 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="post.PostWithGuestUserIdDTO" %>
-<%@ page import="java.util.List" %>
+<%@ page import="post.PostWithGuestUserIdDTO"%>
+<%@ page import="java.util.List"%>
 
-	
+
 <%@ page isELIgnored="true"%>
 <!DOCTYPE html>
 <html>
@@ -155,42 +156,41 @@ h1 {
 	margin-right: 50px;
 	max-width: 90%;
 }
-   /* 모달 다이얼로그 스타일 */
-    .modal {
-        display: none; /* 초기에는 숨김 */
-        position: fixed; /* 고정 위치 */
-        z-index: 1; /* 다른 요소 위에 표시 */
-        left: 0;
-        top: 0;
-        width: 100%; /* 전체 너비 */
-        height: 100%; /* 전체 높이 */
-        overflow: auto; /* 스크롤 가능 */
-        background-color: rgba(0, 0, 0, 0.4); /* 반투명 배경 */
-    }
-    
-    /* 모달 콘텐츠 스타일 */
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; /* 모달이 중앙에 위치하도록 */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* 콘텐츠 너비 */
-    }
-    
-    /* 모달 닫기 버튼 스타일 */
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-    
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+/* 모달 다이얼로그 스타일 */
+.modal {
+	display: none; /* 초기에는 숨김 */
+	position: fixed; /* 고정 위치 */
+	z-index: 1; /* 다른 요소 위에 표시 */
+	left: 0;
+	top: 0;
+	width: 100%; /* 전체 너비 */
+	height: 100%; /* 전체 높이 */
+	overflow: auto; /* 스크롤 가능 */
+	background-color: rgba(0, 0, 0, 0.4); /* 반투명 배경 */
+}
+
+/* 모달 콘텐츠 스타일 */
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 모달이 중앙에 위치하도록 */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%; /* 콘텐츠 너비 */
+}
+
+/* 모달 닫기 버튼 스타일 */
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -233,54 +233,53 @@ h1 {
 			</tr>
 		</table>
 	</div>
-	
-	
+
+
 	<!-- 버튼 클릭 시 모달 다이얼로그 열기 -->
-<button onclick="openModal()">모달 다이얼로그 열기</button>
+	<button onclick="openModal()">모달 다이얼로그 열기</button>
 
-<!-- 모달 다이얼로그 -->
-<div id="myModal" class="modal">
-    <!-- 모달 콘텐츠 -->
-    <div class="modal-content">
-        <!-- 모달 닫기 버튼 -->
-        <span class="close" onclick="closeModal()">&times;</span>
-        <!-- 모달 내용 -->
-        <p>모달 다이얼로그 내용입니다. 원하는 내용을 여기에 추가하세요.</p>
-			        
-        <%
-		    // DTOList 가져오기
-		    List<PostWithGuestUserIdDTO> DTOList = (List<PostWithGuestUserIdDTO>) request.getSession().getAttribute("DTOList");
-		
-		
-		    // DTOList가 null이 아니고 비어있지 않은 경우에만 처리
-		    if (DTOList != null && !DTOList.isEmpty()) {
-		        for (int i = 0; i < DTOList.size(); i++) {
-		        	
-		%>
-					<%-- <p>참여자 이름<% DTOList[i].getGuestUserId;  %></p> --%>
-		            <%-- 여기에 원하는 작업 수행 --%>
-		            
-		            <%-- ratingTest.jsp를 포함하는 예시 --%>
-		            <%-- <%@ include file="/ratingTest.jsp" %> --%>
-		<%
-		        }
-		    }
-		%><!-- 팝업 -->
+	<!-- 모달 다이얼로그 -->
+	<div id="myModal" class="modal">
+		<!-- 모달 콘텐츠 -->
+		<div class="modal-content">
+			<!-- 모달 닫기 버튼 -->
+			<span class="close" onclick="closeModal()">&times;</span>
+			<!-- 모달 내용 -->
 
-    </div>
-</div>
-	
+			<%
+				// DTOList 가져오기
+			List<PostWithGuestUserIdDTO> DTOList = (List<PostWithGuestUserIdDTO>) request.getSession().getAttribute("DTOList");
+			/* out.print(DTOList); */
+
+			// DTOList가 null이 아니고 비어있지 않은 경우에만 처리
+			if (DTOList != null && !DTOList.isEmpty()) {
+				for (int i = 0; i < DTOList.size(); i++) {
+					String includePath = "/rating.jsp";
+			%>
+			<%-- 여기에 원하는 작업 수행 --%>
+			<p>
+				참여자 이름<%=DTOList.get(i).getGuestUserId()%></p>
+			<%-- ratingTest.jsp를 포함하는 예시 --%>
+			<jsp:include page="/ratingTest.jsp" />
+			<%
+				}
+			}
+			%>
+
+		</div>
+	</div>
 
 
 
 
 
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	<div id="reviewContainer">
 		<div id="reviewForm">
 			<h2>리뷰 작성</h2>
@@ -499,9 +498,6 @@ tag.innerText = formattedPostTag;
         
     for (const review of reviews) {
         const isCurrentUserReview = await isCurrentUser(review.writeUserId); // 프로미스를 기다림
-
-        
-        
         
         let reviewItem = document.createElement("div");
      // 별 평점 입력 필드 생성
@@ -535,100 +531,6 @@ tag.innerText = formattedPostTag;
         reviewTextArea.cols = 50; // 텍스트 필드를 가로로 더 길게 출력
         reviewItem.appendChild(reviewTextArea);
    		
-		
-        
-        
-        if (isCurrentUserReview) {
-            let editButton = document.createElement("button");
-            editButton.innerText = "수정";
-            editButton.classList.add("edit-btn");
-            editButton.dataset.reviewId = review.reviewId;
-            editButton.addEventListener("click", () => {
-                // 수정 기능 구현
-                reviewTextArea.disabled = false; // 리뷰 내용 수정 가능하도록 설정
-                reviewTextArea.focus(); // 리뷰 내용 입력 필드에 포커스 설정
-                
-                // 평점 수정 가능하도록 설정
-                for (let input of starRating.querySelectorAll("input")) {
-                    input.disabled = false;
-                }
-            });
-            reviewItem.appendChild(editButton);
-
-            let saveButton = document.createElement("button");
-            saveButton.innerText = "저장";
-            saveButton.classList.add("save-btn");
-            saveButton.dataset.reviewId = review.reviewId;
-            saveButton.addEventListener("click", () => {
-                // 저장 기능 구현
-                reviewTextArea.disabled = true; // 리뷰 내용 수정 불가능하도록 설정
-                
-                // 별 평점도 수정 불가능하도록 설정
-                for (let input of starRating.querySelectorAll("input")) {
-                    input.disabled = true;
-                }
-                
-             // 수정된 리뷰 내용과 평점, 리뷰 ID를 가져옴
-                const modifiedReview = reviewTextArea.value;
-                const modifiedRating = starRating.querySelector("input:checked").value;
-                const reviewId = saveButton.dataset.reviewId;
-
-             // 서버에 수정된 리뷰 내용과 평점을 전송하는 코드
-                fetch(`/post/updateReview/${reviewId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                    	reviewId: reviewId,
-                        review: modifiedReview,
-                        rating: modifiedRating
-                    })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('리뷰가 성공적으로 수정되었습니다.');
-                    } else {
-                        console.error('리뷰 수정 중 오류 발생:', response.status);
-                        alert('리뷰 수정 중 오류가 발생했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('리뷰 수정 중 오류 발생:', error);
-                    alert('리뷰 수정 중 오류가 발생했습니다.');
-                });
-            });
-            reviewItem.appendChild(saveButton);
-        
-
-            let deleteButton = document.createElement("button");
-            deleteButton.innerText = "삭제";
-            deleteButton.classList.add("delete-btn");
-            deleteButton.dataset.reviewId = review.reviewId;
-            deleteButton.addEventListener("click", (event) => {
-                const reviewId = event.target.dataset.reviewId; // 클릭된 버튼의 데이터 속성인 data-reviewId 가져오기
-
-                // 서버에 삭제 요청을 보내는 코드
-                fetch(`/post/deleteReview/${reviewId}`, {
-                    method: 'DELETE'
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('리뷰가 성공적으로 삭제되었습니다.');
-                        // 삭제된 리뷰 아이템을 화면에서도 제거
-                        event.target.parentNode.remove(); // 삭제 버튼의 부모인 리뷰 아이템을 제거
-                    } else {
-                        console.error('리뷰 삭제 중 오류 발생:', response.status);
-                        alert('리뷰 삭제 중 오류가 발생했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('리뷰 삭제 중 오류 발생:', error);
-                    alert('리뷰 삭제 중 오류가 발생했습니다.');
-                });
-            });
-            reviewItem.appendChild(deleteButton);
-        }
 
         reviewList.appendChild(reviewItem);
     }

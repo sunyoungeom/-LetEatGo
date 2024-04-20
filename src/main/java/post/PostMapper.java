@@ -1,7 +1,7 @@
 package post;
 import org.apache.ibatis.annotations.*;
 
-import post_review.Review;
+import review.Review;
 import user.User;
 
 import java.util.List;

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import post_review.ReviewService;
+import review.ReviewService;
 import user.User;
 import user.UserService;
 import util.ServletUtil;

@@ -1,11 +1,11 @@
-package post_review;
+package review;
 
 
 import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
-import post_review.Review;
+import review.Review;
 
 @Data
 @Builder

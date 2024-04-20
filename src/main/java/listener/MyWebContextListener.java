@@ -17,7 +17,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import post.PostMapper;
-import post_review.ReviewMapper;
+import review.ReviewMapper;
 import user.UserMapper;
 import util.ConfigLoader;
 import websocket.ChatMapper;
