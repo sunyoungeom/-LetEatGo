@@ -9,8 +9,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 	// 유저 등록
-	@Insert("INSERT INTO users (id, password, email, name, nickname, identifynumber, phonenumber, address, join_date, attendance, mbti, bloodtype) "
-			+ "VALUES (#{id}, #{password}, #{email}, #{name}, #{nickname}, #{identifynumber}, #{phonenumber}, #{address}, #{join_date}, #{attendance}, #{mbti}, #{bloodtype})")
+	@Insert("INSERT INTO users (id, password, email, name, nickname, identifynumber, phonenumber, address, join_date, attendance, mbti, bloodtype,job) "
+			+ "VALUES (#{id}, #{password}, #{email}, #{name}, #{nickname}, #{identifynumber}, #{phonenumber}, #{address}, #{join_date}, #{attendance}, #{mbti}, #{bloodtype}, #{job})")
 	int addUser(User user);
 
 	// 중복 검사
@@ -144,4 +144,5 @@ public interface UserMapper {
 	
 	@Select("SELECT foodcategory FROM food WHERE user_id = #{user_id}")
 	String getFoodCategoriesByUserId(int user_id); 
+	
 }

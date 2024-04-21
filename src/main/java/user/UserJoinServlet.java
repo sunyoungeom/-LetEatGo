@@ -85,7 +85,7 @@ public class UserJoinServlet extends HttpServlet {
 
 				// 데이터를 User 객체로 변환
 				User user = objectMapper.readValue(body, User.class);
-
+				System.out.println("직업 선택:"+user.getJob()); 
 				// 유효성 검사
 				Map<String, String> errors = validator.validate(user);
 				if (!errors.isEmpty()) {
@@ -101,6 +101,7 @@ public class UserJoinServlet extends HttpServlet {
 
 				// 유효성 검사를 통과한 경우 회원가입 처리
 				int result = service.insert(user);
+				
 				int currentUserId = service.getUserId(user.getId());
 				service.insertFood(currentUserId, user.getFoodCategory());
 				

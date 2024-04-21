@@ -398,6 +398,37 @@ padding
 												<button type="button" id="registFood">등록</button>
 										</dialog>
 										<button id="hobbyBtn">취미태그</button>
+										<button id="jobBtn">직업 선택</button>
+										<dialog id="jobDialog">
+											<form id="jobCategory">
+												 <label><input type="radio" name="jobCategory" value="경영"> 경영</label><br>
+												 <label><input type="radio" name="jobCategory" value="사무"> 사무</label><br>
+												 <label><input type="radio" name="jobCategory" value="금융"> 금융</label><br>
+												 <label><input type="radio" name="jobCategory" value="보험"> 보험</label><br>
+												 <label><input type="radio" name="jobCategory" value="연구및기술"> 연구및기술</label><br>
+												 <label><input type="radio" name="jobCategory" value="교육"> 교육</label><br>
+												 <label><input type="radio" name="jobCategory" value="법률"> 법률</label><br>
+												 <label><input type="radio" name="jobCategory" value="사회복지"> 사회복지</label><br>
+												 <label><input type="radio" name="jobCategory" value="경찰"> 경찰</label><br>
+												 <label><input type="radio" name="jobCategory" value="소방"> 소방</label><br>
+												 <label><input type="radio" name="jobCategory" value="군인"> 군인</label><br>
+												 <label><input type="radio" name="jobCategory" value="의료직"> 의료직</label><br>
+												 <label><input type="radio" name="jobCategory" value="예술"> 예술</label><br>
+												 <label><input type="radio" name="jobCategory" value="방송"> 방송</label><br>
+												 <label><input type="radio" name="jobCategory" value="스포츠"> 스포츠</label><br>
+												 <label><input type="radio" name="jobCategory" value="미용"> 미용</label><br>
+												 <label><input type="radio" name="jobCategory" value="여행"> 여행</label><br>
+												 <label><input type="radio" name="jobCategory" value="요리"> 요리</label><br>
+												 <label><input type="radio" name="jobCategory" value="영업"> 영업</label><br>
+												 <label><input type="radio" name="jobCategory" value="운송"> 운송</label><br>
+												 <label><input type="radio" name="jobCategory" value="건설"> 건설</label><br>
+												 <label><input type="radio" name="jobCategory" value="설치"> 설치</label><br>
+												 <label><input type="radio" name="jobCategory" value="생산직"> 생산직</label><br>
+												 <label><input type="radio" name="jobCategory" value="농업"> 농업</label><br>
+												 <label><input type="radio" name="jobCategory" value="무직"> 무직</label><br>
+												 <button type="button" id="registJob">등록</button>
+											</form>
+										</dialog>
 										<br>
 										<button type="button" value="확인"
 											style="height: 50px; padding: 2px;"
@@ -444,6 +475,19 @@ hobbyBtn.addEventListener("click", function() {
     }
     dialog.showModal();    
 });
+jobBtn.addEventListener("click", function() {
+    // 직업 버튼을 클릭하면 다이얼로그를 표시하는 함수
+    var jobDialog = document.getElementById('jobDialog');
+    if (!jobDialog.showModal) {
+        dialogPolyfill.registerDialog(jobDialog);
+    }
+    jobDialog.showModal();
+});
+document.getElementById('registJob').addEventListener('click', function(){
+	const selectRadio = document.querySelector('input[name="jobCategory"]:checked').value;
+	console.log(selectRadio)
+	jobDialog.close();
+})
 
 //입력 필드에 이벤트 리스너 추가
 document.getElementById('id').addEventListener('input', debounce(function() {
@@ -715,6 +759,8 @@ checkboxes.forEach(checkbox => {
     });
 });
 
+
+
 function submitForm() {
     var form = document.getElementById("userForm");
     var formData = new FormData(form);
@@ -734,6 +780,7 @@ function submitForm() {
    	jsonObject["foodCategory"] = concatenatedValues;
     jsonObject["attendance"] = 0;
     jsonObject["join_date"] = new Date().toISOString().slice(0,10);
+	jsonObject["job"] = selectRadio;
     
     var json = JSON.stringify(jsonObject);
 
