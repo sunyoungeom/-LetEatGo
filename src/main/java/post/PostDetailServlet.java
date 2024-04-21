@@ -40,6 +40,7 @@ public class PostDetailServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String requestURI = req.getRequestURI();
+		User currentUser = (User) req.getSession().getAttribute("user");
 		
 		if (requestURI.endsWith("/post/detail")) {
 			// 게시물 상세 정보 요청 처리
@@ -80,16 +81,11 @@ public class PostDetailServlet extends HttpServlet {
 			responseMap.put("DTOList", DTOList);
 			responseMap.put("attendUserList", attendUserList);
 			responseMap.put("attendGuestReviewList", attendGuestReviewList);
+			responseMap.put("currentUser", currentUser);
+			req.getSession().setAttribute("post", post);
 			// JSON 형태로 변환하여 응답합니다.
 			ServletUtil.sendJsonBody(responseMap, resp);
-		} else if (requestURI.endsWith("/post/addReview")) {
-			// 리뷰 추가 요청 처리
-			String requestBody = ServletUtil.readBody(req);
-			ObjectMapper mapper = new ObjectMapper();
-			Review review = mapper.readValue(requestBody, Review.class);
-			reviewService.addReview(review);
-			
-		} 
+		}
 		else if (requestURI.endsWith("/post/getUserId")) {
 			User user = (User) req.getSession().getAttribute("user");
 			resp.setContentType("application/json");

@@ -14,7 +14,7 @@ public class Review {
     //private int user_id;
     private int post_id;
     private int writeuser_id;
-    private int guestUserId;
+    private int guestuser_id;
     private int rating;
     private String review_content;
     private Date review_date;

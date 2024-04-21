@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="user.User"%>
+<%@ page import="post.Post"%>
 <%@ page import="java.util.List"%>
 <%@ page isELIgnored="true"%>
 <!DOCTYPE html>
@@ -150,13 +151,21 @@
 						<!-- 버튼들 -->
 						<div class="d-flex justify-content-between">
 							<div>
+								<%-- 	<% User userId =(User) request.getSession().getAttribute("user");
+								   out.print(userId.getUser_id() + "아이디값");
+								   Post post = (Post) request.getSession().getAttribute("post");
+								   out.print(post.getWriteUser_Id() + "작성자아이디"); 
+								if( post.getWriteUser_Id() == userId.getUser_id()){ 
+								%>
 								<button id="editButton" class="btn btn-primary" type="button">수정</button>
 								<button id="deleteButton" class="btn btn-danger" type="button">삭제</button>
-								<a href="#" class="btn btn-secondary">목록으로 돌아가기</a>
+								<% } %> --%>
+								<span id="buttons"> </span> <a href="#"
+									class="btn btn-secondary">목록으로 돌아가기</a>
 							</div>
-							<div>
-								<button class="btn btn-success" type="button"
-									onclick="openModal()">리뷰작성</button>
+							<div id="createReview">
+								<!-- <button class="btn btn-success" type="button"
+									onclick="openModal()">리뷰작성</button> -->
 							</div>
 						</div>
 
@@ -248,9 +257,10 @@
 	cardContainer.appendChild(card);
 	
     cardTitle.textContent = guest.id; // 
+    createStarRating(guest.nickname,"cardText", reviewList[0].review, null);
     
 	let isKorean = true; // 현재 카드가 한식인지 여부를 저장
-	console.log(reviewList);
+	console.log(reviewList,"이게 무슨값?");
 	card.addEventListener('click', function() {
 	    if (isKorean) {
 	        cardTitle.textContent = guest.id; // 카드 제목을 일식으로 변경
@@ -259,13 +269,14 @@
 	    	cardTitle.textContent = guest.id;
 	    	
     	    //cardText.textContent
-	    	createStarRating(guest.nickname,"cardText", reviewList[0].review);
+	    	//createStarRating(guest.nickname,"cardText", reviewList[0].review, null);
 	    }
 	    isKorean = !isKorean; // 토글 상태 변경
 	});
 }
+/* reviewList.forEach(review => {
+				}); */
 </script>
-
 
 
 <script>
@@ -302,40 +313,85 @@
     	place.textContent = data.post.place;
     	const guestList = data.attendUserList;
     	const attendGuestReviewList = data.attendGuestReviewList;
-    	
-        for (let i = 0; i < guestList.length; i++) {
+		const currentUserId = data.currentUser.user_id;
+       
+		for (let i = 0; i < guestList.length; i++) {
             const guest = guestList[i];
             const reviewList = attendGuestReviewList[i];
             
-            createStarRating(guest.nickname, "reviewForm", null);
+            createStarRating(guest.nickname, "reviewForm", null, guest.user_id);
             change(guest, reviewList);
         }
-    	
+        
+        if(data.post.writeUser_Id==currentUserId) {
+        	makeButton();
+        } 
+        
+        
+         guestList.forEach(guest => {
+        	if(guest.user_id == currentUserId) {
+				createReviewButton();
+        	}
+        }); 
+
     });
 	
-   	//TODO: 수정버튼 리스너  수정페이지도  수정해야함 
-   	const editButton = document.getElementById("editButton")
-   	editButton.addEventListener("click", () => {
-		window.location.href = `editpost?postId=${postId}`;
-    });
-  		
-   	//TODO:삭제버튼 리스너
-	const deleteButton = document.getElementById("deleteButton")
-   	deleteButton.addEventListener("click", () => {
-        fetch(`/post/deletePost?postId=${postId}`, {
-        	method: 'DELETE'
-        })
-        .then(response => {
-               if (response.ok) {
-               	postDetail.innerHTML = ""; // 게시물 상세 내용 영역을 비움
-               	 window.location.href = `mypostlist`;
-               } else {
-                   console.error('게시글 삭제 중 오류 발생:', response.status);
-                   alert('게시글 삭제 중 오류가 발생했습니다.');
-               }
-           })
-    });
-  	
+    function createReviewButton() {
+		// 새로운 버튼 요소를 생성합니다.
+	    const button = document.createElement("button");
+	    button.id = "createReview";
+	    button.className = "btn btn-success";
+	    button.type = "button";
+	    button.textContent = "리뷰작성";
+	    
+	    createReview.appendChild(button);
+	
+	    // 클릭 이벤트에 openModal 함수를 할당합니다.
+	    button.addEventListener("click", openModal);
+    }
+
+	
+	
+    function makeButton() {
+	    const buttons = document.getElementById("buttons");
+	
+		 // 수정 버튼 추가
+		 const editButton = document.createElement("button");
+		 editButton.id = "editButton";
+		 editButton.className = "btn btn-primary";
+		 editButton.type = "button";
+		 editButton.textContent = "수정";
+		 editButton.addEventListener("click", function() {
+		     window.location.href = `editpost?postId=${postId}`;
+		 });
+		 buttons.appendChild(editButton);
+		
+		 // 삭제 버튼 추가
+		 const deleteButton = document.createElement("button");
+		 deleteButton.id = "deleteButton";
+		 deleteButton.className = "btn btn-danger";
+		 deleteButton.type = "button";
+		 deleteButton.textContent = "삭제";
+		 deleteButton.addEventListener("click", function() {
+		     fetch(`/post/deletePost?postId=${postId}`, {
+		         method: 'DELETE'
+		     })
+		     .then(response => {
+		         if (response.ok) {
+		             window.location.href = `mypostlist`;
+		         } else {
+		             console.error('게시글 삭제 중 오류 발생:', response.status);
+		             alert('게시글 삭제 중 오류가 발생했습니다.');
+		         }
+		     })
+		     .catch(error => {
+		         console.error('네트워크 오류:', error);
+		     });
+		 });
+		 buttons.appendChild(deleteButton);
+    }
+	
+    
     	
     function formattedDate(element) {
         // MySQL DATETIME 값을 Date 객체로 변환
@@ -390,7 +446,7 @@
 </script>
 <script>
 //별 평점 입력 필드 생성 함수
-function createStarRating(nickname, elementId, review) {
+function createStarRating(nickname, elementId, review, guest_id) { 
 	const reviewForm = document.getElementById(elementId);
 	let reviewItem = document.createElement("div");
 	reviewItem.style.display = "flex";
@@ -400,9 +456,12 @@ function createStarRating(nickname, elementId, review) {
 	userNickname.textContent = nickname;
 	
 	let saveButton = document.createElement("button");
+	//saveButton.id = guest_id;
 	saveButton.textContent = "저장";
-	saveButton.addEventListener("click", onSaveButtonClick); // 저장 버튼 클릭 이벤트 리스너 등록
-    
+	saveButton.addEventListener("click", function() {
+	    onSaveButtonClick(guest_id);
+	});
+
 	// 별 평점 입력 필드 추가
     let starRating = document.createElement("div");
     starRating.classList.add("star-rating");
@@ -437,18 +496,26 @@ function createStarRating(nickname, elementId, review) {
     reviewForm.appendChild(reviewItem);
     reviewForm.appendChild(reviewTextItem);
     
+    let hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.id = guest_id;
+    hiddenInput.value = guest_id;
     
+    reviewItem.appendChild(hiddenInput);
 }
 
 // 저장 버튼 클릭 이벤트 핸들러 함수
-function onSaveButtonClick() {
-	console.log("실행유무");
+function onSaveButtonClick(guest_id) {
     const reviewText = document.getElementById("reviewText").value; // 리뷰 텍스트 값 가져오기
     const starValue = document.querySelector('.star-rating input[type="radio"]:checked').value; // 선택된 별 평점 가져오기
-    
+   // const guest_id = document.getElementById(`${guest_id}`).value; // 선택된 별 평점 가져오기
+	const post_id = document.getElementById("post_Id").value;
+
     const data = {
         reviewText: reviewText,
-        starValue: starValue
+        starValue: starValue,
+        guest_id: guest_id,
+        post_id: post_id
     };
 	console.log(data);
     // 예시: fetch를 사용하여 서버로 데이터 전송

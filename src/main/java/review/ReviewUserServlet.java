@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import user.User;
 import util.ServletUtil;
 
-@WebServlet("/user/userReview")
+@WebServlet(urlPatterns = { "/user/userReview", "/saveReview"})
 public class ReviewUserServlet extends HttpServlet{
 	ReviewService reviewService = new ReviewService();
 	
@@ -40,15 +40,16 @@ public class ReviewUserServlet extends HttpServlet{
         // 텍스트 내용과 별점 추출
         String review_content = jsonRequest.getString("reviewText");
         int rating = jsonRequest.getInt("starValue");
-
+        int post_id = jsonRequest.getInt("post_id");
+        int guest_id = jsonRequest.getInt("guest_id");//평가되는 사람 아이디
         // TODO: 친구 추가시 후 채팅시 post_id가 필요없음 새 테이블 또는 포레인키 제거 고민, 메소드 따로 이용?
         // 리뷰 객체 생성 및 초기화
         Review saveReview = new Review();
         saveReview.setWriteuser_id(user.getUser_id());
+        saveReview.setGuestuser_id(guest_id);//평가대상?
         saveReview.setReview_content(review_content);
         saveReview.setRating(rating);
-        // 모임 끝났을때 게시글 알아내서 포스트 id 넣어주기
-        //saveReview.setPostId(postId);
+        saveReview.setPost_id(post_id);
         
         System.out.println(saveReview);
         // 디비 저장
