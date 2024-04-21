@@ -271,5 +271,12 @@ public class UserService {
 	        return foodList;
 	    }
 	}
-
+	
+	public void insertFriendships(int userId, int receiverId) {
+	    try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+	        userMapper.insertFriendships(userId, receiverId);
+	        sqlSession.commit();
+	    }
+	}
 }

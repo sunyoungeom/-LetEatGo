@@ -143,5 +143,8 @@ public interface UserMapper {
 	void insertHobby(Hobby hobby, int user_id);
 	
 	@Select("SELECT foodcategory FROM food WHERE user_id = #{user_id}")
-	String getFoodCategoriesByUserId(int user_id); 
+	String getFoodCategoriesByUserId(int user_id);
+	
+	@Insert("INSERT INTO friendships (user1_id, user2_id) values (#{user_id},#{receiver_id})")
+	void insertFriendships(@Param("user_id") int userId, @Param("receiver_id") int receiverId);
 }

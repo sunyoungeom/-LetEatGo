@@ -195,7 +195,7 @@
 	
 	const progressingRadio = document.getElementById("progressing");
 	const completedRadio = document.getElementById("completed");
-	var friendbtn = document.getElementById("friendbtn");
+	const friendbtn = document.getElementById("friendbtn");
 	
 /* 	function loadPosts(page) {
 	    fetch(`http://localhost:8080/person/personinfo?userid=${userid}`, {
@@ -479,7 +479,34 @@
 	    
 	    loadPosts(currentPage);
 	});
+	friendBtn.addEventListener("click", () => {
+	    const requestData = {
+	        userId: userid,
+	        action: "add_friend"
+	    };
 
+	    // JSON 데이터를 문자열로 변환
+	    const jsonData = JSON.stringify(requestData);
+
+	    // POST 요청 보내기
+	    fetch("/add_friend", {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+	        body: jsonData
+	    })
+	    .then(response => {
+	        if (response.ok) {
+	            console.log("친구 추가가 성공적으로 처리되었습니다.");
+	        } else {
+	            console.error("친구 추가 요청이 실패했습니다.");
+	        }
+	    })
+	    .catch(error => {
+	        console.error("친구 추가 요청 중 오류가 발생했습니다.", error);
+	    });
+	});
 </script>
 <!-- 페이지 번호 -->
 <script src="/js/pagination.js"></script>
