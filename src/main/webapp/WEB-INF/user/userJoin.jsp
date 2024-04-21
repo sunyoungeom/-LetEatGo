@@ -304,6 +304,39 @@ padding
 											</select> <i class="fa-solid fa-child-reaching position-absolute"
 												style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
 										</div>
+										<div class="form-group position-relative" style="padding: 2px;">
+											<select class="form-control" style="height: 50px; appearance: none; padding-left: 45px; background: #fff;" id="job" name="job">
+												<option value="null" ${user.job == '' ? 'selected' : ''}>직업
+													[선택안함]</option>
+												<option value="" ${user.job == '' ? 'selected' : ''} disabled hidden>직업 선택</option>
+												<option value="경영" ${user.job == '경영' ? 'selected' : ''}>경영</option>
+												<option value="사무" ${user.job == '사무' ? 'selected' : ''}>사무</option>
+												<option value="금융" ${user.job == '금융' ? 'selected' : ''}>금융</option>
+												<option value="보험" ${user.job == '보험' ? 'selected' : ''}>보험</option>
+												<option value="연구및기술" ${user.job == '연구및기술' ? 'selected' : ''}>연구및기술</option>
+												<option value="교육" ${user.job == '교육' ? 'selected' : ''}>교육</option>
+												<option value="법률" ${user.job == '법률' ? 'selected' : ''}>법률</option>
+												<option value="사회복지" ${user.job == '사회복지' ? 'selected' : ''}>사회복지</option>
+												<option value="경찰" ${user.job == '경찰' ? 'selected' : ''}>경찰</option>
+												<option value="소방" ${user.job == '소방' ? 'selected' : ''}>소방</option>
+												<option value="군인" ${user.job == '군인' ? 'selected' : ''}>군인</option>
+												<option value="의료직" ${user.job == '의료직' ? 'selected' : ''}>의료직</option>
+												<option value="예술" ${user.job == '예술' ? 'selected' : ''}>예술</option>
+												<option value="방송" ${user.job == '방송' ? 'selected' : ''}>방송</option>
+												<option value="스포츠" ${user.job == '스포츠' ? 'selected' : ''}>스포츠</option>
+												<option value="미용" ${user.job == '미용' ? 'selected' : ''}>미용</option>
+												<option value="여행" ${user.job == '여행' ? 'selected' : ''}>여행</option>
+												<option value="요리" ${user.job == '요리' ? 'selected' : ''}>요리</option>
+												<option value="영업" ${user.job == '영업' ? 'selected' : ''}>영업</option>
+												<option value="운송" ${user.job == '운송' ? 'selected' : ''}>운송</option>
+												<option value="건설" ${user.job == '건설' ? 'selected' : ''}>건설</option>
+												<option value="설치" ${user.job == '설치' ? 'selected' : ''}>설치</option>
+												<option value="생산직" ${user.job == '생산직' ? 'selected' : ''}>생산직</option>
+												<option value="농업" ${user.job == '농업' ? 'selected' : ''}>농업</option>
+												<option value="무직" ${user.job == '무직' ? 'selected' : ''}>무직</option>
+											</select>
+											<i class="fa-solid fa-child-reaching position-absolute" style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+										</div>
 										<!-- 사진 입력 -->
 								<!-- 	<div style="display: none;">
 										<div class="form-group position-relative"
@@ -398,37 +431,7 @@ padding
 												<button type="button" id="registFood">등록</button>
 										</dialog>
 										<button id="hobbyBtn">취미태그</button>
-										<button id="jobBtn">직업 선택</button>
-										<dialog id="jobDialog">
-											<form id="jobCategory">
-												 <label><input type="radio" name="jobCategory" value="경영"> 경영</label><br>
-												 <label><input type="radio" name="jobCategory" value="사무"> 사무</label><br>
-												 <label><input type="radio" name="jobCategory" value="금융"> 금융</label><br>
-												 <label><input type="radio" name="jobCategory" value="보험"> 보험</label><br>
-												 <label><input type="radio" name="jobCategory" value="연구및기술"> 연구및기술</label><br>
-												 <label><input type="radio" name="jobCategory" value="교육"> 교육</label><br>
-												 <label><input type="radio" name="jobCategory" value="법률"> 법률</label><br>
-												 <label><input type="radio" name="jobCategory" value="사회복지"> 사회복지</label><br>
-												 <label><input type="radio" name="jobCategory" value="경찰"> 경찰</label><br>
-												 <label><input type="radio" name="jobCategory" value="소방"> 소방</label><br>
-												 <label><input type="radio" name="jobCategory" value="군인"> 군인</label><br>
-												 <label><input type="radio" name="jobCategory" value="의료직"> 의료직</label><br>
-												 <label><input type="radio" name="jobCategory" value="예술"> 예술</label><br>
-												 <label><input type="radio" name="jobCategory" value="방송"> 방송</label><br>
-												 <label><input type="radio" name="jobCategory" value="스포츠"> 스포츠</label><br>
-												 <label><input type="radio" name="jobCategory" value="미용"> 미용</label><br>
-												 <label><input type="radio" name="jobCategory" value="여행"> 여행</label><br>
-												 <label><input type="radio" name="jobCategory" value="요리"> 요리</label><br>
-												 <label><input type="radio" name="jobCategory" value="영업"> 영업</label><br>
-												 <label><input type="radio" name="jobCategory" value="운송"> 운송</label><br>
-												 <label><input type="radio" name="jobCategory" value="건설"> 건설</label><br>
-												 <label><input type="radio" name="jobCategory" value="설치"> 설치</label><br>
-												 <label><input type="radio" name="jobCategory" value="생산직"> 생산직</label><br>
-												 <label><input type="radio" name="jobCategory" value="농업"> 농업</label><br>
-												 <label><input type="radio" name="jobCategory" value="무직"> 무직</label><br>
-												 <button type="button" id="registJob">등록</button>
-											</form>
-										</dialog>
+								
 										<br>
 										<button type="button" value="확인"
 											style="height: 50px; padding: 2px;"
@@ -455,6 +458,7 @@ padding
 </body>
 
 <script>
+
 foodbtn.addEventListener("click", function() {
     // 음식 버튼을 클릭하면 다이얼로그를 표시하는 함수
     var dialog = document.getElementById('foodDialog');
@@ -475,19 +479,7 @@ hobbyBtn.addEventListener("click", function() {
     }
     dialog.showModal();    
 });
-jobBtn.addEventListener("click", function() {
-    // 직업 버튼을 클릭하면 다이얼로그를 표시하는 함수
-    var jobDialog = document.getElementById('jobDialog');
-    if (!jobDialog.showModal) {
-        dialogPolyfill.registerDialog(jobDialog);
-    }
-    jobDialog.showModal();
-});
-document.getElementById('registJob').addEventListener('click', function(){
-	const selectRadio = document.querySelector('input[name="jobCategory"]:checked').value;
-	console.log(selectRadio)
-	jobDialog.close();
-})
+
 
 //입력 필드에 이벤트 리스너 추가
 document.getElementById('id').addEventListener('input', debounce(function() {
@@ -771,7 +763,11 @@ function submitForm() {
     var emailDomain = document.getElementById('emailDomainSelect').value || '';
     var fullEmail = email + emailDomain;
     
+	var jobSelect = document.getElementById('job');
+    var selectedJob = jobSelect.options[jobSelect.selectedIndex].value;
+
     console.log("Email Domain: ", emailDomain); 
+	console.log(selectedJob);
   /*   uploadFile(); */
     formData.forEach(function(value, key) {
         jsonObject[key] = value;
@@ -780,8 +776,9 @@ function submitForm() {
    	jsonObject["foodCategory"] = concatenatedValues;
     jsonObject["attendance"] = 0;
     jsonObject["join_date"] = new Date().toISOString().slice(0,10);
-	jsonObject["job"] = selectRadio;
-    
+	
+    jsonObject["job"] = selectedJob;
+	
     var json = JSON.stringify(jsonObject);
 
     fetch('/join/begin', {
