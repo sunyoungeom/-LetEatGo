@@ -145,4 +145,22 @@ public interface UserMapper {
 	@Select("SELECT foodcategory FROM food WHERE user_id = #{user_id}")
 	String getFoodCategoriesByUserId(int user_id); 
 	
+	
+	@Insert("INSERT INTO friendships (user1_id, user2_id) values (#{user_id},#{receiver_id})")
+	void insertFriendships(@Param("user_id") int userId, @Param("receiver_id") int receiverId);
+	
+	@Select("select * from friendships where user2_id = #{user2_id} and status = 0")
+	List<FriendShip> getRecieveFriends(int user2_id);
+	
+	@Select("select * from friendships where user2_id = #{user2_id} and status = 1")
+	List<FriendShip> getFriendsList(int user2_id);
+	
+	@Select("SELECT user_id,nickname,identifynumber FROM users WHERE user_id = #{user_id}")
+	User getUserNickNameAndIdentify(@Param("user_id") int user_id);
+	
+	@Update("update friendships set status = 1 where user1_id = #{user1_id} and user2_id = #{user2_id}")
+	void updateAccpetFriend(int user1_id, int user2_id);
+	
+	@Delete("DELETE FROM friendships where user1_id = #{user1_id} and user2_id = #{user2_id}")
+	void deleteReqFriend(int user1_id, int user2_id);
 }

@@ -57,7 +57,30 @@
 			</a></li>
 		
 		</ul>
+
+		<li class="nav-item"><a class="nav-link link-dark"
+			data-bs-toggle="collapse" href="#collapseMenu2" role="button"
+			aria-expanded="false" aria-controls="collapseMenu2"> <svg
+					class="bi me-2" width="16" height="16">
+					<use xlink:href="#speedometer2"></use>
+				</svg> 나의 친구
+		</a>
+			<div class="collapse" id="collapseMenu2">
+				<ul class="nav flex-column">
+					<li class="nav-item"><a class="nav-link"
+						href="/myinfo/friendsList"><svg class="bi me-2" width="32"
+								height="16">
+					<use xlink:href="#speedometer2"></use>
+				</svg>친구 목록</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/myinfo/recieve"><svg class="bi me-2" width="32"
+								height="16">
+					<use xlink:href="#speedometer2"></use>
+				</svg>받은 친구 신청</a></li>
+				</ul>
+			</div></li>
 		<hr>
+		
 
 		<!-- <div class="dropdown">
 			<a href="#"

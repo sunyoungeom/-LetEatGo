@@ -195,60 +195,9 @@
 	
 	const progressingRadio = document.getElementById("progressing");
 	const completedRadio = document.getElementById("completed");
-	var friendbtn = document.getElementById("friendbtn");
+	const friendbtn = document.getElementById("friendbtn");
 	
-/* 	function loadPosts(page) {
-	    fetch(`http://localhost:8080/person/personinfo?userid=${userid}`, {
-	        method: 'POST'
-	    })
-	    .then((resp) => resp.json())
-	    .then((data) => {
-	        // 게시물 테이블의 내용을 초기화
-	        tbody.innerHTML = "";
-	        const maxTitleLength = 20; // 예시로 20자로 설정
-	        
-	        data.items.forEach((element) => {
-	            let contenttr = document.createElement("tr");
-	            let tdId = document.createElement("td");
-	            let tdtitle = document.createElement("td");
-	            let tdresistdate = document.createElement("td");
-	            let tdview = document.createElement("td");
-	            
-	            tdId.innerText = `${element.post_Id}`;
-	            tdtitle.innerText = element.title.length > maxTitleLength ? element.title.substring(0, maxTitleLength) + '...' : element.title;
-	            tdresistdate.innerText = `${element.resistdate}`;
-	            tdview.innerText = `${element.view}`;
-	            
-	            // 각 셀에 스코프 및 스타일 지정
-	            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
-	            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
-	            tdtitle.setAttribute("scope", "col");
-	            tdtitle.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
-	            tdresistdate.setAttribute("scope", "col");
-	            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
-	            tdview.setAttribute("scope", "col");
-	            tdview.style.width = "7%"
-	            
-	            tdId.style.textAlign = "center";
-	            tdview.style.textAlign = "center";
-	            
-	            // 클릭 이벤트 추가하여 상세 페이지로 이동
-	            tdtitle.addEventListener("click", () => {
-	                window.location.href = `http://localhost:8080/post/detail?post_Id=${element.post_Id}`;
-	            });
-	            
-	            contenttr.appendChild(tdId);
-	            contenttr.appendChild(tdtitle);
-	            contenttr.appendChild(tdresistdate);
-	            contenttr.appendChild(tdview);
-	            tbody.appendChild(contenttr);
-	        });
-	        
-	        // 페이지네이션 표시
-	        displayPagination(data.totalPages, page);
-	    });
-	} */
-	
+
 	
 	fetch(`/person/personinfo?userid=${userid}`, {
 	    method: 'PUT'
@@ -423,63 +372,36 @@
 	    loadPosts(currentPage);
 	});
 	
-	completedRadio.addEventListener("change", () => {
-		
-	    if (completedRadio.checked) {
-     	    fetch(`/person/completedpostlist?page=${page}&pagePer=${itemsPerPage}&userid=${userid}`, {
-     	        method: 'POST'
-     	    })
-     	    .then((resp) => resp.json())
-     	    .then((data) => {
-     	        // 게시물 테이블의 내용을 초기화
-     	        tbody.innerHTML = "";
-     	        const maxTitleLength = 20; // 예시로 20자로 설정
-     	        
-     	        data.items.forEach((element) => {
-     	            let contenttr = document.createElement("tr");
-     	            let tdId = document.createElement("td");
-     	            let tdtitle = document.createElement("td");
-     	            let tdresistdate = document.createElement("td");
-     	            let tdview = document.createElement("td");
-     	            
-     	            tdId.innerText = `${element.post_Id}`;
-     	            tdtitle.innerText = element.title.length > maxTitleLength ? element.title.substring(0, maxTitleLength) + '...' : element.title;
-     	            tdresistdate.innerText = `${element.resistdate}`;
-     	            tdview.innerText = `${element.view}`;
-     	            
-     	            // 각 셀에 스코프 및 스타일 지정
-     	            tdId.setAttribute("scope", "col"); // 제목 셀에는 'row' 스코프를 지정합니다.
-     	            tdId.style.width = "5%"; // 제목 셀의 너비를 설정합니다.
-     	            tdtitle.setAttribute("scope", "col");
-     	            tdtitle.style.width = "73%"; // 내용 셀의 너비를 설정합니다.
-     	            tdresistdate.setAttribute("scope", "col");
-     	            tdresistdate.style.width = "15%"; // 작성일 셀의 너비를 설정합니다.
-     	            tdview.setAttribute("scope", "col");
-     	            tdview.style.width = "7%"
-     	            
-     	            tdId.style.textAlign = "center";
-     	            tdview.style.textAlign = "center";
-     	            
-     	            // 클릭 이벤트 추가하여 상세 페이지로 이동
-     	            tdtitle.addEventListener("click", () => {
-     	                window.location.href = `/post/detail?post_Id=${element.post_Id}`;
-     	            });
-     	            
-     	            contenttr.appendChild(tdId);
-     	            contenttr.appendChild(tdtitle);
-     	            contenttr.appendChild(tdresistdate);
-     	            contenttr.appendChild(tdview);
-     	            tbody.appendChild(contenttr);
-     	        });
-     	        
-     	      /*   // 페이지네이션 표시
-     	        displayPagination(data.totalPages, page); */
-     	    });
-	    } 
-	    
-	    loadPosts(currentPage);
-	});
+	
+	friendbtn.addEventListener("click", () => {
+	    const requestData = {
+	        userId: userid,
+	        action: "add_friend"
+	    };
+		console.log(userid)
 
+	    // JSON 데이터를 문자열로 변환
+	    const jsonData = JSON.stringify(requestData);
+
+	    // POST 요청 보내기
+	    fetch("/add_friend", {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+	        body: jsonData
+	    })
+	    .then(response => {
+	        if (response.ok) {
+	            console.log("친구 추가가 성공적으로 처리되었습니다.");
+	        } else {
+	            console.error("친구 추가 요청이 실패했습니다.");
+	        }
+	    })
+	    .catch(error => {
+	        console.error("친구 추가 요청 중 오류가 발생했습니다.", error);
+	    });
+	});
 </script>
 <!-- 페이지 번호 -->
 <script src="/js/pagination.js"></script>

@@ -228,7 +228,7 @@ public class UserService {
 			return false; // 예외 발생 시 기본적으로 false 반환
 		}
 	}
-	
+
 	public void updateAllUsersAttendanceStatus() {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -238,7 +238,6 @@ public class UserService {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public void insertFood(int user_id, String foodCategory) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
@@ -247,6 +246,7 @@ public class UserService {
 			sqlSession.commit();
 		}
 	}
+
 	public void insertHobby(Hobby hobby, int user_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
@@ -254,22 +254,59 @@ public class UserService {
 			sqlSession.commit();
 		}
 	}
-	
+
 	public List<Food> getFoodCategoriesByUserId(int user_id) {
-	    try (SqlSession sqlSession = MyWebContextListener.getBatchSqlSession()) {
-	        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-	        String foodCategories = userMapper.getFoodCategoriesByUserId(user_id);
-	        List<Food> foodList = new ArrayList<>();
+		try (SqlSession sqlSession = MyWebContextListener.getBatchSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			String foodCategories = userMapper.getFoodCategoriesByUserId(user_id);
+			List<Food> foodList = new ArrayList<>();
 
-	        String[] categoriesArray = foodCategories.split("/");
-	        for (String category : categoriesArray) {
-	            Food food = new Food(category.trim());
-	            foodList.add(food);
-	        }
+			String[] categoriesArray = foodCategories.split("/");
+			for (String category : categoriesArray) {
+				Food food = new Food(category.trim());
+				foodList.add(food);
+			}
 
-	        sqlSession.commit();
-	        return foodList;
-	    }
+			sqlSession.commit();
+			return foodList;
+		}
 	}
 
+	public void insertFriendships(int userId, int receiverId) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.insertFriendships(userId, receiverId);
+			sqlSession.commit();
+		}
+	}
+
+	public List<FriendShip> getRecieveFriends(int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getRecieveFriends(user_id);
+		}
+	}
+
+	public User getUserNickNameAndIdentify(int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getUserNickNameAndIdentify(user_id);
+		}
+	}
+
+	public void updateAccpetFriend(int user1_id, int user2_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.updateAccpetFriend(user1_id, user2_id);
+			sqlSession.commit();
+		}
+	}
+	
+	public void deleteReqFriend(int user1_id, int user2_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			userMapper.deleteReqFriend(user1_id, user2_id);
+			sqlSession.commit();
+		}
+	}
 }
