@@ -50,7 +50,7 @@ public class ReviewUserServlet extends HttpServlet{
         saveReview.setReview_content(review_content);
         saveReview.setRating(rating);
         saveReview.setPost_id(post_id);
-        
+
         System.out.println(saveReview);
         // 디비 저장
         reviewService.addReview(saveReview);

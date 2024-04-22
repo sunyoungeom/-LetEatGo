@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface ReviewMapper {
 	// 리뷰 작성
-	@Insert("INSERT INTO post_reviews (post_id, writeuser_id, guestuser_id, rating, review, review_date) " +
+	@Insert("INSERT INTO post_reviews (post_id, writeuser_id, guestuser_id, rating, review_content, review_date) " +
 	        "VALUES (#{post_id}, #{writeuser_id}, #{guestuser_id}, #{rating}, #{review_content}, NOW())")
 	void addReview(Review review);
     
@@ -34,6 +34,10 @@ public interface ReviewMapper {
     // 특정 유저가 작성한 리뷰 목록 조회
     @Select("SELECT * FROM post_reviews WHERE writeuser_id=#{userId}")
     List<Review> getReviewsByUserId(int userId);
+   
+    // 특정 유저가 받은 리뷰
+    @Select("SELECT * FROM post_reviews WHERE guestuser_id=#{user_id} AND post_id = #{post_id}")
+    List<Review> findReviewsReceivedByUserId(int user_id, int post_id);
 
     // 특정 유저가 받은 리뷰 별점 평균 계산
     @Select("SELECT AVG(rating) FROM post_reviews WHERE writeuser_id=#{userId}")

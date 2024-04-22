@@ -69,9 +69,16 @@ public class ReviewService {
     public List<Review> getReviewsByUserId(int userId) {
         try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
             ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
-            System.out.println(reviewMapper.getReviewsByUserId(userId).toString() + "리뷰값");
             return reviewMapper.getReviewsByUserId(userId);
         }
+    }
+    
+    // 특정 유저가 받은 리뷰 목록 조회 메서드
+    public List<Review> findReviewsReceivedByUserId(int user_id, int post_id) {
+    	try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+    		ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
+    		return reviewMapper.findReviewsReceivedByUserId(user_id, post_id);
+    	}
     }
     
     // 특정 유저가 받은 리뷰 별점 평균 계산
