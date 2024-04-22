@@ -37,6 +37,7 @@
 					if (user != null) {
 					%>
 					<!-- 로그인 한 경우에만 표시되는 링크들 -->
+					<li class="nav-item"><a class="nav-link me-3" href="/post/posttotal" style="font-size: 1.1rem;">전체 게시글</a></li>
 					<li class="nav-item"><a class="nav-link me-3" href="/menu" style="font-size: 1.1rem;">음식메뉴</a></li>
 					<li class="nav-item"><a class="nav-link me-3" href="/person" style="font-size: 1.1rem;">사람메뉴</a></li>
 					<li class="nav-item"><a class="nav-link me-3" href="/post/list" style="font-size: 1.1rem;">후기</a></li>
