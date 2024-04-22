@@ -161,8 +161,9 @@
 								<button id="editButton" class="btn btn-primary" type="button">수정</button>
 								<button id="deleteButton" class="btn btn-danger" type="button">삭제</button>
 								<% } %> --%>
-								<span id="buttons"> </span> <a href="/post/list"
-									class="btn btn-secondary">목록으로 돌아가기</a>
+								<span id="buttons"> </span>
+								 <!-- <a href="/post/list"
+									class="btn btn-secondary">목록으로 돌아가기</a> -->
 							</div>
 							<div id="createReview">
 								<!-- <button class="btn btn-success" type="button"
@@ -238,7 +239,7 @@
 	const cardContainer = document.getElementById("cardContainer");
 	
 	// 해당 유저의 모든 리뷰 리스트를 가져옴
-	function change (guest, reviewList) {
+	function change (guest, reviewList, guestList) {
 		const card = document.createElement("div");
 		card.id = "card";
 		card.className = "card";
@@ -256,34 +257,55 @@
 		card.appendChild(cardBody);
 		cardContainer.appendChild(card);
 		
-	    
 		let isKorean = true; // 현재 카드가 한식인지 여부를 저장
-	
-		cardTitle.textContent = guest.id; // 
-	    createStar(reviewList[0], reviewList[0].guestuser_id, guest.nickname, cardText);
-	    const text = document.createElement("div");
-	    text.innerText = reviewList[0].review_content;
-	    cardText.appendChild(text);
+		
 		card.addEventListener('click', function() {
-		    if (isKorean) {
-			    cardTitle.textContent = guest.id; // 
+		    
+			
+			if (isKorean) {
 			    cardText.innerText="";
-			    createStar(reviewList[0], reviewList[0].guestuser_id, guest.nickname, cardText);
+			    cardTitle.textContent = guest.nickname;
+
+			    let guestnickname;
+			    for(let i = 0; i < guestList.length; i++) {
+			    	const guestuser = guestList[i];
+			    		console.log(reviewList[0].writeuser_id, "리뷰 0번쨰 아이디값 잓ㅇ자");
+			    		console.log(guestuser.user_id);
+			    		
+			    		if(guestuser.user_id== reviewList[0].writeuser_id) {
+	    					guestnickname = guestuser.nickname;
+	    					
+			    		}
+	    				
+			    }
+			    createStar(reviewList[0], reviewList[0].writeuser_id, guestnickname, cardText);
 			    const text = document.createElement("div");
 			    text.innerText = reviewList[0].review_content;
 			    cardText.appendChild(text);
+			    
 		    } else {
 			    cardText.innerText="";
-		    	cardTitle.textContent = guest.id;
+			    cardTitle.textContent = guest.nickname; //			    
 		    	for (let i = 0; i < reviewList.length; i++) {
 		    		const review = reviewList[i];
-		    		createStar(review, review.guestuser_id, guest.nickname, cardText);
-		    		
+	    			let guestnickname;
+		    		for(let j = 0; j < guestList.length; j++){
+		    			const guestuser = guestList[j];
+		    			if(guestuser.user_id===review.writeuser_id){
+		    				guestnickname = guestuser.nickname;
+		    				console.log(guestnickname,"닉네임확인");
+		    				
+		    			}
+		    				
+		    		}
+		    		createStar(review, review.writeuser_id, guestnickname, cardText);
 		    		const text = document.createElement("div");
 		            text.id = `text_${i}`; // 고유한 ID 할당
 		            const textId = document.createElement(`text_${i}`); 
 		            textId.innerText = review.review_content;
 		            cardText.appendChild(textId);
+		            document.createElement("hr");
+		            cardText.appendChild(document.createElement("hr"));
 		    	}
 
 		    }
@@ -301,6 +323,8 @@
 		// 사용자 닉네임
 		let userNickname = document.createElement("span");
 		userNickname.textContent = Nickname;
+		userNickname.style.display = "flex";
+		userNickname.style.alignItems = "flex-end";
 		
 		let starRating = document.createElement("div");
 		   starRating.classList.add("star-rating");
@@ -330,7 +354,7 @@
 </script>
 
 <script>
-	//TODO:postid같을때 카드 생성하게 수정 필요 
+	//TODO:postid같을때 카드 생성하게 수정 필요
 	const postId = document.getElementById("post_Id").value; //파라미터 값
 	
 	// 모달 다이얼로그 열기 함수
@@ -372,15 +396,30 @@
             const reviewList = attendGuestReviewList[i];
             
             createStarRating(guest.nickname, "reviewForm", guest.user_id);
-            change(guest, reviewList);
+            change(guest, reviewList, guestList);
         }
         
         if(data.post.writeUser_Id==currentUserId) {
         	makeButton();
         } 
+        const buttons = document.getElementById("buttons");
+
+        const backButton = document.createElement("a");
+	    console.log(data.post.status);    
+        if(data.post.status == 1) {
+    			backButton.href = "/post/list";
+        } else {
+        	backButton.href = "/menu";
+        }
+        backButton.className = "btn btn-secondary";
+        backButton.textContent = "목록으로 돌아가기";
+
+        // 요소를 DOM에 추가
+        buttons.appendChild(backButton);
+
         
         
-         guestList.forEach(guest => {
+        guestList.forEach(guest => {
         	if(guest.user_id == currentUserId) {
 				createReviewButton();
         	}
@@ -570,7 +609,6 @@ function onSaveButtonClick(guest_id) {
         guest_id: guest_id,
         post_id: post_id
     };
-	console.log(data);
     // 예시: fetch를 사용하여 서버로 데이터 전송
     fetch("/saveReview", {
         method: "POST",

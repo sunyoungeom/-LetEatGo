@@ -277,6 +277,17 @@ public class UserService {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			userMapper.insertFriendships(userId, receiverId);
 			sqlSession.commit();
+			System.out.println("친구 추가 성공");
+		}
+	}
+
+	FriendShip findFriendships(int user1_id, int user2_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			
+			return  userMapper.findFriendships(user1_id, user2_id);
+			
+			 
 		}
 	}
 
@@ -301,12 +312,19 @@ public class UserService {
 			sqlSession.commit();
 		}
 	}
-	
+
 	public void deleteReqFriend(int user1_id, int user2_id) {
 		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
 			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 			userMapper.deleteReqFriend(user1_id, user2_id);
 			sqlSession.commit();
+		}
+	}
+
+	public List<FriendShip> getFriendsList(int user_id) {
+		try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
+			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+			return userMapper.getFriendsList(user_id);
 		}
 	}
 }

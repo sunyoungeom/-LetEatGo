@@ -50,10 +50,8 @@ public class RecieveFriendsServlet extends HttpServlet {
 		
 		if (requestURI.endsWith("/recieveFriends/accept")) {
 			service.updateAccpetFriend(user1_id, user2_id);
-			req.getRequestDispatcher("WEB-INF/myinfo/myRecieverFriend.jsp").forward(req, resp);
 		} else if (requestURI.endsWith("/recieveFriends/reject")) {
 			service.deleteReqFriend(user1_id, user2_id);
-			req.getRequestDispatcher("WEB-INF/myinfo/myRecieverFriend.jsp").forward(req, resp);
 		}
 	}
 

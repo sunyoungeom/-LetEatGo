@@ -56,7 +56,6 @@
                     </svg> 회원탈퇴
 			</a></li>
 		
-		</ul>
 
 		<li class="nav-item"><a class="nav-link link-dark"
 			data-bs-toggle="collapse" href="#collapseMenu2" role="button"
@@ -79,6 +78,7 @@
 				</svg>받은 친구 신청</a></li>
 				</ul>
 			</div></li>
+		</ul>
 		<hr>
 		
 
