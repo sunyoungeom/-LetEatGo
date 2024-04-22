@@ -30,4 +30,5 @@ public class User {
 	private String phonenumber;
 //	private String profilePhotoPath;
 	private String foodCategory;
+	private String job;
 }
