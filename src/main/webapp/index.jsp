@@ -120,7 +120,6 @@
 			
 		</section>
 		
-	<div id="test"><a href="/user/userReview">test</a> </div>
 	</main>
 
 	<%@ include file="/WEB-INF/layout/footer.jsp"%>

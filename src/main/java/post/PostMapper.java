@@ -50,7 +50,7 @@ public interface PostMapper {
     @Select("SELECT p.post_id, p.writeuser_id, p.guestuser_id, p.title, p.content, p.resistdate, p.expiredate, p.status, p.place, p.view, c.guestuser_id as conversation_guestuser_id " +
             "FROM posts p " +
             "JOIN conversations c ON p.post_id = c.post_id " +
-            "WHERE p.status = 1 AND c.status = 1")
+            "WHERE p.status = 1")
     @Results({
         @Result(property = "postId", column = "post_id"),
         @Result(property = "writeUserId", column = "writeuser_id"),
