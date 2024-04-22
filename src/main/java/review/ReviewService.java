@@ -69,6 +69,7 @@ public class ReviewService {
     public List<Review> getReviewsByUserId(int userId) {
         try (SqlSession sqlSession = MyWebContextListener.getSqlSession()) {
             ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
+            System.out.println(reviewMapper.getReviewsByUserId(userId).toString() + "리뷰값");
             return reviewMapper.getReviewsByUserId(userId);
         }
     }
