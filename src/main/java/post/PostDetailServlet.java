@@ -57,15 +57,16 @@ public class PostDetailServlet extends HttpServlet {
 				for(Integer i : attendGuestIdList) {
 					attendUserList.add(userService.getUser(i));
 				}
-				//TODO: 내가 쓴 글이 아니라 내가 받은 리뷰로 수정필요
+				//TODO: 유저 리뷰 테이블 생성하는게 퍼포먼스적으로 차이
+				
 				for(User u : attendUserList) {
 					List<Review> reviews = new ArrayList<Review>(); 
-					reviews = reviewService.getReviewsByUserId(u.getUser_id());
+					reviews = reviewService.findReviewsReceivedByUserId(u.getUser_id(), postId);
 					attendGuestReviewList.add(reviews);
 				}
 			}
 			System.out.println(attendGuestReviewList.toString());
-			//TODO: 디비 이름 수정 필요, 포레인키 해제 필요
+			//TODO: 디비 이름 수정 필요, 포레인키 해제 필요, null 고민 필요
 			
 			User user = userService.getUser(post.getWriteUser_Id());
 			String place = postService.getPlaceByPostId(postId);
