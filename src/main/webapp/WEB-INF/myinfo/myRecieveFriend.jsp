@@ -106,10 +106,11 @@ prefix="c"%> <%@ page isELIgnored="true"%>
       fetch(`/recieveFriends/accept?userId=${userId}`, { method: "POST" })
         .then((response) => {
           if (response.ok) {
-            console.log("수락 성공");
-            // 여기에 수락 성공 시 동작하는 코드 추가
-          } else {
-            console.error("수락 실패");
+           alert("수락 실패");
+           window.location.reload();
+        } else {
+            alert("수락 성공");
+            window.location.reload();
             // 여기에 수락 실패 시 동작하는 코드 추가
           }
         })
@@ -121,11 +122,12 @@ prefix="c"%> <%@ page isELIgnored="true"%>
       fetch(`/recieveFriends/reject?userId=${userId}`, { method: "POST" })
         .then((response) => {
           if (response.ok) {
-            console.log("거절 성공");
-            // 여기에 거절 성공 시 동작하는 코드 추가
+            alert("거절 실패");
+            window.location.reload();
           } else {
-            console.error("거절 실패");
+            alert("거절 성공");
             // 여기에 거절 실패 시 동작하는 코드 추가
+            window.location.reload();
           }
         })
         .catch((error) => console.error("거절 요청 에러:", error));

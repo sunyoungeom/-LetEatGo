@@ -7,7 +7,7 @@ prefix="c"%> <%@ page isELIgnored="true"%>
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>받은 친구추가</title>
+    <title>내 친구 목록</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
       rel="stylesheet"
@@ -30,7 +30,7 @@ prefix="c"%> <%@ page isELIgnored="true"%>
               <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
                 <div class="row justify-content-center">
                   <div class="col-12">
-                    <h3>받은 친구 추가</h3>
+                    <h3>내 친구 목록</h3>
                     <table
                       class="table table-hover table-bordered"
                       id="recieveFriends"
@@ -66,7 +66,39 @@ prefix="c"%> <%@ page isELIgnored="true"%>
   </main>
 </body>
 <script>
-
+    function fetchData() {
+      fetch("/getFriendsList")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          data.forEach((user) => {
+            const row = document.createElement("tr");
+            const gender = getGender(user.identifynumber % 10); // 주민등록번호의 마지막 숫자로 성별 판별
+            const age = calculateAge(user.identifynumber.substring(0, 2));
+            row.innerHTML = `
+                  <td>${user.nickname}</td>
+                  <td>${gender}</td>
+                  <td>${age}</td>
+              `;
+            document.querySelector("#recieveFriends tbody").appendChild(row);
+          });
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    }
+    function getGender(lastDigit) {
+      return lastDigit % 2 === 1 ? "남자" : "여자";
+    }
+    function calculateAge(birthYear) {
+      var currentYear = new Date().getFullYear();
+      var age = currentYear - parseInt("19" + birthYear); // 주민등록번호 앞의 두 자리로 출생년도 계산
+      if (age >= 100) {
+        age = parseInt(age.toString().slice(1)); // 나이가 100세 이상이면 뒤의 한 자리만 남기기
+      }
+      return age;
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      fetchData();
+    });
 
 </script>
 </html>
