@@ -183,7 +183,7 @@
 				<br>
 				<hr>
 				<br>
-				<h2 class="mb-4">한줄평</h2>
+				<h2 id="onelineReview" class="mb-4"></h2>
 				<div id="cardContainer">
 					<!-- <div id="card" class="card">
 						<div class="card-body">
@@ -397,8 +397,13 @@
             
             createStarRating(guest.nickname, "reviewForm", guest.user_id);
             change(guest, reviewList, guestList);
+            
         }
-        
+        if(data.post.status == 1) {
+        	const onelineReview = document.getElementById("onelineReview");
+        	onelineReview.textContent = "한줄평";
+        }
+		
         if(data.post.writeUser_Id==currentUserId) {
         	makeButton();
         } 
