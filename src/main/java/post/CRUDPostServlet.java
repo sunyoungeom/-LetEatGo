@@ -25,7 +25,8 @@ import java.util.List;
 
 import static util.ServletUtil.*;
 
-@WebServlet(urlPatterns = { "/createPost","/post/createPost", "/post/deletePost", "/post/updatePost", "/post/editpost", "/post/editsave" })
+@WebServlet(urlPatterns = { "/createPost", "/post/createPost", "/post/deletePost", "/post/updatePost", "/post/editpost",
+		"/post/editsave" })
 public class CRUDPostServlet extends HttpServlet {
 	PostService postService = new PostService();
 
@@ -33,7 +34,7 @@ public class CRUDPostServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
-		if(requestURI.endsWith("/post/createPost")) {
+		if (requestURI.endsWith("/post/createPost")) {
 			request.getRequestDispatcher("/WEB-INF/post/createpost.jsp").forward(request, response);
 		} else if (requestURI.endsWith("/post/editpost")) {
 			request.getRequestDispatcher("/WEB-INF/post/editpost.jsp").forward(request, response);
@@ -67,7 +68,7 @@ public class CRUDPostServlet extends HttpServlet {
 		post.setResistdate(resistDate);
 		post.setExpireDate(expireDate);
 		post.setPlace(place);
-		
+
 		if (requestURI.endsWith("/createPost")) {
 
 			int postid = postService.createPost(post, user);
@@ -80,7 +81,8 @@ public class CRUDPostServlet extends HttpServlet {
 			postTag.setPeopleLimit(peopleLimit);
 			postService.createPostTag(postid, postTag);
 
-		}  if (requestURI.endsWith("/post/editsave")) {
+		}
+		if (requestURI.endsWith("/post/editsave")) {
 			int postid = Integer.parseInt(request.getParameter("postId"));
 
 			PostTag postTag = new PostTag();

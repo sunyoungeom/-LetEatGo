@@ -57,6 +57,7 @@ public class PostDetailServlet extends HttpServlet {
 				for(Integer i : attendGuestIdList) {
 					attendUserList.add(userService.getUser(i));
 				}
+				//TODO: 내가 쓴 글이 아니라 내가 받은 리뷰로 수정필요
 				for(User u : attendUserList) {
 					List<Review> reviews = new ArrayList<Review>(); 
 					reviews = reviewService.getReviewsByUserId(u.getUser_id());
@@ -64,7 +65,7 @@ public class PostDetailServlet extends HttpServlet {
 				}
 			}
 			System.out.println(attendGuestReviewList.toString());
-			
+			//TODO: 디비 이름 수정 필요, 포레인키 해제 필요
 			
 			User user = userService.getUser(post.getWriteUser_Id());
 			String place = postService.getPlaceByPostId(postId);

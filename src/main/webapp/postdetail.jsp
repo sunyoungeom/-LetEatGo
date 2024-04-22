@@ -49,9 +49,10 @@
 
 .card {
 	transition: max-height 0.5s ease;
-	overflow: hidden; /* 내용이 카드 밖으로 흘러넘치지 않도록 함 */
+	/* overflow: hidden; /* 내용이 카드 밖으로 흘러넘치지 않도록 함 */ */
 	cursor: pointer;
 	max-height: 150px; /* 초기 최대 높이 설정 */
+	overflow: auto;
 }
 
 .expand-active {
@@ -126,7 +127,7 @@
 									<th scope="row" class="text-center" style="width: 10%;">제목</th>
 									<td id="title"></td>
 									<th scope="row" class="text-center" style="width: 10%;">조회수</th>
-									<td class="text-center" style="width: 15%;">150</td>
+									<td id="view" class="text-center" style="width: 15%;"></td>
 								</tr>
 								<tr>
 									<th scope="row" class="text-center">작성자</th>
@@ -160,7 +161,7 @@
 								<button id="editButton" class="btn btn-primary" type="button">수정</button>
 								<button id="deleteButton" class="btn btn-danger" type="button">삭제</button>
 								<% } %> --%>
-								<span id="buttons"> </span> <a href="#"
+								<span id="buttons"> </span> <a href="/post/list"
 									class="btn btn-secondary">목록으로 돌아가기</a>
 							</div>
 							<div id="createReview">
@@ -234,52 +235,102 @@
 		value="<%=request.getParameter("post_Id")%>">
 </body>
 <script>
-
-
 	const cardContainer = document.getElementById("cardContainer");
-
+	
+	// 해당 유저의 모든 리뷰 리스트를 가져옴
 	function change (guest, reviewList) {
-	const card = document.createElement("div");
-	card.id = "card";
-	card.className = "card";
-	const cardBody = document.createElement("div");
-	cardBody.className = "card-body";
-	const cardTitle = document.createElement("h5");
-	cardTitle.id = "cardTitle";
-	cardTitle.className = "card-title";
-	const cardText = document.createElement("p");
-	cardText.id = "cardText";
-	cardText.className = "card-text";
+		const card = document.createElement("div");
+		card.id = "card";
+		card.className = "card";
+		const cardBody = document.createElement("div");
+		cardBody.className = "card-body";
+		const cardTitle = document.createElement("h5");
+		cardTitle.id = "cardTitle";
+		cardTitle.className = "card-title";
+		const cardText = document.createElement("p");
+		cardText.id = "cardText";
+		cardText.className = "card-text";
+		
+		cardBody.appendChild(cardTitle);
+		cardBody.appendChild(cardText);
+		card.appendChild(cardBody);
+		cardContainer.appendChild(card);
+		
+	    
+		let isKorean = true; // 현재 카드가 한식인지 여부를 저장
 	
-	cardBody.appendChild(cardTitle);
-	cardBody.appendChild(cardText);
-	card.appendChild(cardBody);
-	cardContainer.appendChild(card);
-	
-    cardTitle.textContent = guest.id; // 
-    createStarRating(guest.nickname,"cardText", reviewList[0].review, null);
-    
-	let isKorean = true; // 현재 카드가 한식인지 여부를 저장
-	console.log(reviewList,"이게 무슨값?");
-	card.addEventListener('click', function() {
-	    if (isKorean) {
-	        cardTitle.textContent = guest.id; // 카드 제목을 일식으로 변경
-	        cardText.textContent = "일본의 전통 요리입니다."; // 카드 텍스트를 일식 설명으로 변경
-	    } else {
-	    	cardTitle.textContent = guest.id;
-	    	
-    	    //cardText.textContent
-	    	//createStarRating(guest.nickname,"cardText", reviewList[0].review, null);
-	    }
-	    isKorean = !isKorean; // 토글 상태 변경
-	});
-}
-/* reviewList.forEach(review => {
-				}); */
+		cardTitle.textContent = guest.id; // 
+	    createStar(reviewList[0], reviewList[0].guestuser_id, guest.nickname, cardText);
+	    const text = document.createElement("div");
+	    text.innerText = reviewList[0].review_content;
+	    cardText.appendChild(text);
+		card.addEventListener('click', function() {
+		    if (isKorean) {
+			    cardTitle.textContent = guest.id; // 
+			    cardText.innerText="";
+			    createStar(reviewList[0], reviewList[0].guestuser_id, guest.nickname, cardText);
+			    const text = document.createElement("div");
+			    text.innerText = reviewList[0].review_content;
+			    cardText.appendChild(text);
+		    } else {
+			    cardText.innerText="";
+		    	cardTitle.textContent = guest.id;
+		    	for (let i = 0; i < reviewList.length; i++) {
+		    		const review = reviewList[i];
+		    		createStar(review, review.guestuser_id, guest.nickname, cardText);
+		    		
+		    		const text = document.createElement("div");
+		            text.id = `text_${i}`; // 고유한 ID 할당
+		            const textId = document.createElement(`text_${i}`); 
+		            textId.innerText = review.review_content;
+		            cardText.appendChild(textId);
+		    	}
+
+		    }
+		    isKorean = !isKorean; // 토글 상태 변경
+		});
+	}
 </script>
 
+<script>
+
+ 	function createStar(review, user_id, Nickname, Element) {
+		let reviewItem = document.createElement("div");
+		reviewItem.style.display = "flex";
+		
+		// 사용자 닉네임
+		let userNickname = document.createElement("span");
+		userNickname.textContent = Nickname;
+		
+		let starRating = document.createElement("div");
+		   starRating.classList.add("star-rating");
+		   for (let i = 5; i >= 1; i--) {
+		       const radioInput = document.createElement("input");
+		       radioInput.type = "radio";
+		       radioInput.name = `rating_${user_id}`;
+		       radioInput.value = i;
+		       radioInput.id = `star${i}_${user_id}`;
+		       if (review.rating === i) {
+		    	   radioInput.checked = true;
+	           }
+		       radioInput.disabled = true;
+		       let label = document.createElement("label");
+		       label.htmlFor = `star${i}_${user_id}`;
+		
+		       // 라벨과 라디오 버튼을 별 평점 입력 필드에 추가
+		       starRating.appendChild(radioInput);
+		       starRating.appendChild(label);
+		   }
+		   reviewItem.appendChild(userNickname);
+		   reviewItem.appendChild(starRating);
+		   
+		   Element.appendChild(reviewItem);
+	}	 
+
+</script>
 
 <script>
+	//TODO:postid같을때 카드 생성하게 수정 필요 
 	const postId = document.getElementById("post_Id").value; //파라미터 값
 	
 	// 모달 다이얼로그 열기 함수
@@ -314,12 +365,13 @@
     	const guestList = data.attendUserList;
     	const attendGuestReviewList = data.attendGuestReviewList;
 		const currentUserId = data.currentUser.user_id;
-       
+		const view = document.getElementById("view")
+		view.textContent = data.post.view;
 		for (let i = 0; i < guestList.length; i++) {
             const guest = guestList[i];
             const reviewList = attendGuestReviewList[i];
             
-            createStarRating(guest.nickname, "reviewForm", null, guest.user_id);
+            createStarRating(guest.nickname, "reviewForm", guest.user_id);
             change(guest, reviewList);
         }
         
@@ -444,9 +496,13 @@
         }
       });
 </script>
+
+
+
+
 <script>
 //별 평점 입력 필드 생성 함수
-function createStarRating(nickname, elementId, review, guest_id) { 
+function createStarRating(nickname, elementId, guest_id) { 
 	const reviewForm = document.getElementById(elementId);
 	let reviewItem = document.createElement("div");
 	reviewItem.style.display = "flex";
@@ -470,9 +526,6 @@ function createStarRating(nickname, elementId, review, guest_id) {
         radioInput.type = "radio";
         radioInput.name = `rating_${nickname}`;
         radioInput.value = i;
-        if (review != null && review.rating === i) {
-            radioInput.checked = true; // 기존 평점에 따라 체크 처리
-        }
         radioInput.id = `star${i}_${nickname}`;
 
         let label = document.createElement("label");

@@ -80,7 +80,7 @@
     });
     
     
-    
+    // TODO: 상대방 아이디 가져와서 값 보내줘야함
     // 저장 기능 구현
 	    saveButton.addEventListener("click", () => {
 	        // 별 평점도 수정 불가능하도록 설정
