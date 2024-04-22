@@ -110,6 +110,9 @@
 .star-rating input[type="radio"]:checked ~ label:before {
 	color: #ffca08;
 }
+.chat-button {
+        margin-left: 70px; /* chatButton의 간격을 조절합니다. */  
+}
 </style>
 </head>
 <body class="d-flex flex-column h-100 bg-light">
@@ -413,11 +416,15 @@
         }
         backButton.className = "btn btn-secondary";
         backButton.textContent = "목록으로 돌아가기";
-
         // 요소를 DOM에 추가
         buttons.appendChild(backButton);
 
-        
+        const chatButton = document.createElement("button");
+        chatButton.id = "chatButton";
+        chatButton.className = "btn btn-primary chat-button";
+        chatButton.textContent = "채팅 참여";
+        chatButton.addEventListener("click", chatWinOpen);
+        buttons.appendChild(chatButton);
         
         guestList.forEach(guest => {
         	if(guest.user_id == currentUserId) {
@@ -426,6 +433,18 @@
         }); 
 
     });
+	
+    function createChatButton() {
+        const button = document.createElement("button");
+        button.id = "chatButton"; // 버튼의 ID 설정
+        button.className = "btn btn-primary"; // 버튼의 클래스 설정
+        button.textContent = "채팅 참여"; // 버튼에 텍스트 추가
+        button.addEventListener("click", chatWinOpen); // 버튼 클릭 시 chatWinOpen 함수 호출
+		
+        chatButton.appendChild(button);
+    }
+
+
 	
     function createReviewButton() {
 		// 새로운 버튼 요소를 생성합니다.
@@ -628,6 +647,41 @@ function onSaveButtonClick(guest_id) {
     .catch(error => {
         console.error("네트워크 오류:", error);
     });
+}
+
+
+//페이지가 로드될 때 실행되는 함수
+document.addEventListener("DOMContentLoaded", function() {
+    // 쿠키에서 닉네임 가져오기
+    const nickname = getCookieValue("nickname");
+    console.log(nickname);
+});
+
+// 쿠키에서 특정 이름의 값 가져오는 함수
+function getCookieValue(name) {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split("=");
+        if (cookieName === name) {
+            return cookieValue;
+        }
+    }
+    return null;
+}
+let chatWindow = null;
+var urlParams = new URLSearchParams(window.location.search);
+var post_Id = urlParams.get('post_Id'); // URL 파라미터에서 post_Id를 가져옵니다.
+console.log(post_Id);
+
+function chatWinOpen() {
+    const nickname = getCookieValue("nickname"); // 쿠키에서 닉네임 가져오기
+    console.log(nickname)
+    if (!chatWindow || chatWindow.closed) {
+        const url = "ChatWindow?&post_Id=" + post_Id; // URL에 게시물 ID 추가
+        chatWindow = window.open(url, "", "width=386, height=564"); // 채팅 창 열기
+    } else {
+        chatWindow.focus();
+    }   
 }
 
  </script>

@@ -429,7 +429,10 @@ prefix="c"%> <%@ page isELIgnored="true"%>
         .then((response) => {
           if (response.ok) {
             response.json().then((data) => {
-              alert(JSON.stringify(data)); // 데이터를 문자열로 변환하여 출력
+            	friendbtn.innerText = "일대일 채팅";              
+            	alert(JSON.stringify(data)); // 데이터를 문자열로 변환하여 출력
+            	
+            	
             });
           } else {
             response.json().then((errorData) => {
@@ -441,6 +444,39 @@ prefix="c"%> <%@ page isELIgnored="true"%>
 			alert("이미 상대방에게 신청이 왔습니다. 친구추가 목록을 확인해 보세요.");
         });
     });
+    
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        // 쿠키에서 닉네임 가져오기
+        const currentUserNickname  = getCookieValue("nickname");
+        console.log(usernickname);
+    });
+
+    // 쿠키에서 특정 이름의 값 가져오는 함수
+    function getCookieValue(name) {
+        const cookies = document.cookie.split("; ");
+        for (let cookie of cookies) {
+            const [cookieName, cookieValue] = cookie.split("=");
+            if (cookieName === name) {
+                return cookieValue;
+            }
+        }
+        return null;
+    }
+   
+    let PriChatWindow = null;
+    var userid = urlParmas.get("userid");
+    function PriChatWindow() {
+    	const currentUserNickname  = getCookieValue("nickname");
+    	const OpponentNickname = document.getElementById("nickname");
+    	if (!PriChatWindow || PriChatWindow.closed) {
+            const url = "PriChatWindow?&userid=" + userid; // URL에 게시물 ID 추가
+            PriChatWindow = window.open(url, "", "width=386, height=564"); // 채팅 창 열기
+        } else {
+        	PriChatWindow.focus();
+        }   
+    }
+    
   </script>
   <!-- 페이지 번호 -->
   <script src="/js/pagination.js"></script>
