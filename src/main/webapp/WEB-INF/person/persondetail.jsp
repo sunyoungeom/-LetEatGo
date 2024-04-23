@@ -464,7 +464,7 @@ prefix="c"%> <%@ page isELIgnored="true"%>
         return null;
     }
    
-    let PriChatWindow = null;
+  /*   let PriChatWindow = null;
     var userid = urlParmas.get("userid");
     function PriChatWindow() {
     	const currentUserNickname  = getCookieValue("nickname");
@@ -475,7 +475,7 @@ prefix="c"%> <%@ page isELIgnored="true"%>
         } else {
         	PriChatWindow.focus();
         }   
-    }
+    } */
     
   </script>
   <!-- 페이지 번호 -->
