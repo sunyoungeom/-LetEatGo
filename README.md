@@ -11,14 +11,13 @@
 ### 담당 업무
 
 1. **외부 Open API 활용**
+    ![3](https://github.com/dongso03/-Final_Project/assets/154950237/693bea23-c113-4a72-a8f5-012dbbc2f6ba)
    - Kakao Map, Kakao 블로그 검색 API 사용
      1. 주변 음식점 찾기 기능
      2. 주변 친구 찾기 기능 (사용자 간 거리 출력)
 
-2. **유저들의 정보 목록 및 친구 추가 기능 (CRUD)**
-3. ![3](https://github.com/dongso03/-Final_Project/assets/154950237/693bea23-c113-4a72-a8f5-012dbbc2f6ba)
-
-   - MVC 패턴 적용
+3. **유저들의 정보 목록 및 친구 추가 기능 (CRUD)**
+4. - MVC 패턴 적용
      1. Servlet Class 작성하여 Servlet에서는 제어 로직 처리만을 수행할 수 있는 환경 제공
      2. 게시판 작성폼 및 게시판 출력 등 View 구현
      3. 유저 간 친구 추가 및 친구 목록 등 서비스 로직 구현 / 테이블 관계 정의
