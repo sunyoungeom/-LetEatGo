@@ -15,6 +15,10 @@
    - Kakao Map, Kakao 블로그 검색 API 사용
      1. 주변 음식점 찾기 기능
      2. 주변 친구 찾기 기능 (사용자 간 거리 출력)
+    
+
+
+
 
 2. **유저들의 정보 목록 및 친구 추가 기능 (CRUD)**
    ![4](https://github.com/dongso03/-Final_Project/assets/154950237/951dea3f-14a7-4a29-9ac1-353c9a67cefb)
